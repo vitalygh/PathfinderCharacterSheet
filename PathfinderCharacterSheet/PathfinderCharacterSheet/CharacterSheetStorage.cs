@@ -49,7 +49,7 @@ namespace PathfinderCharacterSheet
                         var serializer = new XmlSerializer(typeof(CharacterSheet));
                         var character = serializer.Deserialize(stream) as CharacterSheet;
                         characters.Add(character, file);
-                        var name = character.characterName;
+                        var name = character.Name;
                         name = string.IsNullOrWhiteSpace(name) ? "unnamed character" : "character \"" + name + "\"";
                         Console.WriteLine("Loaded " + name + " from file \"" + file + "\"");
                     }
@@ -75,7 +75,7 @@ namespace PathfinderCharacterSheet
         {
             if (sheet == null)
                 return null;
-            var name = string.IsNullOrWhiteSpace(sheet.characterName) ? string.Empty : sheet.characterName;
+            var name = string.IsNullOrWhiteSpace(sheet.Name) ? string.Empty : sheet.Name;
             name += "_" + Guid.NewGuid().ToString();
             var invalid = Path.GetInvalidFileNameChars();
             foreach (var c in invalid)
@@ -88,7 +88,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var dir = CharactersPath;
-            var characterName = string.IsNullOrWhiteSpace(sheet.characterName) ? "unnamed character" : "character \"" + sheet.characterName + "\"";
+            var characterName = string.IsNullOrWhiteSpace(sheet.Name) ? "unnamed character" : "character \"" + sheet.Name + "\"";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             try

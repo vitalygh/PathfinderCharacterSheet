@@ -17,7 +17,7 @@ namespace PathfinderCharacterSheet
 			InitializeComponent ();
 
             if (CharacterSheetStorage.Instance.selectedCharacter != null)
-                CharacterName.Text = CharacterSheetStorage.Instance.selectedCharacter.characterName;
+                CharacterName.Text = CharacterSheetStorage.Instance.selectedCharacter.Name;
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)
@@ -31,9 +31,9 @@ namespace PathfinderCharacterSheet
             var selected = character != null;
             if (character == null)
                 character = new CharacterSheet();
-            if (character.characterName != CharacterName.Text)
+            if (character.Name != CharacterName.Text)
                 CharacterSheetStorage.Instance.DeleteCharacter(character);
-            character.characterName = CharacterName.Text;
+            character.name = CharacterName.Text;
             CharacterSheetStorage.Instance.SaveCharacter(character);
             CharacterSheetStorage.Instance.selectedCharacter = character;
             Navigation.PopAsync();

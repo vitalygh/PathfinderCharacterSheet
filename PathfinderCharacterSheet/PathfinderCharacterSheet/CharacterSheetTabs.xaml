@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.CharacterSheetTabs">
+  <!--Pages can be added as references or inline-->
+    <ContentPage Title="Bio">
+        <Grid ColumnSpacing="5" RowSpacing="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Label x:Name="NameTitle" Text="Name: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="0"></Label>
+            <Label x:Name="Name" FontSize="Medium" TextColor="Black" Grid.Column="1" Grid.Row="0"></Label>
+            <Label x:Name="AlignmentTitle" Text="Alignment: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="0"></Label>
+            <Label x:Name="Alignment" FontSize="Medium" TextColor="Black" Grid.Column="3" Grid.Row="0"></Label>
+
+            <Label x:Name="ExperienceTitle" Text="Experience: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="1"></Label>
+            <Label x:Name="Experience" FontSize="Medium" TextColor="Black" Grid.Column="1" Grid.Row="1"></Label>
+            <Label x:Name="NextLevelTitle" Text="NextLevel: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="1"></Label>
+            <Label x:Name="NextLevel" FontSize="Medium" TextColor="Black" Grid.Column="3" Grid.Row="1"></Label>
+
+            <Label x:Name="LevelTitle" Text="Level:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="3"></Label>
+            <Label x:Name="Level" FontSize="Medium" TextColor="Black" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3"></Label>
+
+            <Label x:Name="DeityTitle" Text="Deity: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="4"></Label>
+            <Label x:Name="Deity" FontSize="Medium" TextColor="Black" Grid.Column="1" Grid.Row="4"></Label>
+            <Label x:Name="HomelandTitle" Text="Homeland: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="4"></Label>
+            <Label x:Name="Homeland" FontSize="Medium" TextColor="Black" Grid.Column="3" Grid.Row="4"></Label>
+
+            <Label x:Name="RaceTitle" Text="Race: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="5"></Label>
+            <Label x:Name="Race" FontSize="Medium" TextColor="Black" Grid.Column="1" Grid.Row="5"></Label>
+            <Label x:Name="SizeTitle" Text="Size: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="5"></Label>
+            <Label x:Name="Size" FontSize="Medium" TextColor="Black" Grid.Column="3" Grid.Row="5"></Label>
+
+            <Label x:Name="GenderTitle" Text="Gender: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="6"></Label>
+            <Label x:Name="Gender" FontSize="Medium" TextColor="Black" Grid.Column="1" Grid.Row="6"></Label>
+            <Label x:Name="AgeTitle" Text="Age: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="6"></Label>
+            <Label x:Name="Age" FontSize="Medium" TextColor="Black" Grid.Column="3" Grid.Row="6"></Label>
+
+            <Label x:Name="HeightTitle" Text="Height: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="7"></Label>
+            <Label x:Name="Height" FontSize="Medium" TextColor="Black" Grid.Column="1" Grid.Row="7"></Label>
+            <Label x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="7"></Label>
+            <Label x:Name="Weight" FontSize="Medium" TextColor="Black" Grid.Column="3" Grid.Row="7"></Label>
+
+            <Label x:Name="HairTitle" Text="Hair: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="8"></Label>
+            <Label x:Name="Hair" FontSize="Medium" TextColor="Black" Grid.Column="1" Grid.Row="8"></Label>
+            <Label x:Name="EyesTitle" Text="Eyes: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="8"></Label>
+            <Label x:Name="Eyes" FontSize="Medium" TextColor="Black" Grid.Column="3" Grid.Row="8"></Label>
+
+            <Label x:Name="InfoTitle" Text="Info:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="9"></Label>
+            <Label x:Name="Info" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="4"></Label>
+        </Grid>
+    </ContentPage>
+    <ContentPage Title="Abilities" />
+    <ContentPage Title="Weapon" />
+    <ContentPage Title="AC Items" />
+    <ContentPage Title="Inventory" />
+    <ContentPage Title="Skills" />
+    <ContentPage Title="Feats" />
+    <ContentPage Title="Special Abilities" />
+    <ContentPage Title="Spells" />
+</TabbedPage>

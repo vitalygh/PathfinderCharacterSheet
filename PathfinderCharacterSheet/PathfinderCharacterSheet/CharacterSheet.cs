@@ -9,7 +9,9 @@ namespace PathfinderCharacterSheet
         public class LevelOfClass
         {
             public int level = 0;
+            public int Level { get { return level; } }
             public string className = null;
+            public string ClassName { get { return className; } }
         }
 
         public enum Ability
@@ -342,13 +344,16 @@ namespace PathfinderCharacterSheet
         }
 
         #region Character background
-        public string characterName = null;
-        public string characterInfo = null;
+        public string name = null;
+        public string Name { get { return name; } }
+        public string info = null;
         public Alignment alignment = Alignment.None;
         public string deity = null;
         public string homeland = null;
         public string race = null;
+        public string Race { get { return race; } }
         public string size = null;
+        public string gender = null;
         public int age = 0;
         public int height = 0;
         public int weight = 0;
@@ -358,6 +363,18 @@ namespace PathfinderCharacterSheet
 
         #region Level
         public List<LevelOfClass> levelOfClass = new List<LevelOfClass>();
+        public int TotalLevel
+        {
+            get
+            {
+                var level = 0;
+                if (levelOfClass != null)
+                    foreach (var loc in levelOfClass)
+                        if (loc != null)
+                            level += loc.level;
+                return level;
+            }
+        }
         public int experience = 0;
         public int nextLevelExperience = 0;
         #endregion
