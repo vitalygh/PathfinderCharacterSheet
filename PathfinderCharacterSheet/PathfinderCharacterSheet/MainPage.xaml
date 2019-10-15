@@ -14,7 +14,7 @@
                     <ViewCell>
                         <ViewCell.View>
                             <StackLayout Orientation="Horizontal" Margin="10">
-                                <Label Text="{Binding CharacterName}" TextColor="black" FontSize="Medium" HorizontalOptions="FillAndExpand" />
+                                <Label Text="{Binding Name}" TextColor="black" FontSize="Medium" HorizontalOptions="FillAndExpand" />
                                 <Label Text="{Binding Race}" TextColor="black" FontSize="Medium" HorizontalOptions="EndAndExpand" />
                                 <Label Text="{Binding TotalLevel}" TextColor="black" FontSize="Medium" HorizontalOptions="EndAndExpand" />
                             </StackLayout>

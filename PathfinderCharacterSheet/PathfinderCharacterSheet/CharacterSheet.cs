@@ -54,15 +54,19 @@ namespace PathfinderCharacterSheet
         public class IntModifier
         {
             public bool active = true;
+            public bool IsActive { get { return active; } }
             public string name = null;
+            public string Name { get { return name; } }
             public int value = 0;
+            public int Value { get { return value; } }
         }
 
-        public static int Sum(List<IntModifier> modifiers)
+        public static int Sum(List<IntModifier> modifiers, bool activeOnly = true)
         {
             int value = 0;
             foreach (var m in modifiers)
-                value = value + m.value;
+                if (m.IsActive || !activeOnly)
+                    value += m.Value;
             return value;
         }
 
@@ -72,6 +76,11 @@ namespace PathfinderCharacterSheet
             if ((ab >= 0) && (ab < sheet.abilityScores.Length))
                 return sheet.abilityScores[ab].Modifier;
             return 0;
+        }
+
+        public int CurrentAbilityModifier(Ability ability)
+        {
+            return GetAbilityModifier(this, ability);
         }
 
         public class SavingThrow
@@ -238,8 +247,8 @@ namespace PathfinderCharacterSheet
 
         public class ArmorClass
         {
-            public int armourBonus = 0;
-            public bool autoArmourBonus = true;
+            public int armorBonus = 0;
+            public bool autoArmorBonus = true;
             public int shieldBonus = 0;
             public bool autoShieldBonus = true;
             public int sizeModifier = 0;
@@ -254,18 +263,18 @@ namespace PathfinderCharacterSheet
                 }
             }
 
-            private int GetArmourBonus(CharacterSheet sheet)
+            public int GetArmorBonus(CharacterSheet sheet)
             {
-                if (!autoArmourBonus)
-                    return armourBonus;
+                if (!autoArmorBonus)
+                    return armorBonus;
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
-                    if (item.isArmour)
+                    if (item.isArmor)
                         ac += item.bonus;
                 return ac;
             }
 
-            private int GetShieldBonus(CharacterSheet sheet)
+            public int GetShieldBonus(CharacterSheet sheet)
             {
                 if (!autoShieldBonus)
                     return shieldBonus;
@@ -278,7 +287,7 @@ namespace PathfinderCharacterSheet
 
             public int GetTotal(CharacterSheet sheet)
             {
-                return GetBaseArmorClass + GetAbilityModifier(sheet, Ability.Dexterity) + GetArmourBonus(sheet) + GetShieldBonus(sheet) + naturalArmor;
+                return GetBaseArmorClass + GetAbilityModifier(sheet, Ability.Dexterity) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor;
             }
 
             public int GetTouch(CharacterSheet sheet)
@@ -288,7 +297,7 @@ namespace PathfinderCharacterSheet
 
             public int GetFlatFooted(CharacterSheet sheet)
             {
-                return GetBaseArmorClass + GetArmourBonus(sheet) + GetShieldBonus(sheet) + naturalArmor;
+                return GetBaseArmorClass + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor;
             }
         }
 
@@ -296,7 +305,7 @@ namespace PathfinderCharacterSheet
         {
             public int bonus = 0;
             public bool isShield = false;
-            public bool isArmour = false;
+            public bool isArmor = false;
             public string type = null;
             public int checkPenalty = 0;
             public int spellFailure = 0;
@@ -346,7 +355,7 @@ namespace PathfinderCharacterSheet
         #region Character background
         public string name = null;
         public string Name { get { return name; } }
-        public string info = null;
+        public string biography = null;
         public Alignment alignment = Alignment.None;
         public string deity = null;
         public string homeland = null;
@@ -401,9 +410,12 @@ namespace PathfinderCharacterSheet
 
         #region Defence
         public ArmorClass armorClass = new ArmorClass();
-        public int CurrentTotalArmourClass { get { return armorClass.GetTotal(this); } }
-        public int CurrentTouchArmourClass { get { return armorClass.GetTouch(this); } }
-        public int CurrentFlatFootedArmourClass { get { return armorClass.GetFlatFooted(this); } }
+        public int ACArmorBonus { get { return armorClass.GetArmorBonus(this); } }
+        public int ACShieldBonus { get { return armorClass.GetShieldBonus(this); } }
+        public int ACMiscModifier { get { return Sum(armorClass.miscModifiers); } }
+        public int ACTotal { get { return armorClass.GetTotal(this); } }
+        public int ACTouch { get { return armorClass.GetTouch(this); } }
+        public int ACFlatFooted { get { return armorClass.GetFlatFooted(this); } }
 
         public SavingThrow[] savingThrows = new SavingThrow[(int)Save.Total]
         {
