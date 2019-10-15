@@ -16,7 +16,15 @@ namespace PathfinderCharacterSheet
             var np = new NavigationPage(mp);
             np.Popped += (s, e) =>
             {
-                mp.UpdateListView();
+                var page = (MainPage as NavigationPage).CurrentPage;
+                var cst = page as CharacterSheetTabs;
+                if (cst != null)
+                    cst.UpdateFields();
+                var ehp = page as EditHP;
+                if (ehp != null)
+                    ehp.ViewToEdit();
+                if (page == mp)
+                    mp.UpdateListView();
             };
             MainPage = np;
             

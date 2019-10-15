@@ -27,7 +27,7 @@
                 </Grid.RowDefinitions>
                 <Label VerticalOptions="Center" x:Name="NameTitle" BackgroundColor="LightGray" Text="Name: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="0"></Label>
                 <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                    <Label x:Name="Name" FontSize="Medium" TextColor="Black"></Label>
+                    <Label x:Name="CharacterName" FontSize="Medium" TextColor="Black"></Label>
                 </Frame>
                 <Label VerticalOptions="Center" x:Name="AlignmentTitle" BackgroundColor="LightGray" Text="Alignment: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="0"></Label>
                 <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
@@ -77,7 +77,7 @@
 
                 <Label VerticalOptions="Center" x:Name="HeightTitle" BackgroundColor="LightGray" Text="Height: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="7"></Label>
                 <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7">
-                    <Label x:Name="Height" FontSize="Medium" TextColor="Black"></Label>
+                    <Label x:Name="CharacterHeight" FontSize="Medium" TextColor="Black"></Label>
                 </Frame>
                 <Label VerticalOptions="Center" x:Name="WeightTitle" BackgroundColor="LightGray" Text="Weight: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="7"></Label>
                 <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="7">
@@ -104,12 +104,18 @@
         <ScrollView>
             <StackLayout>
                 <Grid x:Name="AbilityScores" ColumnSpacing="5" RowSpacing="5">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="AbilityScores_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
+                        <!--
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
+                        -->
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -122,40 +128,37 @@
                     </Grid.RowDefinitions>
                 </Grid>
                 <Grid ColumnSpacing="5" RowSpacing="5">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
+                        <!--
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
+                        -->
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <!--
                     <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
                     </Frame>
-                    <Label x:Name="HPTitle" Text="HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray"  Grid.Column="2" Grid.Row="0"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
+                    -->
+                    <Label x:Name="HPTitle" Text="HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray"  Grid.Column="0" Grid.Row="0"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
                     </Frame>
-                    <Label x:Name="DamageResistTitle" Text="Damage Resist:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray"  Grid.Column="4" Grid.Row="0"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="5" Grid.Row="0">
+                    <Label x:Name="DamageResistTitle" Text="Damage Resist:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray"  Grid.Column="2" Grid.Row="0"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
                         <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
                     </Frame>
-                </Grid>
-                <Label x:Name="TempHPModifiersTitle" Text="Temp HP Modifiers:" HorizontalTextAlignment="Center" FontSize="Medium" TextColor="Black" BackgroundColor="LightGray"  HorizontalOptions="FillAndExpand"/>
-                <Grid x:Name="TempHPModifiers" ColumnSpacing="15" RowSpacing="5" InputTransparent="True">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
                 </Grid>
                 <Grid ColumnSpacing="15" RowSpacing="5">
                     <Grid.ColumnDefinitions>

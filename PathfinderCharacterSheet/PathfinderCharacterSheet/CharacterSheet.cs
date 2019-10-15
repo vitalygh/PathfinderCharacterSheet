@@ -40,13 +40,13 @@ namespace PathfinderCharacterSheet
         public class AbilityScore
         {
             public int score = 0;
-            public int tempAjustment = 0;
+            public int tempAdjustment = 0;
             public int tempModifier = 0;
             public int Modifier
             {
                 get
                 {
-                    return (score + tempAjustment) % 2 - 5 + tempModifier;
+                    return (score + tempAdjustment) / 2 - 5 + tempModifier;
                 }
             }
         }
@@ -59,6 +59,20 @@ namespace PathfinderCharacterSheet
             public string Name { get { return name; } }
             public int value = 0;
             public int Value { get { return value; } }
+
+            public bool Equals(IntModifier obj)
+            {
+                var other = obj as IntModifier;
+                if (other == null)
+                    return false;
+                if (other.IsActive != IsActive)
+                    return false;
+                if (other.Name != Name)
+                    return false;
+                if (other.Value != Value)
+                    return false;
+                return true;
+            }
         }
 
         public static int Sum(List<IntModifier> modifiers, bool activeOnly = true)
@@ -68,6 +82,29 @@ namespace PathfinderCharacterSheet
                 if (m.IsActive || !activeOnly)
                     value += m.Value;
             return value;
+        }
+
+        public static bool Compare(List<IntModifier> a, List<IntModifier> b)
+        {
+            if ((a == null) && (b == null))
+                return true;
+            if ((a == null) || (b == null))
+                return false;
+            var count = a.Count;
+            if (count != b.Count)
+                return false;
+            for (var i = 0; i < count; i++)
+            {
+                var ai = a[i];
+                var bi = b[i];
+                if ((ai == null) && (bi == null))
+                    continue;
+                if ((ai == null) || (bi == null))
+                    return false;
+                if (!ai.Equals(bi))
+                    return false;
+            }
+            return true;
         }
 
         public static int GetAbilityModifier(CharacterSheet sheet, Ability ability)

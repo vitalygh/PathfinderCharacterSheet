@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditIntModifier">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid ColumnSpacing="5" RowSpacing="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label x:Name="IsActiveTitle" Text="Active" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
+                <Label x:Name="ValueTitle" Text="Value" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="0"></Label>
+                <Label x:Name="NameTitle" Text="Name" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Grid.Column="2" Grid.Row="0"></Label>
+                <CheckBox x:Name="IsActive" HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="1"></CheckBox>
+                <Frame Padding="5" BorderColor="Black" Grid.Column="1" Grid.Row="1">
+                    <Entry x:Name="Value" HorizontalTextAlignment="Center" Keyboard="Numeric"></Entry>
+                </Frame>
+                <Frame Padding="5" BorderColor="Black" Grid.Column="2" Grid.Row="1">
+                    <Entry x:Name="Name" HorizontalOptions="FillAndExpand"></Entry>
+                </Frame>
+            </Grid>
+            <StackLayout Orientation="Horizontal">
+                <Button x:Name="Cancel" Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                <Button x:Name="Save" Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                <Button x:Name="Delete" Text="Delete" Clicked="Delete_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

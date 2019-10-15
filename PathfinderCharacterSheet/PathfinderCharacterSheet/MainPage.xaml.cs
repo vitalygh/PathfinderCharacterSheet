@@ -22,6 +22,18 @@ namespace PathfinderCharacterSheet
             Characters.ItemsSource = CharacterSheetStorage.Instance.characters.Keys;
         }
 
+        public static bool StrToInt(string from, ref int to)
+        {
+            var i = 0;
+            if (int.TryParse(from, out i))
+            {
+                var changed = to != i;
+                to = i;
+                return changed;
+            }
+            return false;
+        }
+
         private void Add_Clicked(object sender, EventArgs args)
         {
             var nc = new NewCharacter();
