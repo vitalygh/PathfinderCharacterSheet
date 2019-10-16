@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace PathfinderCharacterSheet
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditHP : ContentPage
+	public partial class EditHP : ContentPage, ISheetView
 	{
         private List<CharacterSheet.IntModifier> tempHP = null;
 
@@ -34,116 +34,12 @@ namespace PathfinderCharacterSheet
             MaxHP.Text = c.hp.maxHP.ToString();
             HP.Text = c.hp.hp.ToString();
             DamageResist.Text = c.hp.damageResist.ToString();
-            ModifiersToEdit();
+            UpdateView();
         }
 
-        public void ModifiersToEdit()
+        public void UpdateView()
         {
-            TempHPModifiers.Children.Clear();
-            var stack = new StackLayout()
-            {
-                Orientation = StackOrientation.Horizontal,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-            };
-            var tempHPTitle = new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Start,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                Text = "Temp HP Modifiers:",
-            };
-            stack.Children.Add(tempHPTitle);
-            var addTempHPModifierButton = new Button()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.End,
-                Text = "Add",
-            };
-            addTempHPModifierButton.Clicked += TempHPModifierAddButton_Clicked;
-            stack.Children.Add(addTempHPModifierButton);
-            TempHPModifiers.Children.Add(stack, 0, 3, 0, 1);
-            var count = tempHP.Count;
-            if (count <= 0)
-                return;
-            TempHPModifiers.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Active",
-            }, 0, 1);
-            TempHPModifiers.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Value",
-            }, 1, 1);
-            TempHPModifiers.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Name",
-            }, 2, 1);
-            for (var i = 0; i < count; i++)
-            {
-                var index = i + 2;
-                var t = tempHP[i];
-                var active = new CheckBox()
-                {
-                    HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    IsChecked = t.IsActive,
-                };
-                active.CheckedChanged += (s, e) => t.active = active.IsChecked;
-                TempHPModifiers.Children.Add(active, 0, index);
-                var value = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.Value.ToString(),
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
-                var valueTapped = new TapGestureRecognizer();
-                valueTapped.Tapped += (s, e) => EditIntModifier(t);
-                value.GestureRecognizers.Add(valueTapped);
-                TempHPModifiers.Children.Add(value, 1, index);
-                var name = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.Name.ToString(),
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
-                var nameTapped = new TapGestureRecognizer();
-                nameTapped.Tapped += (s, e) => EditIntModifier(t);
-                name.GestureRecognizers.Add(nameTapped);
-                TempHPModifiers.Children.Add(name, 2, index);
-            }
+            MainPage.InitIntModifierGrid(TempHPModifiers, tempHP, "Temp HP Modifiers:", EditIntModifier, EditIntModifier);
         }
 
         private void EditToView()
@@ -162,12 +58,12 @@ namespace PathfinderCharacterSheet
                 CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
         }
 
-        private void TempHPModifierAddButton_Clicked(object sender, EventArgs e)
+        private void EditIntModifier(List<CharacterSheet.IntModifier> modifiers)
         {
-            EditIntModifier(null);
+            EditIntModifier(modifiers, null);
         }
 
-        private void EditIntModifier(CharacterSheet.IntModifier mod)
+        private void EditIntModifier(List<CharacterSheet.IntModifier> modifiers, CharacterSheet.IntModifier mod)
         {
             var page = new EditIntModifier();
             page.Init(tempHP, mod);

@@ -10,15 +10,14 @@ using Xamarin.Forms.Xaml;
 namespace PathfinderCharacterSheet
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CharacterSheetTabs : TabbedPage
+    public partial class CharacterSheetTabs : TabbedPage, ISheetView
     {
         public CharacterSheetTabs()
         {
             InitializeComponent();
-            UpdateFields();
         }
 
-        public void UpdateFields()
+        public void UpdateView()
         {
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             CharacterName.Text = c.Name;
@@ -59,7 +58,7 @@ namespace PathfinderCharacterSheet
                             {
                                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                                 TextColor = Color.Black,
-                                //BackgroundColor = Color.LightGray,
+                                HorizontalTextAlignment = TextAlignment.Center,
                                 VerticalTextAlignment = TextAlignment.Center,
                             };
                         }
@@ -140,9 +139,10 @@ namespace PathfinderCharacterSheet
                 (TempHPModifiers.Children[index + 2] as Label).Text = im.Name;
             }
             */
-            InitiativeTotal.Text = c.CurrentInitiative.ToString();
-            InitiativeDexMod.Text = c.CurrentAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
-            InitiativeMiscMod.Text = CharacterSheet.Sum(c.initiative.miscModifiers).ToString();
+            Initiative.Text = c.CurrentInitiative.ToString();
+            //InitiativeTotal.Text = c.CurrentInitiative.ToString();
+            //InitiativeDexMod.Text = c.CurrentAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
+            //InitiativeMiscMod.Text = CharacterSheet.Sum(c.initiative.miscModifiers).ToString();
 
             ACTotal.Text = c.ACTotal.ToString();
             ACArmorBonus.Text = c.ACArmorBonus.ToString();
@@ -162,6 +162,11 @@ namespace PathfinderCharacterSheet
         private void HP_DoubleTapped(object sender, EventArgs e)
         {
             Navigation.PushAsync(new EditHP());
+        }
+
+        private void Initiative_DoubleTapped(object sender, EventArgs e)
+        {
+
         }
     }
 }

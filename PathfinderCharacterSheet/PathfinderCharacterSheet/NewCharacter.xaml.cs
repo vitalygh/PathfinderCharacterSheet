@@ -15,9 +15,15 @@ namespace PathfinderCharacterSheet
 		public NewCharacter()
 		{
 			InitializeComponent ();
+            UpdateView();
+        }
 
+        public void UpdateView()
+        {
             if (CharacterSheetStorage.Instance.selectedCharacter != null)
                 CharacterName.Text = CharacterSheetStorage.Instance.selectedCharacter.Name;
+            else
+                CharacterName.Text = string.Empty;
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

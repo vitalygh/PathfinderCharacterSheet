@@ -16,7 +16,7 @@ namespace PathfinderCharacterSheet
 		{
 			InitializeComponent();
             CreateControls();
-            ViewToEdit();
+            UpdateView();
         }
 
         private void CreateControls()
@@ -93,7 +93,7 @@ namespace PathfinderCharacterSheet
             ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
         }
 
-        private void ViewToEdit()
+        public void UpdateView()
         {
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
