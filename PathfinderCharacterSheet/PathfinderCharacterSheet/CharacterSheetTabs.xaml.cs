@@ -59,7 +59,7 @@ namespace PathfinderCharacterSheet
                             {
                                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                                 TextColor = Color.Black,
-                                BackgroundColor = Color.LightGray,
+                                //BackgroundColor = Color.LightGray,
                                 VerticalTextAlignment = TextAlignment.Center,
                             };
                         }

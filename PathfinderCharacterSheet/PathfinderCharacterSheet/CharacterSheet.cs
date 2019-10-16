@@ -46,8 +46,12 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return (score + tempAdjustment) / 2 - 5 + tempModifier;
+                    return CalcModifier(score, tempAdjustment, tempModifier);
                 }
+            }
+            public static int CalcModifier(int score, int tempAdjustment, int tempModifier)
+            {
+                return (score + tempAdjustment) / 2 - 5 + tempModifier;
             }
         }
 
@@ -84,7 +88,7 @@ namespace PathfinderCharacterSheet
             return value;
         }
 
-        public static bool Compare(List<IntModifier> a, List<IntModifier> b)
+        public static bool IsEqual(List<IntModifier> a, List<IntModifier> b)
         {
             if ((a == null) && (b == null))
                 return true;

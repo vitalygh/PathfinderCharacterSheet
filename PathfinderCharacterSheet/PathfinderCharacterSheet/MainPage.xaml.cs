@@ -18,8 +18,25 @@ namespace PathfinderCharacterSheet
 
         public void UpdateListView()
         {
+            Characters.IsVisible = true;
             Characters.ItemsSource = null;
             Characters.ItemsSource = CharacterSheetStorage.Instance.characters.Keys;
+        }
+
+        private void Add_Clicked(object sender, EventArgs args)
+        {
+            Characters.IsVisible = false;
+            var nc = new NewCharacter();
+            Navigation.PushAsync(nc);
+        }
+
+        private void Characters_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            Characters.IsVisible = false;
+            CharacterSheetStorage.Instance.selectedCharacter = e.Item as CharacterSheet;
+            var cst = new CharacterSheetTabs();
+            cst.Title = CharacterSheetStorage.Instance.selectedCharacter.Name;
+            Navigation.PushAsync(cst);
         }
 
         public static bool StrToInt(string from, ref int to)
@@ -32,26 +49,6 @@ namespace PathfinderCharacterSheet
                 return changed;
             }
             return false;
-        }
-
-        private void Add_Clicked(object sender, EventArgs args)
-        {
-            var nc = new NewCharacter();
-            Navigation.PushAsync(nc);
-        }
-
-        private void Remove_Clicked(object sender, EventArgs args)
-        {
-            var nc = new NewCharacter();
-            Navigation.PushAsync(nc);
-        }
-
-        private void Characters_ItemTapped(object sender, ItemTappedEventArgs e)
-        {
-            CharacterSheetStorage.Instance.selectedCharacter = e.Item as CharacterSheet;
-            var cst = new CharacterSheetTabs();
-            cst.Title = CharacterSheetStorage.Instance.selectedCharacter.Name;
-            Navigation.PushAsync(cst);
         }
     }
 }

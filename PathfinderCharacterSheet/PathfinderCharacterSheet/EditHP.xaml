@@ -1,48 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PathfinderCharacterSheet.EditHP">
+             x:Class="PathfinderCharacterSheet.EditHP"
+             Title="Edit HP">
     <ContentPage.Content>
         <StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray"></Label>
-                <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand">
-                    <Entry x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric"></Entry>
+            <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="0"></Label>
+                <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0">
+                    <Entry x:Name="MaxHP" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric"></Entry>
                 </Frame>
-            </StackLayout>
-            <StackLayout Orientation="Horizontal">
-                <Label x:Name="HPTitle" Text="HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray"></Label>
-                <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand">
-                    <Entry x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric"></Entry>
+                <Label x:Name="HPTitle" Text="HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
+                <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
+                    <Entry x:Name="HP" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric"></Entry>
                 </Frame>
-            </StackLayout>
+            </Grid>
+            <!--
             <StackLayout Orientation="Horizontal">
-                <Label x:Name="TempHPModifiersTitle" Text="Temp HP Modifiers:" HorizontalTextAlignment="Center" FontSize="Medium" TextColor="Black" BackgroundColor="LightGray"  HorizontalOptions="FillAndExpand"/>
+                <Label x:Name="TempHPModifiersTitle" Text="Temp HP Modifiers:" BackgroundColor="LightGray" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" VerticalOptions="CenterAndExpand" FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand"/>
                 <Button x:Name="TempHPModifierAddButton" Text="Add" FontSize="Medium" TextColor="Black" HorizontalOptions="End" Clicked="TempHPModifierAddButton_Clicked"/>
             </StackLayout>
-            <ListView x:Name="TempHPModifiers" SelectionMode="None" ItemTapped="TempHPModifiers_ItemTapped" VerticalOptions="Start">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.View>
-                                <StackLayout Orientation="Horizontal" Margin="10">
-                                    <CheckBox IsChecked="{Binding IsActive}" HorizontalOptions="Start" />
-                                    <Frame Padding="5" BorderColor="Black">
-                                        <Label Text="{Binding Value}" TextColor="black" FontSize="Medium" HorizontalOptions="Start" />
-                                    </Frame>
-                                    <Label Text="{Binding Name}" TextColor="black" FontSize="Medium" HorizontalOptions="Fill" />
-                                </StackLayout>
-                            </ViewCell.View>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <StackLayout Orientation="Horizontal">
-            <Label x:Name="DamageResistTitle" Text="Damage Resist:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray"></Label>
-                <Frame BorderColor="Black" Padding="5">
-                    <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
+            -->
+            <Grid x:Name="TempHPModifiers" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+            </Grid>
+            <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label x:Name="DamageResistTitle" Text="Damage Resist:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="0"></Label>
+                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                    <Entry x:Name="DamageResist" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric"></Entry>
                 </Frame>
-            </StackLayout>
+            </Grid>
             <StackLayout Orientation="Horizontal">
                 <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
                 <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>

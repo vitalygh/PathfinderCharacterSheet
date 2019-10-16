@@ -4,261 +4,265 @@
              x:Class="PathfinderCharacterSheet.CharacterSheetTabs">
   <!--Pages can be added as references or inline-->
     <ContentPage Title="Bio">
-        <ScrollView>
-            <Grid ColumnSpacing="5" RowSpacing="5">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label VerticalOptions="Center" x:Name="NameTitle" BackgroundColor="LightGray" Text="Name: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="0"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                    <Label x:Name="CharacterName" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
-                <Label VerticalOptions="Center" x:Name="AlignmentTitle" BackgroundColor="LightGray" Text="Alignment: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="0"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
-                    <Label x:Name="Alignment" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
+        <ContentPage.Content>
+            <ScrollView>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label VerticalOptions="Center" x:Name="NameTitle" Text="Name: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="0"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="CharacterName" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="AlignmentTitle" Text="Alignment: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="0"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
+                        <Label x:Name="Alignment" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
 
-                <Label VerticalOptions="Center" x:Name="ExperienceTitle" BackgroundColor="LightGray" Text="Experience: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="1"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
-                    <Label x:Name="Experience" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
-                <Label VerticalOptions="Center" x:Name="NextLevelTitle" BackgroundColor="LightGray" Text="NextLevel: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="1"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
-                    <Label x:Name="NextLevel" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
+                    <Label VerticalOptions="Center" x:Name="ExperienceTitle" Text="Experience: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="Experience" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="NextLevelTitle" Text="NextLevel: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
+                        <Label x:Name="NextLevel" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
 
-                <Label VerticalOptions="Center" x:Name="LevelTitle" BackgroundColor="LightGray" Text="Level:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="3"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3">
-                    <Label x:Name="Level" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
+                    <Label VerticalOptions="Center" x:Name="LevelTitle" Text="Level:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="3"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3">
+                        <Label x:Name="Level" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
 
-                <Label VerticalOptions="Center" x:Name="DeityTitle" BackgroundColor="LightGray" Text="Deity: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="4"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4">
-                    <Label x:Name="Deity" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
-                <Label VerticalOptions="Center" x:Name="HomelandTitle" BackgroundColor="LightGray" Text="Homeland: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="4"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="4">
-                    <Label x:Name="Homeland" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
+                    <Label VerticalOptions="Center" x:Name="DeityTitle" Text="Deity: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="4"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4">
+                        <Label x:Name="Deity" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="HomelandTitle" Text="Homeland: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="4"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="4">
+                        <Label x:Name="Homeland" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
 
-                <Label VerticalOptions="Center" x:Name="RaceTitle" BackgroundColor="LightGray" Text="Race: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="5"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
-                    <Label x:Name="Race" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
-                <Label VerticalOptions="Center" x:Name="SizeTitle" BackgroundColor="LightGray" Text="Size: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="5"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="5">
-                    <Label x:Name="Size" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
+                    <Label VerticalOptions="Center" x:Name="RaceTitle" Text="Race: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="5"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
+                        <Label x:Name="Race" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="SizeTitle" Text="Size: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="5"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="5">
+                        <Label x:Name="Size" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
 
-                <Label VerticalOptions="Center" x:Name="GenderTitle" BackgroundColor="LightGray" Text="Gender: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="6"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6">
-                    <Label x:Name="Gender" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
-                <Label VerticalOptions="Center" x:Name="AgeTitle" BackgroundColor="LightGray" Text="Age: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="6"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="6">
-                    <Label x:Name="Age" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
+                    <Label VerticalOptions="Center" x:Name="GenderTitle" Text="Gender: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="6"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6">
+                        <Label x:Name="Gender" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="AgeTitle" Text="Age: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="6"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="6">
+                        <Label x:Name="Age" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
 
-                <Label VerticalOptions="Center" x:Name="HeightTitle" BackgroundColor="LightGray" Text="Height: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="7"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7">
-                    <Label x:Name="CharacterHeight" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
-                <Label VerticalOptions="Center" x:Name="WeightTitle" BackgroundColor="LightGray" Text="Weight: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="7"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="7">
-                    <Label x:Name="Weight" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
+                    <Label VerticalOptions="Center" x:Name="HeightTitle" Text="Height: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="7"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7">
+                        <Label x:Name="CharacterHeight" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="7"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="7">
+                        <Label x:Name="Weight" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
 
-                <Label VerticalOptions="Center" x:Name="HairTitle" BackgroundColor="LightGray" Text="Hair: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="8"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="8">
-                    <Label x:Name="Hair" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
-                <Label VerticalOptions="Center" x:Name="EyesTitle" BackgroundColor="LightGray" Text="Eyes: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="8"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="8">
-                    <Label x:Name="Eyes" FontSize="Medium" TextColor="Black"></Label>
-                </Frame>
+                    <Label VerticalOptions="Center" x:Name="HairTitle" Text="Hair: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="8"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="8">
+                        <Label x:Name="Hair" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="EyesTitle" Text="Eyes: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="8"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="8">
+                        <Label x:Name="Eyes" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
 
-                <Label x:Name="BiographyTitle" BackgroundColor="LightGray" Text="Biography:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4"></Label>
-                <Frame BorderColor="Black" Padding="5" Grid.Row="10" Grid.ColumnSpan="4">
-                    <Label x:Name="Biography" FontSize="Medium" TextColor="Black" Grid.Column="0"></Label>
-                </Frame>
-            </Grid>
-        </ScrollView>
+                    <Label x:Name="BiographyTitle" Text="Biography:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Row="10" Grid.ColumnSpan="4">
+                        <Label x:Name="Biography" FontSize="Medium" TextColor="Black" Grid.Column="0"></Label>
+                    </Frame>
+                </Grid>
+            </ScrollView>
+        </ContentPage.Content>
     </ContentPage>
     <ContentPage Title="Abilities">
-        <ScrollView>
-            <StackLayout>
-                <Grid x:Name="AbilityScores" ColumnSpacing="5" RowSpacing="5">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="AbilityScores_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+        <ContentPage.Content>
+            <ScrollView>
+                <StackLayout>
+                    <Grid x:Name="AbilityScores" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="AbilityScores_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <!--
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            -->
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                    </Grid>
+                    <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <!--
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            -->
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
                         <!--
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                            <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                        </Frame>
                         -->
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <!--
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        -->
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <!--
-                    <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                        <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                    </Frame>
-                    -->
-                    <Label x:Name="HPTitle" Text="HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray"  Grid.Column="0" Grid.Row="0"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                        <Label x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                    </Frame>
-                    <Label x:Name="DamageResistTitle" Text="Damage Resist:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray"  Grid.Column="2" Grid.Row="0"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
-                        <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                    </Frame>
-                </Grid>
-                <Grid ColumnSpacing="15" RowSpacing="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeTotalTitle" Text="Total" Grid.Column="1" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeDexModTitle" Text="Dex Modifier" Grid.Column="3" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeMiscModTitle" Text="Misc Modifier" Grid.Column="5" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeTitle" Text="Initiative modifier" Grid.Column="0" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeTotal"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="=" Grid.Column="2" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeDexMod"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="4" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="5" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeMiscMod"></Label>
-                    </Frame>
-                </Grid>
-                <Grid ColumnSpacing="15" RowSpacing="5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACTotalTitle" Text="Total" Grid.Column="1" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACArmorBonusTitle" Text="Armor Bonus" Grid.Column="5" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACShieldBonusTitle" Text="Shield Bonus" Grid.Column="7" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACDexModifierTitle" Text="Dex Modifier" Grid.Column="9" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACSizeModifierTitle" Text="Size Modifier" Grid.Column="11" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACNaturalArmorTitle" Text="Natural Armor" Grid.Column="13" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACDeflectionModifierTitle" Text="Deflection Modifier" Grid.Column="15" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACMiscModifierTitle" Text="Misc Modifier" Grid.Column="17" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACTitle" Text="Armor class" Grid.Column="0" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" BackgroundColor="LightGray" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACTotal"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="=" Grid.Column="2" Grid.Row="1"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="10" Grid.Column="3" Grid.Row="1"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="4" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="5" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACArmorBonus"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="6" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="7" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACShieldBonus"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="8" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="9" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACDexModifier"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="10" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="11" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACSizeModifier"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="12" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="13" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACNaturalArmor"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="14" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="15" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACDeflectionModifier"></Label>
-                    </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="16" Grid.Row="1"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="17" Grid.Row="1">
-                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACMiscModifier"></Label>
-                    </Frame>
-                </Grid>
-            </StackLayout>
-        </ScrollView>
+                        <Label x:Name="HPTitle" Text="HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                            <Label x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                        </Frame>
+                        <Label x:Name="DamageResistTitle" Text="Damage Resist:" FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="2" Grid.Row="0"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
+                            <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                        </Frame>
+                    </Grid>
+                    <Grid ColumnSpacing="15" RowSpacing="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeTotalTitle" Text="Total" Grid.Column="1" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeDexModTitle" Text="Dex Modifier" Grid.Column="3" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeMiscModTitle" Text="Misc Modifier" Grid.Column="5" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeTitle" Text="Initiative modifier" Grid.Column="0" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeTotal"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="=" Grid.Column="2" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeDexMod"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="4" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="5" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeMiscMod"></Label>
+                        </Frame>
+                    </Grid>
+                    <Grid ColumnSpacing="15" RowSpacing="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACTotalTitle" Text="Total" Grid.Column="1" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACArmorBonusTitle" Text="Armor Bonus" Grid.Column="5" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACShieldBonusTitle" Text="Shield Bonus" Grid.Column="7" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACDexModifierTitle" Text="Dex Modifier" Grid.Column="9" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACSizeModifierTitle" Text="Size Modifier" Grid.Column="11" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACNaturalArmorTitle" Text="Natural Armor" Grid.Column="13" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACDeflectionModifierTitle" Text="Deflection Modifier" Grid.Column="15" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACMiscModifierTitle" Text="Misc Modifier" Grid.Column="17" Grid.Row="0"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="ACTitle" Text="Armor class" Grid.Column="0" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" BackgroundColor="LightGray" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACTotal"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="=" Grid.Column="2" Grid.Row="1"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="10" Grid.Column="3" Grid.Row="1"></Label>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="4" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="5" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACArmorBonus"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="6" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="7" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACShieldBonus"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="8" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="9" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACDexModifier"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="10" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="11" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACSizeModifier"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="12" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="13" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACNaturalArmor"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="14" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="15" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACDeflectionModifier"></Label>
+                        </Frame>
+                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="16" Grid.Row="1"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="17" Grid.Row="1">
+                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACMiscModifier"></Label>
+                        </Frame>
+                    </Grid>
+                </StackLayout>
+            </ScrollView>
+        </ContentPage.Content>
     </ContentPage>
     <ContentPage Title="Weapon" />
     <ContentPage Title="AC Items" />

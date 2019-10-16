@@ -70,10 +70,27 @@ namespace PathfinderCharacterSheet
                                 BorderColor = Color.Black,
                                 Padding = 5,
                             };
+                            var index = i;
+                            ((child as Frame).Content as Entry).TextChanged += (s, e) => UpdateModifier(index);
                         }
                     }
                     AbilityScores.Children.Add(child, j, i);
                 }
+        }
+
+        private void UpdateModifier(int i)
+        {
+            var index = i * 5;
+            if ((index + 5) > AbilityScores.Children.Count)
+                return;
+            var ab = new CharacterSheet.AbilityScore();
+            var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
+            MainPage.StrToInt(entry.Text, ref ab.score);
+            entry = ((AbilityScores.Children[index + 3] as Frame).Content as Entry);
+            MainPage.StrToInt(entry.Text, ref ab.tempAdjustment);
+            entry = ((AbilityScores.Children[index + 4] as Frame).Content as Entry);
+            MainPage.StrToInt(entry.Text, ref ab.tempModifier);
+            ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
         }
 
         private void ViewToEdit()

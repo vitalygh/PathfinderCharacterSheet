@@ -22,12 +22,11 @@ namespace PathfinderCharacterSheet
                     cst.UpdateFields();
                 var ehp = page as EditHP;
                 if (ehp != null)
-                    ehp.ViewToEdit();
+                    ehp.ModifiersToEdit();
                 if (page == mp)
                     mp.UpdateListView();
             };
             MainPage = np;
-            
         }
 
         protected override void OnStart()
