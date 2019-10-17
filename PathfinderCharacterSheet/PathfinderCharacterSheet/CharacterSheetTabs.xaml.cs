@@ -100,8 +100,8 @@ namespace PathfinderCharacterSheet
             }
 
             //MaxHP.Text = c.hp.maxHP.ToString();
-            HP.Text = c.hp.CurrentHP.ToString() + "/" + c.hp.maxHP.ToString();
-            DamageResist.Text = c.hp.damageResist.ToString();
+            HP.Text = c.hp.CurrentHP.ToString() + " / " + c.hp.CurrentMaxHP.ToString();
+            DamageResist.Text = c.hp.CurrentDamageResist.ToString();
             /*
             while (TempHPModifiers.Children.Count / 3 < c.hp.tempHP.Count)
             {

@@ -41,17 +41,19 @@ namespace PathfinderCharacterSheet
         {
             public int score = 0;
             public int tempAdjustment = 0;
+            public List<IntModifier> tempAdjustments = new List<IntModifier>();
             public int tempModifier = 0;
+            public List<IntModifier> tempModifiers = new List<IntModifier>();
             public int Modifier
             {
                 get
                 {
-                    return CalcModifier(score, tempAdjustment, tempModifier);
+                    return CalcModifier(score, tempAdjustment, tempAdjustments, tempModifier, tempModifiers);
                 }
             }
-            public static int CalcModifier(int score, int tempAdjustment, int tempModifier)
+            public static int CalcModifier(int score, int tempAdjustment, List<IntModifier> tempAdjustments, int tempModifier, List<IntModifier> tempModifiers)
             {
-                return (score + tempAdjustment) / 2 - 5 + tempModifier;
+                return (score + tempAdjustment + Sum(tempAdjustments)) / 2 - 5 + tempModifier + Sum(tempModifiers);
             }
         }
 
@@ -63,6 +65,29 @@ namespace PathfinderCharacterSheet
             public string Name { get { return name; } }
             public int value = 0;
             public int Value { get { return value; } }
+
+            public static IntModifier Clone(IntModifier mod)
+            {
+                if (mod == null)
+                    return null;
+                return new IntModifier()
+                {
+                    active = mod.IsActive,
+                    name = mod.Name,
+                    value = mod.Value,
+                };
+            }
+            public static List<IntModifier> Clone(List<IntModifier> mods)
+            {
+                if (mods == null)
+                    return null;
+                var list = new List<IntModifier>();
+                foreach (var m in mods)
+                    list.Add(Clone(m));
+                return list;
+            }
+
+            public IntModifier GetClone() { return Clone(this); }
 
             public bool Equals(IntModifier obj)
             {
@@ -82,9 +107,10 @@ namespace PathfinderCharacterSheet
         public static int Sum(List<IntModifier> modifiers, bool activeOnly = true)
         {
             int value = 0;
-            foreach (var m in modifiers)
-                if (m.IsActive || !activeOnly)
-                    value += m.Value;
+            if (modifiers != null)
+                foreach (var m in modifiers)
+                    if (m.IsActive || !activeOnly)
+                        value += m.Value;
             return value;
         }
 
@@ -180,10 +206,14 @@ namespace PathfinderCharacterSheet
         public class HP
         {
             public int maxHP = 0;
+            public List<IntModifier> maxHPModifiers = new List<IntModifier>();
             public int hp = 0;
-            public List<IntModifier> tempHP = new List<IntModifier>();
+            public List<IntModifier> tempHPModifiers = new List<IntModifier>();
             public int damageResist = 0;
-            public int CurrentHP { get { return hp + Sum(tempHP); } }
+            public List<IntModifier> damageResistModifiers = new List<IntModifier>();
+            public int CurrentMaxHP { get { return maxHP + Sum(maxHPModifiers); } }
+            public int CurrentHP { get { return hp + Sum(tempHPModifiers); } }
+            public int CurrentDamageResist { get { return damageResist + Sum(damageResistModifiers); } }
         }
 
         public class Initiative

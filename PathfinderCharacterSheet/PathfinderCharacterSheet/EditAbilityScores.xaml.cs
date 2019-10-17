@@ -12,7 +12,11 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditAbilityScores : ContentPage
 	{
-		public EditAbilityScores()
+        private List<CharacterSheet.IntModifier>[] tempAdjustments = new List<CharacterSheet.IntModifier>[(int)CharacterSheet.Ability.Total];
+        private List<CharacterSheet.IntModifier>[] tempModifiers = new List<CharacterSheet.IntModifier>[(int)CharacterSheet.Ability.Total];
+        private Grid[] modifierGrids = null;
+
+        public EditAbilityScores()
 		{
 			InitializeComponent();
             CreateControls();
@@ -23,6 +27,7 @@ namespace PathfinderCharacterSheet
         {
             if (AbilityScores.Children.Count > 0)
                 return;
+            var modifierFrames = new List<Frame>();
             for (var i = 0; i < (int)CharacterSheet.Ability.Total + 1; i++)
                 for (var j = 0; j < 5; j++)
                 {
@@ -33,7 +38,7 @@ namespace PathfinderCharacterSheet
                         {
                             FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                             TextColor = Color.Black,
-                            BackgroundColor = Color.LightGray,
+                            HorizontalTextAlignment = TextAlignment.Center,
                             VerticalTextAlignment = TextAlignment.Center,
                         };
                     }
@@ -54,6 +59,7 @@ namespace PathfinderCharacterSheet
                                 BackgroundColor = Color.LightGray,
                                 Padding = 5,
                             };
+                            modifierFrames.Add(child as Frame);
                         }
                         else
                         {
@@ -74,8 +80,44 @@ namespace PathfinderCharacterSheet
                             ((child as Frame).Content as Entry).TextChanged += (s, e) => UpdateModifier(index);
                         }
                     }
-                    AbilityScores.Children.Add(child, j, i);
+                    if (i == 0)
+                        AbilityScores.Children.Add(child, j, i);
+                    else
+                        AbilityScores.Children.Add(child, j, i * 2 - 1);
                 }
+            //(AbilityScores.Children[0] as Label).Text = "Ability Name";
+            (AbilityScores.Children[1] as Label).Text = "Ability Score";
+            (AbilityScores.Children[2] as Label).Text = "Ability Modifier";
+            (AbilityScores.Children[3] as Label).Text = "Temp Adjustment";
+            (AbilityScores.Children[4] as Label).Text = "Temp Modifier";
+            var grids = new List<Grid>();
+            for (var i = 0; i < (int)CharacterSheet.Ability.Total; i++)
+            {
+                var grid = new Grid()
+                {
+                    ColumnSpacing = 5,
+                    RowSpacing = 5,
+                    BackgroundColor = Color.LightGray,
+                    IsVisible = false,
+                };
+                var index = (i + 1) * 2;
+                AbilityScores.Children.Add(grid, 0, 5, index, index + 1);
+                grids.Add(grid);
+                var tgr = new TapGestureRecognizer();
+                var frame = modifierFrames[i];
+                var label = (frame.Content as Label);
+                tgr.Tapped += (s, e) => ModifiersLabel_Tapped(grid, label, frame);
+                label.GestureRecognizers.Add(tgr);
+            }
+            modifierGrids = grids.ToArray();
+        }
+
+        private void ModifiersLabel_Tapped(Grid g, Label l, Frame f)
+        {
+            var visible = !g.IsVisible;
+            g.IsVisible = visible;
+            f.BackgroundColor = visible ? Color.LightGray : Color.White;
+            l.TextDecorations = visible ? TextDecorations.None : TextDecorations.Underline;
         }
 
         private void UpdateModifier(int i)
@@ -98,11 +140,6 @@ namespace PathfinderCharacterSheet
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-            (AbilityScores.Children[0] as Label).Text = "Ability Name";
-            (AbilityScores.Children[1] as Label).Text = "Ability Score";
-            (AbilityScores.Children[2] as Label).Text = "Ability Modifier";
-            (AbilityScores.Children[3] as Label).Text = "Temp Adjustment";
-            (AbilityScores.Children[4] as Label).Text = "Temp Modifier";
             var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
             var abilitiesCount = c.abilityScores.Length;
             for (var i = 0; i < abilitiesCount; i++)
@@ -114,7 +151,20 @@ namespace PathfinderCharacterSheet
                 ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
                 ((AbilityScores.Children[index + 3] as Frame).Content as Entry).Text = ab.tempAdjustment.ToString();
                 ((AbilityScores.Children[index + 4] as Frame).Content as Entry).Text = ab.tempModifier.ToString();
+                MainPage.FillIntModifierGrid(modifierGrids[i], ab.tempAdjustments, "Temp Ajustments:", EditIntModifier, EditIntModifier, (mods, mod) => UpdateModifier(i + 1));
             }
+        }
+
+        private void EditIntModifier(List<CharacterSheet.IntModifier> modifiers)
+        {
+            EditIntModifier(modifiers, null);
+        }
+
+        private void EditIntModifier(List<CharacterSheet.IntModifier> modifiers, CharacterSheet.IntModifier mod)
+        {
+            var page = new EditIntModifier();
+            page.Init(modifiers, mod);
+            Navigation.PushAsync(page);
         }
 
         private void EditToView()

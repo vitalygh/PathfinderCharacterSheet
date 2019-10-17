@@ -55,7 +55,10 @@ namespace PathfinderCharacterSheet
         }
 
 
-        public static void InitIntModifierGrid(Grid grid, List<CharacterSheet.IntModifier> modifiers, string title, Action<List<CharacterSheet.IntModifier>> addModifier, Action<List<CharacterSheet.IntModifier>, CharacterSheet.IntModifier> editModifier)
+        public static void FillIntModifierGrid(Grid grid, List<CharacterSheet.IntModifier> modifiers, string title,
+                                                Action<List<CharacterSheet.IntModifier>> addModifier,
+                                                Action<List<CharacterSheet.IntModifier>, CharacterSheet.IntModifier> editModifier,
+                                                Action<List<CharacterSheet.IntModifier>, CharacterSheet.IntModifier> activateModifier)
         {
             grid.Children.Clear();
             var stack = new StackLayout()
@@ -128,7 +131,12 @@ namespace PathfinderCharacterSheet
                     HorizontalOptions = LayoutOptions.CenterAndExpand,
                     IsChecked = t.IsActive,
                 };
-                active.CheckedChanged += (s, e) => t.active = active.IsChecked;
+                active.CheckedChanged += (s, e) =>
+                {
+                    t.active = active.IsChecked;
+                    if (activateModifier != null)
+                        activateModifier.Invoke(modifiers, t);
+                };
                 grid.Children.Add(active, 0, index);
                 var value = new Frame()
                 {
@@ -146,7 +154,7 @@ namespace PathfinderCharacterSheet
                 if (editModifier != null)
                 {
                     var valueTapped = new TapGestureRecognizer();
-                    valueTapped.Tapped += (s, e) => editModifier(modifiers, t);
+                    valueTapped.Tapped += (s, e) => editModifier.Invoke(modifiers, t);
                     value.GestureRecognizers.Add(valueTapped);
                 }
                 grid.Children.Add(value, 1, index);
@@ -166,11 +174,38 @@ namespace PathfinderCharacterSheet
                 if (editModifier != null)
                 {
                     var nameTapped = new TapGestureRecognizer();
-                    nameTapped.Tapped += (s, e) => editModifier(modifiers, t);
+                    nameTapped.Tapped += (s, e) => editModifier.Invoke(modifiers, t);
                     name.GestureRecognizers.Add(nameTapped);
                 }
                 grid.Children.Add(name, 2, index);
             }
+        }
+
+        public static void UpdateParentGrid(View view)
+        {
+            if (view == null)
+                return;
+            var grid = (view.Parent as Grid);
+            if (grid != null)
+            {
+                var r = Grid.GetRow(view);
+                var c = Grid.GetColumn(view);
+                var rs = Grid.GetRowSpan(view);
+                var cs = Grid.GetColumnSpan(view);
+                grid.Children.Remove(view);
+                grid.Children.Add(view, c, c + cs, r, r + rs);
+            }
+            else
+            {
+                var sl = view.Parent as StackLayout;
+                if (sl != null)
+                {
+                    var index = sl.Children.IndexOf(view);
+                    sl.Children.Remove(view);
+                    sl.Children.Insert(index, view);
+                }
+            }
+            UpdateParentGrid(view.Parent as View);
         }
     }
 }
