@@ -116,6 +116,8 @@ namespace PathfinderCharacterSheet
         {
             var visible = !g.IsVisible;
             g.IsVisible = visible;
+            if (g.IsVisible)
+                MainPage.UpdateParentGrid(g);
             f.BackgroundColor = visible ? Color.LightGray : Color.White;
             l.TextDecorations = visible ? TextDecorations.None : TextDecorations.Underline;
         }

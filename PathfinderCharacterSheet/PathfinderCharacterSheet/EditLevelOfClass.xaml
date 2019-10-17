@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditLevelOfClass"
+             Title="Edit Level Of Class">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid x:Name="LevelOfClass" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="Cancel" Text="Cancel" Clicked="Cancel_Clicked" TextColor="Black" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Save" Text="Save" Clicked="Save_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -14,13 +14,16 @@ namespace PathfinderCharacterSheet
             InitializeComponent();
             var mp = new MainPage();
             var np = new NavigationPage(mp);
-            np.Popped += (s, e) =>
-            {
-                var uv = np.CurrentPage as ISheetView;
-                if (uv != null)
-                    uv.UpdateView();
-            };
+            np.Popped += OnNavigationPopped;
+            np.PoppedToRoot += OnNavigationPopped;
             MainPage = np;
+        }
+
+        void OnNavigationPopped(object s, NavigationEventArgs e)
+        {
+            var uv = (MainPage as NavigationPage).CurrentPage as ISheetView;
+            if (uv != null)
+                uv.UpdateView();
         }
 
         protected override void OnStart()

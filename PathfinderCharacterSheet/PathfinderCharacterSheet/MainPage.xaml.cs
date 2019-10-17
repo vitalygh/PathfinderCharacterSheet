@@ -67,7 +67,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
-            var tempHPTitle = new Label()
+            var gridTitle = new Label()
             {
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 TextColor = Color.Black,
@@ -77,7 +77,7 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 Text = title,
             };
-            stack.Children.Add(tempHPTitle);
+            stack.Children.Add(gridTitle);
             if (addModifier != null)
             {
                 var addModifierButton = new Button()
@@ -166,7 +166,7 @@ namespace PathfinderCharacterSheet
                         TextColor = Color.Black,
                         VerticalTextAlignment = TextAlignment.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.Name.ToString(),
+                        Text = t.Name,
                     },
                     BorderColor = Color.Black,
                     Padding = 5,

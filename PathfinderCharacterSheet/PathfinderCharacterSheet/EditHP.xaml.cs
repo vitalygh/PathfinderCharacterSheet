@@ -78,17 +78,17 @@ namespace PathfinderCharacterSheet
             anyChanged |= MainPage.StrToInt(MaxHP.Text, ref c.hp.maxHP);
             anyChanged |= MainPage.StrToInt(HP.Text, ref c.hp.hp);
             anyChanged |= MainPage.StrToInt(DamageResist.Text, ref c.hp.damageResist);
-            if (!CharacterSheet.IsEqual(c.hp.maxHPModifiers, maxHPModifiers))
+            if (!CharacterSheet.IntModifier.Equal(c.hp.maxHPModifiers, maxHPModifiers))
             {
                 anyChanged = true;
                 c.hp.maxHPModifiers = maxHPModifiers;
             }
-            if (!CharacterSheet.IsEqual(c.hp.tempHPModifiers, tempHPModifiers))
+            if (!CharacterSheet.IntModifier.Equal(c.hp.tempHPModifiers, tempHPModifiers))
             {
                 anyChanged = true;
                 c.hp.tempHPModifiers = tempHPModifiers;
             }
-            if (!CharacterSheet.IsEqual(c.hp.damageResistModifiers, damageResistModifiers))
+            if (!CharacterSheet.IntModifier.Equal(c.hp.damageResistModifiers, damageResistModifiers))
             {
                 anyChanged = true;
                 c.hp.damageResistModifiers = damageResistModifiers;

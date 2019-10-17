@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PathfinderCharacterSheet.EditIntModifier"
-             Title="Edit Modifiers">
+             x:Class="PathfinderCharacterSheet.EditLevel"
+             Title="Edit Level">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
@@ -10,21 +10,18 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="IsActiveTitle" Text="Active" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
-                    <Label x:Name="ValueTitle" Text="Value" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="0"></Label>
-                    <Label x:Name="NameTitle" Text="Name" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Grid.Column="2" Grid.Row="0"></Label>
-                    <CheckBox x:Name="IsActive" IsChecked="True" HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="1"></CheckBox>
-                    <Frame Padding="5" BorderColor="Black" Grid.Column="1" Grid.Row="1">
-                        <Entry x:Name="Value" HorizontalTextAlignment="Center" Keyboard="Numeric"></Entry>
+                    <Label x:Name="LevelTitle" Text="Level" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
+                    <Label x:Name="ClassNameTitle" Text="Class" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="0"></Label>
+                    <Frame Padding="5" BorderColor="Black" Grid.Column="0" Grid.Row="1">
+                        <Entry x:Name="Level" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" Keyboard="Numeric"></Entry>
                     </Frame>
-                    <Frame Padding="5" BorderColor="Black" Grid.Column="2" Grid.Row="1">
-                        <Entry x:Name="Name" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"></Entry>
+                    <Frame Padding="5" BorderColor="Black" Grid.Column="1" Grid.Row="1">
+                        <Entry x:Name="ClassName" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" ></Entry>
                     </Frame>
                 </Grid>
                 <StackLayout Orientation="Horizontal">

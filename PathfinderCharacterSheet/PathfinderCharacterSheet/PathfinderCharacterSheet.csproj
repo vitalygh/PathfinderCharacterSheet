@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="EditLevelOfClass.xaml.cs">
+      <DependentUpon>EditLevelOfClass.xaml</DependentUpon>
+    </Compile>
     <Compile Update="NewCharacter.xaml.cs">
       <DependentUpon>NewCharacter.xaml</DependentUpon>
     </Compile>
@@ -23,6 +26,9 @@
     </Compile>
     <Compile Update="EditAbilityScores.xaml.cs">
       <DependentUpon>EditAbilityScores.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="EditBackground.xaml.cs">
+      <DependentUpon>EditBackground.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -33,6 +39,12 @@
     <EmbeddedResource Update="EditIntModifier.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="EditLevel.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="EditLevelOfClass.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="NewCharacter.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -40,6 +52,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="EditAbilityScores.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="EditBackground.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

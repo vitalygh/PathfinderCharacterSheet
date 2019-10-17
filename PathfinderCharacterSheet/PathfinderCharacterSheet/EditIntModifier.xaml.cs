@@ -51,8 +51,10 @@ namespace PathfinderCharacterSheet
             anyChanged |= MainPage.StrToInt(Value.Text, ref modifier.value);
             anyChanged |= Name.Text != modifier.name;
             modifier.name = Name.Text;
+            /*
             if (anyChanged)
                 CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+            */
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)
@@ -69,7 +71,7 @@ namespace PathfinderCharacterSheet
         private void Delete_Clicked(object sender, EventArgs e)
         {
             modifiersList.Remove(modifier);
-            CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+            //CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
             Navigation.PopAsync();
         }
     }

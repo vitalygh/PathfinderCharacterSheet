@@ -8,22 +8,30 @@
         <ToolbarItem Text="Add" Clicked="Add_Clicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <ListView x:Name="Characters" SelectionMode="None" ItemTapped="Characters_ItemTapped">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.View>
-                                <StackLayout Orientation="Horizontal" Margin="10">
-                                    <Label Text="{Binding Name}" TextColor="black" FontSize="Medium" HorizontalOptions="FillAndExpand" />
-                                    <Label Text="{Binding Race}" TextColor="black" FontSize="Medium" HorizontalOptions="EndAndExpand" />
-                                    <Label Text="{Binding TotalLevel}" TextColor="black" FontSize="Medium" HorizontalOptions="EndAndExpand" />
-                                </StackLayout>
-                            </ViewCell.View>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <ListView x:Name="Characters" SelectionMode="None" ItemTapped="Characters_ItemTapped"  HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <StackLayout Orientation="Horizontal" Margin="10" >
+                                        <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Label Text="{Binding Name}" TextColor="black" FontSize="Medium" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+                                        </Frame>
+                                        <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                                            <Label Text="{Binding Race}" TextColor="black" FontSize="Medium" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+                                        </Frame>
+                                        <Frame BorderColor="Black" Padding="5" HorizontalOptions="End" VerticalOptions="FillAndExpand">
+                                            <Label Text="{Binding TotalLevel}" TextColor="black" FontSize="Medium" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
+                                        </Frame>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

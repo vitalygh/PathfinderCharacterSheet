@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditBackground"
+             Title="Edit Character Background">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label VerticalOptions="Center" x:Name="NameTitle" Text="Name: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="0"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Entry x:Name="CharacterName" HorizontalTextAlignment="Center" FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="AlignmentTitle" Text="Alignment: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="0"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
+                        <Picker x:Name="Alignment" HorizontalOptions="CenterAndExpand"></Picker>
+                    </Frame>
+
+                    <Label VerticalOptions="Center" x:Name="ExperienceTitle" Text="Experience: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Entry x:Name="Experience" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black" Keyboard="Numeric"></Entry>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="NextLevelTitle" Text="NextLevel: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
+                        <Entry x:Name="NextLevel" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black" Keyboard="Numeric"></Entry>
+                    </Frame>
+
+                    <Label VerticalOptions="Center" x:Name="LevelTitle" Text="Level:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="2"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3">
+                        <Label x:Name="Level" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+
+                    <Label VerticalOptions="Center" x:Name="DeityTitle" Text="Deity: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="3"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Entry x:Name="Deity" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="HomelandTitle" Text="Homeland: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="3"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="3">
+                        <Entry x:Name="Homeland" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+
+                    <Label VerticalOptions="Center" x:Name="RaceTitle" Text="Race: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="4"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4">
+                        <Entry x:Name="Race" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="SizeTitle" Text="Size: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="4"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="4">
+                        <Entry x:Name="Size" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+
+                    <Label VerticalOptions="Center" x:Name="GenderTitle" Text="Gender: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="5"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
+                        <Entry x:Name="Gender" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="AgeTitle" Text="Age: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="5"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="5">
+                        <Entry x:Name="Age" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+
+                    <Label VerticalOptions="Center" x:Name="HeightTitle" Text="Height: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="6"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6">
+                        <Entry x:Name="CharacterHeight" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="6"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="6">
+                        <Entry x:Name="Weight" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+
+                    <Label VerticalOptions="Center" x:Name="HairTitle" Text="Hair: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="7"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7">
+                        <Entry x:Name="Hair" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="EyesTitle" Text="Eyes: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="7"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="7">
+                        <Entry x:Name="Eyes" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Entry>
+                    </Frame>
+
+                    <Label x:Name="BiographyTitle" Text="Biography:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Row="9" Grid.ColumnSpan="4">
+                        <Editor x:Name="Biography" FontSize="Medium" TextColor="Black" Grid.Column="0"></Editor>
+                    </Frame>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Delete" Clicked="Delete_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

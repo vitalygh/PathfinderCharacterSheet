@@ -20,27 +20,21 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
             CharacterName.Text = c.Name;
             Alignment.Text = c.alignment.ToString();
             Experience.Text = c.experience.ToString();
             NextLevel.Text = c.nextLevelExperience.ToString();
-            var level = string.Empty;
-            if (c.levelOfClass != null)
-                foreach (var loc in c.levelOfClass)
-                {
-                    if (level.Length > 0)
-                        level += ", ";
-                    level += string.Format("({0}) {1}", loc.level, loc.className);
-                }
-            Level.Text = level;
+            Level.Text = c.LevelAsString;
             Deity.Text = c.deity;
             Homeland.Text = c.homeland;
             Race.Text = c.Race;
             Size.Text = c.size;
             Gender.Text = c.gender;
-            Age.Text = c.age.ToString();
-            CharacterHeight.Text = c.height.ToString();
-            Weight.Text = c.weight.ToString();
+            Age.Text = c.age;
+            CharacterHeight.Text = c.height;
+            Weight.Text = c.weight;
             Hair.Text = c.hair;
             Eyes.Text = c.eyes;
             Biography.Text = c.biography;
@@ -152,6 +146,11 @@ namespace PathfinderCharacterSheet
             ACNaturalArmor.Text = c.armorClass.naturalArmor.ToString();
             ACDeflectionModifier.Text = c.armorClass.deflectionModifier.ToString();
             ACMiscModifier.Text = c.ACMiscModifier.ToString();
+        }
+
+        private void Biography_DoubleTapped(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new EditBackground());
         }
 
         private void AbilityScores_DoubleTapped(object sender, EventArgs e)

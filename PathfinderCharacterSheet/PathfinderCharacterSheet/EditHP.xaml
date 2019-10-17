@@ -4,146 +4,148 @@
              x:Class="PathfinderCharacterSheet.EditHP"
              Title="Edit HP">
     <ContentPage.Content>
-        <StackLayout>
-            <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label x:Name="MaxHPTotalTitle" Text="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
-                <Label x:Name="MaxHPModifiersTitle" Text="Modifiers" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="0"></Label>
-                <Label x:Name="MaxHPValueTitle" Text="Value" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="0"></Label>
-                <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
-                <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
-                    <Label x:Name="MaxHPTotal" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
-                </Frame>
-                <Label Text="=" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="2" Grid.Row="1"></Label>
-                <Frame x:Name="MaxHPModifiersSumFrame" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="1">
-                    <Label x:Name="MaxHPModifiersSum" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MaxHPModifiersSum_Tapped">
-                            </TapGestureRecognizer>
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
-                <Label Text="+" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="4" Grid.Row="1"></Label>
-                <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="1">
-                    <Entry x:Name="MaxHP" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric" TextChanged="MaxHP_TextChanged"></Entry>
-                </Frame>
-                <Grid x:Name="MaxHPModifiers" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="6" IsVisible="False">
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <Label x:Name="MaxHPTotalTitle" Text="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label x:Name="MaxHPModifiersTitle" Text="Modifiers" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="0"></Label>
+                    <Label x:Name="MaxHPValueTitle" Text="Value" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="0"></Label>
+                    <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="MaxHPTotal" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="=" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="2" Grid.Row="1"></Label>
+                    <Frame x:Name="MaxHPModifiersSumFrame" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="1">
+                        <Label x:Name="MaxHPModifiersSum" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MaxHPModifiersSum_Tapped">
+                                </TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="4" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="1">
+                        <Entry x:Name="MaxHP" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric" TextChanged="MaxHP_TextChanged"></Entry>
+                    </Frame>
+                    <Grid x:Name="MaxHPModifiers" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="6" IsVisible="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label x:Name="HPTotalTitle" Text="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
-                <Label x:Name="HPModifiersTitle" Text="Modifiers" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="0"></Label>
-                <Label x:Name="HPValueTitle" Text="Value" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="0"></Label>
-                <Label x:Name="HPTitle" Text="HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
-                <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
-                    <Label x:Name="HPTotal" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
-                </Frame>
-                <Label Text="=" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="2" Grid.Row="1"></Label>
-                <Frame x:Name="HPModifiersSumFrame" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="1">
-                    <Label x:Name="HPModifiersSum" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="HPModifiersSum_Tapped">
-                            </TapGestureRecognizer>
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
-                <Label Text="+" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="4" Grid.Row="1"></Label>
-                <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="1">
-                    <Entry x:Name="HP" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric" TextChanged="HP_TextChanged"></Entry>
-                </Frame>
-                <Grid x:Name="TempHPModifiers" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="6" IsVisible="False">
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <Label x:Name="HPTotalTitle" Text="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label x:Name="HPModifiersTitle" Text="Modifiers" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="0"></Label>
+                    <Label x:Name="HPValueTitle" Text="Value" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="0"></Label>
+                    <Label x:Name="HPTitle" Text="HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="HPTotal" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="=" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="2" Grid.Row="1"></Label>
+                    <Frame x:Name="HPModifiersSumFrame" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="1">
+                        <Label x:Name="HPModifiersSum" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="HPModifiersSum_Tapped">
+                                </TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="4" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="1">
+                        <Entry x:Name="HP" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric" TextChanged="HP_TextChanged"></Entry>
+                    </Frame>
+                    <Grid x:Name="TempHPModifiers" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="6" IsVisible="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Label x:Name="DamageResistTotalTitle" Text="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
-                <Label x:Name="DamageResistModifiersTitle" Text="Modifiers" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="0"></Label>
-                <Label x:Name="DamageResistValueTitle" Text="Value" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="0"></Label>
-                <Label x:Name="DamageResistTitle" Text="Damage Resist:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
-                <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
-                    <Label x:Name="DamageResistTotal" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
-                </Frame>
-                <Label Text="=" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="2" Grid.Row="1"></Label>
-                <Frame x:Name="DamageResistModifiersSumFrame" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="1">
-                    <Label x:Name="DamageResistModifiersSum" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DamageResistModifiersSum_Tapped">
-                            </TapGestureRecognizer>
-                        </Label.GestureRecognizers>
-                    </Label>
-                </Frame>
-                <Label Text="+" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="4" Grid.Row="1"></Label>
-                <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="1">
-                    <Entry x:Name="DamageResist" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric" TextChanged="DamageResist_TextChanged"></Entry>
-                </Frame>
-                <Grid x:Name="DamageResistModifiers" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="6" IsVisible="False">
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
+                    <Label x:Name="DamageResistTotalTitle" Text="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label x:Name="DamageResistModifiersTitle" Text="Modifiers" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="0"></Label>
+                    <Label x:Name="DamageResistValueTitle" Text="Value" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="0"></Label>
+                    <Label x:Name="DamageResistTitle" Text="Damage Resist:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="DamageResistTotal" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="=" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="2" Grid.Row="1"></Label>
+                    <Frame x:Name="DamageResistModifiersSumFrame" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="3" Grid.Row="1">
+                        <Label x:Name="DamageResistModifiersSum" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DamageResistModifiersSum_Tapped">
+                                </TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="4" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="1">
+                        <Entry x:Name="DamageResist" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric" TextChanged="DamageResist_TextChanged"></Entry>
+                    </Frame>
+                    <Grid x:Name="DamageResistModifiers" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="6" IsVisible="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                    </Grid>
                 </Grid>
-            </Grid>
-            <StackLayout Orientation="Horizontal">
-                <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
-                <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

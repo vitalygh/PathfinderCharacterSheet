@@ -12,6 +12,84 @@ namespace PathfinderCharacterSheet
             public int Level { get { return level; } }
             public string className = null;
             public string ClassName { get { return className; } }
+
+            public static LevelOfClass Clone(LevelOfClass loc)
+            {
+                if (loc == null)
+                    return null;
+                return new LevelOfClass()
+                {
+                    level = loc.Level,
+                    className = loc.ClassName,
+                };
+            }
+
+            public LevelOfClass GetClone() { return Clone(this); }
+
+            public static List<LevelOfClass> Clone(List<LevelOfClass> mods)
+            {
+                if (mods == null)
+                    return null;
+                var list = new List<LevelOfClass>();
+                foreach (var m in mods)
+                    list.Add(Clone(m));
+                return list;
+            }
+
+            public static string AsString(List<LevelOfClass> levelOfClass)
+            {
+                var level = string.Empty;
+                var totalLevel = 0;
+                if (levelOfClass != null)
+                    foreach (var loc in levelOfClass)
+                    {
+                        if (loc == null)
+                            continue;
+                        if (level.Length > 0)
+                            level += ", ";
+                        level += loc.ClassName + " (" + loc.Level.ToString() + ")";
+                        totalLevel += loc.Level;
+                    }
+                if (level.Length > 0)
+                    level = totalLevel.ToString() + ": " + level;
+                return level;
+            }
+
+            public bool Equals(LevelOfClass obj)
+            {
+                var other = obj as LevelOfClass;
+                if (other == null)
+                    return false;
+                if (other.Level != Level)
+                    return false;
+                if (other.ClassName != ClassName)
+                    return false;
+                return true;
+            }
+
+
+            public static bool Equal(List<LevelOfClass> a, List<LevelOfClass> b)
+            {
+                if ((a == null) && (b == null))
+                    return true;
+                if ((a == null) || (b == null))
+                    return false;
+                var count = a.Count;
+                if (count != b.Count)
+                    return false;
+                for (var i = 0; i < count; i++)
+                {
+                    var ai = a[i];
+                    var bi = b[i];
+                    if ((ai == null) && (bi == null))
+                        continue;
+                    if ((ai == null) || (bi == null))
+                        return false;
+                    if (!ai.Equals(bi))
+                        return false;
+                }
+                return true;
+            }
         }
 
         public enum Ability
@@ -77,6 +155,9 @@ namespace PathfinderCharacterSheet
                     value = mod.Value,
                 };
             }
+
+            public IntModifier GetClone() { return Clone(this); }
+
             public static List<IntModifier> Clone(List<IntModifier> mods)
             {
                 if (mods == null)
@@ -86,8 +167,6 @@ namespace PathfinderCharacterSheet
                     list.Add(Clone(m));
                 return list;
             }
-
-            public IntModifier GetClone() { return Clone(this); }
 
             public bool Equals(IntModifier obj)
             {
@@ -102,6 +181,29 @@ namespace PathfinderCharacterSheet
                     return false;
                 return true;
             }
+
+            public static bool Equal(List<IntModifier> a, List<IntModifier> b)
+            {
+                if ((a == null) && (b == null))
+                    return true;
+                if ((a == null) || (b == null))
+                    return false;
+                var count = a.Count;
+                if (count != b.Count)
+                    return false;
+                for (var i = 0; i < count; i++)
+                {
+                    var ai = a[i];
+                    var bi = b[i];
+                    if ((ai == null) && (bi == null))
+                        continue;
+                    if ((ai == null) || (bi == null))
+                        return false;
+                    if (!ai.Equals(bi))
+                        return false;
+                }
+                return true;
+            }
         }
 
         public static int Sum(List<IntModifier> modifiers, bool activeOnly = true)
@@ -112,29 +214,6 @@ namespace PathfinderCharacterSheet
                     if (m.IsActive || !activeOnly)
                         value += m.Value;
             return value;
-        }
-
-        public static bool IsEqual(List<IntModifier> a, List<IntModifier> b)
-        {
-            if ((a == null) && (b == null))
-                return true;
-            if ((a == null) || (b == null))
-                return false;
-            var count = a.Count;
-            if (count != b.Count)
-                return false;
-            for (var i = 0; i < count; i++)
-            {
-                var ai = a[i];
-                var bi = b[i];
-                if ((ai == null) && (bi == null))
-                    continue;
-                if ((ai == null) || (bi == null))
-                    return false;
-                if (!ai.Equals(bi))
-                    return false;
-            }
-            return true;
         }
 
         public static int GetAbilityModifier(CharacterSheet sheet, Ability ability)
@@ -227,7 +306,6 @@ namespace PathfinderCharacterSheet
 
         public enum Alignment
         {
-            None = -1,
             LawfulGood,
             NeutralGood,
             ChaoticGood,
@@ -427,16 +505,16 @@ namespace PathfinderCharacterSheet
         public string name = null;
         public string Name { get { return name; } }
         public string biography = null;
-        public Alignment alignment = Alignment.None;
+        public Alignment alignment = Alignment.Neutral;
         public string deity = null;
         public string homeland = null;
         public string race = null;
         public string Race { get { return race; } }
         public string size = null;
         public string gender = null;
-        public int age = 0;
-        public int height = 0;
-        public int weight = 0;
+        public string age = null;
+        public string height = null;
+        public string weight = null;
         public string hair = null;
         public string eyes = null;
         #endregion
@@ -455,6 +533,7 @@ namespace PathfinderCharacterSheet
                 return level;
             }
         }
+        public string LevelAsString { get { return LevelOfClass.AsString(levelOfClass); } }
         public int experience = 0;
         public int nextLevelExperience = 0;
         #endregion
