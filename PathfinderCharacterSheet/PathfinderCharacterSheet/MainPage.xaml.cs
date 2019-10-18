@@ -55,10 +55,10 @@ namespace PathfinderCharacterSheet
         }
 
 
-        public static void FillIntModifierGrid(Grid grid, List<CharacterSheet.IntModifier> modifiers, string title,
-                                                Action<List<CharacterSheet.IntModifier>> addModifier,
-                                                Action<List<CharacterSheet.IntModifier>, CharacterSheet.IntModifier> editModifier,
-                                                Action<List<CharacterSheet.IntModifier>, CharacterSheet.IntModifier> activateModifier)
+        public static void FillIntMLGrid(Grid grid, CharacterSheet.IntML modifiers, string title,
+                                                Action<CharacterSheet.IntML> addModifier,
+                                                Action<CharacterSheet.IntML, CharacterSheet.Modifier<int>> editModifier,
+                                                Action<CharacterSheet.IntML, CharacterSheet.Modifier<int>> activateModifier)
         {
             grid.Children.Clear();
             var stack = new StackLayout()

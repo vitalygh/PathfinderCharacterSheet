@@ -12,15 +12,15 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditIntModifier : ContentPage
 	{
-        private List<CharacterSheet.IntModifier> modifiersList = null;
-        private CharacterSheet.IntModifier modifier = null;
+        private CharacterSheet.IntML modifiersList = null;
+        private CharacterSheet.Modifier<int> modifier = null;
 
-        public EditIntModifier ()
+        public EditIntModifier()
 		{
 			InitializeComponent ();
 		}
 
-        public void Init(List<CharacterSheet.IntModifier> modifiersList, CharacterSheet.IntModifier modifier)
+        public void Init(CharacterSheet.IntML modifiersList, CharacterSheet.Modifier<int> modifier)
         {
             this.modifiersList = modifiersList;
             this.modifier = modifier;
@@ -42,7 +42,7 @@ namespace PathfinderCharacterSheet
             var anyChanged = false;
             if (modifier == null)
             {
-                modifier = new CharacterSheet.IntModifier();
+                modifier = new CharacterSheet.Modifier<int>();
                 modifiersList.Add(modifier);
                 anyChanged = true;
             }

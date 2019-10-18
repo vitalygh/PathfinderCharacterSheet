@@ -12,9 +12,9 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditHP : ContentPage, ISheetView
 	{
-        private List<CharacterSheet.IntModifier> maxHPModifiers = null;
-        private List<CharacterSheet.IntModifier> tempHPModifiers = null;
-        private List<CharacterSheet.IntModifier> damageResistModifiers = null;
+        private CharacterSheet.IntVWM maxHP = null;
+        private CharacterSheet.IntVWM hp = null;
+        private CharacterSheet.IntVWM damageResist = null;
 
         public EditHP ()
 		{
@@ -25,12 +25,12 @@ namespace PathfinderCharacterSheet
         private void ViewToEdit()
         {
             var c = CharacterSheetStorage.Instance.selectedCharacter;
-            maxHPModifiers = CharacterSheet.IntModifier.Clone(c.hp.maxHPModifiers);
-            tempHPModifiers = CharacterSheet.IntModifier.Clone(c.hp.tempHPModifiers);
-            damageResistModifiers = CharacterSheet.IntModifier.Clone(c.hp.damageResistModifiers);
-            MaxHP.Text = c.hp.maxHP.ToString();
-            HP.Text = c.hp.hp.ToString();
-            DamageResist.Text = c.hp.damageResist.ToString();
+            maxHP = c.hp.maxHP.Clone as CharacterSheet.IntVWM;
+            hp = c.hp.hp.Clone as CharacterSheet.IntVWM;
+            damageResist = c.hp.damageResist.Clone as CharacterSheet.IntVWM;
+            MaxHP.Text = c.hp.maxHP.Total.ToString();
+            HP.Text = c.hp.hp.Total.ToString();
+            DamageResist.Text = c.hp.damageResist.Total.ToString();
             UpdateView();
         }
 
@@ -39,70 +39,58 @@ namespace PathfinderCharacterSheet
             UpdateMaxHP();
             UpdateTempHP();
             UpdateDamageResist();
-            MainPage.FillIntModifierGrid(MaxHPModifiers, maxHPModifiers, "Max HP Modifiers:", EditIntModifier, EditIntModifier, (mods, mod) => UpdateMaxHP());
-            MainPage.FillIntModifierGrid(TempHPModifiers, tempHPModifiers, "Temp HP Modifiers:", EditIntModifier, EditIntModifier, (mods, mod) => UpdateTempHP());
-            MainPage.FillIntModifierGrid(DamageResistModifiers, damageResistModifiers, "Damage Resist Modifiers:", EditIntModifier, EditIntModifier, (mods, mod) => UpdateDamageResist());
+            //MainPage.FillIntModifierGrid(MaxHPModifiers, maxHPModifiers, "Max HP Modifiers:", EditIntModifier, EditIntModifier, (mods, mod) => UpdateMaxHP());
+            //MainPage.FillIntModifierGrid(TempHPModifiers, tempHPModifiers, "Temp HP Modifiers:", EditIntModifier, EditIntModifier, (mods, mod) => UpdateTempHP());
+            //MainPage.FillIntModifierGrid(DamageResistModifiers, damageResistModifiers, "Damage Resist Modifiers:", EditIntModifier, EditIntModifier, (mods, mod) => UpdateDamageResist());
         }
 
         private void UpdateMaxHP()
         {
-            var sum = CharacterSheet.Sum(maxHPModifiers);
-            MaxHPModifiersSum.Text = sum.ToString();
-            var maxHP = 0;
-            MainPage.StrToInt(MaxHP.Text, ref maxHP);
-            MaxHPTotal.Text = (sum + maxHP).ToString();
+            MaxHPModifiersSum.Text = maxHP.modifiers.Sum.ToString();
+            MaxHPTotal.Text = maxHP.Total.ToString();
         }
 
         private void UpdateTempHP()
         {
-            var sum = CharacterSheet.Sum(tempHPModifiers);
-            HPModifiersSum.Text = sum.ToString();
-            var hp = 0;
-            MainPage.StrToInt(HP.Text, ref hp);
-            HPTotal.Text = (sum + hp).ToString();
+            HPModifiersSum.Text = hp.modifiers.Sum.ToString();
+            HPTotal.Text = hp.Total.ToString();
         }
 
         private void UpdateDamageResist()
         {
-            var sum = CharacterSheet.Sum(damageResistModifiers);
-            DamageResistModifiersSum.Text = sum.ToString();
-            var dr = 0;
-            MainPage.StrToInt(DamageResist.Text, ref dr);
-            DamageResistTotal.Text = (sum + dr).ToString();
+            DamageResistModifiersSum.Text = damageResist.modifiers.Sum.ToString();
+            DamageResistTotal.Text = damageResist.Total.ToString();
         }
 
         private void EditToView()
         {
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             var anyChanged = false;
-            anyChanged |= MainPage.StrToInt(MaxHP.Text, ref c.hp.maxHP);
-            anyChanged |= MainPage.StrToInt(HP.Text, ref c.hp.hp);
-            anyChanged |= MainPage.StrToInt(DamageResist.Text, ref c.hp.damageResist);
-            if (!CharacterSheet.IntModifier.Equal(c.hp.maxHPModifiers, maxHPModifiers))
+            if (!maxHP.Equals(c.hp.maxHP))
             {
                 anyChanged = true;
-                c.hp.maxHPModifiers = maxHPModifiers;
+                c.hp.maxHP = maxHP;
             }
-            if (!CharacterSheet.IntModifier.Equal(c.hp.tempHPModifiers, tempHPModifiers))
+            if (!hp.Equals(c.hp.hp))
             {
                 anyChanged = true;
-                c.hp.tempHPModifiers = tempHPModifiers;
+                c.hp.hp = hp;
             }
-            if (!CharacterSheet.IntModifier.Equal(c.hp.damageResistModifiers, damageResistModifiers))
+            if (!damageResist.Equals(c.hp.damageResist))
             {
                 anyChanged = true;
-                c.hp.damageResistModifiers = damageResistModifiers;
+                c.hp.damageResist = damageResist;
             }
             if (anyChanged)
                 CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
         }
 
-        private void EditIntModifier(List<CharacterSheet.IntModifier> modifiers)
+        private void EditIntModifier(CharacterSheet.IntML modifiers)
         {
             EditIntModifier(modifiers, null);
         }
 
-        private void EditIntModifier(List<CharacterSheet.IntModifier> modifiers, CharacterSheet.IntModifier mod)
+        private void EditIntModifier(CharacterSheet.IntML modifiers, CharacterSheet.Modifier<int> mod)
         {
             var page = new EditIntModifier();
             page.Init(modifiers, mod);

@@ -12,10 +12,6 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditAbilityScores : ContentPage
 	{
-        private List<CharacterSheet.IntModifier>[] tempAdjustments = new List<CharacterSheet.IntModifier>[(int)CharacterSheet.Ability.Total];
-        private List<CharacterSheet.IntModifier>[] tempModifiers = new List<CharacterSheet.IntModifier>[(int)CharacterSheet.Ability.Total];
-        private Grid[] modifierGrids = null;
-
         public EditAbilityScores()
 		{
 			InitializeComponent();
@@ -90,26 +86,6 @@ namespace PathfinderCharacterSheet
             (AbilityScores.Children[2] as Label).Text = "Ability Modifier";
             (AbilityScores.Children[3] as Label).Text = "Temp Adjustment";
             (AbilityScores.Children[4] as Label).Text = "Temp Modifier";
-            var grids = new List<Grid>();
-            for (var i = 0; i < (int)CharacterSheet.Ability.Total; i++)
-            {
-                var grid = new Grid()
-                {
-                    ColumnSpacing = 5,
-                    RowSpacing = 5,
-                    BackgroundColor = Color.LightGray,
-                    IsVisible = false,
-                };
-                var index = (i + 1) * 2;
-                AbilityScores.Children.Add(grid, 0, 5, index, index + 1);
-                grids.Add(grid);
-                var tgr = new TapGestureRecognizer();
-                var frame = modifierFrames[i];
-                var label = (frame.Content as Label);
-                tgr.Tapped += (s, e) => ModifiersLabel_Tapped(grid, label, frame);
-                label.GestureRecognizers.Add(tgr);
-            }
-            modifierGrids = grids.ToArray();
         }
 
         private void ModifiersLabel_Tapped(Grid g, Label l, Frame f)
@@ -131,9 +107,9 @@ namespace PathfinderCharacterSheet
             var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
             MainPage.StrToInt(entry.Text, ref ab.score);
             entry = ((AbilityScores.Children[index + 3] as Frame).Content as Entry);
-            MainPage.StrToInt(entry.Text, ref ab.tempAdjustment);
+            MainPage.StrToInt(entry.Text, ref ab.tempAdjustment.baseValue);
             entry = ((AbilityScores.Children[index + 4] as Frame).Content as Entry);
-            MainPage.StrToInt(entry.Text, ref ab.tempModifier);
+            MainPage.StrToInt(entry.Text, ref ab.tempModifier.baseValue);
             ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
         }
 
@@ -153,20 +129,7 @@ namespace PathfinderCharacterSheet
                 ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
                 ((AbilityScores.Children[index + 3] as Frame).Content as Entry).Text = ab.tempAdjustment.ToString();
                 ((AbilityScores.Children[index + 4] as Frame).Content as Entry).Text = ab.tempModifier.ToString();
-                MainPage.FillIntModifierGrid(modifierGrids[i], ab.tempAdjustments, "Temp Ajustments:", EditIntModifier, EditIntModifier, (mods, mod) => UpdateModifier(i + 1));
             }
-        }
-
-        private void EditIntModifier(List<CharacterSheet.IntModifier> modifiers)
-        {
-            EditIntModifier(modifiers, null);
-        }
-
-        private void EditIntModifier(List<CharacterSheet.IntModifier> modifiers, CharacterSheet.IntModifier mod)
-        {
-            var page = new EditIntModifier();
-            page.Init(modifiers, mod);
-            Navigation.PushAsync(page);
         }
 
         private void EditToView()
@@ -181,8 +144,8 @@ namespace PathfinderCharacterSheet
                 var ab = c.abilityScores[i];
                 var index = (i + 1) * 5;
                 anyChanged |= MainPage.StrToInt(((AbilityScores.Children[index + 1] as Frame).Content as Entry).Text, ref ab.score);
-                anyChanged |= MainPage.StrToInt(((AbilityScores.Children[index + 3] as Frame).Content as Entry).Text, ref ab.tempAdjustment);
-                anyChanged |= MainPage.StrToInt(((AbilityScores.Children[index + 4] as Frame).Content as Entry).Text, ref ab.tempModifier);
+                anyChanged |= MainPage.StrToInt(((AbilityScores.Children[index + 3] as Frame).Content as Entry).Text, ref ab.tempAdjustment.baseValue);
+                anyChanged |= MainPage.StrToInt(((AbilityScores.Children[index + 4] as Frame).Content as Entry).Text, ref ab.tempModifier.baseValue);
             }
             if (anyChanged)
                 CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);

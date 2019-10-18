@@ -145,7 +145,7 @@ namespace PathfinderCharacterSheet
             ACSizeModifier.Text = c.armorClass.sizeModifier.ToString();
             ACNaturalArmor.Text = c.armorClass.naturalArmor.ToString();
             ACDeflectionModifier.Text = c.armorClass.deflectionModifier.ToString();
-            ACMiscModifier.Text = c.ACMiscModifier.ToString();
+            ACMiscModifier.Text = c.armorClass.miscModifiers.Total.ToString();
         }
 
         private void Biography_DoubleTapped(object sender, EventArgs e)

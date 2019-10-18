@@ -23,7 +23,7 @@ namespace PathfinderCharacterSheet
         public void Init(List<CharacterSheet.LevelOfClass> levelOfClass)
         {
             this.levelOfClass = levelOfClass;
-            currentLevelOfClass = CharacterSheet.LevelOfClass.Clone(levelOfClass);
+            currentLevelOfClass = CharacterSheet.LevelOfClass.CreateClone(levelOfClass);
             UpdateView();
         }
 

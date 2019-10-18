@@ -23,7 +23,7 @@ namespace PathfinderCharacterSheet
 
         private void InitControls()
         {
-            levelOfClass = CharacterSheet.LevelOfClass.Clone(CharacterSheetStorage.Instance.selectedCharacter.levelOfClass);
+            levelOfClass = CharacterSheet.LevelOfClass.CreateClone(CharacterSheetStorage.Instance.selectedCharacter.levelOfClass);
             var alignments = new List<CharacterSheet.Alignment>();
             var values = Enum.GetValues(typeof(CharacterSheet.Alignment));
             foreach (var v in values)
