@@ -100,7 +100,7 @@
 
                         <Label x:Name="BiographyTitle" Text="Biography:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4"></Label>
                         <Frame BorderColor="Black" Padding="5" Grid.Row="9" Grid.ColumnSpan="4">
-                            <Label x:Name="Biography" HorizontalTextAlignment="Center" FontSize="Medium" TextColor="Black" Grid.Column="0"></Label>
+                            <Label x:Name="Biography" HorizontalTextAlignment="Start" FontSize="Medium" TextColor="Black" Grid.Column="0"></Label>
                         </Frame>
                     </Grid>
                 </StackLayout>
@@ -135,58 +135,75 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                     </Grid>
-                    <StackLayout Orientation="Horizontal">
-                        <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                            <Grid.GestureRecognizers>
+                    <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="MaxHP_DoubleTapped">
+                                </TapGestureRecognizer>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                            <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="MaxHP_DoubleTapped">
+                                    </TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Frame>
+                        <Label x:Name="HPTitle" Text=" HP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                            <Label.GestureRecognizers>
                                 <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
                                 </TapGestureRecognizer>
-                            </Grid.GestureRecognizers>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                                <!--
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                -->
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <!--
-                            <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0"></Label>
-                            <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                                <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                            </Frame>
-                            -->
-                            <Label x:Name="HPTitle" Text=" HP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0"></Label>
-                            <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                                <Label x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                            </Frame>
-                            <Label x:Name="DamageResistTitle" Text=" Damage Resist: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="2" Grid.Row="0"></Label>
-                            <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
-                                <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                            </Frame>
-                        </Grid>
-                        <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                            <Grid.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Initiative_DoubleTapped">
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                            <Label x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
+                                    </TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Frame>
+                        <Label x:Name="DamageResistTitle" Text=" Damage Resist: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="DamageResist_DoubleTapped">
                                 </TapGestureRecognizer>
-                            </Grid.GestureRecognizers>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Label x:Name="InitiativeTitle" Text=" Initiative: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0"></Label>
-                            <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                                <Label x:Name="Initiative" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
-                            </Frame>
-                        </Grid>
-                    </StackLayout>
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                            <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="DamageResist_DoubleTapped">
+                                    </TapGestureRecognizer>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Frame>
+                    </Grid>
+                    <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Initiative_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="InitiativeTitle" Text=" Initiative: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0"></Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                            <Label x:Name="Initiative" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                        </Frame>
+                    </Grid>
+                    
                     <!--
                     <Grid ColumnSpacing="15" RowSpacing="5">
                         <Grid.ColumnDefinitions>
@@ -218,6 +235,7 @@
                         </Frame>
                     </Grid>
                     -->
+                    <!--
                     <Grid ColumnSpacing="15" RowSpacing="5">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -286,6 +304,7 @@
                             <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="ACMiscModifier"></Label>
                         </Frame>
                     </Grid>
+                    -->
                 </StackLayout>
             </ScrollView>
         </ContentPage.Content>

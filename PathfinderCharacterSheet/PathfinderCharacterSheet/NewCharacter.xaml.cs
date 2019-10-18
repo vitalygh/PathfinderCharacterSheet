@@ -20,10 +20,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
-            if (CharacterSheetStorage.Instance.selectedCharacter != null)
-                CharacterName.Text = CharacterSheetStorage.Instance.selectedCharacter.Name;
-            else
-                CharacterName.Text = string.Empty;
+            CharacterName.Text = string.Empty;
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)
@@ -33,21 +30,9 @@ namespace PathfinderCharacterSheet
 
         private void Save_Clicked(object sender, EventArgs e)
         {
-            var character = CharacterSheetStorage.Instance.selectedCharacter;
-            var selected = character != null;
-            if (character == null)
-                character = new CharacterSheet();
-            if (character.Name != CharacterName.Text)
-                CharacterSheetStorage.Instance.DeleteCharacter(character);
+            var character = new CharacterSheet();
             character.name = CharacterName.Text;
             CharacterSheetStorage.Instance.SaveCharacter(character);
-            CharacterSheetStorage.Instance.selectedCharacter = character;
-            Navigation.PopAsync();
-        }
-
-        private void Delete_Clicked(object sender, EventArgs e)
-        {
-            CharacterSheetStorage.Instance.DeleteCharacter(CharacterSheetStorage.Instance.selectedCharacter);
             Navigation.PopAsync();
         }
     }

@@ -52,7 +52,7 @@ namespace PathfinderCharacterSheet
                             {
                                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                                 TextColor = Color.Black,
-                                HorizontalTextAlignment = TextAlignment.Center,
+                                HorizontalTextAlignment = (j == 0) ? TextAlignment.Start : TextAlignment.Center,
                                 VerticalTextAlignment = TextAlignment.Center,
                             };
                         }
@@ -86,16 +86,16 @@ namespace PathfinderCharacterSheet
             {
                 var ab = c.abilityScores[i];
                 abscindex = (i + 1) * columns;
-                (AbilityScores.Children[abscindex++] as Label).Text = abilities[i];
+                (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.ToString();
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.Modifier.ToString();
                 //((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.tempAdjustment.ToString();
                 //((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.tempModifier.ToString();
             }
 
-            //MaxHP.Text = c.hp.maxHP.ToString();
-            HP.Text = c.hp.CurrentHP.ToString() + " / " + c.hp.CurrentMaxHP.ToString();
-            DamageResist.Text = c.hp.CurrentDamageResist.ToString();
+            MaxHP.Text = c.hp.maxHP.Total.ToString();
+            HP.Text = c.hp.hp.Total.ToString();
+            DamageResist.Text = c.hp.damageResist.Total.ToString();
             /*
             while (TempHPModifiers.Children.Count / 3 < c.hp.tempHP.Count)
             {
@@ -137,7 +137,7 @@ namespace PathfinderCharacterSheet
             //InitiativeTotal.Text = c.CurrentInitiative.ToString();
             //InitiativeDexMod.Text = c.CurrentAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
             //InitiativeMiscMod.Text = CharacterSheet.Sum(c.initiative.miscModifiers).ToString();
-
+            /*
             ACTotal.Text = c.ACTotal.ToString();
             ACArmorBonus.Text = c.ACArmorBonus.ToString();
             ACShieldBonus.Text = c.ACShieldBonus.ToString();
@@ -146,6 +146,7 @@ namespace PathfinderCharacterSheet
             ACNaturalArmor.Text = c.armorClass.naturalArmor.ToString();
             ACDeflectionModifier.Text = c.armorClass.deflectionModifier.ToString();
             ACMiscModifier.Text = c.armorClass.miscModifiers.Total.ToString();
+            */
         }
 
         private void Biography_DoubleTapped(object sender, EventArgs e)
@@ -158,9 +159,34 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(new EditAbilityScores());
         }
 
+        private void MaxHP_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(c.hp.maxHP, "Edit Max HP", "Max HP:", true);
+            Navigation.PushAsync(eivwm);
+        }
+
         private void HP_DoubleTapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new EditHP());
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(c.hp.hp, "Edit HP", "HP:", true);
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void DamageResist_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(c.hp.damageResist, "Edit Damage Resist", "Damage Resist:", true);
+            Navigation.PushAsync(eivwm);
         }
 
         private void Initiative_DoubleTapped(object sender, EventArgs e)

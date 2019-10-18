@@ -17,16 +17,152 @@ namespace PathfinderCharacterSheet
             InitializeComponent();
             CharacterSheetStorage.Instance.LoadCharacters();
             UpdateView();
+            tabs.CurrentPageChanged += (s, e) =>
+            {
+                var c = CharacterSheetStorage.Instance.selectedCharacter;
+                if (c != null)
+                    tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
+            };
         }
 
         public void UpdateView()
         {
             Characters.IsVisible = true;
-            Characters.ItemsSource = null;
-            Characters.ItemsSource = CharacterSheetStorage.Instance.characters.Keys;
+            var grid = Characters;
+            grid.Children.Clear();
+            var stack = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+            };
+            var gridTitle = new Label()
+            {
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.Black,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Start,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                Text = "Characters",
+            };
+            stack.Children.Add(gridTitle);
+            var addModifierButton = new Button()
+            {
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.Black,
+                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalOptions = LayoutOptions.End,
+                Text = "Add",
+            };
+            addModifierButton.Clicked += (s, e) => AddCharacter();
+            stack.Children.Add(addModifierButton);
+            grid.Children.Add(stack, 0, 3, 0, 1);
+            var characters = new List<CharacterSheet>(CharacterSheetStorage.Instance.characters.Keys);
+            characters.Sort((a, b) => a.Name.CompareTo(b.Name));
+             var count = characters.Count;
+            if (count <= 0)
+                return;
+            grid.Children.Add(new Label()
+            {
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.Black,
+                BackgroundColor = Color.LightGray,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = "Name",
+            }, 0, 1);
+            grid.Children.Add(new Label()
+            {
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.Black,
+                BackgroundColor = Color.LightGray,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = "Race",
+            }, 1, 1);
+            grid.Children.Add(new Label()
+            {
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.Black,
+                BackgroundColor = Color.LightGray,
+                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Center,
+                Text = "Level",
+            }, 2, 1);
+            for (var i = 0; i < count; i++)
+            {
+                var index = i + 2;
+                var c = characters[i];
+                var name = new Frame()
+                {
+                    Content = new Label()
+                    {
+                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                        TextColor = Color.Black,
+                        VerticalTextAlignment = TextAlignment.Center,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        Text = c.Name.ToString(),
+                    },
+                    BorderColor = Color.Black,
+                    Padding = 5,
+                };
+                var tgr = new TapGestureRecognizer()
+                {
+                    NumberOfTapsRequired = 1,
+                };
+                tgr.Tapped += (s, e) => SelectCharacter(c);
+                name.GestureRecognizers.Add(tgr);
+                grid.Children.Add(name, 0, index);
+                var race = new Frame()
+                {
+                    Content = new Label()
+                    {
+                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                        TextColor = Color.Black,
+                        VerticalTextAlignment = TextAlignment.Center,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        Text = c.Race.ToString(),
+                    },
+                    BorderColor = Color.Black,
+                    Padding = 5,
+                };
+                tgr = new TapGestureRecognizer()
+                {
+                    NumberOfTapsRequired = 1,
+                };
+                tgr.Tapped += (s, e) => SelectCharacter(c);
+                race.GestureRecognizers.Add(tgr);
+                grid.Children.Add(race, 1, index);
+                var level = new Frame()
+                {
+                    Content = new Label()
+                    {
+                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                        TextColor = Color.Black,
+                        VerticalTextAlignment = TextAlignment.Center,
+                        HorizontalTextAlignment = TextAlignment.Center,
+                        Text = c.TotalLevel.ToString(),
+                    },
+                    BorderColor = Color.Black,
+                    Padding = 5,
+                };
+                tgr = new TapGestureRecognizer()
+                {
+                    NumberOfTapsRequired = 1,
+                };
+                tgr.Tapped += (s, e) => SelectCharacter(c);
+                race.GestureRecognizers.Add(tgr);
+                grid.Children.Add(level, 2, index);
+            }
         }
 
         private void Add_Clicked(object sender, EventArgs args)
+        {
+            AddCharacter();
+        }
+
+        private void AddCharacter()
         {
             Characters.IsVisible = false;
             newCharacter.UpdateView();
@@ -35,9 +171,14 @@ namespace PathfinderCharacterSheet
 
         private void Characters_ItemTapped(object sender, ItemTappedEventArgs e)
         {
+            SelectCharacter(e.Item as CharacterSheet);
+        }
+
+        private void SelectCharacter(CharacterSheet c)
+        {
             Characters.IsVisible = false;
-            CharacterSheetStorage.Instance.selectedCharacter = e.Item as CharacterSheet;
-            tabs.Title = CharacterSheetStorage.Instance.selectedCharacter.Name;
+            CharacterSheetStorage.Instance.selectedCharacter = c;
+            tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
             tabs.UpdateView();
             Navigation.PushAsync(tabs);
         }
@@ -55,10 +196,10 @@ namespace PathfinderCharacterSheet
         }
 
 
-        public static void FillIntMLGrid(Grid grid, CharacterSheet.IntML modifiers, string title,
-                                                Action<CharacterSheet.IntML> addModifier,
-                                                Action<CharacterSheet.IntML, CharacterSheet.Modifier<int>> editModifier,
-                                                Action<CharacterSheet.IntML, CharacterSheet.Modifier<int>> activateModifier)
+        public static void FillIntMLGrid(Grid grid, CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, string title,
+                                                Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>> addModifier,
+                                                Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>, CharacterSheet.Modifier<int>> editModifier,
+                                                Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>, CharacterSheet.Modifier<int>> activateModifier)
         {
             grid.Children.Clear();
             var stack = new StackLayout()

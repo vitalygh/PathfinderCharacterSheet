@@ -2,18 +2,19 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="PathfinderCharacterSheet.NewCharacter"
-             Title="Edit Character">
+             Title="New Character">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Label Text="Enter character name:"></Label>
-                <Entry x:Name="CharacterName"></Entry>
+                <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Label Text="Name:" FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" HorizontalOptions="Start"></Label>
+                    <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand">
+                        <Entry x:Name="CharacterName" FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Entry>
+                    </Frame>
+                </StackLayout>
                 <StackLayout Orientation="Horizontal">
-                    <Button Text="Save" x:Name="Save" Clicked="Save_Clicked" HorizontalOptions="FillAndExpand"></Button>
-                    <Button Text="Cancel" x:Name="Cancel" Clicked="Cancel_Clicked" HorizontalOptions="FillAndExpand"></Button>
-                    <!--
-                    <Button Text="Delete" x:Name="Delete" Clicked="Delete_Clicked" HorizontalOptions="FillAndExpand"></Button>
-                    -->
+                    <Button Text="Cancel" x:Name="Cancel" FontSize="Medium" TextColor="Black"  Clicked="Cancel_Clicked" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" x:Name="Save" FontSize="Medium" TextColor="Black"  Clicked="Save_Clicked" HorizontalOptions="FillAndExpand"></Button>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

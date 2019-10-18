@@ -4,33 +4,26 @@
              xmlns:local="clr-namespace:PathfinderCharacterSheet"
              x:Class="PathfinderCharacterSheet.MainPage"
              Title="Select Character">
+    <!--
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add" Clicked="Add_Clicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
+    -->
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <ListView x:Name="Characters" SelectionMode="None" ItemTapped="Characters_ItemTapped"  HasUnevenRows="True">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <ViewCell.View>
-                                    <StackLayout Orientation="Horizontal" Margin="10" >
-                                        <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                                            <Label Text="{Binding Name}" TextColor="black" FontSize="Medium" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-                                        </Frame>
-                                        <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                                            <Label Text="{Binding Race}" TextColor="black" FontSize="Medium" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-                                        </Frame>
-                                        <Frame BorderColor="Black" Padding="5" HorizontalOptions="End" VerticalOptions="FillAndExpand">
-                                            <Label Text="{Binding TotalLevel}" TextColor="black" FontSize="Medium" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-                                        </Frame>
-                                    </StackLayout>
-                                </ViewCell.View>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                <Grid x:Name="Characters" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                </Grid> 
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
