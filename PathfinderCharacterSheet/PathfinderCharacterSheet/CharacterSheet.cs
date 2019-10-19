@@ -730,7 +730,16 @@ namespace PathfinderCharacterSheet
             new SavingThrow(Ability.Wisdom),
         };
 
-        public int spellResistance = 0;
+        public int GetSavingThrowTotal(Save save)
+        {
+            var st = (int)save;
+            if ((st < 0) || (st >= savingThrows.Length))
+                return 0;
+            var savingThrow = savingThrows[st];
+            return savingThrow.GetTotal(this);
+        }
+
+        public ValueWithModifiers<int, IntSum> spellResistance = new ValueWithModifiers<int, IntSum>();
         #endregion
 
         #region Attack
@@ -740,8 +749,8 @@ namespace PathfinderCharacterSheet
         public ValueWithModifiers<int, IntSum> baseAttackBonus = new ValueWithModifiers<int, IntSum>();
 
         public int combatManeuverSpecialSizeModifier = 0;
-        public int CurrentCMD { get { return 10 + baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + combatManeuverSpecialSizeModifier; } }
-        public int CurrentCMB { get { return baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + combatManeuverSpecialSizeModifier; } }
+        public int CMD { get { return 10 + baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + combatManeuverSpecialSizeModifier; } }
+        public int CMB { get { return baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + combatManeuverSpecialSizeModifier; } }
 
         public int sizeModifier = 0;
         public ValueWithModifiers<int, IntSum> meleeAttackBonusModifiers = new ValueWithModifiers<int, IntSum>();

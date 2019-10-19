@@ -74,8 +74,8 @@ namespace PathfinderCharacterSheet
                         AbilityScores.Children.Add(child, j, i);
                     }
             }
-            var abscindex = 0;
-            (AbilityScores.Children[abscindex++] as Label).Text = "Ability Name";
+            var abscindex = 1;
+            //(AbilityScores.Children[abscindex++] as Label).Text = "Ability Name";
             (AbilityScores.Children[abscindex++] as Label).Text = "Ability Score";
             (AbilityScores.Children[abscindex++] as Label).Text = "Ability Modifier";
             //(AbilityScores.Children[abscindex++] as Label).Text = "Temp Adjustment";
@@ -137,6 +137,20 @@ namespace PathfinderCharacterSheet
             //InitiativeTotal.Text = c.CurrentInitiative.ToString();
             //InitiativeDexMod.Text = c.CurrentAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
             //InitiativeMiscMod.Text = CharacterSheet.Sum(c.initiative.miscModifiers).ToString();
+            ArmorClass.Text = c.ACTotal.ToString();
+            TouchAC.Text = c.ACTouch.ToString();
+            FlatFootedAC.Text = c.ACFlatFooted.ToString();
+
+            Fortitude.Text = c.GetSavingThrowTotal(CharacterSheet.Save.Fortitude).ToString();
+            Reflex.Text = c.GetSavingThrowTotal(CharacterSheet.Save.Reflex).ToString();
+            Will.Text = c.GetSavingThrowTotal(CharacterSheet.Save.Will).ToString();
+
+            BaseAttackBonus.Text = c.baseAttackBonus.Total.ToString();
+
+            SpellResistance.Text = c.spellResistance.Total.ToString();
+
+            CMB.Text = c.CMB.ToString();
+            CMD.Text = c.CMD.ToString();
             /*
             ACTotal.Text = c.ACTotal.ToString();
             ACArmorBonus.Text = c.ACArmorBonus.ToString();
@@ -165,7 +179,7 @@ namespace PathfinderCharacterSheet
             if (c == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(c.hp.maxHP, "Edit Max HP", "Max HP:", true);
+            eivwm.Init(c.hp.maxHP, "Edit Max HP", "Max HP: ", true);
             Navigation.PushAsync(eivwm);
         }
 
@@ -175,7 +189,7 @@ namespace PathfinderCharacterSheet
             if (c == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(c.hp.hp, "Edit HP", "HP:", true);
+            eivwm.Init(c.hp.hp, "Edit HP", "HP: ", true);
             Navigation.PushAsync(eivwm);
         }
 
@@ -185,13 +199,62 @@ namespace PathfinderCharacterSheet
             if (c == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(c.hp.damageResist, "Edit Damage Resist", "Damage Resist:", true);
+            eivwm.Init(c.hp.damageResist, "Edit Damage Resist", "Damage Resist: ", true);
             Navigation.PushAsync(eivwm);
         }
 
         private void Initiative_DoubleTapped(object sender, EventArgs e)
         {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+            Navigation.PushAsync(new EditInitiative());
+        }
+
+        private void ArmorClass_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+            
+        }
+
+        private void SavingThrows_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
 
         }
+
+        private void BaseAttackBonus_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(c.baseAttackBonus, "Edit Base Attack Bonus", "Base Attack Bonus: ", true);
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void SpellResistance_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(c.spellResistance, "Edit Spell Resistance", "Spell Resistance: ", true);
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void CombatManeuver_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+
+        }
+
+        
     }
 }

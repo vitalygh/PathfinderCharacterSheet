@@ -78,10 +78,11 @@ namespace PathfinderCharacterSheet
                                 tgr.Tapped += (s, e) =>
                                 {
                                     var eivwm = new EditIntValueWithModifiers();
-                                    var modname = abilities[index] + (adj ? " Temp Adjustment" : " Temp Modifier");
+                                    var modname = (adj ? "Temp Adjustment" : "Temp Modifier");
+                                    var abmodname = abilities[index] + " " + modname;
                                     var labs = localAbilityScores[index];
                                     var vwm = adj ? labs.tempAdjustment : labs.tempModifier;
-                                    eivwm.Init(vwm, "Edit " + modname, modname + ":", false);
+                                    eivwm.Init(vwm, "Edit " + abmodname, modname + ":", false);
                                     Navigation.PushAsync(eivwm);
                                 };
                                 ((child as Frame).Content as Label).GestureRecognizers.Add(tgr);
