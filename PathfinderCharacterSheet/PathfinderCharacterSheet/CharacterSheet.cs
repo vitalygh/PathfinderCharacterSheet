@@ -380,7 +380,7 @@ namespace PathfinderCharacterSheet
             return 0;
         }
 
-        public int CurrentAbilityModifier(Ability ability)
+        public int GetAbilityModifier(Ability ability)
         {
             return GetAbilityModifier(this, ability);
         }
@@ -547,26 +547,66 @@ namespace PathfinderCharacterSheet
 
         public class ArmorClass
         {
-            public int armorBonus = 0;
-            public bool autoArmorBonus = true;
-            public int shieldBonus = 0;
-            public bool autoShieldBonus = true;
-            public int sizeModifier = 0;
-            public int naturalArmor = 0;
-            public int deflectionModifier = 0;
+            public ValueWithModifiers<int, IntSum> armorBonus = new ValueWithModifiers<int, IntSum>();
+            public bool itemsArmorBonus = true;
+            public ValueWithModifiers<int, IntSum> shieldBonus = new ValueWithModifiers<int, IntSum>();
+            public bool itemsShieldBonus = true;
+            public ValueWithModifiers<int, IntSum> sizeModifier = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> naturalArmor = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> deflectionModifier = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> miscModifiers = new ValueWithModifiers<int, IntSum>();
+
+            public ArmorClass Clone
+            {
+                get
+                {
+                    return new ArmorClass()
+                    {
+                        armorBonus = armorBonus.Clone,
+                        itemsArmorBonus = itemsArmorBonus,
+                        shieldBonus = shieldBonus.Clone,
+                        itemsShieldBonus = itemsShieldBonus,
+                        sizeModifier = sizeModifier.Clone,
+                        naturalArmor = naturalArmor.Clone,
+                        deflectionModifier = deflectionModifier.Clone,
+                        miscModifiers = miscModifiers.Clone,
+                    };
+                }
+            }
+
+            public bool Equals(ArmorClass ac)
+            {
+                if (itemsArmorBonus != ac.itemsArmorBonus)
+                    return false;
+                if (!itemsArmorBonus && !armorBonus.Equals(ac.armorBonus))
+                    return false;
+                if (itemsShieldBonus != ac.itemsShieldBonus)
+                    return false;
+                if (!itemsShieldBonus && !shieldBonus.Equals(ac.shieldBonus))
+                    return false;
+                if (!sizeModifier.Equals(ac.sizeModifier))
+                    return false;
+                if (!naturalArmor.Equals(ac.naturalArmor))
+                    return false;
+                if (!deflectionModifier.Equals(ac.deflectionModifier))
+                    return false;
+                if (!miscModifiers.Equals(ac.miscModifiers))
+                    return false;
+                return true;
+            }
+
             private int GetBaseArmorClass
             {
                 get
                 {
-                    return 10 + sizeModifier + deflectionModifier + miscModifiers.Total;
+                    return 10 + sizeModifier.Total + deflectionModifier.Total + miscModifiers.Total;
                 }
             }
 
             public int GetArmorBonus(CharacterSheet sheet)
             {
-                if (!autoArmorBonus)
-                    return armorBonus;
+                if (!itemsArmorBonus)
+                    return armorBonus.Total;
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
                     if (item.isArmor)
@@ -576,8 +616,8 @@ namespace PathfinderCharacterSheet
 
             public int GetShieldBonus(CharacterSheet sheet)
             {
-                if (!autoShieldBonus)
-                    return shieldBonus;
+                if (!itemsShieldBonus)
+                    return shieldBonus.Total;
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
                     if (item.isShield)
@@ -587,7 +627,7 @@ namespace PathfinderCharacterSheet
 
             public int GetTotal(CharacterSheet sheet)
             {
-                return GetBaseArmorClass + GetAbilityModifier(sheet, Ability.Dexterity) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor;
+                return GetBaseArmorClass + GetAbilityModifier(sheet, Ability.Dexterity) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.Total;
             }
 
             public int GetTouch(CharacterSheet sheet)
@@ -597,7 +637,7 @@ namespace PathfinderCharacterSheet
 
             public int GetFlatFooted(CharacterSheet sheet)
             {
-                return GetBaseArmorClass + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor;
+                return GetBaseArmorClass + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.Total;
             }
         }
 

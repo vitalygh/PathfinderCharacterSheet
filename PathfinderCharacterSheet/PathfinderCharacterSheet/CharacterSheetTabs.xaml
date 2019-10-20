@@ -337,37 +337,35 @@
                             </Label>
                         </Frame>
                     </Grid>
-                    <!--
-                    <Grid ColumnSpacing="15" RowSpacing="5">
+                    <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeTotalTitle" Text="Total" Grid.Column="1" Grid.Row="0"></Label>
-                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeDexModTitle" Text="Dex Modifier" Grid.Column="3" Grid.Row="0"></Label>
-                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeMiscModTitle" Text="Misc Modifier" Grid.Column="5" Grid.Row="0"></Label>
-                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="InitiativeTitle" Text="Initiative modifier" Grid.Column="0" Grid.Row="1"></Label>
+                        <Label x:Name="MeleeAttackBonusTitle" Text="Melee Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                        </Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                            <Label x:Name="MeleeAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                            </Label>
+                        </Frame>
+                        <Label x:Name="MeleeDamageBonusTitle" Text="Melee Damage Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                        </Label>
                         <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
-                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeTotal"></Label>
+                            <Label x:Name="MeleeDamageBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                            </Label>
                         </Frame>
-                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="=" Grid.Column="2" Grid.Row="1"></Label>
-                        <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
-                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeDexMod"></Label>
-                        </Frame>
-                        <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="+" Grid.Column="4" Grid.Row="1"></Label>
-                        <Frame BorderColor="Black" Padding="5" Grid.Column="5" Grid.Row="1">
-                            <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="InitiativeMiscMod"></Label>
+                        <Label x:Name="RangeAttackBonusTitle" Text="Range Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="2">
+                        </Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                            <Label x:Name="RangeAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                            </Label>
                         </Frame>
                     </Grid>
-                    -->
                     <!--
                     <Grid ColumnSpacing="15" RowSpacing="5">
                         <Grid.ColumnDefinitions>
@@ -449,4 +447,5 @@
     <ContentPage Title="Feats" />
     <ContentPage Title="Special Abilities" />
     <ContentPage Title="Spells" />
+    <ContentPage Title="Notes" />
 </TabbedPage>

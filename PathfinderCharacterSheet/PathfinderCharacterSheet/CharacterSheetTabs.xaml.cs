@@ -151,16 +151,10 @@ namespace PathfinderCharacterSheet
 
             CMB.Text = c.CMB.ToString();
             CMD.Text = c.CMD.ToString();
-            /*
-            ACTotal.Text = c.ACTotal.ToString();
-            ACArmorBonus.Text = c.ACArmorBonus.ToString();
-            ACShieldBonus.Text = c.ACShieldBonus.ToString();
-            ACDexModifier.Text = c.CurrentAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
-            ACSizeModifier.Text = c.armorClass.sizeModifier.ToString();
-            ACNaturalArmor.Text = c.armorClass.naturalArmor.ToString();
-            ACDeflectionModifier.Text = c.armorClass.deflectionModifier.ToString();
-            ACMiscModifier.Text = c.armorClass.miscModifiers.Total.ToString();
-            */
+
+            MeleeAttackBonus.Text = c.MeleeAttackBonus.ToString();
+            MeleeDamageBonus.Text = c.MeleeDamageBonus.ToString();
+            RangeAttackBonus.Text = c.RangeAttackBonus.ToString();
         }
 
         private void Biography_DoubleTapped(object sender, EventArgs e)
@@ -216,7 +210,7 @@ namespace PathfinderCharacterSheet
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-            
+            Navigation.PushAsync(new EditArmorClass());
         }
 
         private void SavingThrows_DoubleTapped(object sender, EventArgs e)
@@ -254,7 +248,5 @@ namespace PathfinderCharacterSheet
                 return;
 
         }
-
-        
     }
 }
