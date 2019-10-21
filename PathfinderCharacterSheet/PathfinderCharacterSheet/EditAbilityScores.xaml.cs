@@ -83,7 +83,7 @@ namespace PathfinderCharacterSheet
                                     var abmodname = abilities[index] + " " + modname;
                                     var labs = localAbilityScores[index];
                                     var vwm = adj ? labs.tempAdjustment : labs.score;
-                                    eivwm.Init(vwm, "Edit " + abmodname, modname + ":", false);
+                                    eivwm.Init(vwm, "Edit " + abmodname, modname + ": ", false);
                                     Navigation.PushAsync(eivwm);
                                 };
                                 (child as Frame).GestureRecognizers.Add(tgr);

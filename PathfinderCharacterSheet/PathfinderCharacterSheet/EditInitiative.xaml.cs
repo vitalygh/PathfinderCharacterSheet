@@ -46,7 +46,7 @@ namespace PathfinderCharacterSheet
         private void MiscModifiers_Tapped(object sender, EventArgs e)
         {
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(modifiers, "Edit Initiative Misc Modifiers", "Misc Modifiers:", false);
+            eivwm.Init(modifiers, "Edit Initiative Misc Modifiers", "Misc Modifiers: ", false);
             Navigation.PushAsync(eivwm);
         }
 

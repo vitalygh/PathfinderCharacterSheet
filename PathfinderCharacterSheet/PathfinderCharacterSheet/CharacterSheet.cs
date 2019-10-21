@@ -455,13 +455,61 @@ namespace PathfinderCharacterSheet
             public ValueWithModifiers<int, IntSum> armorSpeed = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> flySpeed = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> maneuverability = new ValueWithModifiers<int, IntSum>();
-            public int SwimSpeed { get { return baseSpeed.Total / 2; } }
-            public int ClimbSpeed { get { return baseSpeed.Total / 4; } }
+            public ValueWithModifiers<int, IntSum> swimSpeed = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> climbSpeed = new ValueWithModifiers<int, IntSum>();
+            public bool defaultSwimSpeed = true;
+            public int SwimSpeed { get { return defaultSwimSpeed ? (baseSpeed.Total / 2) : swimSpeed.Total; } }
+            public bool defaultClimbSpeed = true;
+            public int ClimbSpeed { get { return defaultClimbSpeed ? (baseSpeed.Total / 4) : climbSpeed.Total; } }
             public ValueWithModifiers<int, IntSum> burrowSpeed = new ValueWithModifiers<int, IntSum>();
 
             public static int InSquares(int speed)
             {
                 return speed / 5;
+            }
+
+            public Speed Clone
+            {
+                get
+                {
+                    return new Speed()
+                    {
+                        baseSpeed = baseSpeed.Clone,
+                        armorSpeed = armorSpeed.Clone,
+                        flySpeed = flySpeed.Clone,
+                        maneuverability = maneuverability.Clone,
+                        swimSpeed = swimSpeed.Clone,
+                        climbSpeed = climbSpeed.Clone,
+                        defaultClimbSpeed = defaultClimbSpeed,
+                        defaultSwimSpeed = defaultSwimSpeed,
+                        burrowSpeed = burrowSpeed.Clone,
+                    };
+                }
+            }
+
+            public bool Equals(Speed other)
+            {
+                if (other == null)
+                    return false;
+                if (!baseSpeed.Equals(other.baseSpeed))
+                    return false;
+                if (!armorSpeed.Equals(other.armorSpeed))
+                    return false;
+                if (!flySpeed.Equals(other.flySpeed))
+                    return false;
+                if (!maneuverability.Equals(other.maneuverability))
+                    return false;
+                if (!swimSpeed.Equals(other.swimSpeed))
+                    return false;
+                if (!climbSpeed.Equals(other.climbSpeed))
+                    return false;
+                if (defaultClimbSpeed != other.defaultClimbSpeed)
+                    return false;
+                if (defaultSwimSpeed != other.defaultSwimSpeed)
+                    return false;
+                if (!burrowSpeed.Equals(other.burrowSpeed))
+                    return false;
+                return true;
             }
         }
 
@@ -559,16 +607,18 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public class Feat
+        public class ItemWithDescription
         {
             public string name = null;
             public string description = null;
         }
 
-        public class SpecialAbility
+        public class Feat: ItemWithDescription
         {
-            public string name = null;
-            public string description = null;
+        }
+
+        public class SpecialAbility: ItemWithDescription
+        {
         }
 
         public class ArmorClass
@@ -636,7 +686,7 @@ namespace PathfinderCharacterSheet
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
                     if (item.isArmor)
-                        ac += item.bonus;
+                        ac += item.bonus.Total;
                 return ac;
             }
 
@@ -647,7 +697,7 @@ namespace PathfinderCharacterSheet
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
                     if (item.isShield)
-                        ac += item.bonus;
+                        ac += item.bonus.Total;
                 return ac;
             }
 
@@ -669,7 +719,7 @@ namespace PathfinderCharacterSheet
 
         public class ArmorClassItem: Item
         {
-            public int bonus = 0;
+            public ValueWithModifiers<int, IntSum> bonus = new ValueWithModifiers<int, IntSum>();
             public bool isShield = false;
             public bool isArmor = false;
             public string type = null;
@@ -680,43 +730,47 @@ namespace PathfinderCharacterSheet
 
         public class DiceThrow
         {
-            public int diceCount = 0;
+            public ValueWithModifiers<int, IntSum> diceCount = new ValueWithModifiers<int, IntSum>();
             public int diceValue = 0;
             public ValueWithModifiers<int, IntSum> miscModifiers = new ValueWithModifiers<int, IntSum>();
         }
 
         public class WeaponItem: Item
         {
-            public int bonus = 0;
+            public ValueWithModifiers<int, IntSum> bonus = new ValueWithModifiers<int, IntSum>();
             public string critical = null;
             public string type = null;
-            public int range = 0;
-            public int ammunition = 0;
+            public ValueWithModifiers<int, IntSum> range = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> ammunition = new ValueWithModifiers<int, IntSum>();
             public DiceThrow damage = new DiceThrow();
         }
 
-        public class Item
+        public class Item: ItemWithDescription
         {
-            public string name = null;
-            public string description = null;
             public int amount = 0;
             public int weight = 0;
             public int TotalWeight { get { return amount * weight; } }
+        }
+
+        public class Money
+        {
+            public int cuprumPoints = 0;
+            public int silverPoints = 0;
+            public int goldenPoints = 0;
+            public int platinumPoints = 0;
         }
 
         public const int spellLevesCount = 10;
 
         public class SpellLevel
         {
-            public int spellsKnown = 0;
-            public int spellsPerDay = 0;
-            public int bonusSpells = 0;
+            public ValueWithModifiers<int, IntSum> spellsKnown = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> spellsPerDay = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> bonusSpells = new ValueWithModifiers<int, IntSum>();
         }
 
-        public class Note
+        public class Note: ItemWithDescription
         {
-            public string title = null;
-            public string description = null;
         }
 
         #region Character background
@@ -822,9 +876,12 @@ namespace PathfinderCharacterSheet
 
         public ValueWithModifiers<int, IntSum> baseAttackBonus = new ValueWithModifiers<int, IntSum>();
 
-        public int combatManeuverSpecialSizeModifier = 0;
-        public int CMD { get { return 10 + baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + combatManeuverSpecialSizeModifier; } }
-        public int CMB { get { return baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + combatManeuverSpecialSizeModifier; } }
+        public ValueWithModifiers<int, IntSum> cmdSizeModifier = new ValueWithModifiers<int, IntSum>();
+        public ValueWithModifiers<int, IntSum> cmbSizeModifier = new ValueWithModifiers<int, IntSum>();
+        public int GetCMD(ValueWithModifiers<int, IntSum> sizeModifier) { return 10 + baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.Total; }
+        public int CMD { get { return GetCMD(cmdSizeModifier); } }
+        public int GetCMB(ValueWithModifiers<int, IntSum> sizeModifier) { return baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + sizeModifier.Total; }
+        public int CMB { get { return GetCMB(cmbSizeModifier); } }
 
         public int sizeModifier = 0;
         public ValueWithModifiers<int, IntSum> meleeAttackBonusModifiers = new ValueWithModifiers<int, IntSum>();
@@ -905,6 +962,7 @@ namespace PathfinderCharacterSheet
         public int liftOverHead = 0;
         public int LiftOffGround { get { return 2 * liftOverHead; } }
         public int DragOrPush { get { return 5 * liftOverHead; } }
+        public Money money = new Money();
         #endregion
 
         #region Spells

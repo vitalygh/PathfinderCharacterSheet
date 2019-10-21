@@ -253,10 +253,7 @@ namespace PathfinderCharacterSheet
 
         private void CombatManeuver_DoubleTapped(object sender, EventArgs e)
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
-                return;
-
+            Navigation.PushAsync(new EditCombatManeuvers());
         }
 
         private void AttackBonus_DoubleTapped(object sender, EventArgs e)

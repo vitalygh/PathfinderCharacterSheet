@@ -152,7 +152,7 @@ namespace PathfinderCharacterSheet
                     NumberOfTapsRequired = 1,
                 };
                 tgr.Tapped += (s, e) => SelectCharacter(c);
-                race.GestureRecognizers.Add(tgr);
+                level.GestureRecognizers.Add(tgr);
                 grid.Children.Add(level, 2, index);
             }
         }

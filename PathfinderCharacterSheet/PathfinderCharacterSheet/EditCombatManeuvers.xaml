@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditCombatManeuvers"
+             Title="Edit Combat Maneuvers">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="15" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="CMDTitle" Text="CMD" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="CMBTitle" Text="CMB" Grid.Column="2" Grid.Row="0"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="TotalTitle" Text="Total: " Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMDTotal"></Label>
+                    </Frame>
+                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="2" Grid.Row="1">
+                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMBTotal"></Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" = " Grid.Column="1" Grid.Row="2"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" = " Grid.Column="2" Grid.Row="2"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="BaseAttackBonusTitle" Text="Base Attack Bonus: " Grid.Column="0" Grid.Row="3"></Label>
+                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMDBaseAttackBonus">
+                        </Label>
+                    </Frame>
+                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="2" Grid.Row="3">
+                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMBBaseAttackBonus">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="4"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="2" Grid.Row="4"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="StrengthModifierTitle" Text="Strength Modifier: " Grid.Column="0" Grid.Row="5"></Label>
+                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="5">
+                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMDStrengthModifier">
+                        </Label>
+                    </Frame>
+                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="2" Grid.Row="5">
+                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMBStrengthModifier">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="6"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="2" Grid.Row="6"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="SizeModifierTitle" Text="Size Modifier: " Grid.Column="0" Grid.Row="7"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CMDSizeModifier_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMDSizeModifier">
+                        </Label>
+                    </Frame>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="2" Grid.Row="7">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CMBSizeModifier_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMBSizeModifier">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="8"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DexterityModifierTitle" Text="Dexterity Modifier: " Grid.Column="0" Grid.Row="9"></Label>
+                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="9">
+                        <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CMDDexterityModifier">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="10"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" 10 " Grid.Column="1" Grid.Row="11"></Label>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
