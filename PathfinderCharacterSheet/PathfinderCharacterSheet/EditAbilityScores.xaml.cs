@@ -51,8 +51,9 @@ namespace PathfinderCharacterSheet
                     }
                     else
                     {
-                        if (j != 1)
+                        //if (j != 1)
                         {
+                            var readOnly = j % 2 == 0;
                             child = new Frame()
                             {
                                 Content = new Label()
@@ -61,13 +62,13 @@ namespace PathfinderCharacterSheet
                                     TextColor = Color.Black,
                                     HorizontalOptions = LayoutOptions.Center,
                                     VerticalOptions = LayoutOptions.Center,
-                                    TextDecorations = j != 2 ? TextDecorations.Underline : TextDecorations.None,
+                                    TextDecorations = readOnly ? TextDecorations.None : TextDecorations.Underline,
                                 },
                                 BorderColor = Color.Black,
-                                BackgroundColor = (j == 2) ? Color.LightGray : Color.White,
+                                BackgroundColor = readOnly ? Color.LightGray : Color.White,
                                 Padding = 5,
                             };
-                            if (j != 2)
+                            if (!readOnly)
                             {
                                 var tgr = new TapGestureRecognizer()
                                 {
@@ -78,16 +79,17 @@ namespace PathfinderCharacterSheet
                                 tgr.Tapped += (s, e) =>
                                 {
                                     var eivwm = new EditIntValueWithModifiers();
-                                    var modname = (adj ? "Temp Adjustment" : "Temp Modifier");
+                                    var modname = (adj ? "Temp Adjustment" : "Score");
                                     var abmodname = abilities[index] + " " + modname;
                                     var labs = localAbilityScores[index];
-                                    var vwm = adj ? labs.tempAdjustment : labs.tempModifier;
+                                    var vwm = adj ? labs.tempAdjustment : labs.score;
                                     eivwm.Init(vwm, "Edit " + abmodname, modname + ":", false);
                                     Navigation.PushAsync(eivwm);
                                 };
-                                ((child as Frame).Content as Label).GestureRecognizers.Add(tgr);
+                                (child as Frame).GestureRecognizers.Add(tgr);
                             }
                         }
+                        /*
                         else
                         {
                             child = new Frame()
@@ -106,6 +108,7 @@ namespace PathfinderCharacterSheet
                             var index = i;
                             ((child as Frame).Content as Entry).TextChanged += (s, e) => UpdateModifier(index);
                         }
+                        */
                     }
                     if (i == 0)
                         AbilityScores.Children.Add(child, j, i);
@@ -125,9 +128,12 @@ namespace PathfinderCharacterSheet
             if ((index + 5) > AbilityScores.Children.Count)
                 return;
             var ab = localAbilityScores[i - 1];
-            var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
-            MainPage.StrToInt(entry.Text, ref ab.score);
+            //var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
+            //MainPage.StrToInt(entry.Text, ref ab.score);
+            //((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.Total.ToString();
             ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
+            //((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.Total.ToString();
+            ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.TempModifier.ToString();
         }
 
         public void UpdateView()
@@ -142,10 +148,10 @@ namespace PathfinderCharacterSheet
                 var ab = localAbilityScores[i];
                 var index = (i + 1) * 5;
                 (AbilityScores.Children[index + 0] as Label).Text = abilities[i];
-                ((AbilityScores.Children[index + 1] as Frame).Content as Entry).Text = ab.score.ToString();
+                ((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.Total.ToString();
                 ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
                 ((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.Total.ToString();
-                ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.tempModifier.Total.ToString();
+                ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.TempModifier.ToString();
             }
         }
 

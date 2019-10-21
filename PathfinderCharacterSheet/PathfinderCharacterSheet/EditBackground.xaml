@@ -43,8 +43,17 @@
                         <Entry x:Name="NextLevel" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black" Keyboard="Numeric"></Entry>
                     </Frame>
 
-                    <Label VerticalOptions="Center" x:Name="LevelTitle" Text="Level:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="2"></Label>
+                    <Label VerticalOptions="Center" x:Name="LevelTitle" Text="Level:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="2">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Level_Tapped">
+                            </TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Level_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
                         <Label x:Name="Level" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black"></Label>
                     </Frame>
 

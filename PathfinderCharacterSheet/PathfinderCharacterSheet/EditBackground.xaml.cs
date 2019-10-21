@@ -29,26 +29,11 @@ namespace PathfinderCharacterSheet
             foreach (var v in values)
                 alignments.Add((CharacterSheet.Alignment)v);
             Alignment.ItemsSource = alignments;
-            var tgr = new TapGestureRecognizer();
-            tgr.Tapped += (s, e) => EditLevel();
-            Level.GestureRecognizers.Add(tgr);
-        }
-
-        private void EditLevel()
-        {
-            var loc = new EditLevelOfClass();
-            loc.Init(levelOfClass);
-            Navigation.PushAsync(loc);
-        }
-
-        public void UpdateView()
-        {
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             CharacterName.Text = c.name;
             Alignment.SelectedItem = c.alignment;
             Experience.Text = c.experience.ToString();
             NextLevel.Text = c.nextLevelExperience.ToString();
-            Level.Text = CharacterSheet.LevelOfClass.AsString(levelOfClass);
             Deity.Text = c.deity;
             Homeland.Text = c.homeland;
             Race.Text = c.Race;
@@ -60,6 +45,11 @@ namespace PathfinderCharacterSheet
             Hair.Text = c.hair;
             Eyes.Text = c.eyes;
             Biography.Text = c.biography;
+        }
+
+        public void UpdateView()
+        {
+            Level.Text = CharacterSheet.LevelOfClass.AsString(levelOfClass);
         }
 
         private bool StringToAlignment(string alignmentName, ref CharacterSheet.Alignment alignment)
@@ -94,6 +84,13 @@ namespace PathfinderCharacterSheet
             c.hair = Hair.Text;
             c.eyes = Eyes.Text;
             c.biography = Biography.Text;
+        }
+
+        private void Level_Tapped(object sender, EventArgs e)
+        {
+            var loc = new EditLevelOfClass();
+            loc.Init(levelOfClass);
+            Navigation.PushAsync(loc);
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

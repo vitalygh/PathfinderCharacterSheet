@@ -33,11 +33,11 @@
                     </Frame>
                     <Label Text="+" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="4" Grid.Row="1"></Label>
                     <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="5" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                          <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MiscModifiers_Tapped">
+                          </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
                         <Label x:Name="MiscModifiers" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MiscModifiers_Tapped">
-                                </TapGestureRecognizer>
-                            </Label.GestureRecognizers>
                         </Label>
                     </Frame>
                 </Grid>

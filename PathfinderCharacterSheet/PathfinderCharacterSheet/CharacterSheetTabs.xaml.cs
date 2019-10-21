@@ -39,7 +39,7 @@ namespace PathfinderCharacterSheet
             Eyes.Text = c.eyes;
             Biography.Text = c.biography;
 
-            const int columns = 3;
+            const int columns = 4;
             if (AbilityScores.Children.Count <= 0)
             {
                 for (var i = 0; i < (int)CharacterSheet.Ability.Total + 1; i++)
@@ -79,7 +79,7 @@ namespace PathfinderCharacterSheet
             (AbilityScores.Children[abscindex++] as Label).Text = "Ability Score";
             (AbilityScores.Children[abscindex++] as Label).Text = "Ability Modifier";
             //(AbilityScores.Children[abscindex++] as Label).Text = "Temp Adjustment";
-            //(AbilityScores.Children[abscindex++] as Label).Text = "Temp Modifier";
+            (AbilityScores.Children[abscindex++] as Label).Text = "Temp Modifier";
             var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
             var abilitiesCount = c.abilityScores.Length;
             for (var i = 0; i < abilitiesCount; i++)
@@ -87,10 +87,10 @@ namespace PathfinderCharacterSheet
                 var ab = c.abilityScores[i];
                 abscindex = (i + 1) * columns;
                 (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
-                ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.ToString();
+                ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.Total.ToString();
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.Modifier.ToString();
                 //((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.tempAdjustment.ToString();
-                //((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.tempModifier.ToString();
+                ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.TempModifier.ToString();
             }
 
             MaxHP.Text = c.hp.maxHP.Total.ToString();
@@ -155,6 +155,16 @@ namespace PathfinderCharacterSheet
             MeleeAttackBonus.Text = c.MeleeAttackBonus.ToString();
             MeleeDamageBonus.Text = c.MeleeDamageBonus.ToString();
             RangeAttackBonus.Text = c.RangeAttackBonus.ToString();
+
+            var baseSpeed = c.speed.baseSpeed.Total;
+            BaseSpeed.Text = baseSpeed.ToString() + " ft (" + CharacterSheet.Speed.InSquares(baseSpeed) + " sq)";
+            var speedWithArmor = c.speed.armorSpeed.Total;
+            SpeedWithArmor.Text = speedWithArmor.ToString() + " ft (" + CharacterSheet.Speed.InSquares(speedWithArmor) + " sq)";
+            FlySpeed.Text = c.speed.flySpeed.Total.ToString() + " ft";
+            Maneuverability.Text = c.speed.maneuverability.Total.ToString();
+            SwimSpeed.Text = c.speed.SwimSpeed.ToString() + " ft";
+            ClimbSpeed.Text = c.speed.ClimbSpeed.ToString() + " ft";
+            BurrowSpeed.Text = c.speed.burrowSpeed.Total.ToString() + " ft";
         }
 
         private void Biography_DoubleTapped(object sender, EventArgs e)
@@ -218,7 +228,7 @@ namespace PathfinderCharacterSheet
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-
+            Navigation.PushAsync(new EditSavingThrows());
         }
 
         private void BaseAttackBonus_DoubleTapped(object sender, EventArgs e)
@@ -242,6 +252,22 @@ namespace PathfinderCharacterSheet
         }
 
         private void CombatManeuver_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+
+        }
+
+        private void AttackBonus_DoubleTapped(object sender, EventArgs e)
+        {
+            var c = CharacterSheetStorage.Instance.selectedCharacter;
+            if (c == null)
+                return;
+
+        }
+
+        private void Speed_DoubleTapped(object sender, EventArgs e)
         {
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)

@@ -63,7 +63,7 @@ namespace PathfinderCharacterSheet
             if (ac.itemsArmorBonus)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(ac.armorBonus, "Edit Armor Class Armor Bonus", "Armor Bonus:", true);
+            eivwm.Init(ac.armorBonus, "Edit Armor Class Armor Bonus", "Armor Bonus:", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -72,35 +72,35 @@ namespace PathfinderCharacterSheet
             if (ac.itemsShieldBonus)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(ac.armorBonus, "Edit Armor Class Shield Bonus", "Shield Bonus:", true);
+            eivwm.Init(ac.armorBonus, "Edit Armor Class Shield Bonus", "Shield Bonus:", false);
             Navigation.PushAsync(eivwm);
         }
 
         private void SizeModifier_Tapped(object sender, EventArgs e)
         {
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(ac.sizeModifier, "Edit Armor Class Size Modifier", "Size Modifier:", true);
+            eivwm.Init(ac.sizeModifier, "Edit Armor Class Size Modifier", "Size Modifier:", false);
             Navigation.PushAsync(eivwm);
         }
 
         private void NaturalArmor_Tapped(object sender, EventArgs e)
         {
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(ac.naturalArmor, "Edit Armor Class Natural Armor", "Natural Armor:", true);
+            eivwm.Init(ac.naturalArmor, "Edit Armor Class Natural Armor", "Natural Armor:", false);
             Navigation.PushAsync(eivwm);
         }
 
         private void DeflectionModifier_Tapped(object sender, EventArgs e)
         {
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(ac.deflectionModifier, "Edit Armor Class Deflection Modifier", "Deflection Modifier:", true);
+            eivwm.Init(ac.deflectionModifier, "Edit Armor Class Deflection Modifier", "Deflection Modifier:", false);
             Navigation.PushAsync(eivwm);
         }
 
         private void MiscModifiers_Tapped(object sender, EventArgs e)
         {
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(ac.miscModifiers, "Edit Armor Class Misc Modifiers", "Misc Modifier:", true);
+            eivwm.Init(ac.miscModifiers, "Edit Armor Class Misc Modifiers", "Misc Modifier:", false);
             Navigation.PushAsync(eivwm);
         }
 
