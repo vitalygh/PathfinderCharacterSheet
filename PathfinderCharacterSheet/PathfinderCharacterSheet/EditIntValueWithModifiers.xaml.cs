@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditIntValueWithModifiers : ContentPage, ISheetView
 	{
+        private CharacterSheet sheet = null;
         private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> source = null;
         private CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers = null;
         private bool saveCharacter = false;
@@ -21,12 +22,13 @@ namespace PathfinderCharacterSheet
 			InitializeComponent ();
 		}
 
-        public void Init(CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> source, string title, string valueName, bool saveCharacter)
+        public void Init(CharacterSheet sheet, CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> source, string title, string valueName, bool saveCharacter)
         {
             Title = title;
             ValueName.Text = valueName;
             if (source == null)
                 return;
+            this.sheet = sheet;
             this.source = source;
             this.saveCharacter = saveCharacter;
             modifiers = source.modifiers.Clone;
@@ -39,7 +41,7 @@ namespace PathfinderCharacterSheet
             UpdateModifiersSum();
             if (modifiers == null)
                 return;
-            MainPage.FillIntMLGrid(Modifiers, modifiers, "Modifiers:", EditModifier, EditModifier, (modifiers, modifier) => UpdateModifiersSum());
+            MainPage.FillIntMLGrid(Modifiers, sheet, modifiers, "Modifiers:", EditModifier, EditModifier, (modifiers, modifier) => UpdateModifiersSum());
         }
 
         private void UpdateTotal()
@@ -47,14 +49,14 @@ namespace PathfinderCharacterSheet
             var total = 0;
             MainPage.StrToInt(Value.Text, ref total);
             if (modifiers != null)
-                total += modifiers.Sum;
+                total += modifiers.GetTotal(sheet);
             Total.Text = total.ToString();
         }
 
         private void UpdateModifiersSum()
         {
             if (modifiers != null)
-                ModifiersSum.Text = modifiers.Sum.ToString();
+                ModifiersSum.Text = modifiers.GetTotal(sheet).ToString();
             UpdateTotal();
         }
 
@@ -66,7 +68,7 @@ namespace PathfinderCharacterSheet
         private void EditModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, CharacterSheet.Modifier<int> modifier)
         {
             var page = new EditIntModifier();
-            page.Init(modifiers, modifier);
+            page.Init(sheet, modifiers, modifier);
             Navigation.PushAsync(page);
         }
 

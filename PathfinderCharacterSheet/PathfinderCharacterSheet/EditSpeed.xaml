@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditSpeed"
+             Title="Edit Speed">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="SpeedTitle" Text="Speed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center" Grid.Column="1" Grid.Row="0">
+                    </Label>
+                    <Label x:Name="BaseSpeedTitle" Text="Base: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="BaseSpeed_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="BaseSpeed" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="SpeedWithArmorTitle" Text="With Armor: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SpeedWithArmor_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="SpeedWithArmor" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="FlySpeedTitle" Text="Fly: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FlySpeed_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="FlySpeed" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="ManeuverabilityTitle" Text="Maneuverability: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Maneuverability_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Maneuverability" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="SwimSpeedTitle" Text="Swim: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    </Label>
+                    <Frame x:Name="SwimSpeedFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SwimSpeed_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="SwimSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultSwimTitle" Text="Swim = Base / 2" Grid.Column="0" Grid.Row="6"></Label>
+                    <CheckBox x:Name="DefaultSwim" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="DefaultSwim_Changed" Grid.Column="1" Grid.Row="6"></CheckBox>
+                    <Label x:Name="ClimbSpeedTitle" Text="Climb: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="7">
+                    </Label>
+                    <Frame x:Name="ClimbSpeedFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ClimbSpeed_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="ClimbSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultClimbTitle" Text="Climb = Base / 4" Grid.Column="0" Grid.Row="8"></Label>
+                    <CheckBox x:Name="DefaultClimb" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="DefaultClimb_Changed" Grid.Column="1" Grid.Row="8"></CheckBox>
+                    <Label x:Name="BurrowSpeedTitle" Text="Burrow: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="9">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="9">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="BurrowSpeed_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="BurrowSpeed" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

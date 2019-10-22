@@ -24,44 +24,44 @@ namespace PathfinderCharacterSheet
 
         private void InitEditor()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
-            cmdSizeModifier = c.cmdSizeModifier.Clone;
-            cmbSizeModifier = c.cmbSizeModifier.Clone;
-            CMDBaseAttackBonus.Text = c.baseAttackBonus.Total.ToString();
+            cmdSizeModifier = sheet.cmdSizeModifier.Clone;
+            cmbSizeModifier = sheet.cmbSizeModifier.Clone;
+            CMDBaseAttackBonus.Text = sheet.baseAttackBonus.GetTotal(sheet).ToString();
             CMBBaseAttackBonus.Text = CMDBaseAttackBonus.Text;
-            CMDStrengthModifier.Text = c.GetAbilityModifier(CharacterSheet.Ability.Strength).ToString();
+            CMDStrengthModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Strength).ToString();
             CMBStrengthModifier.Text = CMDStrengthModifier.Text;
-            CMDDexterityModifier.Text = c.GetAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
+            CMDDexterityModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
         }
 
         public void UpdateView()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
-            CMDSizeModifier.Text = cmdSizeModifier.Total.ToString();
-            CMBSizeModifier.Text = cmbSizeModifier.Total.ToString();
-            CMDTotal.Text = c.GetCMD(cmdSizeModifier).ToString();
-            CMBTotal.Text = c.GetCMB(cmbSizeModifier).ToString();
+            CMDSizeModifier.Text = cmdSizeModifier.GetTotal(sheet).ToString();
+            CMBSizeModifier.Text = cmbSizeModifier.GetTotal(sheet).ToString();
+            CMDTotal.Text = sheet.GetCMD(sheet, cmdSizeModifier).ToString();
+            CMBTotal.Text = sheet.GetCMB(sheet, cmbSizeModifier).ToString();
         }
 
         private void EditToView()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
             var hasChanges = false;
-            if (!cmdSizeModifier.Equals(c.cmdSizeModifier))
+            if (!cmdSizeModifier.Equals(sheet.cmdSizeModifier))
             {
                 hasChanges = true;
-                c.cmdSizeModifier = cmdSizeModifier;
+                sheet.cmdSizeModifier = cmdSizeModifier;
             }
-            if (!cmbSizeModifier.Equals(c.cmbSizeModifier))
+            if (!cmbSizeModifier.Equals(sheet.cmbSizeModifier))
             {
                 hasChanges = true;
-                c.cmbSizeModifier = cmbSizeModifier;
+                sheet.cmbSizeModifier = cmbSizeModifier;
             }
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
@@ -69,15 +69,21 @@ namespace PathfinderCharacterSheet
 
         private void CMDSizeModifier_Tapped(object sender, EventArgs e)
         {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(cmdSizeModifier, "Edit CMD Size Modifier", "Size Modifier: ", false);
+            eivwm.Init(sheet, cmdSizeModifier, "Edit CMD Size Modifier", "Size Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
         private void CMBSizeModifier_Tapped(object sender, EventArgs e)
         {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(cmbSizeModifier, "Edit CMB Size Modifier", "Size Modifier: ", false);
+            eivwm.Init(sheet, cmbSizeModifier, "Edit CMB Size Modifier", "Size Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 

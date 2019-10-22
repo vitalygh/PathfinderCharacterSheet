@@ -22,6 +22,9 @@ namespace PathfinderCharacterSheet
                 var c = CharacterSheetStorage.Instance.selectedCharacter;
                 if (c != null)
                     tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
+                var sheet = (tabs.CurrentPage as ISheetView);
+                if (sheet != null)
+                    sheet.UpdateView();
             };
         }
 
@@ -179,7 +182,9 @@ namespace PathfinderCharacterSheet
             Characters.IsVisible = false;
             CharacterSheetStorage.Instance.selectedCharacter = c;
             tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
-            tabs.UpdateView();
+            var view = tabs.CurrentPage as ISheetView;
+            if (view != null)
+                view.UpdateView();
             Navigation.PushAsync(tabs);
         }
 
@@ -196,7 +201,7 @@ namespace PathfinderCharacterSheet
         }
 
 
-        public static void FillIntMLGrid(Grid grid, CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, string title,
+        public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, string title,
                                                 Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>> addModifier,
                                                 Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>, CharacterSheet.Modifier<int>> editModifier,
                                                 Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>, CharacterSheet.Modifier<int>> activateModifier)
@@ -287,7 +292,7 @@ namespace PathfinderCharacterSheet
                         TextColor = Color.Black,
                         VerticalTextAlignment = TextAlignment.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.Value.ToString(),
+                        Text = t.GetValue(sheet).ToString(),
                     },
                     BorderColor = Color.Black,
                     Padding = 5,

@@ -34,45 +34,45 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
-            FortitudeTotal.Text = GetST(CharacterSheet.Save.Fortitude).GetTotal(c).ToString();
-            ReflexTotal.Text = GetST(CharacterSheet.Save.Reflex).GetTotal(c).ToString();
-            WillTotal.Text = GetST(CharacterSheet.Save.Will).GetTotal(c).ToString();
+            FortitudeTotal.Text = GetST(CharacterSheet.Save.Fortitude).GetTotal(sheet).ToString();
+            ReflexTotal.Text = GetST(CharacterSheet.Save.Reflex).GetTotal(sheet).ToString();
+            WillTotal.Text = GetST(CharacterSheet.Save.Will).GetTotal(sheet).ToString();
 
-            FortitudeBaseSave.Text = GetST(CharacterSheet.Save.Fortitude).baseSave.Total.ToString();
-            ReflexBaseSave.Text = GetST(CharacterSheet.Save.Reflex).baseSave.Total.ToString();
-            WillBaseSave.Text = GetST(CharacterSheet.Save.Will).baseSave.Total.ToString();
+            FortitudeBaseSave.Text = GetST(CharacterSheet.Save.Fortitude).baseSave.GetTotal(sheet).ToString();
+            ReflexBaseSave.Text = GetST(CharacterSheet.Save.Reflex).baseSave.GetTotal(sheet).ToString();
+            WillBaseSave.Text = GetST(CharacterSheet.Save.Will).baseSave.GetTotal(sheet).ToString();
 
-            FortitudeAbilityModifier.Text = GetST(CharacterSheet.Save.Fortitude).GetAbilityModifier(c).ToString();
-            ReflexAbilityModifier.Text = GetST(CharacterSheet.Save.Reflex).GetAbilityModifier(c).ToString();
-            WillAbilityModifier.Text = GetST(CharacterSheet.Save.Will).GetAbilityModifier(c).ToString();
+            FortitudeAbilityModifier.Text = GetST(CharacterSheet.Save.Fortitude).GetAbilityModifier(sheet).ToString();
+            ReflexAbilityModifier.Text = GetST(CharacterSheet.Save.Reflex).GetAbilityModifier(sheet).ToString();
+            WillAbilityModifier.Text = GetST(CharacterSheet.Save.Will).GetAbilityModifier(sheet).ToString();
 
-            FortitudeMagicModifier.Text = GetST(CharacterSheet.Save.Fortitude).magicModifier.Total.ToString();
-            ReflexMagicModifier.Text = GetST(CharacterSheet.Save.Reflex).magicModifier.Total.ToString();
-            WillMagicModifier.Text = GetST(CharacterSheet.Save.Will).magicModifier.Total.ToString();
+            FortitudeMagicModifier.Text = GetST(CharacterSheet.Save.Fortitude).magicModifier.GetTotal(sheet).ToString();
+            ReflexMagicModifier.Text = GetST(CharacterSheet.Save.Reflex).magicModifier.GetTotal(sheet).ToString();
+            WillMagicModifier.Text = GetST(CharacterSheet.Save.Will).magicModifier.GetTotal(sheet).ToString();
 
-            FortitudeMiscModifier.Text = GetST(CharacterSheet.Save.Fortitude).miscModifier.Total.ToString();
-            ReflexMiscModifier.Text = GetST(CharacterSheet.Save.Reflex).miscModifier.Total.ToString();
-            WillMiscModifier.Text = GetST(CharacterSheet.Save.Will).miscModifier.Total.ToString();
+            FortitudeMiscModifier.Text = GetST(CharacterSheet.Save.Fortitude).miscModifier.GetTotal(sheet).ToString();
+            ReflexMiscModifier.Text = GetST(CharacterSheet.Save.Reflex).miscModifier.GetTotal(sheet).ToString();
+            WillMiscModifier.Text = GetST(CharacterSheet.Save.Will).miscModifier.GetTotal(sheet).ToString();
 
-            FortitudeTempModifier.Text = GetST(CharacterSheet.Save.Fortitude).tempModifier.Total.ToString();
-            ReflexTempModifier.Text = GetST(CharacterSheet.Save.Reflex).tempModifier.Total.ToString();
-            WillTempModifier.Text = GetST(CharacterSheet.Save.Will).tempModifier.Total.ToString();
+            FortitudeTempModifier.Text = GetST(CharacterSheet.Save.Fortitude).tempModifier.GetTotal(sheet).ToString();
+            ReflexTempModifier.Text = GetST(CharacterSheet.Save.Reflex).tempModifier.GetTotal(sheet).ToString();
+            WillTempModifier.Text = GetST(CharacterSheet.Save.Will).tempModifier.GetTotal(sheet).ToString();
         }
 
         private void EditToView()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
             var hasChanges = false;
             var count = savingThrows.Count;
             for (var i = 0; i < count; i++)
-                if (!savingThrows[i].Equals(c.savingThrows[i]))
+                if (!savingThrows[i].Equals(sheet.savingThrows[i]))
                 {
-                    c.savingThrows = savingThrows.ToArray();
+                    sheet.savingThrows = savingThrows.ToArray();
                     hasChanges = true;
                     break;
                 }
@@ -95,8 +95,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Fortitude);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.baseSave, "Edit Fortitude Base Save", "Base Save: ", false);
+            eivwm.Init(sheet, st.baseSave, "Edit Fortitude Base Save", "Base Save: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -105,8 +108,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Reflex);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.baseSave, "Edit Reflex Base Save", "Base Save: ", false);
+            eivwm.Init(sheet, st.baseSave, "Edit Reflex Base Save", "Base Save: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -115,8 +121,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Will);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.baseSave, "Edit Will Base Save", "Base Save: ", false);
+            eivwm.Init(sheet, st.baseSave, "Edit Will Base Save", "Base Save: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -125,8 +134,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Fortitude);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.magicModifier, "Edit Fortitude Magic Modifier", "Magic Modifier: ", false);
+            eivwm.Init(sheet, st.magicModifier, "Edit Fortitude Magic Modifier", "Magic Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -135,8 +147,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Reflex);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.magicModifier, "Edit Reflex Magic Modifier", "Magic Modifier: ", false);
+            eivwm.Init(sheet, st.magicModifier, "Edit Reflex Magic Modifier", "Magic Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -145,8 +160,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Will);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.magicModifier, "Edit Will Magic Modifier", "Magic Modifier: ", false);
+            eivwm.Init(sheet, st.magicModifier, "Edit Will Magic Modifier", "Magic Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -155,8 +173,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Fortitude);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.miscModifier, "Edit Fortitude Misc Modifier", "Misc Modifier: ", false);
+            eivwm.Init(sheet, st.miscModifier, "Edit Fortitude Misc Modifier", "Misc Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -165,8 +186,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Reflex);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.miscModifier, "Edit Reflex Misc Modifier", "Misc Modifier: ", false);
+            eivwm.Init(sheet, st.miscModifier, "Edit Reflex Misc Modifier", "Misc Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -175,8 +199,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Will);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.miscModifier, "Edit Will Misc Modifier", "Misc Modifier: ", false);
+            eivwm.Init(sheet, st.miscModifier, "Edit Will Misc Modifier", "Misc Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -185,8 +212,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Fortitude);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.tempModifier, "Edit Fortitude Temp Modifier", "Temp Modifier: ", false);
+            eivwm.Init(sheet, st.tempModifier, "Edit Fortitude Temp Modifier", "Temp Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -195,8 +225,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Reflex);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.tempModifier, "Edit Reflex Temp Modifier", "Temp Modifier: ", false);
+            eivwm.Init(sheet, st.tempModifier, "Edit Reflex Temp Modifier", "Temp Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -205,8 +238,11 @@ namespace PathfinderCharacterSheet
             var st = GetST(CharacterSheet.Save.Will);
             if (st == null)
                 return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(st.tempModifier, "Edit Will Temp Modifier", "Temp Modifier: ", false);
+            eivwm.Init(sheet, st.tempModifier, "Edit Will Temp Modifier", "Temp Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 

@@ -70,7 +70,7 @@
                         <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="DexModifier"></Label>
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="12"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" x:Name="SizeModifierTitle" Text="Size Modifier: " Grid.Column="0" Grid.Row="13"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="SizeModifierTitle" Text="Size Modifier: " Grid.Column="0" Grid.Row="13"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="13">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SizeModifier_Tapped">

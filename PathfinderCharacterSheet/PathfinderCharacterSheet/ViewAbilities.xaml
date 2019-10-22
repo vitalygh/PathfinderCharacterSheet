@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.ViewAbilities"
+             Title="Abilities">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid x:Name="AbilityScores" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="AbilityScores_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <!--
+                            <ColumnDefinition Width="*" />
+                            -->
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="MaxHP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="MaxHP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="HPTitle" Text=" HP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="DamageResistTitle" Text=" Damage Resist: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="DamageResist_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Label.GestureRecognizers>
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="DamageResist_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Initiative_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="InitiativeTitle" Text=" Initiative: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="Initiative" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="ArmorClass_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="ArmorClassTitle" Text="Armor Class: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="ArmorClass" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="TouchACTitle" Text="Touch AC: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="TouchAC" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="FlatFootedACTitle" Text="Flat-Footed AC: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                        <Label x:Name="FlatFootedAC" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="SavingThrows_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="FortitudeTitle" Text="Fortitude: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="Fortitude" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="ReflexTitle" Text="Reflex: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="Reflex" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="WillTitle" Text="Will: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                        <Label x:Name="Will" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="BaseAttackBonus_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="BaseAttackBonusTitle" Text="Base Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="BaseAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="SpellResistance_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="SpellResistanceTitle" Text="Spell Resistance: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="SpellResistance" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="CombatManeuver_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="CMBTitle" Text="CMB: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="CMB" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="CMDTitle" Text="CMD: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="CMD" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <!--
+                    <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="AttackBonus_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Grid.GestureRecognizers>                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Label x:Name="MeleeAttackBonusTitle" Text="Melee Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                        </Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                            <Label x:Name="MeleeAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                            </Label>
+                        </Frame>
+                        <Label x:Name="MeleeDamageBonusTitle" Text="Melee Damage Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                        </Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                            <Label x:Name="MeleeDamageBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                            </Label>
+                        </Frame>
+                        <Label x:Name="RangeAttackBonusTitle" Text="Range Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="2">
+                        </Label>
+                        <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                            <Label x:Name="RangeAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                            </Label>
+                        </Frame>
+                    </Grid>
+                    -->
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Speed_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="BaseSpeedTitle" Text="Base Speed: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="BaseSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="SpeedWithArmorTitle" Text="With Armor: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="SpeedWithArmor" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="FlySpeedTitle" Text="Fly: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                        <Label x:Name="FlySpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="ManeuverabilityTitle" Text="Maneuverability: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Label x:Name="Maneuverability" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="SwimSpeedTitle" Text="Swim: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4">
+                        <Label x:Name="SwimSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="ClimbSpeedTitle" Text="Climb: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
+                        <Label x:Name="ClimbSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="BurrowSpeedTitle" Text="Burrow: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6">
+                        <Label x:Name="BurrowSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

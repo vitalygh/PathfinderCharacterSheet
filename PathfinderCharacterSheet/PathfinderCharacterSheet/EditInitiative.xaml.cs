@@ -24,10 +24,10 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            var dexMod = c.GetAbilityModifier(CharacterSheet.Ability.Dexterity);
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var dexMod = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity);
             DexModifier.Text = dexMod.ToString();
-            var miscMod = modifiers.Total;
+            var miscMod = modifiers.GetTotal(sheet);
             MiscModifiers.Text = miscMod.ToString();
             Total.Text = (dexMod + miscMod).ToString();
         }
@@ -45,8 +45,11 @@ namespace PathfinderCharacterSheet
 
         private void MiscModifiers_Tapped(object sender, EventArgs e)
         {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(modifiers, "Edit Initiative Misc Modifiers", "Misc Modifiers: ", false);
+            eivwm.Init(sheet, modifiers, "Edit Initiative Misc Modifiers", "Misc Modifiers: ", false);
             Navigation.PushAsync(eivwm);
         }
 

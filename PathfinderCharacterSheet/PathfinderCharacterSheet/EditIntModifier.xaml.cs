@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditIntModifier : ContentPage
 	{
+        private CharacterSheet sheet = null;
         private CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiersList = null;
         private CharacterSheet.Modifier<int> modifier = null;
 
@@ -20,8 +21,9 @@ namespace PathfinderCharacterSheet
 			InitializeComponent ();
 		}
 
-        public void Init(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiersList, CharacterSheet.Modifier<int> modifier)
+        public void Init(CharacterSheet sheet, CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiersList, CharacterSheet.Modifier<int> modifier)
         {
+            this.sheet = sheet;
             this.modifiersList = modifiersList;
             this.modifier = modifier;
             ViewToEdit();
@@ -33,7 +35,7 @@ namespace PathfinderCharacterSheet
             if (modifier == null)
                 return;
             IsActive.IsChecked = modifier.IsActive;
-            Value.Text = modifier.Value.ToString();
+            Value.Text = modifier.GetValue(sheet).ToString();
             Name.Text = modifier.Name;
         }
 

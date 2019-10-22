@@ -25,13 +25,6 @@ namespace PathfinderCharacterSheet
                 }
             }
 
-            public static LevelOfClass CreateClone(LevelOfClass loc)
-            {
-                if (loc == null)
-                    return null;
-                return loc.Clone;
-            }
-
             public static List<LevelOfClass> CreateClone(List<LevelOfClass> loc)
             {
                 if (loc == null)
@@ -140,19 +133,13 @@ namespace PathfinderCharacterSheet
         {
             public ValueWithModifiers<int, IntSum> score = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> tempAdjustment = new ValueWithModifiers<int, IntSum>();
-            public int Modifier
+            public int GetModifier(CharacterSheet sheet)
             {
-                get
-                {
-                    return CalcModifier(score.Total, 0);
-                }
+                return CalcModifier(score.GetTotal(sheet), 0);
             }
-            public int TempModifier
+            public int GetTempModifier(CharacterSheet sheet)
             {
-                get
-                {
-                    return CalcModifier(score.Total, tempAdjustment.Total);
-                }
+                return CalcModifier(score.GetTotal(sheet), tempAdjustment.GetTotal(sheet));
             }
             private static int CalcModifier(int score, int tempAdjustment)
             {
@@ -185,23 +172,11 @@ namespace PathfinderCharacterSheet
         public class Modifier<T>
         {
             public bool active = true;
-            public bool IsActive { get { return active; } }
+            public virtual bool IsActive { get { return active; } }
             public string name = null;
-            public string Name { get { return name; } }
-            public T value = default(T);
-            public T Value { get { return value; } }
-
-            public static Modifier<T> CreateClone(Modifier<T> mod)
-            {
-                if (mod == null)
-                    return null;
-                return new Modifier<T>()
-                {
-                    active = mod.IsActive,
-                    name = mod.Name,
-                    value = mod.Value,
-                };
-            }
+            public virtual string Name { get { return name; } }
+            public  T value = default(T);
+            public virtual T GetValue(CharacterSheet sheet) { return value; }
 
             public Modifier<T> Clone
             {
@@ -235,7 +210,7 @@ namespace PathfinderCharacterSheet
                     return this;
                 active = source.IsActive;
                 name = source.Name;
-                value = source.Value;
+                value = source.value;
                 return this;
             }
 
@@ -248,7 +223,7 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (other.Name != Name)
                     return false;
-                if (!other.Value.Equals(Value))
+                if (!other.value.Equals(value))
                     return false;
                 return true;
             }
@@ -276,21 +251,15 @@ namespace PathfinderCharacterSheet
                 return true;
             }
 
-            public static T Sum<S>(List<Modifier<T>> modifiers) where S : ISummable<T>, new()
+            public static T Sum<S>(CharacterSheet sheet, List<Modifier<T>> modifiers) where S : ISummable<T>, new()
             {
-                return Sum<T, S>(modifiers);
+                return Sum<T, S>(sheet, modifiers);
             }
         }
 
         public class ModifiersList<T, S> : List<Modifier<T>> where S : ISummable<T>, new()
         {
-            public T Sum { get { return Sum<T, S>(this); } }
-            public static ModifiersList<T, S> CreateClone(ModifiersList<T, S> ml)
-            {
-                if (ml == null)
-                    return null;
-                return ml.Clone;
-            }
+            public T GetTotal(CharacterSheet sheet) { return Sum<T, S>(sheet, this); }
             public virtual ModifiersList<T, S> Clone { get { return new ModifiersList<T, S>().Fill(this); } }
             public ModifiersList<T, S> Fill(ModifiersList<T, S> source)
             {
@@ -305,14 +274,7 @@ namespace PathfinderCharacterSheet
         {
             public T baseValue = default(T);
             public ModifiersList<T, S> modifiers = new ModifiersList<T, S>();
-            public T Total { get { return Sum<T, S>(baseValue, modifiers.Sum); } }
-
-            public static ValueWithModifiers<T, S> CreateClone(ValueWithModifiers<T, S> vwm)
-            {
-                if (vwm == null)
-                    return null;
-                return vwm.Clone;
-            }
+            public T GetTotal(CharacterSheet sheet) { return Sum<T, S>(baseValue, modifiers.GetTotal(sheet)); }
 
             public ValueWithModifiers<T, S> Clone
             {   get
@@ -365,13 +327,13 @@ namespace PathfinderCharacterSheet
             return new S().Add(a, b);
         }
 
-        public static T Sum<T, S>(List<Modifier<T>> modifiers, bool activeOnly = true) where S: ISummable<T>, new()
+        public static T Sum<T, S>(CharacterSheet sheet, List<Modifier<T>> modifiers, bool activeOnly = true) where S: ISummable<T>, new()
         {
             T value = default(T);
             if (modifiers != null)
                 foreach (var m in modifiers)
                     if (m.IsActive || !activeOnly)
-                        value = Sum<T, S>(value, m.Value);
+                        value = Sum<T, S>(value, m.GetValue(sheet));
             return value;
         }
 
@@ -379,7 +341,7 @@ namespace PathfinderCharacterSheet
         {
             int ab = (int)ability;
             if ((ab >= 0) && (ab < sheet.abilityScores.Length))
-                return sheet.abilityScores[ab].Modifier;
+                return sheet.abilityScores[ab].GetModifier(sheet);
             return 0;
         }
 
@@ -413,7 +375,7 @@ namespace PathfinderCharacterSheet
 
             public int GetTotal(CharacterSheet sheet)
             {
-                return baseSave.Total + GetAbilityModifier(sheet) + magicModifier.Total + miscModifier.Total + tempModifier.Total;
+                return baseSave.GetTotal(sheet) + GetAbilityModifier(sheet) + magicModifier.GetTotal(sheet) + miscModifier.GetTotal(sheet) + tempModifier.GetTotal(sheet);
             }
 
             public SavingThrow Clone
@@ -458,9 +420,9 @@ namespace PathfinderCharacterSheet
             public ValueWithModifiers<int, IntSum> swimSpeed = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> climbSpeed = new ValueWithModifiers<int, IntSum>();
             public bool defaultSwimSpeed = true;
-            public int SwimSpeed { get { return defaultSwimSpeed ? (baseSpeed.Total / 2) : swimSpeed.Total; } }
+            public int GetSwimSpeed(CharacterSheet sheet) { return defaultSwimSpeed ? (baseSpeed.GetTotal(sheet) / 2) : swimSpeed.GetTotal(sheet); }
             public bool defaultClimbSpeed = true;
-            public int ClimbSpeed { get { return defaultClimbSpeed ? (baseSpeed.Total / 4) : climbSpeed.Total; } }
+            public int GetClimbSpeed(CharacterSheet sheet) { return defaultClimbSpeed ? (baseSpeed.GetTotal(sheet) / 4) : climbSpeed.GetTotal(sheet); }
             public ValueWithModifiers<int, IntSum> burrowSpeed = new ValueWithModifiers<int, IntSum>();
 
             public static int InSquares(int speed)
@@ -525,7 +487,7 @@ namespace PathfinderCharacterSheet
             public ValueWithModifiers<int, IntSum> miscModifiers = new ValueWithModifiers<int, IntSum>();
             public int GetInitiative(CharacterSheet sheet)
             {
-                return GetAbilityModifier(sheet, Ability.Dexterity) + miscModifiers.Total;
+                return GetAbilityModifier(sheet, Ability.Dexterity) + miscModifiers.GetTotal(sheet);
             }
         }
 
@@ -589,7 +551,7 @@ namespace PathfinderCharacterSheet
             public string name = null;
             public bool classSkill = false;
             public Ability abilityModifierSource = Ability.None;
-            public int rank = 0;
+            public ValueWithModifiers<int, IntSum> rank = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> miscModifiers = new ValueWithModifiers<int, IntSum>();
             public bool armorPenalty = false;
             public bool trainedOnly = false;
@@ -671,49 +633,46 @@ namespace PathfinderCharacterSheet
                 return true;
             }
 
-            private int GetBaseArmorClass
+            private int GetBaseArmorClass(CharacterSheet sheet)
             {
-                get
-                {
-                    return 10 + sizeModifier.Total + deflectionModifier.Total + miscModifiers.Total;
-                }
+                return 10 + sizeModifier.GetTotal(sheet) + deflectionModifier.GetTotal(sheet) + miscModifiers.GetTotal(sheet);
             }
 
             public int GetArmorBonus(CharacterSheet sheet)
             {
                 if (!itemsArmorBonus)
-                    return armorBonus.Total;
+                    return armorBonus.GetTotal(sheet);
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
                     if (item.isArmor)
-                        ac += item.bonus.Total;
+                        ac += item.bonus.GetTotal(sheet);
                 return ac;
             }
 
             public int GetShieldBonus(CharacterSheet sheet)
             {
                 if (!itemsShieldBonus)
-                    return shieldBonus.Total;
+                    return shieldBonus.GetTotal(sheet);
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
                     if (item.isShield)
-                        ac += item.bonus.Total;
+                        ac += item.bonus.GetTotal(sheet);
                 return ac;
             }
 
             public int GetTotal(CharacterSheet sheet)
             {
-                return GetBaseArmorClass + GetAbilityModifier(sheet, Ability.Dexterity) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.Total;
+                return GetBaseArmorClass(sheet) + GetAbilityModifier(sheet, Ability.Dexterity) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.GetTotal(sheet);
             }
 
             public int GetTouch(CharacterSheet sheet)
             {
-                return GetBaseArmorClass + GetAbilityModifier(sheet, Ability.Dexterity);
+                return GetBaseArmorClass(sheet) + GetAbilityModifier(sheet, Ability.Dexterity);
             }
 
             public int GetFlatFooted(CharacterSheet sheet)
             {
-                return GetBaseArmorClass + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.Total;
+                return GetBaseArmorClass(sheet) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.GetTotal(sheet);
             }
         }
 
@@ -728,21 +687,28 @@ namespace PathfinderCharacterSheet
             public string properties = null;
         }
 
-        public class DiceThrow
+        public class DiceRoll
         {
             public ValueWithModifiers<int, IntSum> diceCount = new ValueWithModifiers<int, IntSum>();
-            public int diceValue = 0;
+            public ValueWithModifiers<int, IntSum> diceValue = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> miscModifiers = new ValueWithModifiers<int, IntSum>();
+        }
+
+        public class CriticalHit
+        {
+            public ValueWithModifiers<int, IntSum> min = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> max = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> multiplier = new ValueWithModifiers<int, IntSum>();
         }
 
         public class WeaponItem: Item
         {
-            public ValueWithModifiers<int, IntSum> bonus = new ValueWithModifiers<int, IntSum>();
-            public string critical = null;
+            public ValueWithModifiers<int, IntSum> attackBonus = new ValueWithModifiers<int, IntSum>();
+            public CriticalHit critical = new CriticalHit();
             public string type = null;
             public ValueWithModifiers<int, IntSum> range = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> ammunition = new ValueWithModifiers<int, IntSum>();
-            public DiceThrow damage = new DiceThrow();
+            public DiceRoll damage = new DiceRoll();
         }
 
         public class Item: ItemWithDescription
@@ -878,18 +844,18 @@ namespace PathfinderCharacterSheet
 
         public ValueWithModifiers<int, IntSum> cmdSizeModifier = new ValueWithModifiers<int, IntSum>();
         public ValueWithModifiers<int, IntSum> cmbSizeModifier = new ValueWithModifiers<int, IntSum>();
-        public int GetCMD(ValueWithModifiers<int, IntSum> sizeModifier) { return 10 + baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.Total; }
-        public int CMD { get { return GetCMD(cmdSizeModifier); } }
-        public int GetCMB(ValueWithModifiers<int, IntSum> sizeModifier) { return baseAttackBonus.Total + GetAbilityModifier(this, Ability.Strength) + sizeModifier.Total; }
-        public int CMB { get { return GetCMB(cmbSizeModifier); } }
+        public int GetCMD(CharacterSheet sheet, ValueWithModifiers<int, IntSum> sizeModifier) { return 10 + baseAttackBonus.GetTotal(sheet) + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.GetTotal(sheet); }
+        public int CMD { get { return GetCMD(this, cmdSizeModifier); } }
+        public int GetCMB(CharacterSheet sheet, ValueWithModifiers<int, IntSum> sizeModifier) { return baseAttackBonus.GetTotal(sheet) + GetAbilityModifier(this, Ability.Strength) + sizeModifier.GetTotal(sheet); }
+        public int CMB { get { return GetCMB(this, cmbSizeModifier); } }
 
         public int sizeModifier = 0;
         public ValueWithModifiers<int, IntSum> meleeAttackBonusModifiers = new ValueWithModifiers<int, IntSum>();
-        public int MeleeAttackBonus { get { return baseAttackBonus.Total + meleeAttackBonusModifiers.Total + GetAbilityModifier(this, Ability.Strength) + sizeModifier; } }
+        public int MeleeAttackBonus { get { return baseAttackBonus.GetTotal(this) + meleeAttackBonusModifiers.GetTotal(this) + GetAbilityModifier(this, Ability.Strength) + sizeModifier; } }
         public ValueWithModifiers<int, IntSum> meleeDamageBonusModifiers = new ValueWithModifiers<int, IntSum>();
-        public int MeleeDamageBonus { get { return meleeDamageBonusModifiers.Total + GetAbilityModifier(this, Ability.Strength); } }
+        public int MeleeDamageBonus { get { return meleeDamageBonusModifiers.GetTotal(this) + GetAbilityModifier(this, Ability.Strength); } }
         public ValueWithModifiers<int, IntSum> rangeAttackBonusModifiers = new ValueWithModifiers<int, IntSum>();
-        public int RangeAttackBonus { get { return baseAttackBonus.Total + rangeAttackBonusModifiers.Total + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier; } }
+        public int RangeAttackBonus { get { return baseAttackBonus.GetTotal(this) + rangeAttackBonusModifiers.GetTotal(this) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier; } }
         #endregion
 
         #region Weapons
@@ -946,7 +912,7 @@ namespace PathfinderCharacterSheet
             new SkillRank(Skill.UseMagicDevice, Ability.Charisma, true),
         };
         public string skillsConditionalModifiers = null;
-        public List<string> languages = new List<string>();
+        public string languages = null;
         #endregion
 
         #region Feats & Special Abilities

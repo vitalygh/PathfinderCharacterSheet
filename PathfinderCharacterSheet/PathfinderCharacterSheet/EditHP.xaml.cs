@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditHP : ContentPage, ISheetView
 	{
+        private CharacterSheet sheet = null;
         private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> maxHP = null;
         private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> hp = null;
         private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> damageResist = null;
@@ -24,13 +25,13 @@ namespace PathfinderCharacterSheet
 
         private void ViewToEdit()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            maxHP = c.hp.maxHP.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
-            hp = c.hp.hp.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
-            damageResist = c.hp.damageResist.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
-            MaxHP.Text = c.hp.maxHP.Total.ToString();
-            HP.Text = c.hp.hp.Total.ToString();
-            DamageResist.Text = c.hp.damageResist.Total.ToString();
+            sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            maxHP = sheet.hp.maxHP.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
+            hp = sheet.hp.hp.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
+            damageResist = sheet.hp.damageResist.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
+            MaxHP.Text = sheet.hp.maxHP.GetTotal(sheet).ToString();
+            HP.Text = sheet.hp.hp.GetTotal(sheet).ToString();
+            DamageResist.Text = sheet.hp.damageResist.GetTotal(sheet).ToString();
             UpdateView();
         }
 
@@ -46,20 +47,20 @@ namespace PathfinderCharacterSheet
 
         private void UpdateMaxHP()
         {
-            MaxHPModifiersSum.Text = maxHP.modifiers.Sum.ToString();
-            MaxHPTotal.Text = maxHP.Total.ToString();
+            MaxHPModifiersSum.Text = maxHP.modifiers.GetTotal(sheet).ToString();
+            MaxHPTotal.Text = maxHP.GetTotal(sheet).ToString();
         }
 
         private void UpdateTempHP()
         {
-            HPModifiersSum.Text = hp.modifiers.Sum.ToString();
-            HPTotal.Text = hp.Total.ToString();
+            HPModifiersSum.Text = hp.modifiers.GetTotal(sheet).ToString();
+            HPTotal.Text = hp.GetTotal(sheet).ToString();
         }
 
         private void UpdateDamageResist()
         {
-            DamageResistModifiersSum.Text = damageResist.modifiers.Sum.ToString();
-            DamageResistTotal.Text = damageResist.Total.ToString();
+            DamageResistModifiersSum.Text = damageResist.modifiers.GetTotal(sheet).ToString();
+            DamageResistTotal.Text = damageResist.GetTotal(sheet).ToString();
         }
 
         private void EditToView()
@@ -93,7 +94,7 @@ namespace PathfinderCharacterSheet
         private void EditIntModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, CharacterSheet.Modifier<int> mod)
         {
             var page = new EditIntModifier();
-            page.Init(modifiers, mod);
+            page.Init(sheet, modifiers, mod);
             Navigation.PushAsync(page);
         }
 

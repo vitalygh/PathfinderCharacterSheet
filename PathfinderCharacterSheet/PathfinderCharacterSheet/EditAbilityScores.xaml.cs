@@ -12,7 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditAbilityScores : ContentPage, ISheetView
 	{
-        private CharacterSheet.AbilityScore[] localAbilityScores = null;
+        private CharacterSheet localSheet = new CharacterSheet();
 
         public EditAbilityScores()
 		{
@@ -27,7 +27,7 @@ namespace PathfinderCharacterSheet
             var asList = new List<CharacterSheet.AbilityScore>();
             foreach (var absc in CharacterSheetStorage.Instance.selectedCharacter.abilityScores)
                 asList.Add(absc.Clone);
-            localAbilityScores = asList.ToArray();
+            localSheet.abilityScores = asList.ToArray();
         }
 
         private void CreateControls()
@@ -81,9 +81,9 @@ namespace PathfinderCharacterSheet
                                     var eivwm = new EditIntValueWithModifiers();
                                     var modname = (adj ? "Temp Adjustment" : "Score");
                                     var abmodname = abilities[index] + " " + modname;
-                                    var labs = localAbilityScores[index];
+                                    var labs = localSheet.abilityScores[index];
                                     var vwm = adj ? labs.tempAdjustment : labs.score;
-                                    eivwm.Init(vwm, "Edit " + abmodname, modname + ": ", false);
+                                    eivwm.Init(localSheet, vwm, "Edit " + abmodname, modname + ": ", false);
                                     Navigation.PushAsync(eivwm);
                                 };
                                 (child as Frame).GestureRecognizers.Add(tgr);
@@ -127,47 +127,48 @@ namespace PathfinderCharacterSheet
             var index = i * 5;
             if ((index + 5) > AbilityScores.Children.Count)
                 return;
-            var ab = localAbilityScores[i - 1];
+            var ab = localSheet.abilityScores[i - 1];
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             //var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
             //MainPage.StrToInt(entry.Text, ref ab.score);
             //((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.Total.ToString();
-            ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
+            ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.GetModifier(sheet).ToString();
             //((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.Total.ToString();
-            ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.TempModifier.ToString();
+            ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.GetTempModifier(sheet).ToString();
         }
 
         public void UpdateView()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
             var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
-            var abilitiesCount = localAbilityScores.Length;
+            var abilitiesCount = localSheet.abilityScores.Length;
             for (var i = 0; i < abilitiesCount; i++)
             {
-                var ab = localAbilityScores[i];
+                var ab = localSheet.abilityScores[i];
                 var index = (i + 1) * 5;
                 (AbilityScores.Children[index + 0] as Label).Text = abilities[i];
-                ((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.Total.ToString();
-                ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.Modifier.ToString();
-                ((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.Total.ToString();
-                ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.TempModifier.ToString();
+                ((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
+                ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.GetModifier(sheet).ToString();
+                ((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.GetTotal(sheet).ToString();
+                ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.GetTempModifier(sheet).ToString();
             }
         }
 
         private void EditToView()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
             var anyChanged = false;
-            var abilitiesCount = localAbilityScores.Length;
+            var abilitiesCount = localSheet.abilityScores.Length;
             for (var i = 0; i < abilitiesCount; i++)
             {
-                if (c.abilityScores[i].Equals(localAbilityScores[i]))
+                if (sheet.abilityScores[i].Equals(localSheet.abilityScores[i]))
                     continue;
                 anyChanged = true;
-                c.abilityScores[i] = localAbilityScores[i];
+                sheet.abilityScores[i] = localSheet.abilityScores[i];
             }
             if (anyChanged)
                 CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
