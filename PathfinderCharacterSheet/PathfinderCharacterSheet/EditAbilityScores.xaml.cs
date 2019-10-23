@@ -26,7 +26,7 @@ namespace PathfinderCharacterSheet
         {
             var asList = new List<CharacterSheet.AbilityScore>();
             foreach (var absc in CharacterSheetStorage.Instance.selectedCharacter.abilityScores)
-                asList.Add(absc.Clone);
+                asList.Add(absc.Clone as CharacterSheet.AbilityScore);
             localSheet.abilityScores = asList.ToArray();
         }
 

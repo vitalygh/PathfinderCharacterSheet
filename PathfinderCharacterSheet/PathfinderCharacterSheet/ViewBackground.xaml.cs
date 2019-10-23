@@ -12,6 +12,8 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ViewBackground : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
+
 		public ViewBackground ()
 		{
 			InitializeComponent ();
@@ -19,6 +21,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
@@ -42,7 +45,8 @@ namespace PathfinderCharacterSheet
 
         private void Background_DoubleTapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new EditBackground());
+            pushedPage = new EditBackground();
+            Navigation.PushAsync(pushedPage);
         }
 
     }

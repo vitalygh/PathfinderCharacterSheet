@@ -27,8 +27,8 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            cmdSizeModifier = sheet.cmdSizeModifier.Clone;
-            cmbSizeModifier = sheet.cmbSizeModifier.Clone;
+            cmdSizeModifier = sheet.cmdSizeModifier.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
+            cmbSizeModifier = sheet.cmbSizeModifier.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
             CMDBaseAttackBonus.Text = sheet.baseAttackBonus.GetTotal(sheet).ToString();
             CMBBaseAttackBonus.Text = CMDBaseAttackBonus.Text;
             CMDStrengthModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Strength).ToString();

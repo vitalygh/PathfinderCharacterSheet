@@ -18,7 +18,7 @@ namespace PathfinderCharacterSheet
         {
             InitializeComponent();
             var c = CharacterSheetStorage.Instance.selectedCharacter;
-            modifiers = c.initiative.miscModifiers.Clone;
+            modifiers = c.initiative.miscModifiers.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
             UpdateView();
         }
 

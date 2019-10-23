@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditWeapon"
+             Title="Edit Weapon">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="WeaponNameTitle" Text="Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand">
+                        <Entry x:Name="WeaponName" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Entry>
+                    </Frame>
+                    <Label x:Name="AttackBonusTitle" Text="Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="AttackBonus_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="AttackBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="CriticalTitle" Text="Critical: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Critical_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Critical" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="DamageTitle" Text="Damage: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Damage_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Damage" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="DamageBonusTitle" Text="Damage Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DamageBonus_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="DamageBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="WeaponTypeTitle" Text="Climb: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5" HorizontalOptions="FillAndExpand" >
+                        <Entry x:Name="WeaponType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Entry>
+                    </Frame>
+                    <Label x:Name="RangeTitle" Text="Range: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Range_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Range" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="AmmunitionTitle" Text="Ammunition: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="7">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Range_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Ammunition" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="SpecialTitle" Text="Special: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="8" HorizontalOptions="FillAndExpand" >
+                        <Entry x:Name="Special" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Entry>
+                    </Frame>
+                    <Label x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="9">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="9" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Range_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Weight" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="DescriptionTitle" Text="Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2">
+                        <Editor x:Name="Description" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center">
+                        </Editor>
+                    </Frame>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" TextColor="Black" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" TextColor="Black" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Delete" TextColor="Black" Clicked="Delete_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

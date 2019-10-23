@@ -11,6 +11,8 @@ namespace PathfinderCharacterSheet
     {
         NewCharacter newCharacter = new NewCharacter();
         CharacterSheetTabs tabs = new CharacterSheetTabs();
+        public static readonly double DefaultLabelTextSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
+        public static readonly double DefaultButtonTextSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
         public MainPage()
         {
@@ -198,6 +200,16 @@ namespace PathfinderCharacterSheet
                 return changed;
             }
             return false;
+        }
+
+        public static void AddTapHandler(View view, EventHandler handler, int tapCount = 1)
+        {
+            var tgr = new TapGestureRecognizer()
+            {
+                NumberOfTapsRequired = tapCount,
+            };
+            tgr.Tapped += handler;
+            view.GestureRecognizers.Add(tgr);
         }
 
 

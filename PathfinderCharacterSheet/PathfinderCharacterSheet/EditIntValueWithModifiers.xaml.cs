@@ -31,7 +31,7 @@ namespace PathfinderCharacterSheet
             this.sheet = sheet;
             this.source = source;
             this.saveCharacter = saveCharacter;
-            modifiers = source.modifiers.Clone;
+            modifiers = source.modifiers.Clone as CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>;
             Value.Text = source.baseValue.ToString();
             UpdateView();
         }

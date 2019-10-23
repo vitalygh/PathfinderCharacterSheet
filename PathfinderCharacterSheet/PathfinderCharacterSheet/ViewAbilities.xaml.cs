@@ -12,6 +12,8 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ViewAbilities : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
+
 		public ViewAbilities ()
 		{
 			InitializeComponent ();
@@ -19,6 +21,8 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
+
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -149,103 +153,127 @@ namespace PathfinderCharacterSheet
 
         private void AbilityScores_DoubleTapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new EditAbilityScores());
+            if (pushedPage != null)
+                return;
+            pushedPage = new EditAbilityScores();
+            Navigation.PushAsync(pushedPage);
         }
 
         private void MaxHP_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, sheet.hp.maxHP, "Edit Max HP", "Max HP: ", true);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void HP_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, sheet.hp.hp, "Edit HP", "HP: ", true);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void DamageResist_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, sheet.hp.damageResist, "Edit Damage Resist", "Damage Resist: ", true);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void Initiative_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-            Navigation.PushAsync(new EditInitiative());
+            pushedPage = new EditInitiative();
+            Navigation.PushAsync(pushedPage);
         }
 
         private void ArmorClass_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-            Navigation.PushAsync(new EditArmorClass());
+            pushedPage = new EditArmorClass();
+            Navigation.PushAsync(pushedPage);
         }
 
         private void SavingThrows_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-            Navigation.PushAsync(new EditSavingThrows());
+            pushedPage = new EditSavingThrows();
+            Navigation.PushAsync(pushedPage);
         }
 
         private void BaseAttackBonus_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, sheet.baseAttackBonus, "Edit Base Attack Bonus", "Base Attack Bonus: ", true);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void SpellResistance_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet,  sheet.spellResistance, "Edit Spell Resistance", "Spell Resistance: ", true);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void CombatManeuver_DoubleTapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new EditCombatManeuvers());
-        }
-
-        /*
-        private void AttackBonus_DoubleTapped(object sender, EventArgs e)
-        {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            if (pushedPage != null)
                 return;
+            pushedPage = new EditCombatManeuvers();
+            Navigation.PushAsync(pushedPage);
         }
-        */
 
         private void Speed_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-            Navigation.PushAsync(new EditSpeed());
+            pushedPage = new EditSpeed();
+            Navigation.PushAsync(pushedPage);
         }
     }
 }

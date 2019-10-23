@@ -26,7 +26,7 @@ namespace PathfinderCharacterSheet
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-            speed = c.speed.Clone;
+            speed = c.speed.Clone as CharacterSheet.Speed;
         }
 
         public void UpdateView()

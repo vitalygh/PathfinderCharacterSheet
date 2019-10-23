@@ -13,7 +13,7 @@ namespace PathfinderCharacterSheet
             public string className = null;
             public string ClassName { get { return className; } }
 
-            public LevelOfClass Clone
+            public virtual object Clone
             { 
                 get
                 {
@@ -32,7 +32,7 @@ namespace PathfinderCharacterSheet
                 var list = new List<LevelOfClass>();
                 foreach (var l in loc)
                     if (l != null)
-                        list.Add(l.Clone);
+                        list.Add(l.Clone as LevelOfClass);
                     else
                         list.Add(l);
                 return list;
@@ -145,14 +145,14 @@ namespace PathfinderCharacterSheet
             {
                 return (score + tempAdjustment) / 2 - 5;
             }
-            public AbilityScore Clone
+            public virtual object Clone
             {
                 get
                 {
                     return new AbilityScore()
                     {
                         score = score,
-                        tempAdjustment = tempAdjustment.Clone,
+                        tempAdjustment = tempAdjustment.Clone as ValueWithModifiers<int, IntSum>,
                     };
                 }
             }
@@ -178,7 +178,7 @@ namespace PathfinderCharacterSheet
             public  T value = default(T);
             public virtual T GetValue(CharacterSheet sheet) { return value; }
 
-            public Modifier<T> Clone
+            public virtual object Clone
             {
                 get
                 {
@@ -198,7 +198,7 @@ namespace PathfinderCharacterSheet
                 var list = new List<Modifier<T>>();
                 foreach (var m in mods)
                     if (m != null)
-                        list.Add(m.Clone);
+                        list.Add(m.Clone as Modifier<T>);
                     else
                         list.Add(m);
                 return list;
@@ -260,12 +260,12 @@ namespace PathfinderCharacterSheet
         public class ModifiersList<T, S> : List<Modifier<T>> where S : ISummable<T>, new()
         {
             public T GetTotal(CharacterSheet sheet) { return Sum<T, S>(sheet, this); }
-            public virtual ModifiersList<T, S> Clone { get { return new ModifiersList<T, S>().Fill(this); } }
+            public virtual object Clone { get { return new ModifiersList<T, S>().Fill(this); } }
             public ModifiersList<T, S> Fill(ModifiersList<T, S> source)
             {
                 Clear();
                 foreach (var m in source)
-                    Add(m.Clone);
+                    Add(m.Clone as Modifier<T>);
                 return this;
             }
         }
@@ -276,13 +276,13 @@ namespace PathfinderCharacterSheet
             public ModifiersList<T, S> modifiers = new ModifiersList<T, S>();
             public T GetTotal(CharacterSheet sheet) { return Sum<T, S>(baseValue, modifiers.GetTotal(sheet)); }
 
-            public ValueWithModifiers<T, S> Clone
+            public virtual object Clone
             {   get
                 {
                     return new ValueWithModifiers<T, S>()
                     {
                         baseValue = baseValue,
-                        modifiers = modifiers.Clone,
+                        modifiers = modifiers.Clone as ModifiersList<T, S>,
                     };
                 }
             }
@@ -292,7 +292,7 @@ namespace PathfinderCharacterSheet
                 if (source == null)
                     return this;
                 baseValue = source.baseValue;
-                modifiers = source.modifiers.Clone;
+                modifiers = source.modifiers.Clone as ModifiersList<T, S>;
                 return this;
             }
 
@@ -378,17 +378,17 @@ namespace PathfinderCharacterSheet
                 return baseSave.GetTotal(sheet) + GetAbilityModifier(sheet) + magicModifier.GetTotal(sheet) + miscModifier.GetTotal(sheet) + tempModifier.GetTotal(sheet);
             }
 
-            public SavingThrow Clone
+            public virtual object Clone
             {
                 get
                 {
                     return new SavingThrow()
                     {
                         abilityModifierSource = abilityModifierSource,
-                        baseSave = baseSave.Clone,
-                        magicModifier = magicModifier.Clone,
-                        miscModifier = miscModifier.Clone,
-                        tempModifier = tempModifier.Clone,
+                        baseSave = baseSave.Clone as ValueWithModifiers<int, IntSum>,
+                        magicModifier = magicModifier.Clone as ValueWithModifiers<int, IntSum>,
+                        miscModifier = miscModifier.Clone as ValueWithModifiers<int, IntSum>,
+                        tempModifier = tempModifier.Clone as ValueWithModifiers<int, IntSum>,
                     };
                 }
             }
@@ -430,21 +430,21 @@ namespace PathfinderCharacterSheet
                 return speed / 5;
             }
 
-            public Speed Clone
+            public virtual object Clone
             {
                 get
                 {
                     return new Speed()
                     {
-                        baseSpeed = baseSpeed.Clone,
-                        armorSpeed = armorSpeed.Clone,
-                        flySpeed = flySpeed.Clone,
-                        maneuverability = maneuverability.Clone,
-                        swimSpeed = swimSpeed.Clone,
-                        climbSpeed = climbSpeed.Clone,
+                        baseSpeed = baseSpeed.Clone as ValueWithModifiers<int, IntSum>,
+                        armorSpeed = armorSpeed.Clone as ValueWithModifiers<int, IntSum>,
+                        flySpeed = flySpeed.Clone as ValueWithModifiers<int, IntSum>,
+                        maneuverability = maneuverability.Clone as ValueWithModifiers<int, IntSum>,
+                        swimSpeed = swimSpeed.Clone as ValueWithModifiers<int, IntSum>,
+                        climbSpeed = climbSpeed.Clone as ValueWithModifiers<int, IntSum>,
                         defaultClimbSpeed = defaultClimbSpeed,
                         defaultSwimSpeed = defaultSwimSpeed,
-                        burrowSpeed = burrowSpeed.Clone,
+                        burrowSpeed = burrowSpeed.Clone as ValueWithModifiers<int, IntSum>,
                     };
                 }
             }
@@ -573,6 +573,28 @@ namespace PathfinderCharacterSheet
         {
             public string name = null;
             public string description = null;
+            public virtual object Clone
+            {
+                get
+                {
+                    return new ItemWithDescription()
+                    {
+                        name = name,
+                        description = description,
+                    };
+                }
+            }
+
+            public bool Equals(ItemWithDescription other)
+            {
+                if (other == null)
+                    return false;
+                if (name != other.name)
+                    return false;
+                if (description != other.description)
+                    return false;
+                return true;
+            }
         }
 
         public class Feat: ItemWithDescription
@@ -581,6 +603,188 @@ namespace PathfinderCharacterSheet
 
         public class SpecialAbility: ItemWithDescription
         {
+        }
+
+        public class Note: ItemWithDescription
+        {
+        }
+
+        public class Item: ItemWithDescription
+        {
+            public ValueWithModifiers<int, IntSum> amount = new ValueWithModifiers<int, IntSum>() { baseValue = 1, };
+            public ValueWithModifiers<int, IntSum> weight = new ValueWithModifiers<int, IntSum>();
+            public int TotalWeight(CharacterSheet sheet) { return amount.GetTotal(sheet) * weight.GetTotal(sheet); }
+
+            public override object Clone
+            {
+                get
+                {
+                    return new Item()
+                    {
+                        amount = amount,
+                        weight = weight,
+
+                        name = name,
+                        description = description,
+                    };
+                }
+            }
+
+            public bool Equals(Item other)
+            {
+                if (other == null)
+                    return false;
+                if (!base.Equals(other))
+                    return false;
+                if (!amount.Equals(other.amount))
+                    return false;
+                if (!weight.Equals(other.weight))
+                    return false;
+                return true;
+            }
+        }
+
+        public class WeaponItem: Item
+        {
+            public bool selected = false;
+            public ValueWithModifiers<int, IntSum> attackBonus = new ValueWithModifiers<int, IntSum>();
+            public string AttackBonus(CharacterSheet sheet)
+            {
+                if (sheet == null)
+                    return null;
+                var wab = attackBonus.GetTotal(sheet);
+                var ab = sheet.AttackBonus + wab;
+                var bonus = wab >= 0 ? "+" + wab : wab.ToString();
+                bonus += " (" + (ab >= 0 ? "+" + ab : ab.ToString()) + ")";
+                return bonus;
+            }
+            public CriticalHit critical = new CriticalHit();
+            public DiceRoll damage = new DiceRoll();
+            public string Damage(CharacterSheet sheet)
+            {
+                if (sheet == null)
+                    return null;
+                var wd = damage.AsString(sheet);
+                var wdb = damageBonus.GetTotal(sheet);
+                var db = sheet.DamageBonus + wdb;
+                var bonus = wd + " " + (wdb >= 0 ? "+" + wdb : wdb.ToString());
+                bonus += " (" + (db >= 0 ? "+" + db : db.ToString()) + ")";
+                return bonus;
+            }
+            public ValueWithModifiers<int, IntSum> damageBonus = new ValueWithModifiers<int, IntSum>();
+            public string type = null;
+            public ValueWithModifiers<int, IntSum> range = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> ammunition = new ValueWithModifiers<int, IntSum>();
+            public string special = null;
+
+            public override object Clone
+            {
+                get
+                {
+                    return new WeaponItem()
+                    {
+                        selected = selected,
+                        attackBonus = attackBonus.Clone as ValueWithModifiers<int, IntSum>,
+                        critical = critical.Clone as CriticalHit,
+                        damage = damage.Clone as DiceRoll,
+                        damageBonus = damageBonus.Clone as ValueWithModifiers<int, IntSum>,
+                        type = type,
+                        range = range.Clone as ValueWithModifiers<int, IntSum>,
+                        ammunition = ammunition.Clone as ValueWithModifiers<int, IntSum>,
+                        special = special,
+
+                        amount = amount.Clone as ValueWithModifiers<int, IntSum>,
+                        weight = weight.Clone as ValueWithModifiers<int, IntSum>,
+
+                        name = name,
+                        description = description,
+                    };
+                }
+            }
+
+            public bool Equals(WeaponItem other)
+            {
+                if (other == null)
+                    return false;
+                if (!base.Equals(other))
+                    return false;
+                if (selected != other.selected)
+                    return false;
+                if (!attackBonus.Equals(other.attackBonus))
+                    return false;
+                if (!critical.Equals(other.critical))
+                    return false;
+                if (!damage.Equals(other.damage))
+                    return false;
+                if (!damageBonus.Equals(other.damageBonus))
+                    return false;
+                if (type != other.type)
+                    return false;
+                if (!range.Equals(other.range))
+                    return false;
+                if (!ammunition.Equals(other.ammunition))
+                    return false;
+                if (special != other.special)
+                    return false;
+                return true;
+            }
+        }
+
+        public class ArmorClassItem: Item
+        {
+            public ValueWithModifiers<int, IntSum> bonus = new ValueWithModifiers<int, IntSum>();
+            public bool isShield = false;
+            public bool isArmor = false;
+            public string type = null;
+            public ValueWithModifiers<int, IntSum> checkPenalty = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> spellFailure = new ValueWithModifiers<int, IntSum>();
+            public string properties = null;
+
+            public override object Clone
+            {
+                get
+                {
+                    return new ArmorClassItem()
+                    {
+                        bonus = bonus.Clone as ValueWithModifiers<int, IntSum>,
+                        isShield = isShield,
+                        isArmor = isArmor,
+                        type = type,
+                        checkPenalty = checkPenalty.Clone as ValueWithModifiers<int, IntSum>,
+                        spellFailure = spellFailure.Clone as ValueWithModifiers<int, IntSum>,
+                        properties = properties,
+
+                        amount = amount.Clone as ValueWithModifiers<int, IntSum>,
+                        weight = weight.Clone as ValueWithModifiers<int, IntSum>,
+
+                        name = name,
+                        description = description,
+                    };
+                }
+            }
+
+            public bool Equals(ArmorClassItem other)
+            {
+                if (other == null)
+                    return false;
+                if (!base.Equals(other))
+                    return false;
+                if (!bonus.Equals(other.bonus))
+                    return false;
+                if (isShield != other.isShield)
+                    return false;
+                if (isArmor != other.isArmor)
+                    return false;
+                if (type != other.type)
+                    return false;
+                if (!checkPenalty.Equals(other.checkPenalty))
+                    return false;
+                if (!spellFailure.Equals(other.spellFailure))
+                    return false;
+                if (properties != other.properties)
+                    return false;
+                return true;
+            }
         }
 
         public class ArmorClass
@@ -594,20 +798,20 @@ namespace PathfinderCharacterSheet
             public ValueWithModifiers<int, IntSum> deflectionModifier = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> miscModifiers = new ValueWithModifiers<int, IntSum>();
 
-            public ArmorClass Clone
+            public virtual object Clone
             {
                 get
                 {
                     return new ArmorClass()
                     {
-                        armorBonus = armorBonus.Clone,
+                        armorBonus = armorBonus.Clone as ValueWithModifiers<int, IntSum>,
                         itemsArmorBonus = itemsArmorBonus,
-                        shieldBonus = shieldBonus.Clone,
+                        shieldBonus = shieldBonus.Clone as ValueWithModifiers<int, IntSum>,
                         itemsShieldBonus = itemsShieldBonus,
-                        sizeModifier = sizeModifier.Clone,
-                        naturalArmor = naturalArmor.Clone,
-                        deflectionModifier = deflectionModifier.Clone,
-                        miscModifiers = miscModifiers.Clone,
+                        sizeModifier = sizeModifier.Clone as ValueWithModifiers<int, IntSum>,
+                        naturalArmor = naturalArmor.Clone as ValueWithModifiers<int, IntSum>,
+                        deflectionModifier = deflectionModifier.Clone as ValueWithModifiers<int, IntSum>,
+                        miscModifiers = miscModifiers.Clone as ValueWithModifiers<int, IntSum>,
                     };
                 }
             }
@@ -676,22 +880,57 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public class ArmorClassItem: Item
-        {
-            public ValueWithModifiers<int, IntSum> bonus = new ValueWithModifiers<int, IntSum>();
-            public bool isShield = false;
-            public bool isArmor = false;
-            public string type = null;
-            public int checkPenalty = 0;
-            public int spellFailure = 0;
-            public string properties = null;
-        }
-
         public class DiceRoll
         {
             public ValueWithModifiers<int, IntSum> diceCount = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> diceValue = new ValueWithModifiers<int, IntSum>();
-            public ValueWithModifiers<int, IntSum> miscModifiers = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> additional = new ValueWithModifiers<int, IntSum>();
+            public string AsString(CharacterSheet sheet)
+            {
+                var roll = diceCount.GetTotal(sheet) + "d" + diceValue.GetTotal(sheet);
+                var add = additional.GetTotal(sheet);
+                if (add == 0)
+                    return "(" + roll + ")";
+                if (add < 0)
+                    roll += " - " + Math.Abs(add);
+                else
+                    roll += " + " + add;
+                return "(" + roll + ")";
+            }
+
+            public object Clone
+            {
+                get
+                {
+                    return new DiceRoll()
+                    {
+                        diceCount = diceCount.Clone as ValueWithModifiers<int, IntSum>,
+                        diceValue = diceValue.Clone as ValueWithModifiers<int, IntSum>,
+                        additional = additional.Clone as ValueWithModifiers<int, IntSum>,
+                    };
+                }
+            }
+
+            public bool Equals(DiceRoll other)
+            {
+                if (!diceCount.Equals(other.diceCount))
+                    return false;
+                if (!diceValue.Equals(other.diceValue))
+                    return false;
+                if (!additional.Equals(other.additional))
+                    return false;
+                return true;
+            }
+
+            public DiceRoll Fill(DiceRoll source)
+            {
+                if (source == null)
+                    return this;
+                diceCount = source.diceCount.Clone as ValueWithModifiers<int, IntSum>;
+                diceValue = source.diceValue.Clone as ValueWithModifiers<int, IntSum>;
+                additional = additional.Clone as ValueWithModifiers<int, IntSum>;
+                return this;
+            }
         }
 
         public class CriticalHit
@@ -699,23 +938,52 @@ namespace PathfinderCharacterSheet
             public ValueWithModifiers<int, IntSum> min = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> max = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> multiplier = new ValueWithModifiers<int, IntSum>();
-        }
+            public string AsString(CharacterSheet sheet)
+            {
+                var mint = min.GetTotal(sheet);
+                var maxt = max.GetTotal(sheet);
+                var mul = multiplier.GetTotal(sheet);
+                var crit = string.Empty;
+                if (mint < maxt)
+                    crit += mint + " - ";
+                crit += maxt;
+                crit += "/x" + mul;
+                return crit;
+            }
 
-        public class WeaponItem: Item
-        {
-            public ValueWithModifiers<int, IntSum> attackBonus = new ValueWithModifiers<int, IntSum>();
-            public CriticalHit critical = new CriticalHit();
-            public string type = null;
-            public ValueWithModifiers<int, IntSum> range = new ValueWithModifiers<int, IntSum>();
-            public ValueWithModifiers<int, IntSum> ammunition = new ValueWithModifiers<int, IntSum>();
-            public DiceRoll damage = new DiceRoll();
-        }
+            public object Clone
+            {
+                get
+                {
+                    return new CriticalHit()
+                    {
+                        min = min.Clone as ValueWithModifiers<int, IntSum>,
+                        max = max.Clone as ValueWithModifiers<int, IntSum>,
+                        multiplier = multiplier.Clone as ValueWithModifiers<int, IntSum>,
+                    };
+                }
+            }
 
-        public class Item: ItemWithDescription
-        {
-            public int amount = 0;
-            public int weight = 0;
-            public int TotalWeight { get { return amount * weight; } }
+            public bool Equals(CriticalHit other)
+            {
+                if (!min.Equals(other.min))
+                    return false;
+                if (!max.Equals(other.max))
+                    return false;
+                if (!multiplier.Equals(other.multiplier))
+                    return false;
+                return true;
+            }
+
+            public CriticalHit Fill(CriticalHit source)
+            {
+                if (source == null)
+                    return this;
+                min = source.min.Clone as ValueWithModifiers<int, IntSum>;
+                max = source.max.Clone as ValueWithModifiers<int, IntSum>;
+                multiplier = multiplier.Clone as ValueWithModifiers<int, IntSum>;
+                return this;
+            }
         }
 
         public class Money
@@ -733,10 +1001,6 @@ namespace PathfinderCharacterSheet
             public ValueWithModifiers<int, IntSum> spellsKnown = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> spellsPerDay = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> bonusSpells = new ValueWithModifiers<int, IntSum>();
-        }
-
-        public class Note: ItemWithDescription
-        {
         }
 
         #region Character background
@@ -849,13 +1113,11 @@ namespace PathfinderCharacterSheet
         public int GetCMB(CharacterSheet sheet, ValueWithModifiers<int, IntSum> sizeModifier) { return baseAttackBonus.GetTotal(sheet) + GetAbilityModifier(this, Ability.Strength) + sizeModifier.GetTotal(sheet); }
         public int CMB { get { return GetCMB(this, cmbSizeModifier); } }
 
-        public int sizeModifier = 0;
-        public ValueWithModifiers<int, IntSum> meleeAttackBonusModifiers = new ValueWithModifiers<int, IntSum>();
-        public int MeleeAttackBonus { get { return baseAttackBonus.GetTotal(this) + meleeAttackBonusModifiers.GetTotal(this) + GetAbilityModifier(this, Ability.Strength) + sizeModifier; } }
-        public ValueWithModifiers<int, IntSum> meleeDamageBonusModifiers = new ValueWithModifiers<int, IntSum>();
-        public int MeleeDamageBonus { get { return meleeDamageBonusModifiers.GetTotal(this) + GetAbilityModifier(this, Ability.Strength); } }
-        public ValueWithModifiers<int, IntSum> rangeAttackBonusModifiers = new ValueWithModifiers<int, IntSum>();
-        public int RangeAttackBonus { get { return baseAttackBonus.GetTotal(this) + rangeAttackBonusModifiers.GetTotal(this) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier; } }
+        public ValueWithModifiers<int, IntSum> attackSizeModifier = new ValueWithModifiers<int, IntSum>();
+        public ValueWithModifiers<int, IntSum> attackBonusModifiers = new ValueWithModifiers<int, IntSum>();
+        public int AttackBonus { get { return baseAttackBonus.GetTotal(this) + attackBonusModifiers.GetTotal(this) + attackSizeModifier.GetTotal(this); } }
+        public ValueWithModifiers<int, IntSum> damageBonusModifiers = new ValueWithModifiers<int, IntSum>();
+        public int DamageBonus { get { return damageBonusModifiers.GetTotal(this); } }
         #endregion
 
         #region Weapons

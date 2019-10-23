@@ -26,7 +26,7 @@ namespace PathfinderCharacterSheet
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             if (c == null)
                 return;
-            ac = c.armorClass.Clone;
+            ac = c.armorClass.Clone as CharacterSheet.ArmorClass;
         }
 
         public void UpdateView()

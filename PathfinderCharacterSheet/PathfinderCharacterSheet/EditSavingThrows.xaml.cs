@@ -29,7 +29,7 @@ namespace PathfinderCharacterSheet
             savingThrows.Clear();
             var count = c.savingThrows.Length;
             for (var i = 0; i < count; i++)
-                savingThrows.Add(c.GetSavingThrow((CharacterSheet.Save)i).Clone);
+                savingThrows.Add(c.GetSavingThrow((CharacterSheet.Save)i).Clone as CharacterSheet.SavingThrow);
         }
 
         public void UpdateView()
