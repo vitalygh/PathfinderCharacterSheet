@@ -103,8 +103,8 @@
                     </Frame>
 
                     <Label x:Name="BiographyTitle" Text="Biography:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="8" Grid.ColumnSpan="4"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Row="9" Grid.ColumnSpan="4">
-                        <Editor x:Name="Biography" FontSize="Medium" TextColor="Black" Grid.Column="0"></Editor>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="9" Grid.ColumnSpan="4">
+                        <Editor x:Name="Biography" FontSize="Medium" TextColor="Black"></Editor>
                     </Frame>
                 </Grid>
                 <StackLayout Orientation="Horizontal">

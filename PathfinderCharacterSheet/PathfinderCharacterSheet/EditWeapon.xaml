@@ -72,7 +72,7 @@
                         <Label x:Name="DamageBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="WeaponTypeTitle" Text="Climb: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    <Label x:Name="WeaponTypeTitle" Text="Type: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5" HorizontalOptions="FillAndExpand" >
                         <Entry x:Name="WeaponType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
@@ -117,7 +117,7 @@
                     <Label x:Name="DescriptionTitle" Text="Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2">
-                        <Editor x:Name="Description" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center">
+                        <Editor x:Name="Description" FontSize="Medium" TextColor="Black">
                         </Editor>
                     </Frame>
                 </Grid>

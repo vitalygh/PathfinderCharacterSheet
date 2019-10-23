@@ -55,7 +55,7 @@ namespace PathfinderCharacterSheet
             if (!speed.Equals(c.speed))
             {
                 c.speed = speed;
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
             }
         }
 

@@ -9,17 +9,37 @@ using Xamarin.Forms.Xaml;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditCritical : ContentPage, ISheetView
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class EditCritical : ContentPage, ISheetView
+    {
+        private Page pushedPage = null;
         private CharacterSheet sheet = null;
         private CharacterSheet.CriticalHit source = null;
         private CharacterSheet.CriticalHit critical = null;
 
-        public EditCritical ()
-		{
-			InitializeComponent ();
-		}
+        public EditCritical()
+        {
+            InitializeComponent();
+        }
+
+        public void UpdateView()
+        {
+            pushedPage = null;
+            if (sheet == null)
+                return;
+            CriticalMin.Text = critical.min.GetTotal(sheet).ToString();
+            CriticalMax.Text = critical.max.GetTotal(sheet).ToString();
+            Multiplier.Text = critical.multiplier.GetTotal(sheet).ToString();
+        }
+
+        private void EditToView()
+        {
+            if (!critical.Equals(source))
+            {
+                source.Fill(critical);
+                CharacterSheetStorage.Instance.SaveCharacter();
+            }
+        }
 
         public void Init(CharacterSheet sheet, CharacterSheet.CriticalHit critical)
         {
@@ -33,9 +53,57 @@ namespace PathfinderCharacterSheet
             UpdateView();
         }
 
-        public void UpdateView()
+        private void Min_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            if (sheet == null)
+                return;
+            if (critical == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, critical.min, "Edit Critical Min", "Min: ", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
 
+        private void Max_Tapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            if (sheet == null)
+                return;
+            if (critical == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, critical.max, "Edit Critical Max", "Max: ", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void Multiplier_Tapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            if (sheet == null)
+                return;
+            if (critical == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, critical.multiplier, "Edit Critical Multiplier", "Multiplier: ", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void Cancel_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopAsync();
+        }
+
+        private void Save_Clicked(object sender, EventArgs e)
+        {
+            EditToView();
+            Navigation.PopAsync();
         }
     }
 }

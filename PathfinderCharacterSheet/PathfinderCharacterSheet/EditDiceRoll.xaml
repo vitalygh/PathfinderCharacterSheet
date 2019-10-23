@@ -1,12 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PathfinderCharacterSheet.EditDiceRoll">
+             x:Class="PathfinderCharacterSheet.EditDiceRoll"
+             Title="Dice Roll">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="15" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="DiceRollTitle" Text="Dice Roll" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DiceCountTitle" Text="Dice Count: " Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DiceCount_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="DiceCount"></Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" d " Grid.Column="1" Grid.Row="2"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DiceSidesTitle" Text="Dice Sides: " Grid.Column="0" Grid.Row="3"></Label>
+                    <Frame x:Name="ArmorBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DiceSides_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="DiceSides">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="4"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="AdditionalTitle" Text="Additional: " Grid.Column="0" Grid.Row="5"></Label>
+                    <Frame x:Name="ShieldBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Additional_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="Additional">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

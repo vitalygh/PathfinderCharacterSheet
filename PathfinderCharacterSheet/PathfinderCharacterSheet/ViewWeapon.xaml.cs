@@ -72,7 +72,6 @@ namespace PathfinderCharacterSheet
                 Content = new Label()
                 {
                     Text = sheet.AttackBonus.ToString(),
-                    TextDecorations = TextDecorations.Underline,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     TextColor = Color.Black,
                     HorizontalOptions = LayoutOptions.Center,
@@ -91,7 +90,6 @@ namespace PathfinderCharacterSheet
                 Content = new Label()
                 {
                     Text = sheet.DamageBonus.ToString(),
-                    TextDecorations = TextDecorations.Underline,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     TextColor = Color.Black,
                     HorizontalOptions = LayoutOptions.Center,
@@ -180,7 +178,6 @@ namespace PathfinderCharacterSheet
                 Content = new Label()
                 {
                     Text = text,
-                    TextDecorations = TextDecorations.Underline,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     TextColor = Color.Black,
                     HorizontalTextAlignment = TextAlignment.Start,
@@ -222,63 +219,83 @@ namespace PathfinderCharacterSheet
                 IsChecked = weapon.selected,
             };
             selectedcb.CheckedChanged += (s, e) => Weapon_CheckedChanged(weapon, e.Value);
-            grid.Children.Add(selectedcb, 0, 0);
-
             var nameTitle = CreateLabel("Name: ", TextAlignment.Start);
+            var nameStack = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+            };
+            nameStack.Children.Add(selectedcb);
+            nameStack.Children.Add(nameTitle);
+
+            var row = 0;
             var nameValue = CreateFrame(weapon.name);
-            grid.Children.Add(nameTitle, 0, 1);
-            grid.Children.Add(nameValue, 1, 1);
+            grid.Children.Add(nameStack, 0, row);
+            grid.Children.Add(nameValue, 1, row);
+            row += 1;
 
             var attackBonusTitle = CreateLabel("Attack Bonus: ", TextAlignment.Start);
-            var attackBonusValue = CreateFrame(weapon.attackBonus.GetTotal(sheet).ToString());
-            grid.Children.Add(attackBonusTitle, 0, 2);
-            grid.Children.Add(attackBonusValue, 1, 2);
+            var attackBonusValue = CreateFrame(weapon.AttackBonus(sheet));
+            grid.Children.Add(attackBonusTitle, 0, row);
+            grid.Children.Add(attackBonusValue, 1, row);
+            row += 1;
 
             var criticalTitle = CreateLabel("Critical: ", TextAlignment.Start);
             var criticalValue = CreateFrame(weapon.critical.AsString(sheet));
-            grid.Children.Add(criticalTitle, 0, 3);
-            grid.Children.Add(criticalValue, 1, 3);
+            grid.Children.Add(criticalTitle, 0, row);
+            grid.Children.Add(criticalValue, 1, row);
+            row += 1;
 
             var damageTitle = CreateLabel("Damage: ", TextAlignment.Start);
             var damageValue = CreateFrame(weapon.damage.AsString(sheet));
-            grid.Children.Add(damageTitle, 0, 4);
-            grid.Children.Add(damageValue, 1, 4);
+            grid.Children.Add(damageTitle, 0, row);
+            grid.Children.Add(damageValue, 1, row);
+            row += 1;
 
             var damageBonusTitle = CreateLabel("Damage Bonus: ", TextAlignment.Start);
-            var damageBonusValue = CreateFrame(weapon.damageBonus.GetTotal(sheet).ToString());
-            grid.Children.Add(damageBonusTitle, 0, 5);
-            grid.Children.Add(damageBonusValue, 1, 5);
+            var damageBonusValue = CreateFrame(weapon.DamageBonus(sheet));
+            grid.Children.Add(damageBonusTitle, 0, row);
+            grid.Children.Add(damageBonusValue, 1, row);
+            row += 1;
 
             var typeTitle = CreateLabel("Type: ", TextAlignment.Start);
             var typeValue = CreateFrame(weapon.type);
-            grid.Children.Add(typeTitle, 0, 6);
-            grid.Children.Add(typeValue, 1, 6);
+            grid.Children.Add(typeTitle, 0, row);
+            grid.Children.Add(typeValue, 1, row);
+            row += 1;
 
             var rangeTitle = CreateLabel("Range: ", TextAlignment.Start);
             var rangeValue = CreateFrame(weapon.range.GetTotal(sheet).ToString());
-            grid.Children.Add(rangeTitle, 0, 7);
-            grid.Children.Add(rangeValue, 1, 7);
+            grid.Children.Add(rangeTitle, 0, row);
+            grid.Children.Add(rangeValue, 1, row);
+            row += 1;
 
             var ammunitionTitle = CreateLabel("Ammunition: ", TextAlignment.Start);
             var ammunitionValue = CreateFrame(weapon.ammunition.GetTotal(sheet).ToString());
-            grid.Children.Add(ammunitionTitle, 0, 8);
-            grid.Children.Add(ammunitionValue, 1, 8);
+            grid.Children.Add(ammunitionTitle, 0, row);
+            grid.Children.Add(ammunitionValue, 1, row);
+            row += 1;
 
             var specialTitle = CreateLabel("Special: ", TextAlignment.Start);
             var specialValue = CreateFrame(weapon.special);
-            grid.Children.Add(specialTitle, 0, 9);
-            grid.Children.Add(specialValue, 1, 9);
+            grid.Children.Add(specialTitle, 0, row);
+            grid.Children.Add(specialValue, 1, row);
+            row += 1;
 
             var weightTitle = CreateLabel("Weight: ", TextAlignment.Start);
             var weightValue = CreateFrame(weapon.weight.GetTotal(sheet).ToString());
-            grid.Children.Add(weightTitle, 0, 10);
-            grid.Children.Add(weightValue, 1, 10);
+            grid.Children.Add(weightTitle, 0, row);
+            grid.Children.Add(weightValue, 1, row);
+            row += 1;
 
             var descriptionTitle = CreateLabel("Description: ", TextAlignment.Start);
-            grid.Children.Add(descriptionTitle, 0, 2, 11, 12);
+            grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
+            row += 1;
 
             var descriptionValue = CreateFrame(weapon.description);
-            grid.Children.Add(descriptionValue, 0, 2, 12, 13);
+            grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
+            row += 1;
 
             MainPage.AddTapHandler(grid, (s, e) => Weapon_DoubleTap(weapon, index), 2);
 
@@ -329,14 +346,10 @@ namespace PathfinderCharacterSheet
                 {
                     Content = new Label()
                     {
-                        Text = weapon.name + ": "
-                            + weapon.AttackBonus(sheet) + ", "
-                            + weapon.critical.AsString(sheet) + ", "
-                            + weapon.Damage(sheet),
-                        TextDecorations = TextDecorations.Underline,
+                        Text = weapon.AsString(sheet),
                         FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                         TextColor = Color.Black,
-                        HorizontalTextAlignment = TextAlignment.Start,
+                        HorizontalTextAlignment = TextAlignment.Center,
                         HorizontalOptions = LayoutOptions.Center,
                         VerticalOptions = LayoutOptions.Center,
                     },
@@ -374,6 +387,7 @@ namespace PathfinderCharacterSheet
                 return;
             rebuild = true;
             weapon.selected = value;
+            CharacterSheetStorage.Instance.SaveCharacter();
             UpdateView();
         }
 

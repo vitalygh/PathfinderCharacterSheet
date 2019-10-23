@@ -55,7 +55,7 @@ namespace PathfinderCharacterSheet
             modifier.name = Name.Text;
             /*
             if (anyChanged)
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
             */
         }
 
@@ -73,7 +73,7 @@ namespace PathfinderCharacterSheet
         private void Delete_Clicked(object sender, EventArgs e)
         {
             modifiersList.Remove(modifier);
-            //CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+            //CharacterSheetStorage.Instance.SaveCharacter();
             Navigation.PopAsync();
         }
     }

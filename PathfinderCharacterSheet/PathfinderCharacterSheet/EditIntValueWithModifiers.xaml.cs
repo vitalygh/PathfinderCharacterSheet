@@ -99,7 +99,7 @@ namespace PathfinderCharacterSheet
                 source.modifiers = modifiers;
             }
             if (hasChanged && saveCharacter)
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
         }
     }
 }

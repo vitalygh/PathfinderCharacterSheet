@@ -77,7 +77,7 @@ namespace PathfinderCharacterSheet
                     break;
                 }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
         }
 
         private CharacterSheet.SavingThrow GetST(CharacterSheet.Save st)

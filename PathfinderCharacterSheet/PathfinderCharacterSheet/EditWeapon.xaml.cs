@@ -77,11 +77,13 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
             }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
         }
 
         private void AttackBonus_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -93,6 +95,8 @@ namespace PathfinderCharacterSheet
 
         private void Critical_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -104,6 +108,8 @@ namespace PathfinderCharacterSheet
 
         private void Damage_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -115,6 +121,8 @@ namespace PathfinderCharacterSheet
 
         private void DamageBonus_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -126,6 +134,8 @@ namespace PathfinderCharacterSheet
 
         private void Range_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -137,6 +147,8 @@ namespace PathfinderCharacterSheet
 
         private void Ammunition_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -148,6 +160,8 @@ namespace PathfinderCharacterSheet
 
         private void Weight_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -176,7 +190,7 @@ namespace PathfinderCharacterSheet
                 if (sheet != null)
                 {
                     sheet.weaponItems.RemoveAt(itemIndex);
-                    CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                    CharacterSheetStorage.Instance.SaveCharacter();
                 }
             }
             Navigation.PopAsync();

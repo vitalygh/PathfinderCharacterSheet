@@ -39,7 +39,7 @@ namespace PathfinderCharacterSheet
             if (hasChanges)
             {
                 c.initiative.miscModifiers = modifiers;
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
             }
         }
 

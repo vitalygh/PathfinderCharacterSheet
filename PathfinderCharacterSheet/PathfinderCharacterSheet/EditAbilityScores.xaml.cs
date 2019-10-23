@@ -171,7 +171,7 @@ namespace PathfinderCharacterSheet
                 sheet.abilityScores[i] = localSheet.abilityScores[i];
             }
             if (anyChanged)
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

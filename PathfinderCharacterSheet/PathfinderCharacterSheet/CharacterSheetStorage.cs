@@ -107,6 +107,11 @@ namespace PathfinderCharacterSheet
             }
         }
 
+        public void SaveCharacter()
+        {
+            SaveCharacter(selectedCharacter);
+        }
+
         public void SaveCharacter(CharacterSheet sheet)
         {
             var path = GetPath(sheet);

@@ -1,12 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PathfinderCharacterSheet.EditCritical">
+             x:Class="PathfinderCharacterSheet.EditCritical"
+             Title="Edit Critical">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="15" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="CriticalHitTitle" Text="Critical Hit" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MinTitle" Text="Min: " Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Min_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CriticalMin"></Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" - " Grid.Column="1" Grid.Row="2"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MaxTitle" Text="Max: " Grid.Column="0" Grid.Row="3"></Label>
+                    <Frame x:Name="ArmorBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Max_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CriticalMax">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" /x " Grid.Column="1" Grid.Row="4"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MultiplierTitle" Text="Multiplier: " Grid.Column="0" Grid.Row="5"></Label>
+                    <Frame x:Name="ShieldBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Multiplier_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="Multiplier">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

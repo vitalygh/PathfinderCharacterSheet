@@ -56,7 +56,7 @@ namespace PathfinderCharacterSheet
             if (!ac.Equals(sheet.armorClass))
             {
                 sheet.armorClass = ac;
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
             }
         }
 

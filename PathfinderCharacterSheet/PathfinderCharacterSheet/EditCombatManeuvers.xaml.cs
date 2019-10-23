@@ -64,7 +64,7 @@ namespace PathfinderCharacterSheet
                 sheet.cmbSizeModifier = cmbSizeModifier;
             }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
         }
 
         private void CMDSizeModifier_Tapped(object sender, EventArgs e)

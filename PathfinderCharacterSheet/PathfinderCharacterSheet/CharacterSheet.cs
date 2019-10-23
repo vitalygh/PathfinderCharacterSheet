@@ -665,11 +665,29 @@ namespace PathfinderCharacterSheet
                 if (sheet == null)
                     return null;
                 var wd = damage.AsString(sheet);
+                return wd + " " + DamageBonus(sheet);
+            }
+            public string DamageBonus(CharacterSheet sheet)
+            {
+                if (sheet == null)
+                    return null;
                 var wdb = damageBonus.GetTotal(sheet);
                 var db = sheet.DamageBonus + wdb;
-                var bonus = wd + " " + (wdb >= 0 ? "+" + wdb : wdb.ToString());
+                var bonus = (wdb >= 0 ? "+" + wdb : wdb.ToString());
                 bonus += " (" + (db >= 0 ? "+" + db : db.ToString()) + ")";
                 return bonus;
+            }
+            public string AsString(CharacterSheet sheet)
+            {
+                var weapon = name;
+                weapon += ": " + AttackBonus(sheet);
+                var c = critical.AsString(sheet);
+                if (!string.IsNullOrWhiteSpace(c))
+                    weapon += ", " + c;
+                var d = Damage(sheet);
+                if (!string.IsNullOrWhiteSpace(d))
+                    weapon += ", " + d;
+                return weapon;
             }
             public ValueWithModifiers<int, IntSum> damageBonus = new ValueWithModifiers<int, IntSum>();
             public string type = null;
@@ -883,11 +901,14 @@ namespace PathfinderCharacterSheet
         public class DiceRoll
         {
             public ValueWithModifiers<int, IntSum> diceCount = new ValueWithModifiers<int, IntSum>();
-            public ValueWithModifiers<int, IntSum> diceValue = new ValueWithModifiers<int, IntSum>();
+            public ValueWithModifiers<int, IntSum> diceSides = new ValueWithModifiers<int, IntSum>();
             public ValueWithModifiers<int, IntSum> additional = new ValueWithModifiers<int, IntSum>();
             public string AsString(CharacterSheet sheet)
             {
-                var roll = diceCount.GetTotal(sheet) + "d" + diceValue.GetTotal(sheet);
+                var sides = diceSides.GetTotal(sheet);
+                if (sides <= 0)
+                    return string.Empty;
+                var roll = diceCount.GetTotal(sheet) + "d" + sides;
                 var add = additional.GetTotal(sheet);
                 if (add == 0)
                     return "(" + roll + ")";
@@ -905,7 +926,7 @@ namespace PathfinderCharacterSheet
                     return new DiceRoll()
                     {
                         diceCount = diceCount.Clone as ValueWithModifiers<int, IntSum>,
-                        diceValue = diceValue.Clone as ValueWithModifiers<int, IntSum>,
+                        diceSides = diceSides.Clone as ValueWithModifiers<int, IntSum>,
                         additional = additional.Clone as ValueWithModifiers<int, IntSum>,
                     };
                 }
@@ -915,7 +936,7 @@ namespace PathfinderCharacterSheet
             {
                 if (!diceCount.Equals(other.diceCount))
                     return false;
-                if (!diceValue.Equals(other.diceValue))
+                if (!diceSides.Equals(other.diceSides))
                     return false;
                 if (!additional.Equals(other.additional))
                     return false;
@@ -927,8 +948,8 @@ namespace PathfinderCharacterSheet
                 if (source == null)
                     return this;
                 diceCount = source.diceCount.Clone as ValueWithModifiers<int, IntSum>;
-                diceValue = source.diceValue.Clone as ValueWithModifiers<int, IntSum>;
-                additional = additional.Clone as ValueWithModifiers<int, IntSum>;
+                diceSides = source.diceSides.Clone as ValueWithModifiers<int, IntSum>;
+                additional = source.additional.Clone as ValueWithModifiers<int, IntSum>;
                 return this;
             }
         }
@@ -943,9 +964,11 @@ namespace PathfinderCharacterSheet
                 var mint = min.GetTotal(sheet);
                 var maxt = max.GetTotal(sheet);
                 var mul = multiplier.GetTotal(sheet);
+                if (mul <= 0)
+                    return string.Empty;
                 var crit = string.Empty;
                 if (mint < maxt)
-                    crit += mint + " - ";
+                    crit += mint + "-";
                 crit += maxt;
                 crit += "/x" + mul;
                 return crit;
@@ -981,7 +1004,7 @@ namespace PathfinderCharacterSheet
                     return this;
                 min = source.min.Clone as ValueWithModifiers<int, IntSum>;
                 max = source.max.Clone as ValueWithModifiers<int, IntSum>;
-                multiplier = multiplier.Clone as ValueWithModifiers<int, IntSum>;
+                multiplier = source.multiplier.Clone as ValueWithModifiers<int, IntSum>;
                 return this;
             }
         }

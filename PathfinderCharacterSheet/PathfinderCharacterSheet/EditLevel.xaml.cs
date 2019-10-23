@@ -61,7 +61,7 @@ namespace PathfinderCharacterSheet
         private void Delete_Clicked(object sender, EventArgs e)
         {
             levelsOfClass.Remove(level);
-            //CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+            //CharacterSheetStorage.Instance.SaveCharacter();
             Navigation.PopAsync();
         }
     }

@@ -83,7 +83,7 @@ namespace PathfinderCharacterSheet
                 c.hp.damageResist = damageResist;
             }
             if (anyChanged)
-                CharacterSheetStorage.Instance.SaveCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                CharacterSheetStorage.Instance.SaveCharacter();
         }
 
         private void EditIntModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers)
