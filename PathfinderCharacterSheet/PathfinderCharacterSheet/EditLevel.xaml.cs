@@ -58,11 +58,17 @@ namespace PathfinderCharacterSheet
             Navigation.PopAsync();
         }
 
-        private void Delete_Clicked(object sender, EventArgs e)
+        async void Delete_Clicked(object sender, EventArgs e)
         {
-            levelsOfClass.Remove(level);
-            //CharacterSheetStorage.Instance.SaveCharacter();
-            Navigation.PopAsync();
+            var className = string.Empty;
+            if ((level != null) && !string.IsNullOrWhiteSpace(level.ClassName))
+                className = " of class \"" + level.ClassName + "\"";
+            bool allow = await DisplayAlert("Remove level" + className, "Are you sure?", "Yes", "No");
+            if (allow)
+            {
+                levelsOfClass.Remove(level);
+                await Navigation.PopAsync();
+            }
         }
     }
 }

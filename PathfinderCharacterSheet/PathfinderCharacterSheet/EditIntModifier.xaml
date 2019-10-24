@@ -8,22 +8,22 @@
             <StackLayout>
                 <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />                        
                     </Grid.RowDefinitions>
                     <Label x:Name="IsActiveTitle" Text="Active" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
-                    <Label x:Name="ValueTitle" Text="Value" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="0"></Label>
-                    <Label x:Name="NameTitle" Text="Name" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Grid.Column="2" Grid.Row="0"></Label>
-                    <CheckBox x:Name="IsActive" IsChecked="True" HorizontalOptions="CenterAndExpand" Grid.Column="0" Grid.Row="1"></CheckBox>
+                    <CheckBox x:Name="IsActive" IsChecked="True" HorizontalOptions="CenterAndExpand" Grid.Column="1" Grid.Row="0"></CheckBox>
+                    <Label x:Name="ValueTitle" Text="Value" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" Grid.Row="1"></Label>
                     <Frame Padding="5" BorderColor="Black" Grid.Column="1" Grid.Row="1">
                         <Entry x:Name="Value" HorizontalTextAlignment="Center" Keyboard="Numeric"></Entry>
                     </Frame>
-                    <Frame Padding="5" BorderColor="Black" Grid.Column="2" Grid.Row="1">
+                    <Label x:Name="NameTitle" Text="Name" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Grid.Column="0" Grid.Row="2"></Label>
+                    <Frame Padding="5" BorderColor="Black" Grid.Column="1" Grid.Row="2">
                         <Entry x:Name="Name" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand"></Entry>
                     </Frame>
                 </Grid>

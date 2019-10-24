@@ -92,7 +92,7 @@
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Range_Tapped">
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Ammunition_Tapped">
                             </TapGestureRecognizer>
                         </Frame.GestureRecognizers>
                         <Label x:Name="Ammunition" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
@@ -124,7 +124,7 @@
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Cancel" TextColor="Black" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
                     <Button Text="Save" TextColor="Black" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
-                    <Button Text="Delete" TextColor="Black" Clicked="Delete_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Delete" Text="Delete" TextColor="Black" Clicked="Delete_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

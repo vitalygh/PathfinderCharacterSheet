@@ -34,6 +34,7 @@ namespace PathfinderCharacterSheet
             WeaponType.Text = item.type;
             Special.Text = item.special;
             Description.Text = item.description;
+            Delete.IsEnabled = index >= 0;
             UpdateView();
         }
 
@@ -43,10 +44,10 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            AttackBonus.Text = item.attackBonus.GetTotal(sheet).ToString();
+            AttackBonus.Text = item.AttackBonus(sheet);
             Critical.Text = item.critical.AsString(sheet);
             Damage.Text = item.damage.AsString(sheet);
-            DamageBonus.Text = item.damageBonus.GetTotal(sheet).ToString();
+            DamageBonus.Text = item.DamageBonus(sheet).ToString();
             Range.Text = item.range.GetTotal(sheet).ToString();
             Ammunition.Text = item.ammunition.GetTotal(sheet).ToString();
             Weight.Text = item.weight.GetTotal(sheet).ToString();
@@ -100,10 +101,10 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var eivwm = new EditCritical();
-            eivwm.Init(sheet, item.critical);
-            pushedPage = eivwm;
-            Navigation.PushAsync(eivwm);
+            var ec = new EditCritical();
+            ec.Init(sheet, item.critical);
+            pushedPage = ec;
+            Navigation.PushAsync(ec);
         }
 
         private void Damage_Tapped(object sender, EventArgs e)
@@ -113,10 +114,10 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var eivwm = new EditDiceRoll();
-            eivwm.Init(sheet, item.damage);
-            pushedPage = eivwm;
-            Navigation.PushAsync(eivwm);
+            var ed = new EditDiceRoll();
+            ed.Init(sheet, item.damage);
+            pushedPage = ed;
+            Navigation.PushAsync(ed);
         }
 
         private void DamageBonus_Tapped(object sender, EventArgs e)
@@ -182,18 +183,26 @@ namespace PathfinderCharacterSheet
             Navigation.PopAsync();
         }
 
-        private void Delete_Clicked(object sender, EventArgs e)
+        async void Delete_Clicked(object sender, EventArgs e)
         {
-            if (itemIndex >= 0)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            if (itemIndex < 0)
+                return;
+            if (itemIndex >= sheet.weaponItems.Count)
+                return;
+            var item = sheet.weaponItems[itemIndex];
+            var itemName = string.Empty;
+            if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
+                itemName = " \"" + item.name + "\"";
+            bool allow = await DisplayAlert("Remove weapon" + itemName, "Are you sure?", "Yes", "No");
+            if (allow)
             {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-                if (sheet != null)
-                {
-                    sheet.weaponItems.RemoveAt(itemIndex);
-                    CharacterSheetStorage.Instance.SaveCharacter();
-                }
+                sheet.weaponItems.RemoveAt(itemIndex);
+                CharacterSheetStorage.Instance.SaveCharacter();
+                await Navigation.PopAsync();
             }
-            Navigation.PopAsync();
         }
     }
 }

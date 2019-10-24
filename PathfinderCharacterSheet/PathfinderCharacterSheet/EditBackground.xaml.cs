@@ -14,6 +14,12 @@ namespace PathfinderCharacterSheet
 	{
         private List<CharacterSheet.LevelOfClass> levelOfClass = new List<CharacterSheet.LevelOfClass>();
 
+        public class AlignmentPickerItem
+        {
+            public string Name { set; get; }
+            public CharacterSheet.Alignment Value { set; get; }
+        }
+
         public EditBackground()
 		{
 			InitializeComponent ();
@@ -23,28 +29,43 @@ namespace PathfinderCharacterSheet
 
         private void InitControls()
         {
-            levelOfClass = CharacterSheet.LevelOfClass.CreateClone(CharacterSheetStorage.Instance.selectedCharacter.levelOfClass);
-            var alignments = new List<CharacterSheet.Alignment>();
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            levelOfClass = CharacterSheet.LevelOfClass.CreateClone(sheet.levelOfClass);
+            var alignments = new List<AlignmentPickerItem>();
             var values = Enum.GetValues(typeof(CharacterSheet.Alignment));
+            var selectedIndex = 0;
+            var index = -1;
             foreach (var v in values)
-                alignments.Add((CharacterSheet.Alignment)v);
+            {
+                index += 1;
+                var alignment = new AlignmentPickerItem()
+                {
+                    Name = v.ToString(),
+                    Value = (CharacterSheet.Alignment)v,
+                };
+                alignments.Add(alignment);
+                if (sheet.alignment == alignment.Value)
+                    selectedIndex = index;
+            }
             Alignment.ItemsSource = alignments;
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            CharacterName.Text = c.name;
-            Alignment.SelectedItem = c.alignment;
-            Experience.Text = c.experience.ToString();
-            NextLevel.Text = c.nextLevelExperience.ToString();
-            Deity.Text = c.deity;
-            Homeland.Text = c.homeland;
-            Race.Text = c.Race;
-            Size.Text = c.size;
-            Gender.Text = c.gender;
-            Age.Text = c.age;
-            CharacterHeight.Text = c.height;
-            Weight.Text = c.weight;
-            Hair.Text = c.hair;
-            Eyes.Text = c.eyes;
-            Biography.Text = c.biography;
+            Alignment.ItemDisplayBinding = new Binding("Name");
+            Alignment.SelectedIndex = selectedIndex;
+            CharacterName.Text = sheet.name;
+            Experience.Text = sheet.experience.ToString();
+            NextLevel.Text = sheet.nextLevelExperience.ToString();
+            Deity.Text = sheet.deity;
+            Homeland.Text = sheet.homeland;
+            Race.Text = sheet.Race;
+            Size.Text = sheet.size;
+            Gender.Text = sheet.gender;
+            Age.Text = sheet.age;
+            CharacterHeight.Text = sheet.height;
+            Weight.Text = sheet.weight;
+            Hair.Text = sheet.hair;
+            Eyes.Text = sheet.eyes;
+            Biography.Text = sheet.biography;
         }
 
         public void UpdateView()
@@ -68,8 +89,9 @@ namespace PathfinderCharacterSheet
         {
             var c = CharacterSheetStorage.Instance.selectedCharacter;
             c.name = CharacterName.Text;
-            if (Alignment.SelectedItem != null)
-                c.alignment = (CharacterSheet.Alignment)Alignment.SelectedItem;
+            var alignment = Alignment.SelectedItem as AlignmentPickerItem;
+            if (alignment != null)
+                c.alignment = alignment.Value;
             MainPage.StrToInt(Experience.Text, ref c.experience);
             MainPage.StrToInt(NextLevel.Text, ref c.nextLevelExperience);
             c.levelOfClass = levelOfClass;
@@ -109,10 +131,18 @@ namespace PathfinderCharacterSheet
             Navigation.PopAsync();
         }
 
-        private void Delete_Clicked(object sender, EventArgs e)
+        async void Delete_Clicked(object sender, EventArgs e)
         {
-            CharacterSheetStorage.Instance.DeleteCharacter(CharacterSheetStorage.Instance.selectedCharacter);
-            Navigation.PopToRootAsync();
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var characterName = string.Empty;
+            if ((sheet != null) && !string.IsNullOrWhiteSpace(sheet.name))
+                characterName = " \"" + sheet.name + "\"";
+            bool allow = await DisplayAlert("Remove character" + characterName, "Are you sure?", "Yes", "No");
+            if (allow)
+            {
+                CharacterSheetStorage.Instance.DeleteCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                await Navigation.PopToRootAsync();
+            }
         }
     }
 }

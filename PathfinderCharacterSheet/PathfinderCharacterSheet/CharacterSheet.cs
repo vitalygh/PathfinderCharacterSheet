@@ -687,6 +687,12 @@ namespace PathfinderCharacterSheet
                 var d = Damage(sheet);
                 if (!string.IsNullOrWhiteSpace(d))
                     weapon += ", " + d;
+                var r = range.GetTotal(sheet);
+                if (r > 0)
+                {
+                    weapon += ", " + r.ToString() + " ft";
+                    weapon += ", " + ammunition.GetTotal(sheet).ToString();
+                }
                 return weapon;
             }
             public ValueWithModifiers<int, IntSum> damageBonus = new ValueWithModifiers<int, IntSum>();

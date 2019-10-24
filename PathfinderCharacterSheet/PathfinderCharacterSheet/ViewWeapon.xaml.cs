@@ -32,9 +32,15 @@ namespace PathfinderCharacterSheet
                 return;
             rebuild |= this.sheet != sheet;
             if (AttackBonus != null)
-                AttackBonus.Text = sheet.AttackBonus.ToString();
+            {
+                var ab = sheet.AttackBonus;
+                AttackBonus.Text = ab >= 0 ? "+" + ab : ab.ToString();
+            }
             if (DamageBonus != null)
-                DamageBonus.Text = sheet.DamageBonus.ToString();
+            {
+                var db = sheet.DamageBonus;
+                DamageBonus.Text = db >= 0 ? "+" + db : db.ToString();
+            }
             if (!rebuild)
                 return;
             rebuild = false;
@@ -67,11 +73,12 @@ namespace PathfinderCharacterSheet
             };
             var attackBonusTitle = CreateLabel("Attack Bonus: ", TextAlignment.Start);
             MainPage.AddTapHandler(attackBonusTitle, AttackBonus_DoubleTap, 2);
+            var ab = sheet.AttackBonus;
             var attackBonusFrame = new Frame()
             {
                 Content = new Label()
                 {
-                    Text = sheet.AttackBonus.ToString(),
+                    Text = ab >= 0 ? "+" + ab : ab.ToString(),
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     TextColor = Color.Black,
                     HorizontalOptions = LayoutOptions.Center,
@@ -85,11 +92,12 @@ namespace PathfinderCharacterSheet
 
             var damageBonusTitle = CreateLabel("Damage Bonus: ", TextAlignment.Start);
             MainPage.AddTapHandler(damageBonusTitle, DamageBonus_DoubleTap, 2);
+            var db = sheet.DamageBonus;
             var damageBonusFrame = new Frame()
             {
                 Content = new Label()
                 {
-                    Text = sheet.DamageBonus.ToString(),
+                    Text = db >= 0 ? "+" + db : db.ToString(),
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     TextColor = Color.Black,
                     HorizontalOptions = LayoutOptions.Center,
@@ -365,16 +373,22 @@ namespace PathfinderCharacterSheet
 
         public void AttackBonus_DoubleTap(object sender, EventArgs e)
         {
-
+            if (pushedPage != null)
+                return;
+            var page = new EditAttackBonus();
+            pushedPage = page;
+            Navigation.PushAsync(page);
         }
 
         public void DamageBonus_DoubleTap(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.damageBonusModifiers, "Edit Damage Bonus", "Damage Bonus: ", false);
+            eivwm.Init(sheet, sheet.damageBonusModifiers, "Edit Damage Bonus", "Damage Bonus: ", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

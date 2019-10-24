@@ -70,11 +70,17 @@ namespace PathfinderCharacterSheet
             Navigation.PopAsync();
         }
 
-        private void Delete_Clicked(object sender, EventArgs e)
+        async void Delete_Clicked(object sender, EventArgs e)
         {
-            modifiersList.Remove(modifier);
-            //CharacterSheetStorage.Instance.SaveCharacter();
-            Navigation.PopAsync();
+            var modifierName = string.Empty;
+            if ((modifier != null) && !string.IsNullOrWhiteSpace(modifier.Name))
+                modifierName = " \"" + modifier.Name + "\"";
+            bool allow = await DisplayAlert("Remove modifier" + modifierName, "Are you sure?", "Yes", "No");
+            if (allow)
+            {
+                modifiersList.Remove(modifier);
+                await Navigation.PopAsync();
+            }
         }
     }
 }

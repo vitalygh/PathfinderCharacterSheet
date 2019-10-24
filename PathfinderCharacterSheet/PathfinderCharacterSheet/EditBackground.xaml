@@ -31,7 +31,7 @@
                     </Frame>
                     <Label VerticalOptions="Center" x:Name="AlignmentTitle" Text="Alignment: " FontSize="Medium" TextColor="Black" Grid.Column="2" Grid.Row="0"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
-                        <Picker x:Name="Alignment" HorizontalOptions="CenterAndExpand"></Picker>
+                        <Picker x:Name="Alignment" FontSize="Medium" VerticalOptions="Center" HorizontalOptions="Center" ItemDisplayBinding="{Binding Name}"></Picker>
                     </Frame>
 
                     <Label VerticalOptions="Center" x:Name="ExperienceTitle" Text="Experience: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="1"></Label>

@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditAttackBonus"
+             Title="Edit Attack Bonus">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="AttackBonusTitle" Text="Attack Bonus:" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label x:Name="TotalTitle" Text="Total: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
+                        <Label x:Name="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="=" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="2"></Label>
+                    <Label x:Name="BaseAttackBonusTitle" Text="Base Attack Bonus: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="3"></Label>
+                    <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="3">
+                        <Label x:Name="BaseAttackBonus"  FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="4"></Label>
+                    <Label x:Name="SizeModifierTitle" Text="Size Modifier: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="5"></Label>
+                    <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SizeModifier_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="SizeModifier" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="6"></Label>
+                    <Label x:Name="ValueTitle" Text="Value: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="7"></Label>
+                    <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="7">
+                        <Entry x:Name="Value" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric" TextChanged="Value_TextChanged"></Entry>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="8"></Label>
+                    <Label x:Name="ModifiersTitle" Text="Modifiers: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="9"></Label>
+                    <Frame BackgroundColor="LightGray" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="9">
+                        <Label x:Name="ModifiersSum" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                </Grid>
+                <Grid x:Name="Modifiers" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="Cancel" Text="Cancel" Clicked="Cancel_Clicked" TextColor="Black" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Save" Text="Save" Clicked="Save_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
