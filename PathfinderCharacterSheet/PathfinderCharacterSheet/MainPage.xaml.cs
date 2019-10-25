@@ -213,10 +213,10 @@ namespace PathfinderCharacterSheet
         }
 
 
-        public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, string title,
-                                                Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>> addModifier,
-                                                Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>, CharacterSheet.Modifier<int>> editModifier,
-                                                Action<CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>, CharacterSheet.Modifier<int>> activateModifier)
+        public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, string title,
+                                                Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>> addModifier,
+                                                Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>, CharacterSheet.IntModifier> editModifier,
+                                                Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>, CharacterSheet.IntModifier> activateModifier)
         {
             grid.Children.Clear();
             var stack = new StackLayout()
@@ -324,7 +324,7 @@ namespace PathfinderCharacterSheet
                         TextColor = Color.Black,
                         VerticalTextAlignment = TextAlignment.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.Name,
+                        Text = t.sourceAbility != CharacterSheet.Ability.None ? "(= " + t.sourceAbility.ToString() + " modifier) " + t.Name : t.Name,
                     },
                     BorderColor = Color.Black,
                     Padding = 5,

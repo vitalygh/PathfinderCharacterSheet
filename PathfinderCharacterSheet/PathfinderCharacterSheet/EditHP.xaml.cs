@@ -13,9 +13,9 @@ namespace PathfinderCharacterSheet
 	public partial class EditHP : ContentPage, ISheetView
 	{
         private CharacterSheet sheet = null;
-        private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> maxHP = null;
-        private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> hp = null;
-        private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> damageResist = null;
+        private CharacterSheet.ValueWithIntModifiers maxHP = null;
+        private CharacterSheet.ValueWithIntModifiers hp = null;
+        private CharacterSheet.ValueWithIntModifiers damageResist = null;
 
         public EditHP ()
 		{
@@ -26,9 +26,9 @@ namespace PathfinderCharacterSheet
         private void ViewToEdit()
         {
             sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            maxHP = sheet.hp.maxHP.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
-            hp = sheet.hp.hp.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
-            damageResist = sheet.hp.damageResist.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
+            maxHP = sheet.hp.maxHP.Clone as CharacterSheet.ValueWithIntModifiers;
+            hp = sheet.hp.hp.Clone as CharacterSheet.ValueWithIntModifiers;
+            damageResist = sheet.hp.damageResist.Clone as CharacterSheet.ValueWithIntModifiers;
             MaxHP.Text = sheet.hp.maxHP.GetTotal(sheet).ToString();
             HP.Text = sheet.hp.hp.GetTotal(sheet).ToString();
             DamageResist.Text = sheet.hp.damageResist.GetTotal(sheet).ToString();
@@ -86,12 +86,12 @@ namespace PathfinderCharacterSheet
                 CharacterSheetStorage.Instance.SaveCharacter();
         }
 
-        private void EditIntModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers)
+        private void EditIntModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
         {
             EditIntModifier(modifiers, null);
         }
 
-        private void EditIntModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, CharacterSheet.Modifier<int> mod)
+        private void EditIntModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, CharacterSheet.IntModifier mod)
         {
             var page = new EditIntModifier();
             page.Init(sheet, modifiers, mod);

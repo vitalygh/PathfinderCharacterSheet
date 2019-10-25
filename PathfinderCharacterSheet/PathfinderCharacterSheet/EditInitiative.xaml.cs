@@ -12,13 +12,13 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditInitiative : ContentPage, ISheetView
     {
-        CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> modifiers = null;
+        CharacterSheet.ValueWithIntModifiers modifiers = null;
 
         public EditInitiative()
         {
             InitializeComponent();
             var c = CharacterSheetStorage.Instance.selectedCharacter;
-            modifiers = c.initiative.miscModifiers.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
+            modifiers = c.initiative.miscModifiers.Clone as CharacterSheet.ValueWithIntModifiers;
             UpdateView();
         }
 

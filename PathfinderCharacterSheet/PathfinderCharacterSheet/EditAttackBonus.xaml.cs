@@ -13,8 +13,8 @@ namespace PathfinderCharacterSheet
 	public partial class EditAttackBonus : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> sizeModifiers = null;
-        private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> attackBonus = null;
+        private CharacterSheet.ValueWithIntModifiers sizeModifiers = null;
+        private CharacterSheet.ValueWithIntModifiers attackBonus = null;
 
         public EditAttackBonus ()
 		{
@@ -27,8 +27,8 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            sizeModifiers = sheet.attackSizeModifier.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
-            attackBonus = sheet.attackBonusModifiers.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
+            sizeModifiers = sheet.attackSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
+            attackBonus = sheet.attackBonusModifiers.Clone as CharacterSheet.ValueWithIntModifiers;
             UpdateView();
         }
 
@@ -67,12 +67,12 @@ namespace PathfinderCharacterSheet
             UpdateTotal();
         }
 
-        private void EditModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers)
+        private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
         {
             EditModifier(modifiers, null);
         }
 
-        private void EditModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, CharacterSheet.Modifier<int> modifier)
+        private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, CharacterSheet.IntModifier modifier)
         {
             if (pushedPage != null)
                 return;

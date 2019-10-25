@@ -13,25 +13,27 @@ namespace PathfinderCharacterSheet
 	public partial class EditIntValueWithModifiers : ContentPage, ISheetView
 	{
         private CharacterSheet sheet = null;
-        private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> source = null;
-        private CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers = null;
+        private CharacterSheet.ValueWithIntModifiers source = null;
+        private CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers = null;
         private bool saveCharacter = false;
+        private bool allowUseAbilities = true;
 
         public EditIntValueWithModifiers ()
 		{
 			InitializeComponent ();
 		}
 
-        public void Init(CharacterSheet sheet, CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> source, string title, string valueName, bool saveCharacter)
+        public void Init(CharacterSheet sheet, CharacterSheet.ValueWithIntModifiers source, string title, string valueName, bool saveCharacter, bool allowUseAbilities = true)
         {
             Title = title;
             ValueName.Text = valueName;
+            this.allowUseAbilities = allowUseAbilities;
             if (source == null)
                 return;
             this.sheet = sheet;
             this.source = source;
             this.saveCharacter = saveCharacter;
-            modifiers = source.modifiers.Clone as CharacterSheet.ModifiersList<int, CharacterSheet.IntSum>;
+            modifiers = source.modifiers.Clone as CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>;
             Value.Text = source.baseValue.ToString();
             UpdateView();
         }
@@ -60,15 +62,15 @@ namespace PathfinderCharacterSheet
             UpdateTotal();
         }
 
-        private void EditModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers)
+        private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
         {
             EditModifier(modifiers, null);
         }
 
-        private void EditModifier(CharacterSheet.ModifiersList<int, CharacterSheet.IntSum> modifiers, CharacterSheet.Modifier<int> modifier)
+        private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, CharacterSheet.IntModifier modifier)
         {
             var page = new EditIntModifier();
-            page.Init(sheet, modifiers, modifier);
+            page.Init(sheet, modifiers, modifier, allowUseAbilities);
             Navigation.PushAsync(page);
         }
 

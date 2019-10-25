@@ -12,8 +12,8 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditCombatManeuvers : ContentPage, ISheetView
 	{
-        private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> cmdSizeModifier = null;
-        private CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum> cmbSizeModifier = null;
+        private CharacterSheet.ValueWithIntModifiers cmdSizeModifier = null;
+        private CharacterSheet.ValueWithIntModifiers cmbSizeModifier = null;
 
         public EditCombatManeuvers ()
 		{
@@ -27,8 +27,8 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            cmdSizeModifier = sheet.cmdSizeModifier.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
-            cmbSizeModifier = sheet.cmbSizeModifier.Clone as CharacterSheet.ValueWithModifiers<int, CharacterSheet.IntSum>;
+            cmdSizeModifier = sheet.cmdSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
+            cmbSizeModifier = sheet.cmbSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
             CMDBaseAttackBonus.Text = sheet.baseAttackBonus.GetTotal(sheet).ToString();
             CMBBaseAttackBonus.Text = CMDBaseAttackBonus.Text;
             CMDStrengthModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Strength).ToString();

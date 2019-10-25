@@ -5,7 +5,8 @@
              Title="Edit Modifiers">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
+            <StackLayout x:Name="Root">
+                <!--
                 <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -32,6 +33,7 @@
                     <Button x:Name="Save" Text="Save" Clicked="Save_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
                     <Button x:Name="Delete" Text="Delete" Clicked="Delete_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
                 </StackLayout>
+                -->
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
