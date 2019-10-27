@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.Windows.Input;
 
 namespace PathfinderCharacterSheet
 {
@@ -14,19 +15,14 @@ namespace PathfinderCharacterSheet
 	{
         private Page pushedPage = null;
 
-		public ViewAbilities ()
+        public ViewAbilities ()
 		{
 			InitializeComponent ();
+            CreateControls();
         }
 
-        public void UpdateView()
+        private void CreateControls()
         {
-            pushedPage = null;
-
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
-                return;
-
             const int columns = 4;
             if (AbilityScores.Children.Count <= 0)
             {
@@ -68,12 +64,23 @@ namespace PathfinderCharacterSheet
             (AbilityScores.Children[abscindex++] as Label).Text = "Ability Modifier";
             //(AbilityScores.Children[abscindex++] as Label).Text = "Temp Adjustment";
             (AbilityScores.Children[abscindex++] as Label).Text = "Temp Modifier";
+        }
+
+        public void UpdateView()
+        {
+            pushedPage = null;
+
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+
+            const int columns = 4;
             var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
             var abilitiesCount = sheet.abilityScores.Length;
             for (var i = 0; i < abilitiesCount; i++)
             {
                 var ab = sheet.abilityScores[i];
-                abscindex = (i + 1) * columns;
+                var abscindex = (i + 1) * columns;
                 (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.GetModifier(sheet).ToString();

@@ -212,7 +212,6 @@ namespace PathfinderCharacterSheet
             view.GestureRecognizers.Add(tgr);
         }
 
-
         public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, string title,
                                                 Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>> addModifier,
                                                 Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>, CharacterSheet.IntModifier> editModifier,

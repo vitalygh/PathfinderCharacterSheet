@@ -66,6 +66,7 @@
     <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="28.0.0.3" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidLongPressEffect.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="PlatformProxy.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

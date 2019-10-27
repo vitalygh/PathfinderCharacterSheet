@@ -443,7 +443,7 @@ namespace PathfinderCharacterSheet
         {
             int ab = (int)ability;
             if ((ab >= 0) && (ab < sheet.abilityScores.Length))
-                return sheet.abilityScores[ab].GetModifier(sheet);
+                return sheet.abilityScores[ab].GetTempModifier(sheet);
             return 0;
         }
 

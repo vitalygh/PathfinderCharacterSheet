@@ -15,7 +15,6 @@ namespace PathfinderCharacterSheet
         private CharacterSheet sheet = null;
         private CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiersList = null;
         private CharacterSheet.IntModifier modifier = null;
-        private bool addModifier = false;
 
         private Label IsActiveTitle = null;
         private CheckBox IsActive = null;
@@ -108,7 +107,6 @@ namespace PathfinderCharacterSheet
             };
             ModifierValue.TextChanged += (s, e) =>
             {
-                MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
                 UpdateValue();
             };
             ModifierValueFrame = new Frame()
@@ -133,7 +131,6 @@ namespace PathfinderCharacterSheet
             };
             ModifierName.TextChanged += (s, e) =>
             {
-                modifier.name = ModifierName.Text;
                 UpdateValue();
             };
             ModifierNameFrame = new Frame()
@@ -169,12 +166,15 @@ namespace PathfinderCharacterSheet
                 var abilities = new List<AbilityPickerItem>();
                 var values = Enum.GetValues(typeof(CharacterSheet.Ability));
                 var index = -1;
+                var selectedIndex = -1;
                 foreach (var v in values)
                 {
-                    index += 1;
                     var value = (CharacterSheet.Ability)v;
                     if (value == CharacterSheet.Ability.Total)
                         continue;
+                    index += 1;
+                    if ((modifier != null) && (modifier.sourceAbility == value))
+                        selectedIndex = index;
                     abilities.Add(new AbilityPickerItem()
                     {
                         Name = v.ToString(),
@@ -182,13 +182,9 @@ namespace PathfinderCharacterSheet
                     });
                 }
                 Ability.ItemsSource = abilities;
-                Ability.SelectedIndex = index;
+                Ability.SelectedIndex = selectedIndex;
                 Ability.SelectedIndexChanged += (s, e) =>
                 {
-                    var item = (Ability.SelectedItem as AbilityPickerItem);
-                    if (item == null)
-                        return;
-                    modifier.sourceAbility = item.Value;
                     UpdateValue();
                 };
                 grid.Children.Add(abilityFrame, 1, 3);
@@ -208,7 +204,6 @@ namespace PathfinderCharacterSheet
                 };
                 Multiplier.TextChanged += (s, e) =>
                 {
-                    MainPage.StrToInt(Multiplier.Text, ref modifier.multiplier);
                     UpdateValue();
                 };
                 MultiplierFrame = new Frame()
@@ -234,7 +229,6 @@ namespace PathfinderCharacterSheet
                 };
                 Divider.TextChanged += (s, e) =>
                 {
-                    MainPage.StrToInt(Divider.Text, ref modifier.divider);
                     UpdateValue();
                 };
                 DividerFrame = new Frame()
@@ -286,11 +280,6 @@ namespace PathfinderCharacterSheet
             this.sheet = sheet;
             this.modifiersList = modifiersList;
             this.modifier = modifier;
-            if (modifier == null)
-            {
-                this.modifier = new CharacterSheet.IntModifier();
-                addModifier = true;
-            }
             InitControls(allowUseAbilities);
             ViewToEdit();
         }
@@ -300,31 +289,50 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             Delete.IsEnabled = modifier != null;
+            UpdateValue();
             if (modifier == null)
                 return;
             IsActive.IsChecked = modifier.IsActive;
             ModifierName.Text = modifier.Name;
-            UpdateValue();
+            ModifierValue.Text = modifier.GetValue(sheet).ToString();
+            if (Multiplier != null)
+                Multiplier.Text = modifier.multiplier.ToString();
+            if (Divider != null)
+                Divider.Text = modifier.divider.ToString();
         }
 
         void UpdateValue()
         {
             if (sheet == null)
                 return;
-            var ab = modifier.sourceAbility != CharacterSheet.Ability.None;
-            ModifierValue.Text = modifier.GetValue(sheet).ToString();
+            var ab = false;
+            var currentAbility = CharacterSheet.Ability.None;
+            if (Ability != null)
+            {
+                var item = (Ability.SelectedItem as AbilityPickerItem);
+                if (item != null)
+                {
+                    currentAbility = item.Value;
+                    ab = currentAbility != CharacterSheet.Ability.None;
+                }
+            }
             ModifierValue.IsReadOnly = ab;
             ModifierValueFrame.BackgroundColor = ab ? Color.LightGray : Color.White;
-            ModifierName.Text = modifier.Name;
+            var currentModifier = new CharacterSheet.IntModifier();
+            currentModifier.sourceAbility = currentAbility;
+            MainPage.StrToInt(ModifierValue.Text, ref currentModifier.value);
+            if (Multiplier != null)
+                MainPage.StrToInt(Multiplier.Text, ref currentModifier.multiplier);
+            if (Divider != null)
+                MainPage.StrToInt(Divider.Text, ref currentModifier.divider);
+            ModifierValue.Text = currentModifier.GetValue(sheet).ToString();
             if (Multiplier != null)
             {
-                Multiplier.Text = modifier.multiplier.ToString();
                 Multiplier.IsReadOnly = !ab;
                 MultiplierFrame.BackgroundColor = !ab ? Color.LightGray : Color.White;
             }
             if (Divider != null)
             {
-                Divider.Text = modifier.divider.ToString();
                 Divider.IsReadOnly = !ab;
                 DividerFrame.BackgroundColor = !ab ? Color.LightGray : Color.White;
             }
@@ -333,8 +341,9 @@ namespace PathfinderCharacterSheet
         private void EditToView()
         {
             var anyChanged = false;
-            if (addModifier)
+            if (modifier ==  null)
             {
+                modifier = new CharacterSheet.IntModifier();
                 modifiersList.Add(modifier);
                 anyChanged = true;
             }
