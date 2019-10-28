@@ -295,16 +295,13 @@ namespace PathfinderCharacterSheet
                 return list;
             }
 
-            public virtual object Fill(object source)
+            public Modifier<T> Fill(Modifier<T> source)
             {
                 if (source == null)
                     return this;
-                var obj = source as Modifier<T>;
-                if (obj == null)
-                    return this;
-                active = obj.IsActive;
-                name = obj.Name;
-                value = obj.value;
+                active = source.IsActive;
+                name = source.Name;
+                value = source.value;
                 return this;
             }
 
@@ -380,13 +377,12 @@ namespace PathfinderCharacterSheet
             public virtual T GetTotal(CharacterSheet sheet) { return Sum<T, S>(baseValue, modifiers.GetTotal(sheet)); }
 
             public virtual object Clone
-            {   get
+            {
+                get
                 {
-                    return new ValueWithModifiers<M, T, S>()
-                    {
-                        baseValue = baseValue,
-                        modifiers = modifiers.Clone as ModifiersList<M, T, S>,
-                    };
+                    var clone = new ValueWithModifiers<M, T, S>();
+                    clone.Fill(this);
+                    return clone;
                 }
             }
 
@@ -679,11 +675,9 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return new ItemWithDescription()
-                    {
-                        name = name,
-                        description = description,
-                    };
+                    var clone = new ItemWithDescription();
+                    clone.Fill(this);
+                    return clone;
                 }
             }
 
@@ -696,6 +690,15 @@ namespace PathfinderCharacterSheet
                 if (description != other.description)
                     return false;
                 return true;
+            }
+
+            public ItemWithDescription Fill(ItemWithDescription source)
+            {
+                if (source == null)
+                    return this;
+                name = source.name;
+                description = source.description;
+                return this;
             }
         }
 
@@ -721,14 +724,9 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return new Item()
-                    {
-                        amount = amount,
-                        weight = weight,
-
-                        name = name,
-                        description = description,
-                    };
+                    var clone = new Item();
+                    clone.Fill(this);
+                    return clone;
                 }
             }
 
@@ -743,6 +741,16 @@ namespace PathfinderCharacterSheet
                 if (!weight.Equals(other.weight))
                     return false;
                 return true;
+            }
+
+            public Item Fill(Item source)
+            {
+                if (source == null)
+                    return this;
+                base.Fill(source);
+                amount = source.amount;
+                weight = source.weight;
+                return this;
             }
         }
 
@@ -807,24 +815,9 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return new WeaponItem()
-                    {
-                        selected = selected,
-                        attackBonus = attackBonus.Clone as ValueWithIntModifiers,
-                        critical = critical.Clone as CriticalHit,
-                        damage = damage.Clone as DiceRoll,
-                        damageBonus = damageBonus.Clone as ValueWithIntModifiers,
-                        type = type,
-                        range = range.Clone as ValueWithIntModifiers,
-                        ammunition = ammunition.Clone as ValueWithIntModifiers,
-                        special = special,
-
-                        amount = amount.Clone as ValueWithIntModifiers,
-                        weight = weight.Clone as ValueWithIntModifiers,
-
-                        name = name,
-                        description = description,
-                    };
+                    var clone = new WeaponItem();
+                    clone.Fill(this);
+                    return clone;
                 }
             }
 
@@ -854,14 +847,40 @@ namespace PathfinderCharacterSheet
                     return false;
                 return true;
             }
+
+            public WeaponItem Fill(WeaponItem source)
+            {
+                if (source == null)
+                    return this;
+                base.Fill(source);
+                selected = source.selected;
+                attackBonus = source.attackBonus.Clone as ValueWithIntModifiers;
+                critical = source.critical.Clone as CriticalHit;
+                damage = source.damage.Clone as DiceRoll;
+                damageBonus = source.damageBonus.Clone as ValueWithIntModifiers;
+                type = source.type;
+                range = source.range.Clone as ValueWithIntModifiers;
+                ammunition = source.ammunition.Clone as ValueWithIntModifiers;
+                special = source.special;
+                return this;
+            }
         }
 
         public class ArmorClassItem: Item
         {
-            public ValueWithIntModifiers bonus = new ValueWithIntModifiers();
-            public bool isShield = false;
-            public bool isArmor = false;
-            public string type = null;
+            public enum ArmorType
+            {
+                Armor,
+                Shield,
+                Other,
+            }
+
+            public bool selected = false;
+            public bool active = false;
+            public ValueWithIntModifiers armorBonus = new ValueWithIntModifiers();
+            public ArmorType armorType = ArmorType.Other;
+            public bool limitMaxDexBonus = false;
+            public ValueWithIntModifiers maxDexBonus = new ValueWithIntModifiers();
             public ValueWithIntModifiers checkPenalty = new ValueWithIntModifiers();
             public ValueWithIntModifiers spellFailure = new ValueWithIntModifiers();
             public string properties = null;
@@ -870,22 +889,9 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return new ArmorClassItem()
-                    {
-                        bonus = bonus.Clone as ValueWithIntModifiers,
-                        isShield = isShield,
-                        isArmor = isArmor,
-                        type = type,
-                        checkPenalty = checkPenalty.Clone as ValueWithIntModifiers,
-                        spellFailure = spellFailure.Clone as ValueWithIntModifiers,
-                        properties = properties,
-
-                        amount = amount.Clone as ValueWithIntModifiers,
-                        weight = weight.Clone as ValueWithIntModifiers,
-
-                        name = name,
-                        description = description,
-                    };
+                    var clone = new ArmorClassItem();
+                    clone.Fill(this);
+                    return clone;
                 }
             }
 
@@ -895,13 +901,17 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!base.Equals(other))
                     return false;
-                if (!bonus.Equals(other.bonus))
+                if (selected != other.selected)
                     return false;
-                if (isShield != other.isShield)
+                if (active != other.active)
                     return false;
-                if (isArmor != other.isArmor)
+                if (!armorBonus.Equals(other.armorBonus))
                     return false;
-                if (type != other.type)
+                if (armorType != other.armorType)
+                    return false;
+                if (limitMaxDexBonus != other.limitMaxDexBonus)
+                    return false;
+                if (!maxDexBonus.Equals(other.maxDexBonus))
                     return false;
                 if (!checkPenalty.Equals(other.checkPenalty))
                     return false;
@@ -910,6 +920,23 @@ namespace PathfinderCharacterSheet
                 if (properties != other.properties)
                     return false;
                 return true;
+            }
+
+            public ArmorClassItem Fill(ArmorClassItem source)
+            {
+                if (source == null)
+                    return this;
+                base.Fill(source);
+                selected = source.selected;
+                active = source.active;
+                armorBonus = source.armorBonus.Clone as ValueWithIntModifiers;
+                armorType = source.armorType;
+                limitMaxDexBonus = source.limitMaxDexBonus;
+                maxDexBonus = source.maxDexBonus.Clone as ValueWithIntModifiers;
+                checkPenalty = source.checkPenalty.Clone as ValueWithIntModifiers;
+                spellFailure = source.spellFailure.Clone as ValueWithIntModifiers;
+                properties = source.properties;
+                return this;
             }
         }
 
@@ -974,8 +1001,8 @@ namespace PathfinderCharacterSheet
                     return armorBonus.GetTotal(sheet);
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
-                    if (item.isArmor)
-                        ac += item.bonus.GetTotal(sheet);
+                    if (item.armorType == ArmorClassItem.ArmorType.Armor)
+                        ac += item.armorBonus.GetTotal(sheet);
                 return ac;
             }
 
@@ -985,8 +1012,8 @@ namespace PathfinderCharacterSheet
                     return shieldBonus.GetTotal(sheet);
                 var ac = 0;
                 foreach (var item in sheet.armorClassItems)
-                    if (item.isShield)
-                        ac += item.bonus.GetTotal(sheet);
+                    if (item.armorType == ArmorClassItem.ArmorType.Shield)
+                        ac += item.armorBonus.GetTotal(sheet);
                 return ac;
             }
 
@@ -1031,12 +1058,9 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return new DiceRoll()
-                    {
-                        diceCount = diceCount.Clone as ValueWithIntModifiers,
-                        diceSides = diceSides.Clone as ValueWithIntModifiers,
-                        additional = additional.Clone as ValueWithIntModifiers,
-                    };
+                    var clone = new DiceRoll();
+                    clone.Fill(this);
+                    return clone;
                 }
             }
 
@@ -1086,12 +1110,9 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return new CriticalHit()
-                    {
-                        min = min.Clone as ValueWithIntModifiers,
-                        max = max.Clone as ValueWithIntModifiers,
-                        multiplier = multiplier.Clone as ValueWithIntModifiers,
-                    };
+                    var clone = new CriticalHit();
+                    clone.Fill(this);
+                    return clone;
                 }
             }
 
