@@ -789,8 +789,10 @@ namespace PathfinderCharacterSheet
             }
             public string AsString(CharacterSheet sheet)
             {
-                var weapon = name;
-                weapon += ": " + AttackBonus(sheet);
+                var weapon = string.Empty;
+                if (!string.IsNullOrWhiteSpace(name))
+                    weapon += name + ": ";
+                weapon += AttackBonus(sheet);
                 var c = critical.AsString(sheet);
                 if (!string.IsNullOrWhiteSpace(c))
                     weapon += ", " + c;
@@ -884,6 +886,28 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers checkPenalty = new ValueWithIntModifiers();
             public ValueWithIntModifiers spellFailure = new ValueWithIntModifiers();
             public string properties = null;
+
+            public string AsString(CharacterSheet sheet)
+            {
+                var armor = string.Empty;
+                if (!string.IsNullOrWhiteSpace(name))
+                    armor += name + ": ";
+                if (active)
+                    armor += "active, ";
+                var ab = armorBonus.GetTotal(sheet);
+                armor += ab >= 0 ? "+" + ab : ab.ToString();
+                armor += ", " + armorType;
+                if (limitMaxDexBonus)
+                {
+                    var mdb = maxDexBonus.GetTotal(sheet);
+                    armor += ", " + (mdb >= 0 ? "+" + mdb : mdb.ToString());
+                }
+                armor += ", " + checkPenalty.GetTotal(sheet);
+                armor += ", " + spellFailure.GetTotal(sheet) + "%";
+                if (!string.IsNullOrWhiteSpace(properties))
+                    armor += ", " + properties;
+                return armor;
+            }
 
             public override object Clone
             {
