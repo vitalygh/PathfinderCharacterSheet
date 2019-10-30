@@ -323,7 +323,7 @@ namespace PathfinderCharacterSheet
                         TextColor = Color.Black,
                         VerticalTextAlignment = TextAlignment.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.sourceAbility != CharacterSheet.Ability.None ? "(= " + t.sourceAbility.ToString() + " modifier) " + t.Name : t.Name,
+                        Text = t.SourceAbility != CharacterSheet.Ability.None ? "(= " + t.SourceAbility + " modifier) " + t.Name : t.Name,
                     },
                     BorderColor = Color.Black,
                     Padding = 5,

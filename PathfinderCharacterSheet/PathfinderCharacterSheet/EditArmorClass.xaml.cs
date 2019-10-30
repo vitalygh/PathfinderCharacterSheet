@@ -12,6 +12,12 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditArmorClass : ContentPage, ISheetView
 	{
+        public class DexterityModifierSourcePickerItem
+        {
+            public string Name { get; set; }
+            public CharacterSheet.ArmorClass.DexterityModifierSources Value { get; set; }
+        }
+
         private CharacterSheet.ArmorClass ac = null;
 
 		public EditArmorClass ()
@@ -27,6 +33,24 @@ namespace PathfinderCharacterSheet
             if (c == null)
                 return;
             ac = c.armorClass.Clone as CharacterSheet.ArmorClass;
+            var values = Enum.GetValues(typeof(CharacterSheet.ArmorClass.DexterityModifierSources));
+            var count = -1;
+            var valueIndex = 0;
+            var dexModSrcPickerItems = new List<DexterityModifierSourcePickerItem>();
+            foreach (var v in values)
+            {
+                count += 1;
+                var value = (CharacterSheet.ArmorClass.DexterityModifierSources)v;
+                if (value == ac.DexterityModifierSource)
+                    valueIndex = count;
+                dexModSrcPickerItems.Add(new DexterityModifierSourcePickerItem()
+                {
+                    Name = v.ToString(),
+                    Value = value,
+                });
+            }
+            DexModifierSource.ItemsSource = dexModSrcPickerItems;
+            DexModifierSource.SelectedIndex = valueIndex;
         }
 
         public void UpdateView()
@@ -41,7 +65,7 @@ namespace PathfinderCharacterSheet
             ShieldBonus.Text = ac.GetShieldBonus(sheet).ToString();
             ShieldBonusFromItems.IsChecked = ac.itemsShieldBonus;
             UpdateShieldBonusFromItem();
-            DexModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
+            DexModifier.Text = ac.GetDexterityModifier(sheet).ToString();
             SizeModifier.Text = ac.sizeModifier.GetTotal(sheet).ToString();
             NaturalArmor.Text = ac.naturalArmor.GetTotal(sheet).ToString();
             DeflectionModifier.Text = ac.deflectionModifier.GetTotal(sheet).ToString();
@@ -81,6 +105,18 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, ac.armorBonus, "Edit Armor Class Shield Bonus", "Shield Bonus: ", false);
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void DexModifier_Tapped(object sender, EventArgs e)
+        {
+            if (ac.DexterityModifierSource != CharacterSheet.ArmorClass.DexterityModifierSources.Custom)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, ac.dexterityModifier, "Edit Armor Class Dexterity Modifier", "Dexterity Modifier: ", false);
             Navigation.PushAsync(eivwm);
         }
 
@@ -158,6 +194,22 @@ namespace PathfinderCharacterSheet
         private void ShieldBonusFromItems_Changed(object sender, CheckedChangedEventArgs e)
         {
             UpdateShieldBonusFromItem();
+        }
+
+        private void DexModifierSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var pickerItem = DexModifierSource.SelectedItem as DexterityModifierSourcePickerItem;
+            if (pickerItem == null)
+                return;
+            ac.DexterityModifierSource = pickerItem.Value;
+            var custom = pickerItem.Value == CharacterSheet.ArmorClass.DexterityModifierSources.Custom;
+            DexModifier.Text = ac.GetDexterityModifier(sheet).ToString();
+            DexModifier.TextDecorations = custom ? TextDecorations.Underline : TextDecorations.None;
+            DexModifierFrame.BackgroundColor = custom ? Color.White : Color.LightGray;
+            Total.Text = ac.GetTotal(sheet).ToString();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

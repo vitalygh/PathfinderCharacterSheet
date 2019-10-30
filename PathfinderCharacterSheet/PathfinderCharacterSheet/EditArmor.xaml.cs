@@ -15,7 +15,7 @@ namespace PathfinderCharacterSheet
         public class ArmorTypePickerItem
         {
             public string Name { get; set; }
-            public CharacterSheet.ArmorClassItem.ArmorType Value { get; set; }
+            public CharacterSheet.ArmorClassItem.ArmorTypes Value { get; set; }
         }
 
         private int itemIndex = -1;
@@ -37,14 +37,14 @@ namespace PathfinderCharacterSheet
             itemIndex = index;
             this.item = item;
             var armorTypeIndex = -1;
-            var armorTypeValues = Enum.GetValues(typeof(CharacterSheet.ArmorClassItem.ArmorType));
+            var armorTypeValues = Enum.GetValues(typeof(CharacterSheet.ArmorClassItem.ArmorTypes));
             var pickerItems = new List<ArmorTypePickerItem>();
             var armorTypeCounter = -1;
             foreach (var atv in armorTypeValues)
             {
                 armorTypeCounter += 1;
-                var value = (CharacterSheet.ArmorClassItem.ArmorType)atv;
-                if (value == item.armorType)
+                var value = (CharacterSheet.ArmorClassItem.ArmorTypes)atv;
+                if (value == item.ArmorType)
                     armorTypeIndex = armorTypeCounter;
                 pickerItems.Add(new ArmorTypePickerItem()
                 {
@@ -90,7 +90,7 @@ namespace PathfinderCharacterSheet
             item.name = ArmorName.Text;
             var selectedArmorType = ArmorType.SelectedItem as ArmorTypePickerItem;
             if (selectedArmorType != null)
-                item.armorType = selectedArmorType.Value;
+                item.ArmorType = selectedArmorType.Value;
             item.limitMaxDexBonus = LimitMaxDexBonus.IsChecked;
             item.properties = Properties.Text;
             item.description = Description.Text;

@@ -26,7 +26,7 @@ namespace PathfinderCharacterSheet
             if (c == null)
                 return;
             CharacterName.Text = c.Name;
-            Alignment.Text = c.alignment.ToString();
+            Alignment.Text = c.Alignment.ToString();
             Experience.Text = c.experience.ToString();
             NextLevel.Text = c.nextLevelExperience.ToString();
             Level.Text = c.LevelAsString;

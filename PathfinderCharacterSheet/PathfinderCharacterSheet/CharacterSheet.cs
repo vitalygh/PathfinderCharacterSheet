@@ -194,15 +194,20 @@ namespace PathfinderCharacterSheet
 
         public class IntModifier: Modifier<int>
         {
-            public Ability sourceAbility = Ability.None;
+            public string sourceAbility = Ability.None.ToString();
+            public Ability SourceAbility
+            {
+                get { return GetEnumValue(sourceAbility, Ability.None); }
+                set { sourceAbility = value.ToString(); }
+            }
             public int multiplier = 1;
             public int divider = 1;
 
             public override int GetValue(CharacterSheet sheet)
             {
-                if ((sheet == null) || (sourceAbility == Ability.None))
+                if ((sheet == null) || (SourceAbility == Ability.None))
                     return value;
-                var ability = multiplier * sheet.GetAbilityModifier(sourceAbility);
+                var ability = multiplier * sheet.GetAbilityModifier(SourceAbility);
                 if (divider != 0)
                     ability /= divider;
                 return ability;
@@ -435,6 +440,23 @@ namespace PathfinderCharacterSheet
             return value;
         }
 
+        public static T GetEnumValue<T>(string text, T defaultValue) where T: struct
+        {
+            /*
+            var values = Enum.GetValues(typeof(T));
+            if (values == null)
+                return defaultValue;
+            foreach (var v in values)
+                if (v.ToString() == text)
+                    return (T)v;
+            return defaultValue;
+            */
+            T result = defaultValue;
+            if (Enum.TryParse<T>(text, out result))
+                return result;
+            return defaultValue;
+        }
+
         public static int GetAbilityModifier(CharacterSheet sheet, Ability ability)
         {
             int ab = (int)ability;
@@ -450,7 +472,12 @@ namespace PathfinderCharacterSheet
 
         public class SavingThrow
         {
-            public Ability abilityModifierSource = Ability.None;
+            public string abilityModifierSource = Ability.None.ToString();
+            public Ability AbilityModifierSource
+            {
+                get { return GetEnumValue(abilityModifierSource, Ability.None); }
+                set { abilityModifierSource = value.ToString(); }
+            }
             public ValueWithIntModifiers baseSave = new ValueWithIntModifiers();
             public ValueWithIntModifiers magicModifier = new ValueWithIntModifiers();
             public ValueWithIntModifiers miscModifier = new ValueWithIntModifiers();
@@ -463,12 +490,12 @@ namespace PathfinderCharacterSheet
 
             public SavingThrow(Ability abilityModifierSource)
             {
-                this.abilityModifierSource = abilityModifierSource;
+                this.abilityModifierSource = abilityModifierSource.ToString();
             }
 
             public int GetAbilityModifier(CharacterSheet sheet)
             {
-                return CharacterSheet.GetAbilityModifier(sheet, abilityModifierSource);
+                return CharacterSheet.GetAbilityModifier(sheet, AbilityModifierSource);
             }
 
             public int GetTotal(CharacterSheet sheet)
@@ -589,7 +616,7 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public enum Alignment
+        public enum Alignments
         {
             LawfulGood,
             NeutralGood,
@@ -602,7 +629,7 @@ namespace PathfinderCharacterSheet
             ChaoticEvil,
         }
 
-        public enum Skill
+        public enum Skills
         {
             None = -1,
             Acrobatics,
@@ -644,11 +671,16 @@ namespace PathfinderCharacterSheet
 
         public class SkillRank
         {
-            public Skill skill = Skill.None;
+            public string skill = Skills.None.ToString();
             public bool hasName = false;
             public string name = null;
             public bool classSkill = false;
-            public Ability abilityModifierSource = Ability.None;
+            public string abilityModifierSource = Ability.None.ToString();
+            public Ability AbilityModifierSource
+            {
+                get { return GetEnumValue(abilityModifierSource, Ability.None); }
+                set { abilityModifierSource = value.ToString(); }
+            }
             public ValueWithIntModifiers rank = new ValueWithIntModifiers();
             public ValueWithIntModifiers miscModifiers = new ValueWithIntModifiers();
             public bool armorPenalty = false;
@@ -658,10 +690,10 @@ namespace PathfinderCharacterSheet
             {
             }
 
-            public SkillRank(Skill skill, Ability abilityModifierSource, bool trainedOnly = false, bool hasName = false)
+            public SkillRank(Skills skill, Ability abilityModifierSource, bool trainedOnly = false, bool hasName = false)
             {
-                this.skill = skill;
-                this.abilityModifierSource = abilityModifierSource;
+                this.skill = skill.ToString();
+                this.abilityModifierSource = abilityModifierSource.ToString();
                 this.trainedOnly = trainedOnly;
                 this.hasName = hasName;
             }
@@ -870,7 +902,7 @@ namespace PathfinderCharacterSheet
 
         public class ArmorClassItem: Item
         {
-            public enum ArmorType
+            public enum ArmorTypes
             {
                 Armor,
                 Shield,
@@ -885,7 +917,12 @@ namespace PathfinderCharacterSheet
                 var ab = armorBonus.GetTotal(sheet);
                 return  ab >= 0 ? "+" + ab : ab.ToString();
             }
-            public ArmorType armorType = ArmorType.Other;
+            public string armorType = ArmorTypes.Other.ToString();
+            public ArmorTypes ArmorType
+            {
+                get { return GetEnumValue(armorType, ArmorTypes.Other); }
+                set { armorType = value.ToString(); }
+            }
             public bool limitMaxDexBonus = false;
             public ValueWithIntModifiers maxDexBonus = new ValueWithIntModifiers();
             public string MaxDexBonus(CharacterSheet sheet)
@@ -910,12 +947,12 @@ namespace PathfinderCharacterSheet
             {
                 var armor = string.Empty;
                 if (!string.IsNullOrWhiteSpace(name))
-                    armor += name;
-                armor += "(";
+                    armor += name + " ";
+                armor += "(" + armorType;
                 if (active)
-                    armor += "active, ";
-                armor += armorType + "): ";
-                armor += ", " + ArmorBonus(sheet);
+                    armor += ", active";
+                armor += "): ";
+                armor += ArmorBonus(sheet);
                 if (limitMaxDexBonus)
                     armor += ", " + MaxDexBonus(sheet);
                 armor += ", " + CheckPenalty(sheet);
@@ -982,10 +1019,24 @@ namespace PathfinderCharacterSheet
 
         public class ArmorClass
         {
+            public enum DexterityModifierSources
+            {
+                DependsOnACItems,
+                Full,
+                Custom,
+            }
+
             public ValueWithIntModifiers armorBonus = new ValueWithIntModifiers();
             public bool itemsArmorBonus = true;
             public ValueWithIntModifiers shieldBonus = new ValueWithIntModifiers();
             public bool itemsShieldBonus = true;
+            public string dexterityModifierSource = DexterityModifierSources.DependsOnACItems.ToString();
+            public DexterityModifierSources DexterityModifierSource
+            {
+                get { return GetEnumValue(dexterityModifierSource, DexterityModifierSources.DependsOnACItems); }
+                set { dexterityModifierSource = value.ToString(); }
+            }
+            public ValueWithIntModifiers dexterityModifier = new ValueWithIntModifiers();
             public ValueWithIntModifiers sizeModifier = new ValueWithIntModifiers();
             public ValueWithIntModifiers naturalArmor = new ValueWithIntModifiers();
             public ValueWithIntModifiers deflectionModifier = new ValueWithIntModifiers();
@@ -1001,6 +1052,8 @@ namespace PathfinderCharacterSheet
                         itemsArmorBonus = itemsArmorBonus,
                         shieldBonus = shieldBonus.Clone as ValueWithIntModifiers,
                         itemsShieldBonus = itemsShieldBonus,
+                        dexterityModifierSource = dexterityModifierSource,
+                        dexterityModifier = dexterityModifier.Clone as ValueWithIntModifiers,
                         sizeModifier = sizeModifier.Clone as ValueWithIntModifiers,
                         naturalArmor = naturalArmor.Clone as ValueWithIntModifiers,
                         deflectionModifier = deflectionModifier.Clone as ValueWithIntModifiers,
@@ -1009,23 +1062,27 @@ namespace PathfinderCharacterSheet
                 }
             }
 
-            public bool Equals(ArmorClass ac)
+            public bool Equals(ArmorClass other)
             {
-                if (itemsArmorBonus != ac.itemsArmorBonus)
+                if (itemsArmorBonus != other.itemsArmorBonus)
                     return false;
-                if (!itemsArmorBonus && !armorBonus.Equals(ac.armorBonus))
+                if (!armorBonus.Equals(other.armorBonus))
                     return false;
-                if (itemsShieldBonus != ac.itemsShieldBonus)
+                if (itemsShieldBonus != other.itemsShieldBonus)
                     return false;
-                if (!itemsShieldBonus && !shieldBonus.Equals(ac.shieldBonus))
+                if (!shieldBonus.Equals(other.shieldBonus))
                     return false;
-                if (!sizeModifier.Equals(ac.sizeModifier))
+                if (dexterityModifierSource != other.dexterityModifierSource)
                     return false;
-                if (!naturalArmor.Equals(ac.naturalArmor))
+                if (!dexterityModifier.Equals(other.dexterityModifier))
                     return false;
-                if (!deflectionModifier.Equals(ac.deflectionModifier))
+                if (!sizeModifier.Equals(other.sizeModifier))
                     return false;
-                if (!miscModifiers.Equals(ac.miscModifiers))
+                if (!naturalArmor.Equals(other.naturalArmor))
+                    return false;
+                if (!deflectionModifier.Equals(other.deflectionModifier))
+                    return false;
+                if (!miscModifiers.Equals(other.miscModifiers))
                     return false;
                 return true;
             }
@@ -1035,36 +1092,88 @@ namespace PathfinderCharacterSheet
                 return 10 + sizeModifier.GetTotal(sheet) + deflectionModifier.GetTotal(sheet) + miscModifiers.GetTotal(sheet);
             }
 
+            public int GetArmorBonus(CharacterSheet sheet, ArmorClassItem.ArmorTypes type)
+            {
+                var ac = 0;
+                foreach (var item in sheet.armorClassItems)
+                {
+                    if (item == null)
+                        continue;
+                    if (!item.active)
+                        continue;
+                    if (item.ArmorType != type)
+                        continue;
+                    ac += item.armorBonus.GetTotal(sheet);
+                }
+                return ac;
+            }
+
             public int GetArmorBonus(CharacterSheet sheet)
             {
                 if (!itemsArmorBonus)
                     return armorBonus.GetTotal(sheet);
-                var ac = 0;
-                foreach (var item in sheet.armorClassItems)
-                    if (item.armorType == ArmorClassItem.ArmorType.Armor)
-                        ac += item.armorBonus.GetTotal(sheet);
-                return ac;
+                return GetArmorBonus(sheet, ArmorClassItem.ArmorTypes.Armor);
             }
 
             public int GetShieldBonus(CharacterSheet sheet)
             {
                 if (!itemsShieldBonus)
-                    return shieldBonus.GetTotal(sheet);
-                var ac = 0;
+                    return armorBonus.GetTotal(sheet);
+                return GetArmorBonus(sheet, ArmorClassItem.ArmorTypes.Shield);
+            }
+
+            private ValueWithIntModifiers GetDexBonusLimit(CharacterSheet sheet)
+            {
+                ValueWithIntModifiers minValue = null;
+                var value = 0;
                 foreach (var item in sheet.armorClassItems)
-                    if (item.armorType == ArmorClassItem.ArmorType.Shield)
-                        ac += item.armorBonus.GetTotal(sheet);
-                return ac;
+                {
+                    if (item == null)
+                        continue;
+                    if (!item.active)
+                        continue;
+                    if (!item.limitMaxDexBonus)
+                        continue;
+                    var itemValue = item.maxDexBonus.GetTotal(sheet);
+                    if ((minValue == null) || (value > itemValue))
+                    {
+                        minValue = item.maxDexBonus;
+                        value = itemValue;
+                    }
+                }
+                return minValue;
+            }
+
+            public int GetDexterityModifier(CharacterSheet sheet)
+            {
+                var full = GetAbilityModifier(sheet, Ability.Dexterity);
+                switch (DexterityModifierSource)
+                {
+                    case DexterityModifierSources.DependsOnACItems:
+                        var limit = GetDexBonusLimit(sheet);
+                        if (limit == null)
+                            return full;
+                        var maxValue = limit.GetTotal(sheet);
+                        if (full < maxValue)
+                            return full;
+                        return maxValue;
+                    case DexterityModifierSources.Full:
+                        return full;
+                    case DexterityModifierSources.Custom:
+                        return dexterityModifier.GetTotal(sheet);
+                    default:
+                        return full;
+                }
             }
 
             public int GetTotal(CharacterSheet sheet)
             {
-                return GetBaseArmorClass(sheet) + GetAbilityModifier(sheet, Ability.Dexterity) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.GetTotal(sheet);
+                return GetBaseArmorClass(sheet) + GetDexterityModifier(sheet) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.GetTotal(sheet);
             }
 
             public int GetTouch(CharacterSheet sheet)
             {
-                return GetBaseArmorClass(sheet) + GetAbilityModifier(sheet, Ability.Dexterity);
+                return GetBaseArmorClass(sheet) + GetDexterityModifier(sheet);
             }
 
             public int GetFlatFooted(CharacterSheet sheet)
@@ -1207,7 +1316,12 @@ namespace PathfinderCharacterSheet
             }
         }
         public string biography = null;
-        public Alignment alignment = Alignment.Neutral;
+        public string alignment = Alignments.Neutral.ToString();
+        public Alignments Alignment
+        {
+            get { return GetEnumValue(alignment, Alignments.Neutral); }
+            set { alignment = value.ToString(); }
+        }
         public string deity = null;
         public string homeland = null;
         public string race = null;
@@ -1325,45 +1439,45 @@ namespace PathfinderCharacterSheet
         public int currentSkillsPerLevel { get { return GetAbilityModifier(this, Ability.Intelligence) + skillsPerLevel; } }
         public List<SkillRank>skills = new List<SkillRank>()
         {
-            new SkillRank(Skill.Acrobatics, Ability.Dexterity),
-            new SkillRank(Skill.Appraise, Ability.Intelligence),
-            new SkillRank(Skill.Bluff, Ability.Charisma),
-            new SkillRank(Skill.Climb, Ability.Strength),
-            new SkillRank(Skill.Craft, Ability.Intelligence, false, true),
-            new SkillRank(Skill.Craft, Ability.Intelligence, false, true),
-            new SkillRank(Skill.Craft, Ability.Intelligence, false, true),
-            new SkillRank(Skill.Diplomacy, Ability.Charisma),
-            new SkillRank(Skill.DisableDevice, Ability.Dexterity, true),
-            new SkillRank(Skill.Disguise, Ability.Charisma),
-            new SkillRank(Skill.EscapeArtist, Ability.Dexterity),
-            new SkillRank(Skill.Fly, Ability.Dexterity),
-            new SkillRank(Skill.HandleAnimal, Ability.Charisma, true),
-            new SkillRank(Skill.Heal, Ability.Wisdom),
-            new SkillRank(Skill.Intimidate, Ability.Charisma),
-            new SkillRank(Skill.KnowledgeOfArcana, Ability.Intelligence),
-            new SkillRank(Skill.KnowledgeOfDungeoneering, Ability.Intelligence, true),
-            new SkillRank(Skill.KnowledgeOfEngineering, Ability.Intelligence, true),
-            new SkillRank(Skill.KnowledgeOfGeography, Ability.Intelligence, true),
-            new SkillRank(Skill.KnowledgeOfHistory, Ability.Intelligence, true),
-            new SkillRank(Skill.KnowledgeOfLocal, Ability.Intelligence, true),
-            new SkillRank(Skill.KnowledgeOfNature, Ability.Intelligence, true),
-            new SkillRank(Skill.KnowledgeOfNobility, Ability.Intelligence, true),
-            new SkillRank(Skill.KnowledgeOfPlanes, Ability.Intelligence, true),
-            new SkillRank(Skill.KnowledgeOfReligion, Ability.Intelligence, true),
-            new SkillRank(Skill.Linguistics, Ability.Intelligence, true),
-            new SkillRank(Skill.Perception, Ability.Wisdom),
-            new SkillRank(Skill.Perform, Ability.Charisma, false, true),
-            new SkillRank(Skill.Perform, Ability.Charisma, false, true),
-            new SkillRank(Skill.Profession, Ability.Wisdom, true, true),
-            new SkillRank(Skill.Profession, Ability.Wisdom, true, true),
-            new SkillRank(Skill.Ride, Ability.Dexterity),
-            new SkillRank(Skill.SenseMotive, Ability.Wisdom),
-            new SkillRank(Skill.SleightOfHand, Ability.Dexterity, true),
-            new SkillRank(Skill.Spellcraft, Ability.Intelligence, true),
-            new SkillRank(Skill.Stealth, Ability.Dexterity),
-            new SkillRank(Skill.Survival, Ability.Wisdom),
-            new SkillRank(Skill.Swim, Ability.Strength),
-            new SkillRank(Skill.UseMagicDevice, Ability.Charisma, true),
+            new SkillRank(Skills.Acrobatics, Ability.Dexterity),
+            new SkillRank(Skills.Appraise, Ability.Intelligence),
+            new SkillRank(Skills.Bluff, Ability.Charisma),
+            new SkillRank(Skills.Climb, Ability.Strength),
+            new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
+            new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
+            new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
+            new SkillRank(Skills.Diplomacy, Ability.Charisma),
+            new SkillRank(Skills.DisableDevice, Ability.Dexterity, true),
+            new SkillRank(Skills.Disguise, Ability.Charisma),
+            new SkillRank(Skills.EscapeArtist, Ability.Dexterity),
+            new SkillRank(Skills.Fly, Ability.Dexterity),
+            new SkillRank(Skills.HandleAnimal, Ability.Charisma, true),
+            new SkillRank(Skills.Heal, Ability.Wisdom),
+            new SkillRank(Skills.Intimidate, Ability.Charisma),
+            new SkillRank(Skills.KnowledgeOfArcana, Ability.Intelligence),
+            new SkillRank(Skills.KnowledgeOfDungeoneering, Ability.Intelligence, true),
+            new SkillRank(Skills.KnowledgeOfEngineering, Ability.Intelligence, true),
+            new SkillRank(Skills.KnowledgeOfGeography, Ability.Intelligence, true),
+            new SkillRank(Skills.KnowledgeOfHistory, Ability.Intelligence, true),
+            new SkillRank(Skills.KnowledgeOfLocal, Ability.Intelligence, true),
+            new SkillRank(Skills.KnowledgeOfNature, Ability.Intelligence, true),
+            new SkillRank(Skills.KnowledgeOfNobility, Ability.Intelligence, true),
+            new SkillRank(Skills.KnowledgeOfPlanes, Ability.Intelligence, true),
+            new SkillRank(Skills.KnowledgeOfReligion, Ability.Intelligence, true),
+            new SkillRank(Skills.Linguistics, Ability.Intelligence, true),
+            new SkillRank(Skills.Perception, Ability.Wisdom),
+            new SkillRank(Skills.Perform, Ability.Charisma, false, true),
+            new SkillRank(Skills.Perform, Ability.Charisma, false, true),
+            new SkillRank(Skills.Profession, Ability.Wisdom, true, true),
+            new SkillRank(Skills.Profession, Ability.Wisdom, true, true),
+            new SkillRank(Skills.Ride, Ability.Dexterity),
+            new SkillRank(Skills.SenseMotive, Ability.Wisdom),
+            new SkillRank(Skills.SleightOfHand, Ability.Dexterity, true),
+            new SkillRank(Skills.Spellcraft, Ability.Intelligence, true),
+            new SkillRank(Skills.Stealth, Ability.Dexterity),
+            new SkillRank(Skills.Survival, Ability.Wisdom),
+            new SkillRank(Skills.Swim, Ability.Strength),
+            new SkillRank(Skills.UseMagicDevice, Ability.Charisma, true),
         };
         public string skillsConditionalModifiers = null;
         public string languages = null;

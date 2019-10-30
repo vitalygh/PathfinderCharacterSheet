@@ -48,7 +48,7 @@
                     <Label x:Name="ArmorTypeTitle" Text="Type: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
-                        <Picker x:Name="ArmorType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" ItemDisplayBinding="{Binding Name}">
+                        <Picker x:Name="ArmorType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}">
                         </Picker>
                     </Frame>
                     <Label x:Name="LimitMaxDexBonusTitle" Text="Limit Dex Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
@@ -85,7 +85,7 @@
                         <Label x:Name="SpellFailure" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="PropertiesTitle" Text="Special: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
+                    <Label x:Name="PropertiesTitle" Text="Properties: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="8" HorizontalOptions="FillAndExpand" >
                         <Entry x:Name="Properties" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">

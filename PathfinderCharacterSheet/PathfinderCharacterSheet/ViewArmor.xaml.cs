@@ -118,7 +118,7 @@ namespace PathfinderCharacterSheet
                 grid.active.CheckedChanged += grid.activeHandler;
                 grid.name.Text = arm.name;
                 grid.armorBonus.Text = arm.ArmorBonus(sheet);
-                grid.armorType.Text = arm.armorType.ToString();
+                grid.armorType.Text = arm.ArmorType.ToString();
                 grid.maxDexBonus.Text = arm.MaxDexBonus(sheet);
                 grid.checkPenalty.Text = arm.CheckPenalty(sheet);
                 grid.spellFailure.Text = arm.SpellFailure(sheet);
@@ -277,7 +277,7 @@ namespace PathfinderCharacterSheet
             row += 1;
 
             var armorTypeTitle = CreateLabel("Armor Type: ", TextAlignment.Start);
-            var armorTypeValue = CreateFrame(armor.armorType.ToString());
+            var armorTypeValue = CreateFrame(armor.ArmorType.ToString());
             grid.Children.Add(armorTypeTitle, 0, row);
             grid.Children.Add(armorTypeValue, 1, row);
             row += 1;

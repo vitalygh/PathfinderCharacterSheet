@@ -17,7 +17,7 @@ namespace PathfinderCharacterSheet
         public class AlignmentPickerItem
         {
             public string Name { set; get; }
-            public CharacterSheet.Alignment Value { set; get; }
+            public CharacterSheet.Alignments Value { set; get; }
         }
 
         public EditBackground()
@@ -34,8 +34,8 @@ namespace PathfinderCharacterSheet
                 return;
             levelOfClass = CharacterSheet.LevelOfClass.CreateClone(sheet.levelOfClass);
             var alignments = new List<AlignmentPickerItem>();
-            var values = Enum.GetValues(typeof(CharacterSheet.Alignment));
-            var selectedIndex = 0;
+            var values = Enum.GetValues(typeof(CharacterSheet.Alignments));
+            var selectedIndex = -1;
             var index = -1;
             foreach (var v in values)
             {
@@ -43,10 +43,10 @@ namespace PathfinderCharacterSheet
                 var alignment = new AlignmentPickerItem()
                 {
                     Name = v.ToString(),
-                    Value = (CharacterSheet.Alignment)v,
+                    Value = (CharacterSheet.Alignments)v,
                 };
                 alignments.Add(alignment);
-                if (sheet.alignment == alignment.Value)
+                if (sheet.Alignment == alignment.Value)
                     selectedIndex = index;
             }
             Alignment.ItemsSource = alignments;
@@ -73,13 +73,13 @@ namespace PathfinderCharacterSheet
             Level.Text = CharacterSheet.LevelOfClass.AsString(levelOfClass);
         }
 
-        private bool StringToAlignment(string alignmentName, ref CharacterSheet.Alignment alignment)
+        private bool StringToAlignment(string alignmentName, ref CharacterSheet.Alignments alignment)
         {
-            var values = Enum.GetValues(typeof(CharacterSheet.Alignment));
+            var values = Enum.GetValues(typeof(CharacterSheet.Alignments));
             foreach (var v in values)
                 if (v.ToString() == alignmentName)
                 {
-                    alignment = (CharacterSheet.Alignment)v;
+                    alignment = (CharacterSheet.Alignments)v;
                     return true;
                 }
             return false;
@@ -91,7 +91,7 @@ namespace PathfinderCharacterSheet
             c.name = CharacterName.Text;
             var alignment = Alignment.SelectedItem as AlignmentPickerItem;
             if (alignment != null)
-                c.alignment = alignment.Value;
+                c.Alignment = alignment.Value;
             MainPage.StrToInt(Experience.Text, ref c.experience);
             MainPage.StrToInt(NextLevel.Text, ref c.nextLevelExperience);
             c.levelOfClass = levelOfClass;

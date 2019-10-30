@@ -154,7 +154,7 @@ namespace PathfinderCharacterSheet
                 Ability = new Picker()
                 {
                     TextColor = Color.Black,
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Picker)),
                     ItemDisplayBinding = new Binding("Name"),
                 };
                 var abilityFrame = new Frame()
@@ -173,7 +173,7 @@ namespace PathfinderCharacterSheet
                     if (value == CharacterSheet.Ability.Total)
                         continue;
                     index += 1;
-                    if ((modifier != null) && (modifier.sourceAbility == value))
+                    if ((modifier != null) && (modifier.SourceAbility == value))
                         selectedIndex = index;
                     abilities.Add(new AbilityPickerItem()
                     {
@@ -319,7 +319,7 @@ namespace PathfinderCharacterSheet
             ModifierValue.IsReadOnly = ab;
             ModifierValueFrame.BackgroundColor = ab ? Color.LightGray : Color.White;
             var currentModifier = new CharacterSheet.IntModifier();
-            currentModifier.sourceAbility = currentAbility;
+            currentModifier.SourceAbility = currentAbility;
             MainPage.StrToInt(ModifierValue.Text, ref currentModifier.value);
             if (Multiplier != null)
                 MainPage.StrToInt(Multiplier.Text, ref currentModifier.multiplier);
@@ -357,8 +357,8 @@ namespace PathfinderCharacterSheet
                 var selectedItem = Ability.SelectedItem as AbilityPickerItem;
                 if (selectedItem != null)
                 {
-                    anyChanged |= modifier.sourceAbility != selectedItem.Value;
-                    modifier.sourceAbility = selectedItem.Value;
+                    anyChanged |= modifier.SourceAbility != selectedItem.Value;
+                    modifier.SourceAbility = selectedItem.Value;
                 }
             }
             if (Multiplier != null)

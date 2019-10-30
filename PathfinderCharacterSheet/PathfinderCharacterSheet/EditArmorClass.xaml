@@ -32,6 +32,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="ArmorClassTitle" Text="Armor Class" Grid.Column="1" Grid.Row="0"></Label>
                     <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="TotalTitle" Text="Total: " Grid.Column="0" Grid.Row="1"></Label>
@@ -63,15 +64,24 @@
                         </Label>
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="9"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="ItemsShieldBonusTitle" Text="Depends on AC Items" Grid.Column="0" Grid.Row="10"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="ItemsShieldBonusTitle" Text="Depends on AC Items: " Grid.Column="0" Grid.Row="10"></Label>
                     <CheckBox x:Name="ShieldBonusFromItems" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="ShieldBonusFromItems_Changed" Grid.Column="1" Grid.Row="10"></CheckBox>
                     <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DexModifierTitle" Text="Dexterity Modifier: " Grid.Column="0" Grid.Row="11"></Label>
-                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="11">
+                    <Frame x:Name="DexModifierFrame" BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="11">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DexModifier_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
                         <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="DexModifier"></Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="12"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="SizeModifierTitle" Text="Size Modifier: " Grid.Column="0" Grid.Row="13"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="13">
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DexModifierSourceTitle" Text="Dex Modifier Source: " Grid.Column="0" Grid.Row="12"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="12" HorizontalOptions="FillAndExpand" >
+                        <Picker x:Name="DexModifierSource" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="DexModifierSource_SelectedIndexChanged">
+                        </Picker>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="13"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="SizeModifierTitle" Text="Size Modifier: " Grid.Column="0" Grid.Row="14"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="14">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SizeModifier_Tapped">
                             </TapGestureRecognizer>
@@ -79,9 +89,9 @@
                         <Label TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="SizeModifier">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="14"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="NaturalArmorTitle" Text="Natural Armor: " Grid.Column="0" Grid.Row="15"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="15">
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="15"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="NaturalArmorTitle" Text="Natural Armor: " Grid.Column="0" Grid.Row="16"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="16">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="NaturalArmor_Tapped">
                             </TapGestureRecognizer>
@@ -89,9 +99,9 @@
                         <Label TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="NaturalArmor">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="16"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DeflectionModifierTitle" Text="Deflection Modifier: " Grid.Column="0" Grid.Row="17"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="17">
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="17"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DeflectionModifierTitle" Text="Deflection Modifier: " Grid.Column="0" Grid.Row="18"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="18">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DeflectionModifier_Tapped">
                             </TapGestureRecognizer>
@@ -99,9 +109,9 @@
                         <Label TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="DeflectionModifier">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="18"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MiscModifiersTitle" Text="Misc Modifiers: " Grid.Column="0" Grid.Row="19"></Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="19">
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="19"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MiscModifiersTitle" Text="Misc Modifiers: " Grid.Column="0" Grid.Row="20"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="20">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MiscModifiers_Tapped">
                             </TapGestureRecognizer>
