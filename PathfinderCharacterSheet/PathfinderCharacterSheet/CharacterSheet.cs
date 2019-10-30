@@ -880,30 +880,46 @@ namespace PathfinderCharacterSheet
             public bool selected = false;
             public bool active = false;
             public ValueWithIntModifiers armorBonus = new ValueWithIntModifiers();
+            public string ArmorBonus(CharacterSheet sheet)
+            {
+                var ab = armorBonus.GetTotal(sheet);
+                return  ab >= 0 ? "+" + ab : ab.ToString();
+            }
             public ArmorType armorType = ArmorType.Other;
             public bool limitMaxDexBonus = false;
             public ValueWithIntModifiers maxDexBonus = new ValueWithIntModifiers();
+            public string MaxDexBonus(CharacterSheet sheet)
+            {
+                if (!limitMaxDexBonus)
+                    return "-";
+                var mdb = maxDexBonus.GetTotal(sheet);
+                return mdb >= 0 ? "+" + mdb : mdb.ToString();
+            }
             public ValueWithIntModifiers checkPenalty = new ValueWithIntModifiers();
+            public string CheckPenalty(CharacterSheet sheet)
+            {
+                return checkPenalty.GetTotal(sheet).ToString();
+            }
             public ValueWithIntModifiers spellFailure = new ValueWithIntModifiers();
+            public string SpellFailure(CharacterSheet sheet)
+            {
+                return spellFailure.GetTotal(sheet) + "%";
+            }
             public string properties = null;
-
             public string AsString(CharacterSheet sheet)
             {
                 var armor = string.Empty;
                 if (!string.IsNullOrWhiteSpace(name))
-                    armor += name + ": ";
+                    armor += name;
+                armor += "(";
                 if (active)
                     armor += "active, ";
-                var ab = armorBonus.GetTotal(sheet);
-                armor += ab >= 0 ? "+" + ab : ab.ToString();
-                armor += ", " + armorType;
+                armor += armorType + "): ";
+                armor += ", " + ArmorBonus(sheet);
                 if (limitMaxDexBonus)
-                {
-                    var mdb = maxDexBonus.GetTotal(sheet);
-                    armor += ", " + (mdb >= 0 ? "+" + mdb : mdb.ToString());
-                }
-                armor += ", " + checkPenalty.GetTotal(sheet);
-                armor += ", " + spellFailure.GetTotal(sheet) + "%";
+                    armor += ", " + MaxDexBonus(sheet);
+                armor += ", " + CheckPenalty(sheet);
+                armor += ", " + SpellFailure(sheet);
                 if (!string.IsNullOrWhiteSpace(properties))
                     armor += ", " + properties;
                 return armor;

@@ -13,7 +13,7 @@ using PathfinderCharacterSheet.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ResolutionGroupName("PathfinderCharacterSheet")]
+[assembly: ResolutionGroupName("PathfinderCharacterSheet.App")]
 [assembly: ExportEffect(typeof(AndroidLongPressedEffect), "LongPressedEffect")]
 namespace PathfinderCharacterSheet.Droid
 {

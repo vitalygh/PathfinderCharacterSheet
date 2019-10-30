@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="PathfinderCharacterSheet.EditWeapon"
-             Title="Edit Weapon">
+             x:Class="PathfinderCharacterSheet.EditArmor"
+             Title="Edit Armor">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
@@ -24,84 +24,71 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="WeaponNameTitle" Text="Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="ArmorActiveTitle" Text="Active: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand">
-                        <Entry x:Name="WeaponName" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                    <CheckBox x:Name="ArmorActive" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="0">
+                    </CheckBox>
+                    <Label x:Name="ArmorNameTitle" Text="Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1" HorizontalOptions="FillAndExpand">
+                        <Entry x:Name="ArmorName" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
-                    <Label x:Name="AttackBonusTitle" Text="Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
-                    </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1" HorizontalOptions="FillAndExpand" >
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="AttackBonus_Tapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
-                        <Label x:Name="AttackBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
-                        </Label>
-                    </Frame>
-                    <Label x:Name="CriticalTitle" Text="Critical: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    <Label x:Name="ArmorBonusTitle" Text="Armor Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Critical_Tapped">
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="ArmorBonus_Tapped">
                             </TapGestureRecognizer>
                         </Frame.GestureRecognizers>
-                        <Label x:Name="Critical" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        <Label x:Name="ArmorBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="DamageTitle" Text="Damage: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    <Label x:Name="ArmorTypeTitle" Text="Type: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
+                        <Picker x:Name="ArmorType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" ItemDisplayBinding="{Binding Name}">
+                        </Picker>
+                    </Frame>
+                    <Label x:Name="LimitMaxDexBonusTitle" Text="Limit Dex Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    </Label>
+                    <CheckBox x:Name="LimitMaxDexBonus" VerticalOptions="Center" HorizontalOptions="Center" CheckedChanged="LimitMaxDexBonus_CheckedChanged" Grid.Column="1" Grid.Row="4">
+                    </CheckBox>
+                    <Label x:Name="MaxDexBonusTitle" Text="Max Dex Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    </Label>
+                    <Frame x:Name="MaxDexBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Damage_Tapped">
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MaxDexBonus_Tapped">
                             </TapGestureRecognizer>
                         </Frame.GestureRecognizers>
-                        <Label x:Name="Damage" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        <Label x:Name="MaxDexBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="DamageBonusTitle" Text="Damage Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
-                    </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4" HorizontalOptions="FillAndExpand" >
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DamageBonus_Tapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
-                        <Label x:Name="DamageBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
-                        </Label>
-                    </Frame>
-                    <Label x:Name="WeaponTypeTitle" Text="Type: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
-                    </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5" HorizontalOptions="FillAndExpand" >
-                        <Entry x:Name="WeaponType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
-                        </Entry>
-                    </Frame>
-                    <Label x:Name="RangeTitle" Text="Range: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
+                    <Label x:Name="CheckPenaltyTitle" Text="Check Penalty: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Range_Tapped">
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CheckPenalty_Tapped">
                             </TapGestureRecognizer>
                         </Frame.GestureRecognizers>
-                        <Label x:Name="Range" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        <Label x:Name="CheckPenalty" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="AmmunitionTitle" Text="Ammunition: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="7">
+                    <Label x:Name="SpellFailureTitle" Text="Spell Failure: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="7">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Ammunition_Tapped">
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SpellFailure_Tapped">
                             </TapGestureRecognizer>
                         </Frame.GestureRecognizers>
-                        <Label x:Name="Ammunition" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        <Label x:Name="SpellFailure" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="SpecialTitle" Text="Special: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
+                    <Label x:Name="PropertiesTitle" Text="Special: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="8" HorizontalOptions="FillAndExpand" >
-                        <Entry x:Name="Special" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        <Entry x:Name="Properties" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
                     <Label x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="9">

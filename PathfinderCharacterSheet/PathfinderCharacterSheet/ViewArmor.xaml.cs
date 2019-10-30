@@ -30,9 +30,6 @@ namespace PathfinderCharacterSheet
             public Label armorTypeTitle = null;
             public Label armorType = null;
 
-            //public Label limitMaxDexBonusTitle = null;
-            //public Label limitMaxDexBonus = null;
-
             public Label maxDexBonusTitle = null;
             public Label maxDexBonus = null;
 
@@ -120,11 +117,11 @@ namespace PathfinderCharacterSheet
                 grid.activeHandler = (s, e) => ArmorActive_CheckedChanged(arm, e.Value);
                 grid.active.CheckedChanged += grid.activeHandler;
                 grid.name.Text = arm.name;
-                grid.armorBonus.Text = arm.armorBonus.GetTotal(sheet).ToString();
+                grid.armorBonus.Text = arm.ArmorBonus(sheet);
                 grid.armorType.Text = arm.armorType.ToString();
-                grid.maxDexBonus.Text = arm.limitMaxDexBonus ? arm.maxDexBonus.GetTotal(sheet).ToString() : "-";
-                grid.checkPenalty.Text = arm.checkPenalty.GetTotal(sheet).ToString();
-                grid.spellFailure.Text = arm.spellFailure.GetTotal(sheet).ToString() + "%";
+                grid.maxDexBonus.Text = arm.MaxDexBonus(sheet);
+                grid.checkPenalty.Text = arm.CheckPenalty(sheet);
+                grid.spellFailure.Text = arm.SpellFailure(sheet);
                 grid.properties.Text = arm.properties;
                 grid.weight.Text = arm.weight.GetTotal(sheet).ToString();
                 grid.description.Text = arm.description;
@@ -265,6 +262,7 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
                 IsChecked = armor.active,
+                IsEnabled = false,
             };
             EventHandler<CheckedChangedEventArgs> activeHandler = (s, e) => ArmorSelected_CheckedChanged(armor, e.Value);
             activecb.CheckedChanged += activeHandler;
@@ -273,7 +271,7 @@ namespace PathfinderCharacterSheet
             row += 1;
 
             var armorBonusTitle = CreateLabel("Armor Bonus: ", TextAlignment.Start);
-            var armorBonusValue = CreateFrame(armor.armorBonus.GetTotal(sheet).ToString());
+            var armorBonusValue = CreateFrame(armor.ArmorBonus(sheet));
             grid.Children.Add(armorBonusTitle, 0, row);
             grid.Children.Add(armorBonusValue, 1, row);
             row += 1;
@@ -285,19 +283,19 @@ namespace PathfinderCharacterSheet
             row += 1;
 
             var maxDexBonusTitle = CreateLabel("Max Dex Bonus: ", TextAlignment.Start);
-            var maxDexBonusValue = CreateFrame(armor.maxDexBonus.GetTotal(sheet).ToString());
+            var maxDexBonusValue = CreateFrame(armor.MaxDexBonus(sheet));
             grid.Children.Add(maxDexBonusTitle, 0, row);
             grid.Children.Add(maxDexBonusValue, 1, row);
             row += 1;
 
             var checkPenaltyTitle = CreateLabel("Check Penalty: ", TextAlignment.Start);
-            var checkPenaltyValue = CreateFrame(armor.checkPenalty.GetTotal(sheet).ToString());
+            var checkPenaltyValue = CreateFrame(armor.CheckPenalty(sheet));
             grid.Children.Add(checkPenaltyTitle, 0, row);
             grid.Children.Add(checkPenaltyValue, 1, row);
             row += 1;
 
             var spellFailureTitle = CreateLabel("Spell Failure: ", TextAlignment.Start);
-            var spellFailureValue = CreateFrame(armor.spellFailure.GetTotal(sheet).ToString());
+            var spellFailureValue = CreateFrame(armor.SpellFailure(sheet));
             grid.Children.Add(spellFailureTitle, 0, row);
             grid.Children.Add(spellFailureValue, 1, row);
             row += 1;
@@ -452,12 +450,10 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            /*
             var ea = new EditArmor();
             ea.InitEditor(item, index);
             pushedPage = ea;
             Navigation.PushAsync(pushedPage);
-            */
         }
     }
 }
