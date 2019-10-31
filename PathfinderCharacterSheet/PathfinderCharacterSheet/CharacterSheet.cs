@@ -834,7 +834,7 @@ namespace PathfinderCharacterSheet
                 var r = range.GetTotal(sheet);
                 if (r > 0)
                 {
-                    weapon += ", " + r.ToString() + " ft";
+                    weapon += ", " + Range(sheet);
                     weapon += ", " + ammunition.GetTotal(sheet).ToString();
                 }
                 return weapon;
@@ -842,6 +842,10 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers damageBonus = new ValueWithIntModifiers();
             public string type = null;
             public ValueWithIntModifiers range = new ValueWithIntModifiers();
+            public string Range(CharacterSheet sheet)
+            {
+                return range.GetTotal(sheet) + " ft";
+            }
             public ValueWithIntModifiers ammunition = new ValueWithIntModifiers();
             public string special = null;
 

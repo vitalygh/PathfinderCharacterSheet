@@ -167,13 +167,14 @@ namespace PathfinderCharacterSheet
                 var values = Enum.GetValues(typeof(CharacterSheet.Ability));
                 var index = -1;
                 var selectedIndex = -1;
+                var selectedValue = modifier != null ? modifier.SourceAbility : CharacterSheet.Ability.None;
                 foreach (var v in values)
                 {
                     var value = (CharacterSheet.Ability)v;
                     if (value == CharacterSheet.Ability.Total)
                         continue;
                     index += 1;
-                    if ((modifier != null) && (modifier.SourceAbility == value))
+                    if (selectedValue == value)
                         selectedIndex = index;
                     abilities.Add(new AbilityPickerItem()
                     {

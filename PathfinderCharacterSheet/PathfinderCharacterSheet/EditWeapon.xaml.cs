@@ -25,15 +25,16 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
             {
-                item = new CharacterSheet.WeaponItem();
+                this.item = new CharacterSheet.WeaponItem();
                 index = -1;
             }
+            else
+                this.item = item.Clone as CharacterSheet.WeaponItem;
             itemIndex = index;
-            this.item = item;
-            WeaponName.Text = item.name;
-            WeaponType.Text = item.type;
-            Special.Text = item.special;
-            Description.Text = item.description;
+            WeaponName.Text = this.item.name;
+            WeaponType.Text = this.item.type;
+            Special.Text = this.item.special;
+            Description.Text = this.item.description;
             Delete.IsEnabled = index >= 0;
             UpdateView();
         }
