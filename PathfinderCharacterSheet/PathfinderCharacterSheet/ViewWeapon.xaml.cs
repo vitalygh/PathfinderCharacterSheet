@@ -123,46 +123,6 @@ namespace PathfinderCharacterSheet
                 else
                     RemoveWeaponGrid(weaponGrids[update]);
             }
-            /*
-            for (var i = 0; i < selectedCount; i++)
-            {
-                var grid = selectedWeaponGrids[i];
-                var kvp = selectedWeaponItems[i];
-                var wpn = kvp.Key;
-                var index = kvp.Value;
-                if (grid.handler != null)
-                    grid.selected.CheckedChanged -= grid.handler;
-                grid.handler = (s, e) => Weapon_CheckedChanged(wpn, e.Value);
-                grid.selected.CheckedChanged += grid.handler;
-                grid.name.Text = wpn.name;
-                grid.attackBonus.Text = wpn.AttackBonus(sheet);
-                grid.critical.Text = wpn.critical.AsString(sheet);
-                grid.damage.Text = wpn.Damage(sheet);
-                grid.damageBonus.Text = wpn.DamageBonus(sheet);
-                grid.type.Text = wpn.type;
-                grid.range.Text = wpn.Range(sheet);
-                grid.ammunition.Text = wpn.ammunition.GetTotal(sheet).ToString();
-                grid.special.Text = wpn.special;
-                grid.weight.Text = wpn.weight.GetTotal(sheet).ToString();
-                grid.description.Text = wpn.description;
-                grid.grid.GestureRecognizers.Clear();
-                MainPage.AddTapHandler(grid.grid, (s, e) => Weapon_DoubleTap(wpn, index), 2);
-            }
-            for (var i = 0; i < count; i++)
-            {
-                var grid = weaponGrids[i];
-                var kvp = weaponItems[i];
-                var wpn = kvp.Key;
-                var index = kvp.Value;
-                if (grid.handler != null)
-                    grid.selected.CheckedChanged -= grid.handler;
-                grid.handler = (s, e) => Weapon_CheckedChanged(wpn, e.Value);
-                grid.selected.CheckedChanged += grid.handler;
-                grid.text.Text = wpn.AsString(sheet);
-                grid.grid.GestureRecognizers.Clear();
-                MainPage.AddTapHandler(grid.grid, (s, e) => Weapon_DoubleTap(wpn, index), 2);
-            }
-            */
         }
 
         private void CreateHeaderGrids()
@@ -299,8 +259,7 @@ namespace PathfinderCharacterSheet
                 return;
             Weapon.Children.Remove(weaponGrid.grid);
             selectedWeaponGrids.Remove(weaponGrid);
-            if (!selectedWeaponGridsPool.Contains(weaponGrid))
-                selectedWeaponGridsPool.Add(weaponGrid);
+            selectedWeaponGridsPool.Add(weaponGrid);
         }
 
         private void UpdateWeaponGrid(SelectedWeaponGrid weaponGrid, KeyValuePair<CharacterSheet.WeaponItem, int> kvp)
@@ -331,6 +290,7 @@ namespace PathfinderCharacterSheet
             weaponGrid.description.Text = item.description;
 
             weaponGrid.grid.GestureRecognizers.Clear();
+            MainPage.AddTapHandler(weaponGrid.grid, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
             MainPage.AddTapHandler(weaponGrid.grid, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
         }
 
@@ -458,6 +418,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
+            MainPage.AddTapHandler(grid, (s, e) => Weapon_Tap(selectedcb), 1);
             MainPage.AddTapHandler(grid, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
 
             var newWeaponGrid = new SelectedWeaponGrid()
@@ -500,8 +461,7 @@ namespace PathfinderCharacterSheet
                 return;
             Weapon.Children.Remove(weaponGrid.grid);
             weaponGrids.Remove(weaponGrid);
-            if (!weaponGridsPool.Contains(weaponGrid))
-                weaponGridsPool.Add(weaponGrid);
+            weaponGridsPool.Add(weaponGrid);
         }
 
         private void UpdateWeaponGrid(WeaponGrid weaponGrid, KeyValuePair<CharacterSheet.WeaponItem, int> kvp)
@@ -522,6 +482,7 @@ namespace PathfinderCharacterSheet
             weaponGrid.text.Text = item.AsString(sheet);
 
             weaponGrid.grid.GestureRecognizers.Clear();
+            MainPage.AddTapHandler(weaponGrid.grid, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
             MainPage.AddTapHandler(weaponGrid.grid, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
         }
 
@@ -572,6 +533,7 @@ namespace PathfinderCharacterSheet
             EventHandler<CheckedChangedEventArgs> handler = (s, e) => Weapon_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += handler;
             var weaponNameFrame = CreateFrame(item.AsString(sheet));
+            MainPage.AddTapHandler(grid, (s, e) => Weapon_Tap(selectedcb), 1);
             MainPage.AddTapHandler(grid, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
             grid.Children.Add(selectedcb, 0, 0);
             grid.Children.Add(weaponNameFrame, 1, 0);
@@ -620,6 +582,11 @@ namespace PathfinderCharacterSheet
             weapon.selected = value;
             CharacterSheetStorage.Instance.SaveCharacter();
             UpdateView();
+        }
+
+        public void Weapon_Tap(CheckBox selectedcb)
+        {
+            selectedcb.IsChecked = !selectedcb.IsChecked;
         }
 
         public void Weapon_DoubleTap(CharacterSheet.WeaponItem item = null, int index = -1)

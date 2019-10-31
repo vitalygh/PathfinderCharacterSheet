@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.ViewInventory">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="PPTitle" Text="PP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="PP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="PP" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="GPTitle" Text="GP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="2" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="GP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="GP" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="SPTitle" Text="SP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="SP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="SP" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="CPTitle" Text="CP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="2" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="CP_DoubleTapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="CP" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Encumbrance_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </Grid.GestureRecognizers>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="LightLoadTitle" Text="Light Load: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="LightLoad" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="MediumLoadTitle" Text="Medium Load: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="MediumLoad" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="HeavyLoadTitle" Text="Heavy Load: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="HeavyLoad" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="LiftOverHeadTitle" Text="Lift Over Head: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="LiftOverHead" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="LiftOffGroundTitle" Text="Lift Off Ground: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="LiftOffGround" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="DragOrPushTitle" Text="Drag or Push: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Label x:Name="DragOrPush" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="GearTitle" Text="Gear: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Button x:Name="AddGear" Text="Add" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="0" Clicked="AddGear_Clicked">
+                    </Button>
+                </Grid>
+                <StackLayout x:Name="Gear">
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -701,6 +701,7 @@ namespace PathfinderCharacterSheet
 
         public class ItemWithDescription
         {
+            public bool selected = false;
             public string name = null;
             public string description = null;
             public virtual object Clone
@@ -717,6 +718,8 @@ namespace PathfinderCharacterSheet
             {
                 if (other == null)
                     return false;
+                if (selected != other.selected)
+                    return false;
                 if (name != other.name)
                     return false;
                 if (description != other.description)
@@ -728,6 +731,7 @@ namespace PathfinderCharacterSheet
             {
                 if (source == null)
                     return this;
+                selected = source.selected;
                 name = source.name;
                 description = source.description;
                 return this;
@@ -746,23 +750,24 @@ namespace PathfinderCharacterSheet
         {
         }
 
-        public class Item: ItemWithDescription
+        public class GearItem: ItemWithDescription
         {
             public ValueWithIntModifiers amount = new ValueWithIntModifiers() { baseValue = 1, };
             public ValueWithIntModifiers weight = new ValueWithIntModifiers();
             public int TotalWeight(CharacterSheet sheet) { return amount.GetTotal(sheet) * weight.GetTotal(sheet); }
+            public virtual string AsString(CharacterSheet sheet) { return name + " (" + amount + ")";  }
 
             public override object Clone
             {
                 get
                 {
-                    var clone = new Item();
+                    var clone = new GearItem();
                     clone.Fill(this);
                     return clone;
                 }
             }
 
-            public bool Equals(Item other)
+            public bool Equals(GearItem other)
             {
                 if (other == null)
                     return false;
@@ -775,7 +780,7 @@ namespace PathfinderCharacterSheet
                 return true;
             }
 
-            public Item Fill(Item source)
+            public GearItem Fill(GearItem source)
             {
                 if (source == null)
                     return this;
@@ -786,9 +791,8 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public class WeaponItem: Item
+        public class WeaponItem: GearItem
         {
-            public bool selected = false;
             public ValueWithIntModifiers attackBonus = new ValueWithIntModifiers();
             public string AttackBonus(CharacterSheet sheet)
             {
@@ -819,7 +823,7 @@ namespace PathfinderCharacterSheet
                 bonus += " (" + (db >= 0 ? "+" + db : db.ToString()) + ")";
                 return bonus;
             }
-            public string AsString(CharacterSheet sheet)
+            public override string AsString(CharacterSheet sheet)
             {
                 var weapon = string.Empty;
                 if (!string.IsNullOrWhiteSpace(name))
@@ -865,8 +869,6 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!base.Equals(other))
                     return false;
-                if (selected != other.selected)
-                    return false;
                 if (!attackBonus.Equals(other.attackBonus))
                     return false;
                 if (!critical.Equals(other.critical))
@@ -891,7 +893,6 @@ namespace PathfinderCharacterSheet
                 if (source == null)
                     return this;
                 base.Fill(source);
-                selected = source.selected;
                 attackBonus = source.attackBonus.Clone as ValueWithIntModifiers;
                 critical = source.critical.Clone as CriticalHit;
                 damage = source.damage.Clone as DiceRoll;
@@ -904,7 +905,7 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public class ArmorClassItem: Item
+        public class ArmorClassItem: GearItem
         {
             public enum ArmorTypes
             {
@@ -913,7 +914,6 @@ namespace PathfinderCharacterSheet
                 Other,
             }
 
-            public bool selected = false;
             public bool active = false;
             public ValueWithIntModifiers armorBonus = new ValueWithIntModifiers();
             public string ArmorBonus(CharacterSheet sheet)
@@ -947,7 +947,7 @@ namespace PathfinderCharacterSheet
                 return spellFailure.GetTotal(sheet) + "%";
             }
             public string properties = null;
-            public string AsString(CharacterSheet sheet)
+            public override string AsString(CharacterSheet sheet)
             {
                 var armor = string.Empty;
                 if (!string.IsNullOrWhiteSpace(name))
@@ -981,8 +981,6 @@ namespace PathfinderCharacterSheet
                 if (other == null)
                     return false;
                 if (!base.Equals(other))
-                    return false;
-                if (selected != other.selected)
                     return false;
                 if (active != other.active)
                     return false;
@@ -1293,10 +1291,127 @@ namespace PathfinderCharacterSheet
 
         public class Money
         {
-            public int cuprumPoints = 0;
-            public int silverPoints = 0;
-            public int goldenPoints = 0;
-            public int platinumPoints = 0;
+            public ValueWithIntModifiers cuprumPoints = new ValueWithIntModifiers();
+            public ValueWithIntModifiers silverPoints = new ValueWithIntModifiers();
+            public ValueWithIntModifiers goldenPoints = new ValueWithIntModifiers();
+            public ValueWithIntModifiers platinumPoints = new ValueWithIntModifiers();
+
+            public object Clone
+            {
+                get
+                {
+                    var clone = new Money();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
+
+            public bool Equals(Money other)
+            {
+                if (!cuprumPoints.Equals(other.cuprumPoints))
+                    return false;
+                if (!silverPoints.Equals(other.silverPoints))
+                    return false;
+                if (!goldenPoints.Equals(other.goldenPoints))
+                    return false;
+                if (!platinumPoints.Equals(other.platinumPoints))
+                    return false;
+                return true;
+            }
+
+            public Money Fill(Money source)
+            {
+                if (source == null)
+                    return this;
+                cuprumPoints = source.cuprumPoints.Clone as ValueWithIntModifiers;
+                silverPoints = source.silverPoints.Clone as ValueWithIntModifiers;
+                goldenPoints = source.goldenPoints.Clone as ValueWithIntModifiers;
+                platinumPoints = source.platinumPoints.Clone as ValueWithIntModifiers;
+                return this;
+            }
+        }
+
+        public class Encumbrance
+        {
+            public ValueWithIntModifiers lightLoad = new ValueWithIntModifiers();
+            public ValueWithIntModifiers mediumLoad = new ValueWithIntModifiers();
+            public ValueWithIntModifiers heavyLoad = new ValueWithIntModifiers();
+
+            public bool liftOverHeadEqualsHeavyLoad = true;
+            public ValueWithIntModifiers liftOverHead = new ValueWithIntModifiers();
+            public int LiftOverHead(CharacterSheet sheet)
+            {
+                if (liftOverHeadEqualsHeavyLoad)
+                    return heavyLoad.GetTotal(sheet);
+                return liftOverHead.GetTotal(sheet);
+            }
+
+            public bool liftOffGroundEqualsTwoLiftOverHead = true;
+            public ValueWithIntModifiers liftOffGround = new ValueWithIntModifiers();
+            public int LiftOffGround(CharacterSheet sheet)
+            {
+                if (liftOffGroundEqualsTwoLiftOverHead)
+                    return 2 * LiftOverHead(sheet);
+                return liftOffGround.GetTotal(sheet);
+            }
+
+            public bool dragOrPushEqualsFiveLiftOverHead = true;
+            public ValueWithIntModifiers dragOrPush = new ValueWithIntModifiers();
+            public int DragOrPush(CharacterSheet sheet)
+            {
+                if (dragOrPushEqualsFiveLiftOverHead)
+                    return 5 * LiftOffGround(sheet);
+                return dragOrPush.GetTotal(sheet);
+            }
+
+            public object Clone
+            {
+                get
+                {
+                    var clone = new Encumbrance();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
+
+            public bool Equals(Encumbrance other)
+            {
+                if (!lightLoad.Equals(other.lightLoad))
+                    return false;
+                if (!mediumLoad.Equals(other.mediumLoad))
+                    return false;
+                if (!heavyLoad.Equals(other.heavyLoad))
+                    return false;
+                if (liftOverHeadEqualsHeavyLoad != other.liftOverHeadEqualsHeavyLoad)
+                    return false;
+                if (!liftOverHead.Equals(other.liftOverHead))
+                    return false;
+                if (liftOffGroundEqualsTwoLiftOverHead != other.liftOffGroundEqualsTwoLiftOverHead)
+                    return false;
+                if (!liftOffGround.Equals(other.liftOffGround))
+                    return false;
+                if (dragOrPushEqualsFiveLiftOverHead != other.dragOrPushEqualsFiveLiftOverHead)
+                    return false;
+                if (!dragOrPush.Equals(other.dragOrPush))
+                    return false;
+                return true;
+            }
+
+            public Encumbrance Fill(Encumbrance source)
+            {
+                if (source == null)
+                    return this;
+                lightLoad = source.lightLoad.Clone as ValueWithIntModifiers;
+                mediumLoad = source.mediumLoad.Clone as ValueWithIntModifiers;
+                heavyLoad = source.heavyLoad.Clone as ValueWithIntModifiers;
+                liftOverHead = source.liftOverHead.Clone as ValueWithIntModifiers;
+                liftOffGround = source.liftOffGround.Clone as ValueWithIntModifiers;
+                dragOrPush = source.dragOrPush.Clone as ValueWithIntModifiers;
+                liftOverHeadEqualsHeavyLoad = source.liftOverHeadEqualsHeavyLoad;
+                liftOffGroundEqualsTwoLiftOverHead = source.liftOffGroundEqualsTwoLiftOverHead;
+                dragOrPushEqualsFiveLiftOverHead = source.dragOrPushEqualsFiveLiftOverHead;
+                return this;
+            }
         }
 
         public const int spellLevesCount = 10;
@@ -1493,13 +1608,8 @@ namespace PathfinderCharacterSheet
         #endregion
 
         #region Equipment
-        public List<Item> gear = new List<Item>();
-        public int lightLoad = 0;
-        public int mediumItem = 0;
-        public int heavyItem = 0;
-        public int liftOverHead = 0;
-        public int LiftOffGround { get { return 2 * liftOverHead; } }
-        public int DragOrPush { get { return 5 * liftOverHead; } }
+        public List<GearItem> gear = new List<GearItem>();
+        public Encumbrance encumbrance = new Encumbrance();
         public Money money = new Money();
         #endregion
 
