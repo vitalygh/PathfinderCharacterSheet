@@ -755,7 +755,7 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers amount = new ValueWithIntModifiers() { baseValue = 1, };
             public ValueWithIntModifiers weight = new ValueWithIntModifiers();
             public int TotalWeight(CharacterSheet sheet) { return amount.GetTotal(sheet) * weight.GetTotal(sheet); }
-            public virtual string AsString(CharacterSheet sheet) { return name + " (" + amount + ")";  }
+            public virtual string AsString(CharacterSheet sheet) { return "(" + amount.GetTotal(sheet) + ") " + name;  }
 
             public override object Clone
             {
@@ -1334,32 +1334,54 @@ namespace PathfinderCharacterSheet
         public class Encumbrance
         {
             public ValueWithIntModifiers lightLoad = new ValueWithIntModifiers();
+            public string LightLoad(CharacterSheet sheet)
+            {
+                return lightLoad.GetTotal(sheet) + " lbs";
+            }
             public ValueWithIntModifiers mediumLoad = new ValueWithIntModifiers();
+            public string MediumLoad(CharacterSheet sheet)
+            {
+                var ml = mediumLoad.GetTotal(sheet);
+                var text = ml + " lbs";
+                var ll = lightLoad.GetTotal(sheet) + 1;
+                if (ll < ml)
+                    text = ll + " - " + text;
+                return text;
+            }
             public ValueWithIntModifiers heavyLoad = new ValueWithIntModifiers();
+            public string HeavyLoad(CharacterSheet sheet)
+            {
+                var hl = heavyLoad.GetTotal(sheet);
+                var text = hl + " lbs";
+                var ml = mediumLoad.GetTotal(sheet) + 1;
+                if (ml < hl)
+                    text = ml + " - " + text;
+                return text;
+            }
 
-            public bool liftOverHeadEqualsHeavyLoad = true;
+            public bool defaultLiftOverHead = true;
             public ValueWithIntModifiers liftOverHead = new ValueWithIntModifiers();
             public int LiftOverHead(CharacterSheet sheet)
             {
-                if (liftOverHeadEqualsHeavyLoad)
+                if (defaultLiftOverHead)
                     return heavyLoad.GetTotal(sheet);
                 return liftOverHead.GetTotal(sheet);
             }
 
-            public bool liftOffGroundEqualsTwoLiftOverHead = true;
+            public bool defaultLiftOffGround = true;
             public ValueWithIntModifiers liftOffGround = new ValueWithIntModifiers();
             public int LiftOffGround(CharacterSheet sheet)
             {
-                if (liftOffGroundEqualsTwoLiftOverHead)
+                if (defaultLiftOffGround)
                     return 2 * LiftOverHead(sheet);
                 return liftOffGround.GetTotal(sheet);
             }
 
-            public bool dragOrPushEqualsFiveLiftOverHead = true;
+            public bool defaultDragOrPush = true;
             public ValueWithIntModifiers dragOrPush = new ValueWithIntModifiers();
             public int DragOrPush(CharacterSheet sheet)
             {
-                if (dragOrPushEqualsFiveLiftOverHead)
+                if (defaultDragOrPush)
                     return 5 * LiftOffGround(sheet);
                 return dragOrPush.GetTotal(sheet);
             }
@@ -1382,15 +1404,15 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!heavyLoad.Equals(other.heavyLoad))
                     return false;
-                if (liftOverHeadEqualsHeavyLoad != other.liftOverHeadEqualsHeavyLoad)
+                if (defaultLiftOverHead != other.defaultLiftOverHead)
                     return false;
                 if (!liftOverHead.Equals(other.liftOverHead))
                     return false;
-                if (liftOffGroundEqualsTwoLiftOverHead != other.liftOffGroundEqualsTwoLiftOverHead)
+                if (defaultLiftOffGround != other.defaultLiftOffGround)
                     return false;
                 if (!liftOffGround.Equals(other.liftOffGround))
                     return false;
-                if (dragOrPushEqualsFiveLiftOverHead != other.dragOrPushEqualsFiveLiftOverHead)
+                if (defaultDragOrPush != other.defaultDragOrPush)
                     return false;
                 if (!dragOrPush.Equals(other.dragOrPush))
                     return false;
@@ -1407,9 +1429,9 @@ namespace PathfinderCharacterSheet
                 liftOverHead = source.liftOverHead.Clone as ValueWithIntModifiers;
                 liftOffGround = source.liftOffGround.Clone as ValueWithIntModifiers;
                 dragOrPush = source.dragOrPush.Clone as ValueWithIntModifiers;
-                liftOverHeadEqualsHeavyLoad = source.liftOverHeadEqualsHeavyLoad;
-                liftOffGroundEqualsTwoLiftOverHead = source.liftOffGroundEqualsTwoLiftOverHead;
-                dragOrPushEqualsFiveLiftOverHead = source.dragOrPushEqualsFiveLiftOverHead;
+                defaultLiftOverHead = source.defaultLiftOverHead;
+                defaultLiftOffGround = source.defaultLiftOffGround;
+                defaultDragOrPush = source.defaultDragOrPush;
                 return this;
             }
         }

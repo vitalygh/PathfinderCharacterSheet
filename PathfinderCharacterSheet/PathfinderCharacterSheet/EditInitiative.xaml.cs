@@ -12,7 +12,8 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditInitiative : ContentPage, ISheetView
     {
-        CharacterSheet.ValueWithIntModifiers modifiers = null;
+        private Page pushedPage = null;
+        private CharacterSheet.ValueWithIntModifiers modifiers = null;
 
         public EditInitiative()
         {
@@ -24,6 +25,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             var dexMod = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity);
             DexModifier.Text = dexMod.ToString();
@@ -45,11 +47,14 @@ namespace PathfinderCharacterSheet
 
         private void MiscModifiers_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, modifiers, "Edit Initiative Misc Modifiers", "Misc Modifiers: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 

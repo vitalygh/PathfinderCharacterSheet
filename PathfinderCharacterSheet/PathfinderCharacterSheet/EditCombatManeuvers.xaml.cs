@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditCombatManeuvers : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
         private CharacterSheet.ValueWithIntModifiers cmdSizeModifier = null;
         private CharacterSheet.ValueWithIntModifiers cmbSizeModifier = null;
 
@@ -38,6 +39,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -69,21 +71,27 @@ namespace PathfinderCharacterSheet
 
         private void CMDSizeModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, cmdSizeModifier, "Edit CMD Size Modifier", "Size Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void CMBSizeModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, cmbSizeModifier, "Edit CMB Size Modifier", "Size Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 

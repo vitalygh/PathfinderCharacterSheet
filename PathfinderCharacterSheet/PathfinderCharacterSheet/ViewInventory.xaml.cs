@@ -12,13 +12,9 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewInventory : ContentPage, ISheetView
     {
-        public class SelectedGearItemGrid
+        public class SelectedGearItemGrid: GearItemGrid
         {
-            public Grid grid = null;
-            public EventHandler<CheckedChangedEventArgs> handler = null;
-            public CheckBox selected = null;
             public Label nameTitle = null;
-            public Label name = null;
             public Label amountTitle = null;
             public Label amount = null;
             public Label weightTitle = null;
@@ -32,15 +28,14 @@ namespace PathfinderCharacterSheet
             public Grid grid = null;
             public EventHandler<CheckedChangedEventArgs> handler = null;
             public CheckBox selected = null;
-            public Label text = null;
+            public Label name = null;
         }
 
         private Page pushedPage = null;
 
-        List<SelectedGearItemGrid> selectedGearItemGrids = new List<SelectedGearItemGrid>();
         List<SelectedGearItemGrid> selectedGearItemGridsPool = new List<SelectedGearItemGrid>();
-        List<GearItemGrid> gearItemGrids = new List<GearItemGrid>();
         List<GearItemGrid> gearItemGridsPool = new List<GearItemGrid>();
+        List<GearItemGrid> gearItemGrids = new List<GearItemGrid>();
 
         public ViewInventory()
         {
@@ -54,48 +49,62 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var selectedGearItems = new List<KeyValuePair<CharacterSheet.GearItem, int>>();
-            var gearItems = new List<KeyValuePair<CharacterSheet.GearItem, int>>();
+            PP.Text = sheet.money.platinumPoints.GetTotal(sheet).ToString();
+            GP.Text = sheet.money.goldenPoints.GetTotal(sheet).ToString();
+            SP.Text = sheet.money.silverPoints.GetTotal(sheet).ToString();
+            CP.Text = sheet.money.cuprumPoints.GetTotal(sheet).ToString();
+            LightLoad.Text = sheet.encumbrance.LightLoad(sheet);
+            MediumLoad.Text = sheet.encumbrance.MediumLoad(sheet);
+            HeavyLoad.Text = sheet.encumbrance.HeavyLoad(sheet);
+            LiftOverHead.Text = sheet.encumbrance.LiftOverHead(sheet) + " lbs";
+            LiftOffGround.Text = sheet.encumbrance.LiftOffGround(sheet) + " lbs";
+            DragOrPush.Text = sheet.encumbrance.DragOrPush(sheet) + " lbs";
+            UpdateGearView();
+        }
+
+        private void UpdateGearView()
+        {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var totalItemsCount = sheet.gear.Count;
             for (var i = 0; i < totalItemsCount; i++)
             {
-                var item = sheet.gear[i];
-                if (item == null)
+                var gearItem = sheet.gear[i];
+                if (gearItemGrids.Count <= i)
+                {
+                    var newGearItemGrid = gearItem.selected ? CreateSelectedGearItemGrid(gearItem, i) : CreateGearItemGrid(gearItem, i);
+                    gearItemGrids.Add(newGearItemGrid);
+                    Gear.Children.Add(newGearItemGrid.grid);
                     continue;
-                if (item.selected)
-                    selectedGearItems.Add(new KeyValuePair<CharacterSheet.GearItem, int>(item, i));
-                else
-                    gearItems.Add(new KeyValuePair<CharacterSheet.GearItem, int>(item, i));
+                }
+                var gearItemGrid = gearItemGrids[i];
+                var selectedGearItemGrid = gearItemGrid as SelectedGearItemGrid;
+                if (gearItem.selected)
+                {
+                    if (selectedGearItemGrid != null)
+                    {
+                        UpdateGearItemGrid(selectedGearItemGrid, gearItem, i);
+                        continue;
+                    }
+                    RemoveGearItemGrid(gearItemGrid);
+                    var newGearItemGrid = CreateSelectedGearItemGrid(gearItem, i);
+                    gearItemGrids.Insert(i, newGearItemGrid);
+                    Gear.Children.Insert(i, newGearItemGrid.grid);
+                    continue;
+                }
+                if (selectedGearItemGrid == null)
+                {
+                    UpdateGearItemGrid(gearItemGrid, gearItem, i);
+                    continue;
+                }
+                RemoveGearItemGrid(gearItemGrid);
+                gearItemGrid = CreateGearItemGrid(gearItem, i);
+                gearItemGrids.Insert(i, gearItemGrid);
+                Gear.Children.Insert(i, gearItemGrid.grid);
             }
-            var itemsCount = selectedGearItems.Count;
-            var gridsCount = selectedGearItemGrids.Count;
-            var update = Math.Min(gridsCount, itemsCount);
-            for (var i = 0; i < update; i++)
-                UpdateGearItemGrid(selectedGearItemGrids[i], selectedGearItems[i]);
-            var create = gridsCount < itemsCount;
-            var left = create ? itemsCount - gridsCount : gridsCount - itemsCount;
-            for (int i = 0; i < left; i++)
-            {
-                if (create)
-                    CreateSelectedGearItemGrid(selectedGearItems[i + update]);
-                else
-                    RemoveGearItemGrid(selectedGearItemGrids[update]);
-            }
-
-            itemsCount = gearItems.Count;
-            gridsCount = gearItemGrids.Count;
-            update = Math.Min(gridsCount, itemsCount);
-            for (var i = 0; i < update; i++)
-                UpdateGearItemGrid(gearItemGrids[i], gearItems[i]);
-            create = gridsCount < itemsCount;
-            left = create ? itemsCount - gridsCount : gridsCount - itemsCount;
-            for (int i = 0; i < left; i++)
-            {
-                if (create)
-                    CreateGearItemGrid(gearItems[i + update]);
-                else
-                    RemoveGearItemGrid(gearItemGrids[update]);
-            }
+            while (gearItemGrids.Count > sheet.gear.Count)
+                RemoveGearItemGrid(gearItemGrids[gearItemGrids.Count - 1]);
         }
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
@@ -136,7 +145,7 @@ namespace PathfinderCharacterSheet
             if (gearItemGrid == null)
                 return;
             Gear.Children.Remove(gearItemGrid.grid);
-            selectedGearItemGrids.Remove(gearItemGrid);
+            gearItemGrids.Remove(gearItemGrid);
             selectedGearItemGridsPool.Add(gearItemGrid);
         }
 
@@ -170,22 +179,19 @@ namespace PathfinderCharacterSheet
             CreateSelectedGearItemGrid(kvp.Key, kvp.Value);
         }
 
-        private void CreateSelectedGearItemGrid(CharacterSheet.GearItem item, int itemIndex)
+        private SelectedGearItemGrid CreateSelectedGearItemGrid(CharacterSheet.GearItem item, int itemIndex)
         {
             if (item == null)
-                return;
+                return null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
-                return;
+                return null;
             if (selectedGearItemGridsPool.Count > 0)
             {
                 var gearItemGrid = selectedGearItemGridsPool[0];
                 selectedGearItemGridsPool.RemoveAt(0);
                 UpdateGearItemGrid(gearItemGrid, item, itemIndex);
-                var pos = 2 + selectedGearItemGrids.Count;
-                selectedGearItemGrids.Add(gearItemGrid);
-                Gear.Children.Insert(pos, gearItemGrid.grid);
-                return;
+                return gearItemGrid;
             }
             var grid = new Grid()
             {
@@ -264,16 +270,19 @@ namespace PathfinderCharacterSheet
                 descriptionTitle = descriptionTitle,
                 description = descriptionValue.Content as Label,
             };
-
-            var newpos = 2 + selectedGearItemGrids.Count;
-            selectedGearItemGrids.Add(newGearItemGrid);
-            Gear.Children.Insert(newpos, newGearItemGrid.grid);
+            return newGearItemGrid;
         }
 
         private void RemoveGearItemGrid(GearItemGrid gearItemGrid)
         {
             if (gearItemGrid == null)
                 return;
+            var sgig = gearItemGrid as SelectedGearItemGrid;
+            if (sgig != null)
+            {
+                RemoveGearItemGrid(sgig);
+                return;
+            }
             Gear.Children.Remove(gearItemGrid.grid);
             gearItemGrids.Remove(gearItemGrid);
             gearItemGridsPool.Add(gearItemGrid);
@@ -294,7 +303,7 @@ namespace PathfinderCharacterSheet
             gearItemGrid.handler = (s, e) => GearItem_CheckedChanged(item, e.Value);
             gearItemGrid.selected.IsChecked = item.selected;
             gearItemGrid.selected.CheckedChanged += gearItemGrid.handler;
-            gearItemGrid.text.Text = item.AsString(sheet);
+            gearItemGrid.name.Text = item.AsString(sheet);
 
             gearItemGrid.grid.GestureRecognizers.Clear();
             MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
@@ -306,22 +315,19 @@ namespace PathfinderCharacterSheet
             CreateGearItemGrid(kvp.Key, kvp.Value);
         }
 
-        private void CreateGearItemGrid(CharacterSheet.GearItem item, int itemIndex)
+        private GearItemGrid CreateGearItemGrid(CharacterSheet.GearItem item, int itemIndex)
         {
             if (item == null)
-                return;
+                return null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
-                return;
+                return null;
             if (gearItemGridsPool.Count > 0)
             {
                 var gearItemGrid = gearItemGridsPool[0];
                 gearItemGridsPool.RemoveAt(0);
                 UpdateGearItemGrid(gearItemGrid, item, itemIndex);
-                var pos = 2 + selectedGearItemGrids.Count + gearItemGrids.Count;
-                gearItemGrids.Add(gearItemGrid);
-                Gear.Children.Insert(pos, gearItemGrid.grid);
-                return;
+                return gearItemGrid;
             }
             var grid = new Grid()
             {
@@ -358,12 +364,10 @@ namespace PathfinderCharacterSheet
                 grid = grid,
                 handler = handler,
                 selected = selectedcb,
-                text = gearItemNameFrame.Content as Label,
+                name = gearItemNameFrame.Content as Label,
             };
 
-            var newpos = 2 + selectedGearItemGrids.Count + gearItemGrids.Count;
-            gearItemGrids.Add(newGearItemGrid);
-            Gear.Children.Insert(newpos, newGearItemGrid.grid);
+            return newGearItemGrid;
         }
 
         public void GearItem_CheckedChanged(CharacterSheet.GearItem gearItem, bool value)
@@ -389,12 +393,10 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            /*
             var egi = new EditGearItem();
             egi.InitEditor(gearItem, index);
             pushedPage = egi;
             Navigation.PushAsync(pushedPage);
-            */
         }
 
         private void AddGear_Clicked(object sender, EventArgs e)
@@ -410,29 +412,60 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.money.platinumPoints, "Edit Platinum Points", "Platinum Points: ", false);
+            eivwm.Init(sheet, sheet.money.platinumPoints, "Edit Platinum Points", "Platinum Points: ", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void GP_DoubleTapped(object sender, EventArgs e)
         {
-
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, sheet.money.goldenPoints, "Edit Gold Points", "Gold Points: ", true);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
         }
 
         private void SP_DoubleTapped(object sender, EventArgs e)
         {
-
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, sheet.money.silverPoints, "Edit Silver Points", "Silver Points: ", true);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
         }
 
         private void CP_DoubleTapped(object sender, EventArgs e)
         {
-
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, sheet.money.cuprumPoints, "Edit Cuprum Points", "Cuprum Points: ", true);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
         }
 
         private void Encumbrance_DoubleTapped(object sender, EventArgs e)
         {
-
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var ee = new EditEncumbrance();
+            pushedPage = ee;
+            Navigation.PushAsync(pushedPage);
         }
     }
 }

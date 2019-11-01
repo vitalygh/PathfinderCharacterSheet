@@ -18,6 +18,7 @@ namespace PathfinderCharacterSheet
             public CharacterSheet.ArmorClass.DexterityModifierSources Value { get; set; }
         }
 
+        private Page pushedPage = null;
         private CharacterSheet.ArmorClass ac = null;
 
 		public EditArmorClass ()
@@ -55,6 +56,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -88,11 +90,14 @@ namespace PathfinderCharacterSheet
         {
             if (ac.itemsArmorBonus)
                 return;
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, ac.armorBonus, "Edit Armor Class Armor Bonus", "Armor Bonus: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
@@ -100,11 +105,14 @@ namespace PathfinderCharacterSheet
         {
             if (ac.itemsShieldBonus)
                 return;
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, ac.armorBonus, "Edit Armor Class Shield Bonus", "Shield Bonus: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
@@ -112,51 +120,66 @@ namespace PathfinderCharacterSheet
         {
             if (ac.DexterityModifierSource != CharacterSheet.ArmorClass.DexterityModifierSources.Custom)
                 return;
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, ac.dexterityModifier, "Edit Armor Class Dexterity Modifier", "Dexterity Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void SizeModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, ac.sizeModifier, "Edit Armor Class Size Modifier", "Size Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void NaturalArmor_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, ac.naturalArmor, "Edit Armor Class Natural Armor", "Natural Armor: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void DeflectionModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, ac.deflectionModifier, "Edit Armor Class Deflection Modifier", "Deflection Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void MiscModifiers_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, ac.miscModifiers, "Edit Armor Class Misc Modifiers", "Misc Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 

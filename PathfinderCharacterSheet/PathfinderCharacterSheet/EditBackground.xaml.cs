@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditBackground : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
         private List<CharacterSheet.LevelOfClass> levelOfClass = new List<CharacterSheet.LevelOfClass>();
 
         public class AlignmentPickerItem
@@ -70,6 +71,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
             Level.Text = CharacterSheet.LevelOfClass.AsString(levelOfClass);
         }
 
@@ -110,8 +112,11 @@ namespace PathfinderCharacterSheet
 
         private void Level_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var loc = new EditLevelOfClass();
             loc.Init(levelOfClass);
+            pushedPage = loc;
             Navigation.PushAsync(loc);
         }
 

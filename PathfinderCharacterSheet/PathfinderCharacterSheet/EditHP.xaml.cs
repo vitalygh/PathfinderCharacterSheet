@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditHP : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
         private CharacterSheet sheet = null;
         private CharacterSheet.ValueWithIntModifiers maxHP = null;
         private CharacterSheet.ValueWithIntModifiers hp = null;
@@ -37,6 +38,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
             UpdateMaxHP();
             UpdateTempHP();
             UpdateDamageResist();
@@ -93,8 +95,11 @@ namespace PathfinderCharacterSheet
 
         private void EditIntModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, CharacterSheet.IntModifier mod)
         {
+            if (pushedPage != null)
+                return;
             var page = new EditIntModifier();
             page.Init(sheet, modifiers, mod);
+            pushedPage = page;
             Navigation.PushAsync(page);
         }
 

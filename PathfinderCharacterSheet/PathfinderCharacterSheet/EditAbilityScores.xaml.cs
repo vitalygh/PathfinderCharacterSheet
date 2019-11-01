@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditAbilityScores : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
         private CharacterSheet localSheet = new CharacterSheet();
 
         public EditAbilityScores()
@@ -78,12 +79,15 @@ namespace PathfinderCharacterSheet
                                 var adj = j == 3;
                                 tgr.Tapped += (s, e) =>
                                 {
+                                    if (pushedPage != null)
+                                        return;
                                     var eivwm = new EditIntValueWithModifiers();
                                     var modname = (adj ? "Temp Adjustment" : "Score");
                                     var abmodname = abilities[index] + " " + modname;
                                     var labs = localSheet.abilityScores[index];
                                     var vwm = adj ? labs.tempAdjustment : labs.score;
                                     eivwm.Init(localSheet, vwm, "Edit " + abmodname, abmodname + ": ", false, false);
+                                    pushedPage = eivwm;
                                     Navigation.PushAsync(eivwm);
                                 };
                                 (child as Frame).GestureRecognizers.Add(tgr);
@@ -139,6 +143,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;

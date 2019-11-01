@@ -45,6 +45,8 @@ namespace PathfinderCharacterSheet
 
         private void Background_DoubleTapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             pushedPage = new EditBackground();
             Navigation.PushAsync(pushedPage);
         }

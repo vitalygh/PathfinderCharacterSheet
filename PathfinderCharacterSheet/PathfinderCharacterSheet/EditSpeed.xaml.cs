@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditSpeed : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
         private CharacterSheet.Speed speed = null;
 
 		public EditSpeed ()
@@ -23,14 +24,15 @@ namespace PathfinderCharacterSheet
 
         private void InitEditor()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
-            speed = c.speed.Clone as CharacterSheet.Speed;
+            speed = sheet.speed.Clone as CharacterSheet.Speed;
         }
 
         public void UpdateView()
         {
+            pushedPage = null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -49,53 +51,65 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
-            if (!speed.Equals(c.speed))
+            if (!speed.Equals(sheet.speed))
             {
-                c.speed = speed;
+                sheet.speed = speed;
                 CharacterSheetStorage.Instance.SaveCharacter();
             }
         }
 
         private void BaseSpeed_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, speed.baseSpeed, "Edit Base Speed", "Base Speed: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void SpeedWithArmor_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, speed.armorSpeed, "Edit Speed With Armor", "Speed With Armor: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void FlySpeed_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, speed.flySpeed, "Edit Fly Speed", "Fly Speed: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void Maneuverability_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, speed.maneuverability, "Edit Maneuverability", "Maneuverability: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
@@ -103,11 +117,14 @@ namespace PathfinderCharacterSheet
         {
             if (speed.defaultSwimSpeed)
                 return;
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, speed.swimSpeed, "Edit Swim Speed", "Swim Speed: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
@@ -115,21 +132,27 @@ namespace PathfinderCharacterSheet
         {
             if (speed.defaultClimbSpeed)
                 return;
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, speed.climbSpeed, "Edit Climb Speed", "Climb Speed: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void BurrowSpeed_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, speed.burrowSpeed, "Edit Burrow Speed", "Burrow Speed: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 

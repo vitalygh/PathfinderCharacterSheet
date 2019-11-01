@@ -12,7 +12,8 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditSavingThrows : ContentPage, ISheetView
     {
-        List<CharacterSheet.SavingThrow> savingThrows = new List<CharacterSheet.SavingThrow>();
+        private Page pushedPage = null;
+        private List<CharacterSheet.SavingThrow> savingThrows = new List<CharacterSheet.SavingThrow>();
 
         public EditSavingThrows()
         {
@@ -34,6 +35,7 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
@@ -92,6 +94,8 @@ namespace PathfinderCharacterSheet
 
         private void FortitudeBaseSave_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Fortitude);
             if (st == null)
                 return;
@@ -100,11 +104,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.baseSave, "Edit Fortitude Base Save", "Base Save: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void ReflexBaseSave_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Reflex);
             if (st == null)
                 return;
@@ -113,11 +120,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.baseSave, "Edit Reflex Base Save", "Base Save: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void WillBaseSave_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Will);
             if (st == null)
                 return;
@@ -126,11 +136,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.baseSave, "Edit Will Base Save", "Base Save: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void FortitudeMagicModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Fortitude);
             if (st == null)
                 return;
@@ -139,11 +152,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.magicModifier, "Edit Fortitude Magic Modifier", "Magic Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void ReflexMagicModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Reflex);
             if (st == null)
                 return;
@@ -152,11 +168,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.magicModifier, "Edit Reflex Magic Modifier", "Magic Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void WillMagicModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Will);
             if (st == null)
                 return;
@@ -165,11 +184,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.magicModifier, "Edit Will Magic Modifier", "Magic Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void FortitudeMiscModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Fortitude);
             if (st == null)
                 return;
@@ -178,11 +200,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.miscModifier, "Edit Fortitude Misc Modifier", "Misc Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void ReflexMiscModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Reflex);
             if (st == null)
                 return;
@@ -191,11 +216,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.miscModifier, "Edit Reflex Misc Modifier", "Misc Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void WillMiscModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Will);
             if (st == null)
                 return;
@@ -204,11 +232,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.miscModifier, "Edit Will Misc Modifier", "Misc Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void FortitudeTempModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Fortitude);
             if (st == null)
                 return;
@@ -217,11 +248,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.tempModifier, "Edit Fortitude Temp Modifier", "Temp Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void ReflexTempModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Reflex);
             if (st == null)
                 return;
@@ -230,11 +264,14 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.tempModifier, "Edit Reflex Temp Modifier", "Temp Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 
         private void WillTempModifier_Tapped(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
             var st = GetST(CharacterSheet.Save.Will);
             if (st == null)
                 return;
@@ -243,6 +280,7 @@ namespace PathfinderCharacterSheet
                 return;
             var eivwm = new EditIntValueWithModifiers();
             eivwm.Init(sheet, st.tempModifier, "Edit Will Temp Modifier", "Temp Modifier: ", false);
+            pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
 

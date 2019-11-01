@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditEncumbrance"
+             Title="Edit Encumbrance">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="WeightTitle" Text="Weight" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center" Grid.Column="1" Grid.Row="0">
+                    </Label>
+                    <Label x:Name="LightLoadTitle" Text="Light Load: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="LightLoad_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="LightLoad" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="MediumLoadTitle" Text="Medium Load: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MediumLoad_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="MediumLoad" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="HeavyLoadTitle" Text="Heavy Load: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="HeavyLoad_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="HeavyLoad" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="LiftOverHeadTitle" Text="Lift Over Head: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    </Label>
+                    <Frame x:Name="LiftOverHeadFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="LiftOverHead_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="LiftOverHead" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultLiftOverHeadTitle" Text="Lift Over Head = Heavy Load" Grid.Column="0" Grid.Row="5"></Label>
+                    <CheckBox x:Name="DefaultLiftOverHead" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="DefaultLiftOverHead_Changed" Grid.Column="1" Grid.Row="5"></CheckBox>
+                    <Label x:Name="LiftOffGroundTitle" Text="Lift Off Ground: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
+                    </Label>
+                    <Frame x:Name="LiftOffGroundFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="LiftOffGround_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="LiftOffGround" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultLiftOffGroundTitle" Text="Lift Off Ground = 2 * Lift Over Head" Grid.Column="0" Grid.Row="7"></Label>
+                    <CheckBox x:Name="DefaultLiftOffGround" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="DefaultLiftOffGround_Changed" Grid.Column="1" Grid.Row="7"></CheckBox>
+                    <Label x:Name="DragOrPushTitle" Text="Drag Or Push: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
+                    </Label>
+                    <Frame x:Name="DragOrPushFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="8">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DragOrPush_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="DragOrPush" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultDragOrPushTitle" Text="Drag Or Push = 5 * Lift Over Head" Grid.Column="0" Grid.Row="9"></Label>
+                    <CheckBox x:Name="DefaultDragOrPush" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="DefaultDragOrPush_Changed" Grid.Column="1" Grid.Row="9"></CheckBox>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
