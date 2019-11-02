@@ -65,7 +65,7 @@
                         <Label x:Name="LiftOverHead" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultLiftOverHeadTitle" Text="Lift Over Head = Heavy Load" Grid.Column="0" Grid.Row="5"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultLiftOverHeadTitle" Text=" = Heavy Load" Grid.Column="0" Grid.Row="5"></Label>
                     <CheckBox x:Name="DefaultLiftOverHead" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="DefaultLiftOverHead_Changed" Grid.Column="1" Grid.Row="5"></CheckBox>
                     <Label x:Name="LiftOffGroundTitle" Text="Lift Off Ground: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
                     </Label>
@@ -77,7 +77,7 @@
                         <Label x:Name="LiftOffGround" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultLiftOffGroundTitle" Text="Lift Off Ground = 2 * Lift Over Head" Grid.Column="0" Grid.Row="7"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultLiftOffGroundTitle" Text=" = 2 * Lift Over Head" Grid.Column="0" Grid.Row="7"></Label>
                     <CheckBox x:Name="DefaultLiftOffGround" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="DefaultLiftOffGround_Changed" Grid.Column="1" Grid.Row="7"></CheckBox>
                     <Label x:Name="DragOrPushTitle" Text="Drag Or Push: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
                     </Label>
@@ -89,7 +89,7 @@
                         <Label x:Name="DragOrPush" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultDragOrPushTitle" Text="Drag Or Push = 5 * Lift Over Head" Grid.Column="0" Grid.Row="9"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DefaultDragOrPushTitle" Text=" = 5 * Lift Over Head" Grid.Column="0" Grid.Row="9"></Label>
                     <CheckBox x:Name="DefaultDragOrPush" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="DefaultDragOrPush_Changed" Grid.Column="1" Grid.Row="9"></CheckBox>
                 </Grid>
                 <StackLayout Orientation="Horizontal">

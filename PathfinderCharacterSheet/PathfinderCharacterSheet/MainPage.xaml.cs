@@ -183,10 +183,13 @@ namespace PathfinderCharacterSheet
         {
             Characters.IsVisible = false;
             CharacterSheetStorage.Instance.selectedCharacter = c;
+            foreach (var tab in tabs.Children)
+            {
+                var view = tab as ISheetView;
+                if (view != null)
+                    view.UpdateView();
+            }
             tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
-            var view = tabs.CurrentPage as ISheetView;
-            if (view != null)
-                view.UpdateView();
             Navigation.PushAsync(tabs);
         }
 

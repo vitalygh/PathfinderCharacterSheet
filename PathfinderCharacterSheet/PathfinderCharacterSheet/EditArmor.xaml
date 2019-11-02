@@ -25,16 +25,16 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="ArmorActiveTitle" Text="Active: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="ArmorNameTitle" Text="Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
-                    <CheckBox x:Name="ArmorActive" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="0">
-                    </CheckBox>
-                    <Label x:Name="ArmorNameTitle" Text="Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="1">
-                    </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1" HorizontalOptions="FillAndExpand">
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand">
                         <Entry x:Name="ArmorName" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
+                    <Label x:Name="ArmorActiveTitle" Text="Active: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <CheckBox x:Name="ArmorActive" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="1">
+                    </CheckBox>
                     <Label x:Name="ArmorBonusTitle" Text="Armor Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >

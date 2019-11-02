@@ -755,7 +755,14 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers amount = new ValueWithIntModifiers() { baseValue = 1, };
             public ValueWithIntModifiers weight = new ValueWithIntModifiers();
             public int TotalWeight(CharacterSheet sheet) { return amount.GetTotal(sheet) * weight.GetTotal(sheet); }
-            public virtual string AsString(CharacterSheet sheet) { return "(" + amount.GetTotal(sheet) + ") " + name;  }
+            public virtual string AsString(CharacterSheet sheet)
+            {
+                var text = string.Empty;
+                var count = amount.GetTotal(sheet);
+                if (count > 1)
+                    text += "(" + count + ") ";
+                return text + name;
+            }
 
             public override object Clone
             {
@@ -1445,7 +1452,7 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers bonusSpells = new ValueWithIntModifiers();
         }
 
-        #region Character background
+        #region Character Background
         public string name = null;
         public string Name
         {
@@ -1620,7 +1627,6 @@ namespace PathfinderCharacterSheet
             new SkillRank(Skills.Swim, Ability.Strength),
             new SkillRank(Skills.UseMagicDevice, Ability.Charisma, true),
         };
-        public string skillsConditionalModifiers = null;
         public string languages = null;
         #endregion
 
@@ -1641,7 +1647,6 @@ namespace PathfinderCharacterSheet
         public Ability spellDCAbilityModifierSource = Ability.None;
         public int GetSpellSaveDC(int level) { return 10 + GetAbilityModifier(this, spellDCAbilityModifierSource) + level; }
         public SpellLevel[] spellLevel = new SpellLevel[spellLevesCount];
-        public string spellsConditionalModifiers = null;
         #endregion
 
         #region Notes

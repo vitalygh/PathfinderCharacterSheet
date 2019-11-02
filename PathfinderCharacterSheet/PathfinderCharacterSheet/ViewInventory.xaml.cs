@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define EXPAND_SELECTED
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewInventory : ContentPage, ISheetView
     {
+#if EXPAND_SELECTED
         public class SelectedGearItemGrid: GearItemGrid
         {
             public Label nameTitle = null;
@@ -22,18 +24,25 @@ namespace PathfinderCharacterSheet
             public Label descriptionTitle = null;
             public Label description = null;
         }
+#endif
 
         public class GearItemGrid
         {
             public Grid grid = null;
-            public EventHandler<CheckedChangedEventArgs> handler = null;
+#if EXPAND_SELECTED
+            public EventHandler<CheckedChangedEventArgs> selectedHandler = null;
             public CheckBox selected = null;
+#endif
             public Label name = null;
+            public EventHandler viewButtonHandler = null;
+            public Button viewButton = null;
         }
 
         private Page pushedPage = null;
 
+#if  EXPAND_SELECTED
         List<SelectedGearItemGrid> selectedGearItemGridsPool = new List<SelectedGearItemGrid>();
+#endif
         List<GearItemGrid> gearItemGridsPool = new List<GearItemGrid>();
         List<GearItemGrid> gearItemGrids = new List<GearItemGrid>();
 
@@ -73,12 +82,18 @@ namespace PathfinderCharacterSheet
                 var gearItem = sheet.gear[i];
                 if (gearItemGrids.Count <= i)
                 {
-                    var newGearItemGrid = gearItem.selected ? CreateSelectedGearItemGrid(gearItem, i) : CreateGearItemGrid(gearItem, i);
+                    var newGearItemGrid =
+#if EXPAND_SELECTED
+                        gearItem.selected ? CreateSelectedGearItemGrid(gearItem, i) :
+#endif
+                        CreateGearItemGrid(gearItem, i);
                     gearItemGrids.Add(newGearItemGrid);
+                    
                     Gear.Children.Add(newGearItemGrid.grid);
                     continue;
                 }
                 var gearItemGrid = gearItemGrids[i];
+#if EXPAND_SELECTED
                 var selectedGearItemGrid = gearItemGrid as SelectedGearItemGrid;
                 if (gearItem.selected)
                 {
@@ -95,13 +110,16 @@ namespace PathfinderCharacterSheet
                 }
                 if (selectedGearItemGrid == null)
                 {
+#endif
                     UpdateGearItemGrid(gearItemGrid, gearItem, i);
                     continue;
+#if EXPAND_SELECTED
                 }
                 RemoveGearItemGrid(gearItemGrid);
                 gearItemGrid = CreateGearItemGrid(gearItem, i);
                 gearItemGrids.Insert(i, gearItemGrid);
                 Gear.Children.Insert(i, gearItemGrid.grid);
+#endif
             }
             while (gearItemGrids.Count > sheet.gear.Count)
                 RemoveGearItemGrid(gearItemGrids[gearItemGrids.Count - 1]);
@@ -140,6 +158,7 @@ namespace PathfinderCharacterSheet
             };
         }
 
+#if EXPAND_SELECTED
         private void RemoveGearItemGrid(SelectedGearItemGrid gearItemGrid)
         {
             if (gearItemGrid == null)
@@ -159,15 +178,22 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            if (gearItemGrid.handler != null)
-                gearItemGrid.selected.CheckedChanged -= gearItemGrid.handler;
-            gearItemGrid.handler = (s, e) => GearItem_CheckedChanged(item, e.Value);
+
+            if (gearItemGrid.selectedHandler != null)
+                gearItemGrid.selected.CheckedChanged -= gearItemGrid.selectedHandler;
+            gearItemGrid.selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
             gearItemGrid.selected.IsChecked = item.selected;
-            gearItemGrid.selected.CheckedChanged += gearItemGrid.handler;
+            gearItemGrid.selected.CheckedChanged += gearItemGrid.selectedHandler;
+
             gearItemGrid.name.Text = item.name;
             gearItemGrid.amount.Text = item.amount.GetTotal(sheet).ToString();
             gearItemGrid.weight.Text = item.weight.GetTotal(sheet).ToString();
             gearItemGrid.description.Text = item.description;
+
+            if (gearItemGrid.viewButtonHandler != null)
+                gearItemGrid.viewButton.Clicked -= gearItemGrid.viewButtonHandler;
+            gearItemGrid.viewButtonHandler = (s, e) => GearItemViewButton_Tap(item, itemIndex);
+            gearItemGrid.viewButton.Clicked += gearItemGrid.viewButtonHandler;
 
             gearItemGrid.grid.GestureRecognizers.Clear();
             MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
@@ -215,22 +241,41 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.Center,
                 IsChecked = item.selected,
             };
-            EventHandler<CheckedChangedEventArgs> handler = (s, e) => GearItem_CheckedChanged(item, e.Value);
-            selectedcb.CheckedChanged += handler;
+            EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
+            selectedcb.CheckedChanged += selectedHandler;
             var nameTitle = CreateLabel("Name: ", TextAlignment.Start);
-            var nameStack = new StackLayout()
+            var nameTitleStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
             };
-            nameStack.Children.Add(selectedcb);
-            nameStack.Children.Add(nameTitle);
+            nameTitleStack.Children.Add(selectedcb);
+            nameTitleStack.Children.Add(nameTitle);
+
+            var nameValueStack = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+            };
+            var nameValue = CreateFrame(item.name);
+            var viewButton = new Button()
+            {
+                Text = "View",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
+                TextColor = Color.Black,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+            };
+            EventHandler viewButtonHandler = (s, e) => GearItemViewButton_Tap(item, itemIndex);
+            viewButton.Clicked += viewButtonHandler;
+            nameValueStack.Children.Add(nameValue);
+            nameValueStack.Children.Add(viewButton);
 
             var row = 0;
-            var nameValue = CreateFrame(item.name);
-            grid.Children.Add(nameStack, 0, row);
-            grid.Children.Add(nameValue, 1, row);
+            grid.Children.Add(nameTitleStack, 0, row);
+            grid.Children.Add(nameValueStack, 1, row);
             row += 1;
 
             var amountTitle = CreateLabel("Amount: ", TextAlignment.Start);
@@ -259,8 +304,10 @@ namespace PathfinderCharacterSheet
             var newGearItemGrid = new SelectedGearItemGrid()
             {
                 grid = grid,
-                handler = handler,
+                selectedHandler = selectedHandler,
                 selected = selectedcb,
+                viewButtonHandler = viewButtonHandler,
+                viewButton = viewButton,
                 nameTitle = nameTitle,
                 name = nameValue.Content as Label,
                 amountTitle = amountTitle,
@@ -272,17 +319,20 @@ namespace PathfinderCharacterSheet
             };
             return newGearItemGrid;
         }
+#endif
 
         private void RemoveGearItemGrid(GearItemGrid gearItemGrid)
         {
             if (gearItemGrid == null)
                 return;
+#if EXPAND_SELECTED
             var sgig = gearItemGrid as SelectedGearItemGrid;
             if (sgig != null)
             {
                 RemoveGearItemGrid(sgig);
                 return;
             }
+#endif
             Gear.Children.Remove(gearItemGrid.grid);
             gearItemGrids.Remove(gearItemGrid);
             gearItemGridsPool.Add(gearItemGrid);
@@ -298,15 +348,20 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            if (gearItemGrid.handler != null)
-                gearItemGrid.selected.CheckedChanged -= gearItemGrid.handler;
-            gearItemGrid.handler = (s, e) => GearItem_CheckedChanged(item, e.Value);
-            gearItemGrid.selected.IsChecked = item.selected;
-            gearItemGrid.selected.CheckedChanged += gearItemGrid.handler;
-            gearItemGrid.name.Text = item.AsString(sheet);
-
             gearItemGrid.grid.GestureRecognizers.Clear();
+#if EXPAND_SELECTED
+            if (gearItemGrid.selectedHandler != null)
+                gearItemGrid.selected.CheckedChanged -= gearItemGrid.selectedHandler;
+            gearItemGrid.selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
+            gearItemGrid.selected.IsChecked = item.selected;
+            gearItemGrid.selected.CheckedChanged += gearItemGrid.selectedHandler;
             MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
+#endif
+            gearItemGrid.name.Text = item.AsString(sheet);
+            if (gearItemGrid.viewButtonHandler != null)
+                gearItemGrid.viewButton.Clicked -= gearItemGrid.viewButtonHandler;
+            gearItemGrid.viewButtonHandler = (s, e) => GearItemViewButton_Tap(item, itemIndex);
+            gearItemGrid.viewButton.Clicked += gearItemGrid.viewButtonHandler;
             MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
         }
 
@@ -337,34 +392,55 @@ namespace PathfinderCharacterSheet
             };
             grid.ColumnDefinitions = new ColumnDefinitionCollection()
             {
+#if EXPAND_SELECTED
                 new ColumnDefinition() { Width = GridLength.Auto },
+#endif
                 new ColumnDefinition() { Width = GridLength.Star },
+                new ColumnDefinition() { Width = GridLength.Auto },
             };
             grid.RowDefinitions = new RowDefinitionCollection()
             {
                 new RowDefinition() { Height = GridLength.Auto },
             };
-
+#if EXPAND_SELECTED
             var selectedcb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
                 IsChecked = item.selected,
             };
-            EventHandler<CheckedChangedEventArgs> handler = (s, e) => GearItem_CheckedChanged(item, e.Value);
-            selectedcb.CheckedChanged += handler;
-            var gearItemNameFrame = CreateFrame(item.AsString(sheet));
+            EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
+            selectedcb.CheckedChanged += selectedHandler;
             MainPage.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
+#endif
+            var gearItemNameFrame = CreateFrame(item.AsString(sheet));
             MainPage.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
-            grid.Children.Add(selectedcb, 0, 0);
-            grid.Children.Add(gearItemNameFrame, 1, 0);
-
+            var viewButton = new Button()
+            {
+                Text = "View",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
+                TextColor = Color.Black,
+                VerticalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Center,
+            };
+            EventHandler viewButtonHandler = (s, e) => GearItemViewButton_Tap(item, itemIndex);
+            viewButton.Clicked += viewButtonHandler;
+            var column = 0;
+#if EXPAND_SELECTED
+            grid.Children.Add(selectedcb, column++, 0);
+#endif
+            grid.Children.Add(gearItemNameFrame, column++, 0);
+            grid.Children.Add(viewButton, column++, 0);
             var newGearItemGrid = new GearItemGrid()
             {
                 grid = grid,
-                handler = handler,
+#if EXPAND_SELECTED
+                selectedHandler = selectedHandler,
                 selected = selectedcb,
+#endif
                 name = gearItemNameFrame.Content as Label,
+                viewButton = viewButton,
+                viewButtonHandler = viewButtonHandler,
             };
 
             return newGearItemGrid;
@@ -384,6 +460,19 @@ namespace PathfinderCharacterSheet
         public void GearItem_Tap(CheckBox selectedcb)
         {
             selectedcb.IsChecked = !selectedcb.IsChecked;
+        }
+
+        public void GearItemViewButton_Tap(CharacterSheet.GearItem gearItem = null, int index = -1)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var vgi = new ViewGearItem();
+            vgi.InitView(gearItem, index);
+            pushedPage = vgi;
+            Navigation.PushAsync(pushedPage);
         }
 
         public void GearItem_DoubleTap(CharacterSheet.GearItem gearItem = null, int index = -1)

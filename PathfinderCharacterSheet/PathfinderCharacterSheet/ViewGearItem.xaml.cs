@@ -11,7 +11,7 @@ using ItemsType = PathfinderCharacterSheet.CharacterSheet.GearItem;
 namespace PathfinderCharacterSheet
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditGearItem : ContentPage, ISheetView
+	public partial class ViewGearItem : ContentPage, ISheetView
     {
         private int itemIndex = -1;
         private List<ItemsType> items
@@ -27,24 +27,15 @@ namespace PathfinderCharacterSheet
         private ItemsType item = null;
         private Page pushedPage = null;
 
-        public EditGearItem()
+        public ViewGearItem()
         {
             InitializeComponent();
         }
 
-        public void InitEditor(ItemsType item = null, int index = -1)
+        public void InitView(ItemsType item, int index)
         {
-            if (item == null)
-            {
-                this.item = new ItemsType();
-                index = -1;
-            }
-            else
-                this.item = item.Clone as ItemsType;
+            this.item = item.Clone as ItemsType;
             itemIndex = index;
-            ItemName.Text = this.item.name;
-            Description.Text = this.item.description;
-            Delete.IsEnabled = index >= 0;
             UpdateView();
         }
 
@@ -54,36 +45,13 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+            ItemName.Text = item.name;
             Amount.Text = item.amount.GetTotal(sheet).ToString();
             Weight.Text = item.weight.GetTotal(sheet).ToString();
+            Description.Text = item.description;
         }
 
-        private void EditToView()
-        {
-            if (items == null)
-                return;
-            item.name = ItemName.Text;
-            item.description = Description.Text;
-            var hasChanges = false;
-            if (itemIndex >= 0)
-            {
-                var sourceItem = items[itemIndex];
-                if (!item.Equals(sourceItem))
-                {
-                    items[itemIndex] = item;
-                    hasChanges = true;
-                }
-            }
-            else
-            {
-                items.Add(item);
-                hasChanges = true;
-            }
-            if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter();
-        }
-
-        private void Amount_Tapped(object sender, EventArgs e)
+        private void Amount_DoubleTapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
                 return;
@@ -96,7 +64,7 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(eivwm);
         }
 
-        private void Weight_Tapped(object sender, EventArgs e)
+        private void Weight_DoubleTapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
                 return;
@@ -109,15 +77,19 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(eivwm);
         }
 
-        private void Cancel_Clicked(object sender, EventArgs e)
+        private void Back_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
         }
 
-        private void Save_Clicked(object sender, EventArgs e)
+        private void Edit_Clicked(object sender, EventArgs e)
         {
-            EditToView();
-            Navigation.PopAsync();
+            if (pushedPage != null)
+                return;
+            var egi = new EditGearItem();
+            egi.InitEditor(item, itemIndex);
+            pushedPage = egi;
+            Navigation.PushAsync(pushedPage);
         }
 
         async void Delete_Clicked(object sender, EventArgs e)
