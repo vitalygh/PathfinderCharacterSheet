@@ -31,6 +31,7 @@ namespace PathfinderCharacterSheet
         private void Save_Clicked(object sender, EventArgs e)
         {
             var character = new CharacterSheet();
+            character.Init();
             character.name = CharacterName.Text;
             CharacterSheetStorage.Instance.SaveCharacter(character);
             Navigation.PopAsync();

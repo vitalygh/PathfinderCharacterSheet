@@ -180,33 +180,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
         {
-            return new Label()
-            {
-                Text = text,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                HorizontalTextAlignment = horz,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
-            };
+            return MainPage.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return new Frame()
-            {
-                Content = new Label()
-                {
-                    Text = text,
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    TextColor = Color.Black,
-                    HorizontalTextAlignment = TextAlignment.Start,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
-                },
-                BorderColor = Color.Black,
-                Padding = 5,
-            };
+            return MainPage.CreateFrame(text);
         }
 
         private void CreateSelectedArmorGrid(CharacterSheet.ArmorClassItem armor, int index)

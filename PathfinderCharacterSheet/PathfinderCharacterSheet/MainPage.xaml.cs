@@ -179,17 +179,17 @@ namespace PathfinderCharacterSheet
             SelectCharacter(e.Item as CharacterSheet);
         }
 
-        private void SelectCharacter(CharacterSheet c)
+        private void SelectCharacter(CharacterSheet sheet)
         {
             Characters.IsVisible = false;
-            CharacterSheetStorage.Instance.selectedCharacter = c;
+            CharacterSheetStorage.Instance.selectedCharacter = sheet;
             foreach (var tab in tabs.Children)
             {
                 var view = tab as ISheetView;
                 if (view != null)
                     view.UpdateView();
             }
-            tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
+            tabs.Title = sheet.Name + ": " + tabs.CurrentPage.Title;
             Navigation.PushAsync(tabs);
         }
 
@@ -203,6 +203,39 @@ namespace PathfinderCharacterSheet
                 return changed;
             }
             return false;
+        }
+
+        public static Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        {
+            return new Label()
+            {
+                Text = text,
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                TextColor = Color.Black,
+                HorizontalTextAlignment = horz,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+            };
+        }
+
+        public static Frame CreateFrame(string text)
+        {
+            return new Frame()
+            {
+                Content = new Label()
+                {
+                    Text = text,
+                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                    TextColor = Color.Black,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                },
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand,
+                BorderColor = Color.Black,
+                Padding = 5,
+            };
         }
 
         public static void AddTapHandler(View view, EventHandler handler, int tapCount = 1)

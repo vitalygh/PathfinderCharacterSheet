@@ -119,6 +119,12 @@ namespace PathfinderCharacterSheet
             Total
         }
 
+        public class AbilityPickerItem
+        {
+            public string Name { set; get; }
+            public Ability Value { set; get; }
+        }
+
         public enum Save
         {
             None = -1,
@@ -442,15 +448,6 @@ namespace PathfinderCharacterSheet
 
         public static T GetEnumValue<T>(string text, T defaultValue) where T: struct
         {
-            /*
-            var values = Enum.GetValues(typeof(T));
-            if (values == null)
-                return defaultValue;
-            foreach (var v in values)
-                if (v.ToString() == text)
-                    return (T)v;
-            return defaultValue;
-            */
             T result = defaultValue;
             if (Enum.TryParse<T>(text, out result))
                 return result;
@@ -671,9 +668,9 @@ namespace PathfinderCharacterSheet
 
         public class SkillRank
         {
-            public string skill = Skills.None.ToString();
-            public bool hasName = false;
-            public string name = null;
+            public string name = Skills.None.ToString();
+            public bool hasSubject = false;
+            public string subject = null;
             public bool classSkill = false;
             public string abilityModifierSource = Ability.None.ToString();
             public Ability AbilityModifierSource
@@ -685,17 +682,112 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers miscModifiers = new ValueWithIntModifiers();
             public bool armorPenalty = false;
             public bool trainedOnly = false;
+            public bool custom = false;
 
             public SkillRank()
             {
             }
 
-            public SkillRank(Skills skill, Ability abilityModifierSource, bool trainedOnly = false, bool hasName = false)
+            public SkillRank(Skills name, Ability abilityModifierSource, bool trainedOnly = false, bool hasSubject = false, bool custom = false):
+                this(name.ToString(), abilityModifierSource, trainedOnly, hasSubject, custom)
             {
-                this.skill = skill.ToString();
-                this.abilityModifierSource = abilityModifierSource.ToString();
+            }
+
+            public SkillRank(string name, Ability abilityModifierSource, bool trainedOnly = false, bool hasSubject = false, bool custom = false)
+            {
+                this.name = name;
+                AbilityModifierSource = abilityModifierSource;
+                switch (abilityModifierSource)
+                {
+                    case Ability.Strength:
+                    case Ability.Dexterity:
+                        armorPenalty = true;
+                        break;
+                    default:
+                        armorPenalty = false;
+                        break;
+                }
                 this.trainedOnly = trainedOnly;
-                this.hasName = hasName;
+                this.hasSubject = hasSubject;
+                this.custom = custom;
+            }
+
+            public string Name
+            {
+                get
+                {
+                    var text = string.Empty;
+                    text += name;
+                    if (trainedOnly)
+                        text += "*";
+                    if (hasSubject && !string.IsNullOrWhiteSpace(subject))
+                        text += " (" + subject + ")";
+                    return text;
+                }
+            }
+
+            public virtual object Clone
+            {
+                get
+                {
+                    var clone = new SkillRank();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
+
+            public SkillRank Fill(SkillRank source)
+            {
+                if (source == null)
+                    return this;
+                name = source.name;
+                hasSubject = source.hasSubject;
+                subject = source.subject;
+                classSkill = source.classSkill;
+                abilityModifierSource = source.abilityModifierSource;
+                rank = source.rank.Clone as ValueWithIntModifiers;
+                miscModifiers = source.miscModifiers.Clone as ValueWithIntModifiers;
+                armorPenalty = source.armorPenalty;
+                trainedOnly = source.trainedOnly;
+                custom = source.custom;
+                return this;
+            }
+
+            public bool Equals(SkillRank other)
+            {
+                if (other == null)
+                    return false;
+                if (name != other.name)
+                    return false;
+                if (hasSubject != other.hasSubject)
+                    return false;
+                if (subject != other.subject)
+                    return false;
+                if (classSkill != other.classSkill)
+                    return false;
+                if (abilityModifierSource != other.abilityModifierSource)
+                    return false;
+                if (!rank.Equals(other.rank))
+                    return false;
+                if (!miscModifiers.Equals(other.miscModifiers))
+                    return false;
+                if (armorPenalty != other.armorPenalty)
+                    return false;
+                if (trainedOnly != other.trainedOnly)
+                    return false;
+                if (custom != other.custom)
+                    return false;
+                return true;
+            }
+
+            public int GetAbilityModifier(CharacterSheet sheet)
+            {
+                return CharacterSheet.GetAbilityModifier(sheet, AbilityModifierSource);
+            }
+
+            public int GetTotal(CharacterSheet sheet)
+            {
+                return GetAbilityModifier(sheet) + rank.GetTotal(sheet) + miscModifiers.GetTotal(sheet) + (classSkill ? 3 : 0) + (armorPenalty ? sheet.CheckPenalty() : 0);
             }
         }
 
@@ -1452,6 +1544,16 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers bonusSpells = new ValueWithIntModifiers();
         }
 
+        public CharacterSheet()
+        {
+
+        }
+
+        public void Init()
+        {
+            InitSkills();
+        }
+
         #region Character Background
         public string name = null;
         public string Name
@@ -1580,54 +1682,83 @@ namespace PathfinderCharacterSheet
 
         #region AC Items
         public List<ArmorClassItem> armorClassItems = new List<ArmorClassItem>();
+        public int CheckPenalty()
+        {
+            var sum = 0;
+            foreach (var aci in armorClassItems)
+                if (aci != null)
+                    sum += aci.checkPenalty.GetTotal(this);
+            return sum;
+        }
         #endregion
 
         #region Skills
-        public int skillsPerLevel = 0;
-        public int currentSkillsPerLevel { get { return GetAbilityModifier(this, Ability.Intelligence) + skillsPerLevel; } }
-        public List<SkillRank>skills = new List<SkillRank>()
+        public ValueWithIntModifiers skillsPerLevel = new ValueWithIntModifiers();
+        public int currentSkillsPerLevel { get { return GetAbilityModifier(this, Ability.Intelligence) + skillsPerLevel.GetTotal(this); } }
+        public List<SkillRank> skills = new List<SkillRank>();
+        private void InitSkills()
         {
-            new SkillRank(Skills.Acrobatics, Ability.Dexterity),
-            new SkillRank(Skills.Appraise, Ability.Intelligence),
-            new SkillRank(Skills.Bluff, Ability.Charisma),
-            new SkillRank(Skills.Climb, Ability.Strength),
-            new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
-            new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
-            new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
-            new SkillRank(Skills.Diplomacy, Ability.Charisma),
-            new SkillRank(Skills.DisableDevice, Ability.Dexterity, true),
-            new SkillRank(Skills.Disguise, Ability.Charisma),
-            new SkillRank(Skills.EscapeArtist, Ability.Dexterity),
-            new SkillRank(Skills.Fly, Ability.Dexterity),
-            new SkillRank(Skills.HandleAnimal, Ability.Charisma, true),
-            new SkillRank(Skills.Heal, Ability.Wisdom),
-            new SkillRank(Skills.Intimidate, Ability.Charisma),
-            new SkillRank(Skills.KnowledgeOfArcana, Ability.Intelligence),
-            new SkillRank(Skills.KnowledgeOfDungeoneering, Ability.Intelligence, true),
-            new SkillRank(Skills.KnowledgeOfEngineering, Ability.Intelligence, true),
-            new SkillRank(Skills.KnowledgeOfGeography, Ability.Intelligence, true),
-            new SkillRank(Skills.KnowledgeOfHistory, Ability.Intelligence, true),
-            new SkillRank(Skills.KnowledgeOfLocal, Ability.Intelligence, true),
-            new SkillRank(Skills.KnowledgeOfNature, Ability.Intelligence, true),
-            new SkillRank(Skills.KnowledgeOfNobility, Ability.Intelligence, true),
-            new SkillRank(Skills.KnowledgeOfPlanes, Ability.Intelligence, true),
-            new SkillRank(Skills.KnowledgeOfReligion, Ability.Intelligence, true),
-            new SkillRank(Skills.Linguistics, Ability.Intelligence, true),
-            new SkillRank(Skills.Perception, Ability.Wisdom),
-            new SkillRank(Skills.Perform, Ability.Charisma, false, true),
-            new SkillRank(Skills.Perform, Ability.Charisma, false, true),
-            new SkillRank(Skills.Profession, Ability.Wisdom, true, true),
-            new SkillRank(Skills.Profession, Ability.Wisdom, true, true),
-            new SkillRank(Skills.Ride, Ability.Dexterity),
-            new SkillRank(Skills.SenseMotive, Ability.Wisdom),
-            new SkillRank(Skills.SleightOfHand, Ability.Dexterity, true),
-            new SkillRank(Skills.Spellcraft, Ability.Intelligence, true),
-            new SkillRank(Skills.Stealth, Ability.Dexterity),
-            new SkillRank(Skills.Survival, Ability.Wisdom),
-            new SkillRank(Skills.Swim, Ability.Strength),
-            new SkillRank(Skills.UseMagicDevice, Ability.Charisma, true),
-        };
-        public string languages = null;
+            skills = new List<SkillRank>()
+            {
+                new SkillRank(Skills.Acrobatics, Ability.Dexterity),
+                new SkillRank(Skills.Appraise, Ability.Intelligence),
+                new SkillRank(Skills.Bluff, Ability.Charisma),
+                new SkillRank(Skills.Climb, Ability.Strength),
+                new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
+                new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
+                new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
+                new SkillRank(Skills.Diplomacy, Ability.Charisma),
+                new SkillRank(Skills.DisableDevice, Ability.Dexterity, true),
+                new SkillRank(Skills.Disguise, Ability.Charisma),
+                new SkillRank(Skills.EscapeArtist, Ability.Dexterity),
+                new SkillRank(Skills.Fly, Ability.Dexterity),
+                new SkillRank(Skills.HandleAnimal, Ability.Charisma, true),
+                new SkillRank(Skills.Heal, Ability.Wisdom),
+                new SkillRank(Skills.Intimidate, Ability.Charisma),
+                new SkillRank(Skills.KnowledgeOfArcana, Ability.Intelligence),
+                new SkillRank(Skills.KnowledgeOfDungeoneering, Ability.Intelligence, true),
+                new SkillRank(Skills.KnowledgeOfEngineering, Ability.Intelligence, true),
+                new SkillRank(Skills.KnowledgeOfGeography, Ability.Intelligence, true),
+                new SkillRank(Skills.KnowledgeOfHistory, Ability.Intelligence, true),
+                new SkillRank(Skills.KnowledgeOfLocal, Ability.Intelligence, true),
+                new SkillRank(Skills.KnowledgeOfNature, Ability.Intelligence, true),
+                new SkillRank(Skills.KnowledgeOfNobility, Ability.Intelligence, true),
+                new SkillRank(Skills.KnowledgeOfPlanes, Ability.Intelligence, true),
+                new SkillRank(Skills.KnowledgeOfReligion, Ability.Intelligence, true),
+                new SkillRank(Skills.Linguistics, Ability.Intelligence, true),
+                new SkillRank(Skills.Perception, Ability.Wisdom),
+                new SkillRank(Skills.Perform, Ability.Charisma, false, true),
+                new SkillRank(Skills.Perform, Ability.Charisma, false, true),
+                new SkillRank(Skills.Profession, Ability.Wisdom, true, true),
+                new SkillRank(Skills.Profession, Ability.Wisdom, true, true),
+                new SkillRank(Skills.Ride, Ability.Dexterity),
+                new SkillRank(Skills.SenseMotive, Ability.Wisdom),
+                new SkillRank(Skills.SleightOfHand, Ability.Dexterity, true),
+                new SkillRank(Skills.Spellcraft, Ability.Intelligence, true),
+                new SkillRank(Skills.Stealth, Ability.Dexterity),
+                new SkillRank(Skills.Survival, Ability.Wisdom),
+                new SkillRank(Skills.Swim, Ability.Strength),
+                new SkillRank(Skills.UseMagicDevice, Ability.Charisma, true),
+            };
+        }
+        public List<string> languages = null;
+        public string Languages
+        {
+            get
+            {
+                var text = string.Empty;
+                if (languages != null)
+                    foreach (var l in languages)
+                    {
+                        if (l == null)
+                            continue;
+                        if (text.Length > 0)
+                            text += ", ";
+                        text += l;
+                    }
+                return text;
+            }
+        }
         #endregion
 
         #region Feats & Special Abilities

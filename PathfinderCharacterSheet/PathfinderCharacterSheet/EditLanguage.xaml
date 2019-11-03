@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditLanguage"
+             Title="Edit Language">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Frame Padding="5" BorderColor="Black" Grid.Column="0" Grid.Row="1">
+                        <Entry x:Name="Language" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand"></Entry>
+                    </Frame>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="Cancel" Text="Cancel" Clicked="Cancel_Clicked" TextColor="Black" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Save" Text="Save" Clicked="Save_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Delete" Text="Delete" Clicked="Delete_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

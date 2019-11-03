@@ -42,12 +42,6 @@ namespace PathfinderCharacterSheet
         private Button Save = null;
         private Button Delete = null;
 
-        public class AbilityPickerItem
-        {
-            public string Name { set; get; }
-            public CharacterSheet.Ability Value { set; get; }
-        }
-
         public EditIntModifier()
 		{
 			InitializeComponent ();
@@ -163,7 +157,7 @@ namespace PathfinderCharacterSheet
                     BorderColor = Color.Black,
                     Padding = 5,
                 };
-                var abilities = new List<AbilityPickerItem>();
+                var abilities = new List<CharacterSheet.AbilityPickerItem>();
                 var values = Enum.GetValues(typeof(CharacterSheet.Ability));
                 var index = -1;
                 var selectedIndex = -1;
@@ -176,7 +170,7 @@ namespace PathfinderCharacterSheet
                     index += 1;
                     if (selectedValue == value)
                         selectedIndex = index;
-                    abilities.Add(new AbilityPickerItem()
+                    abilities.Add(new CharacterSheet.AbilityPickerItem()
                     {
                         Name = v.ToString(),
                         Value = value,
@@ -310,7 +304,7 @@ namespace PathfinderCharacterSheet
             var currentAbility = CharacterSheet.Ability.None;
             if (Ability != null)
             {
-                var item = (Ability.SelectedItem as AbilityPickerItem);
+                var item = (Ability.SelectedItem as CharacterSheet.AbilityPickerItem);
                 if (item != null)
                 {
                     currentAbility = item.Value;
@@ -355,7 +349,7 @@ namespace PathfinderCharacterSheet
             modifier.name = ModifierName.Text;
             if (Ability != null)
             {
-                var selectedItem = Ability.SelectedItem as AbilityPickerItem;
+                var selectedItem = Ability.SelectedItem as CharacterSheet.AbilityPickerItem;
                 if (selectedItem != null)
                 {
                     anyChanged |= modifier.SourceAbility != selectedItem.Value;

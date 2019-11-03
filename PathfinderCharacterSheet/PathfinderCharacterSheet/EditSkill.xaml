@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditSkill"
+             Title="Edit Skill">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="SkillNameTitle" Text="Name: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="0"></Label>
+                    <Frame x:Name="SkillNameFrame" BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0">
+                        <Entry x:Name="SkillName" IsReadOnly="True" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Entry>
+                    </Frame>
+                    <Label x:Name="SubjectTitle" Text="Subject: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
+                    <Frame x:Name="SubjectFrame" BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
+                        <Entry x:Name="Subject" IsReadOnly="True" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Entry>
+                    </Frame>
+                    <Label x:Name="HasSubjectTitle" Text="Has Subject: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="2"></Label>
+                    <CheckBox x:Name="HasSubject" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="2" CheckedChanged="HasSubject_CheckedChanged"></CheckBox>
+                    <Label x:Name="ClassSkillTitle" Text="Class Skill: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="3"></Label>
+                    <CheckBox x:Name="ClassSkill" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="3" CheckedChanged="ClassSkill_CheckedChanged"></CheckBox>
+                    <Label x:Name="AbilityModifierSourceTitle" Text="Ability: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4"></Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4" HorizontalOptions="FillAndExpand" >
+                        <Picker x:Name="AbilityModifierSource" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="AbilityModifierSource_SelectedIndexChanged"></Picker>
+                    </Frame>
+                    <Label x:Name="TotalTitle" Text="Total: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="5"></Label>
+                    <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="5">
+                        <Label x:Name="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="=" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="6"></Label>
+                    <Label x:Name="AbilityModifierTitle" Text="Ability Modifier: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="7"></Label>
+                    <Frame x:Name="AbilityModifierFrame" BackgroundColor="LightGray" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="7">
+                        <Label x:Name="AbilityModifier" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="8"></Label>
+                    <Label x:Name="RankTitle" Text="Rank: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="9"></Label>
+                    <Frame x:Name="RankFrame" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="9">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Rank_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Rank" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="10"></Label>
+                    <Label x:Name="MiscModifiersTitle" Text="Misc Modifiers: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="11"></Label>
+                    <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="11">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MiscModifiers_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="MiscModifiers" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                        </Label>
+                    </Frame>
+                    <Label Text="+" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="12"></Label>
+                    <Label x:Name="ArmorPenaltyTitle" Text="Armor Penalty: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="13"></Label>
+                    <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="13">
+                        <Label x:Name="ArmorPenalty" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="HasArmorPenaltyTitle" Text="Has Armor Penalty: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="14"></Label>
+                    <CheckBox x:Name="HasArmorPenalty" IsEnabled="False" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="14" CheckedChanged="ArmorPenalty_CheckedChanged"></CheckBox>
+                    <Label x:Name="TrainedOnlyTitle" Text="Trained Only: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="15"></Label>
+                    <CheckBox x:Name="TrainedOnly" IsEnabled="False" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="15" CheckedChanged="TrainedOnly_CheckedChanged"></CheckBox>
+                    <Label x:Name="CustomTitle" Text="Custom: " FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="16"></Label>
+                    <CheckBox x:Name="Custom" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="16" CheckedChanged="Custom_CheckedChanged"></CheckBox>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="Cancel" Text="Cancel" Clicked="Cancel_Clicked" TextColor="Black" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Save" Text="Save" Clicked="Save_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Delete" Text="Delete" Clicked="Delete_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

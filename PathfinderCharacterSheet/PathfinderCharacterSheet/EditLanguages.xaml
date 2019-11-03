@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditLanguages"
+             Title="Edit Languages">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="LanguagesTitle" Text="Languages: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Button x:Name="AddLanguage" Text="Add" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="End" Grid.Column="1" Grid.Row="0" Clicked="AddLanguage_Clicked">
+                    </Button>
+                </Grid>
+                <Grid x:Name="Languages" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name="Cancel" Text="Cancel" Clicked="Cancel_Clicked" TextColor="Black" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Save" Text="Save" Clicked="Save_Clicked" TextColor="Black" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

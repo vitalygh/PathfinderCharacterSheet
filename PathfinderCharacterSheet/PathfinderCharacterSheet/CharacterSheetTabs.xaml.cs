@@ -21,7 +21,7 @@ namespace PathfinderCharacterSheet
             Children.Add(new ViewWeapon());
             Children.Add(new ViewArmor());
             Children.Add(new ViewInventory());
-            Children.Add(new ContentPage() { Title = "Skills" });
+            Children.Add(new ViewSkills());
             Children.Add(new ContentPage() { Title = "Feats" });
             Children.Add(new ContentPage() { Title = "Special Abilities" });
             Children.Add(new ContentPage() { Title = "Spells" });
