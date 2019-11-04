@@ -828,18 +828,50 @@ namespace PathfinderCharacterSheet
                 description = source.description;
                 return this;
             }
+
+            public virtual string AsString(CharacterSheet sheet)
+            {
+                return name;
+            }
         }
 
         public class Feat: ItemWithDescription
         {
+            public override object Clone
+            {
+                get
+                {
+                    var clone = new Feat();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
         }
 
         public class SpecialAbility: ItemWithDescription
         {
+            public override object Clone
+            {
+                get
+                {
+                    var clone = new SpecialAbility();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
         }
 
         public class Note: ItemWithDescription
         {
+            public override object Clone
+            {
+                get
+                {
+                    var clone = new Note();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
         }
 
         public class GearItem: ItemWithDescription
@@ -847,7 +879,7 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers amount = new ValueWithIntModifiers() { baseValue = 1, };
             public ValueWithIntModifiers weight = new ValueWithIntModifiers();
             public int TotalWeight(CharacterSheet sheet) { return amount.GetTotal(sheet) * weight.GetTotal(sheet); }
-            public virtual string AsString(CharacterSheet sheet)
+            public override string AsString(CharacterSheet sheet)
             {
                 var text = string.Empty;
                 var count = amount.GetTotal(sheet);

@@ -83,55 +83,26 @@ namespace PathfinderCharacterSheet
                 var abscindex = (i + 1) * columns;
                 (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
-                ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.GetModifier(sheet).ToString();
+                var modValue = ab.GetModifier(sheet);
+                ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = modValue.ToString();
                 //((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.tempAdjustment.ToString();
-                ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.GetTempModifier(sheet).ToString();
+                var temp = ((AbilityScores.Children[abscindex++] as Frame).Content as Label);
+                var tempValue = ab.GetTempModifier(sheet);
+                temp.Text = tempValue.ToString();
+                if (tempValue > modValue)
+                    temp.TextColor = Color.Green;
+                else if (tempValue < modValue)
+                    temp.TextColor = Color.Red;
+                else
+                    temp.TextColor = Color.Black;
             }
 
             MaxHP.Text = sheet.hp.maxHP.GetTotal(sheet).ToString();
             HP.Text = sheet.hp.hp.GetTotal(sheet).ToString();
             DamageResist.Text = sheet.hp.damageResist.GetTotal(sheet).ToString();
-            /*
-            while (TempHPModifiers.Children.Count / 3 < c.hp.tempHP.Count)
-            {
-                var row = TempHPModifiers.Children.Count / 3;
-                TempHPModifiers.Children.Add(new CheckBox()
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                }, 0, row);
-                TempHPModifiers.Children.Add(new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        VerticalOptions = LayoutOptions.Center,
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                }, 1, row);
-                TempHPModifiers.Children.Add(new Label()
-                {
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    TextColor = Color.Black,
-                    HorizontalTextAlignment = TextAlignment.Start,
-                    VerticalOptions = LayoutOptions.Center,
-                }, 2, row);
-            }
-            for (var i = 0; i < c.hp.tempHP.Count; i++)
-            {
-                var im = c.hp.tempHP[i];
-                var index = i * 3;
-                (TempHPModifiers.Children[index + 0] as CheckBox).IsChecked = im.IsActive;
-                ((TempHPModifiers.Children[index + 1] as Frame).Content as Label).Text = im.Value.ToString();
-                (TempHPModifiers.Children[index + 2] as Label).Text = im.Name;
-            }
-            */
+
             Initiative.Text = sheet.CurrentInitiative.ToString();
-            //InitiativeTotal.Text = c.CurrentInitiative.ToString();
-            //InitiativeDexMod.Text = c.CurrentAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
-            //InitiativeMiscMod.Text = CharacterSheet.Sum(c.initiative.miscModifiers).ToString();
+
             ArmorClass.Text = sheet.ACTotal.ToString();
             TouchAC.Text = sheet.ACTouch.ToString();
             FlatFootedAC.Text = sheet.ACFlatFooted.ToString();

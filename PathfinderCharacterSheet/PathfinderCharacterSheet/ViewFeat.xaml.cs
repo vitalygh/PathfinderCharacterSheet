@@ -6,32 +6,33 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemsType = PathfinderCharacterSheet.CharacterSheet.GearItem;
+using ItemType = PathfinderCharacterSheet.CharacterSheet.Feat;
+using EditItemType = PathfinderCharacterSheet.EditFeat;
 
 namespace PathfinderCharacterSheet
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ViewGearItem : ContentPage, ISheetView
+	public partial class ViewFeat : ContentPage, ISheetView
     {
-        private List<ItemsType> items
+        private ItemType item = null;
+        private List<ItemType> items
         {
             get
             {
                 var sheet = CharacterSheetStorage.Instance.selectedCharacter;
                 if (sheet != null)
-                    return sheet.gear;
+                    return sheet.feats;
                 return null;
             }
         }
-        private ItemsType item = null;
         private Page pushedPage = null;
 
-        public ViewGearItem()
+        public ViewFeat()
         {
             InitializeComponent();
         }
 
-        public void InitView(ItemsType item, int index)
+        public void InitView(ItemType item)
         {
             this.item = item;
             UpdateView();
@@ -40,39 +41,10 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
+            if (item == null)
                 return;
             ItemName.Text = item.name;
-            Amount.Text = item.amount.GetTotal(sheet).ToString();
-            Weight.Text = item.weight.GetTotal(sheet).ToString();
             Description.Text = item.description;
-        }
-
-        private void Amount_DoubleTapped(object sender, EventArgs e)
-        {
-            if (pushedPage != null)
-                return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
-                return;
-            var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.amount, "Edit Amount", "Amount: ", false);
-            pushedPage = eivwm;
-            Navigation.PushAsync(eivwm);
-        }
-
-        private void Weight_DoubleTapped(object sender, EventArgs e)
-        {
-            if (pushedPage != null)
-                return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
-                return;
-            var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.weight, "Edit Weapon Weight", "Weight: ", false);
-            pushedPage = eivwm;
-            Navigation.PushAsync(eivwm);
         }
 
         private void Back_Clicked(object sender, EventArgs e)
@@ -84,10 +56,10 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var egi = new EditGearItem();
+            var eit = new EditItemType();
             var itemIndex = items.IndexOf(item);
-            egi.InitEditor(item, itemIndex);
-            pushedPage = egi;
+            eit.InitEditor(item, itemIndex);
+            pushedPage = eit;
             Navigation.PushAsync(pushedPage);
         }
 

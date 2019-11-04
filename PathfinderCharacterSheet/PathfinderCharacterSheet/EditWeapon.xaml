@@ -117,7 +117,7 @@
                     <Label x:Name="DescriptionTitle" Text="Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2">
-                        <Editor x:Name="Description" FontSize="Medium" TextColor="Black">
+                        <Editor x:Name="Description" FontSize="Medium" TextColor="Black" AutoSize="TextChanges">
                         </Editor>
                     </Frame>
                 </Grid>

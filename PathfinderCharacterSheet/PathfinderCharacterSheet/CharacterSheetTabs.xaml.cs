@@ -22,10 +22,10 @@ namespace PathfinderCharacterSheet
             Children.Add(new ViewArmor());
             Children.Add(new ViewInventory());
             Children.Add(new ViewSkills());
-            Children.Add(new ContentPage() { Title = "Feats" });
-            Children.Add(new ContentPage() { Title = "Special Abilities" });
+            Children.Add(new ViewFeats());
+            Children.Add(new ViewSpecialAbilities());
             Children.Add(new ContentPage() { Title = "Spells" });
-            Children.Add(new ContentPage() { Title = "Notes" });
+            Children.Add(new ViewNotes());
         }
 
         public void UpdateView()

@@ -161,6 +161,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var el = new EditLanguages();
+            el.InitEditor();
             pushedPage = el;
             Navigation.PushAsync(pushedPage);
         }

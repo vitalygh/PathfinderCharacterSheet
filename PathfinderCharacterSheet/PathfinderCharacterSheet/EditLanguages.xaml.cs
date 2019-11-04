@@ -19,21 +19,21 @@ namespace PathfinderCharacterSheet
         }
         private Page pushedPage = null;
         private List<LanguageRow> languageRows = new List<LanguageRow>();
-        private List<string> lanaguages = null;
-        private List<string> items
-        {
-            get
-            {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-                if (sheet != null)
-                    return sheet.languages;
-                return null;
-            }
-        }
+        private List<string> languages = null;
 
         public EditLanguages()
         {
             InitializeComponent();
+        }
+
+        public void InitEditor()
+        {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            languages = new List<string>();
+            foreach (var l in sheet.languages)
+                languages.Add(l);
             UpdateView();
         }
 
@@ -43,14 +43,14 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var languagesCount = items.Count;
+            var languagesCount = languages.Count;
             var rowsCount = languageRows.Count;
             var updateCount = Math.Min(languagesCount, rowsCount);
             for (var i = 0; i < updateCount; i++)
             {
                 var languageIndex = i;
                 var row = languageRows[i];
-                var language = items[i];
+                var language = languages[i];
                 row.name.Text = language;
                 EventHandler handler = (s, e) => Language_Tap(language, languageIndex);
                 row.frame.GestureRecognizers.Clear();
@@ -62,7 +62,7 @@ namespace PathfinderCharacterSheet
                 for (var i = 0; i < count; i++)
                 {
                     var languageIndex = updateCount + i;
-                    var language = items[languageIndex];
+                    var language = languages[languageIndex];
                     var row = new LanguageRow();
                     row.frame  = CreateFrame(language);
                     row.name = row.frame.Content as Label;
@@ -75,7 +75,7 @@ namespace PathfinderCharacterSheet
             }
             else if (count < 0)
             {
-                while (languageRows.Count > items.Count)
+                while (languageRows.Count > languages.Count)
                 {
                     var last = languageRows.Count - 1;
                     var row = languageRows[last];
@@ -109,7 +109,15 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var hasChanges = !CharacterSheet.IsEqual(sheet.languages, languages);
+            if (hasChanges)
+            {
+                sheet.languages = languages;
+                CharacterSheetStorage.Instance.SaveCharacter();
+            }
         }
 
         public void Language_Tap(string language = null, int index = -1)
@@ -120,7 +128,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var el = new EditLanguage();
-            el.InitEditor(language, index);
+            el.InitEditor(languages, language, index);
             pushedPage = el;
             Navigation.PushAsync(pushedPage);
         }

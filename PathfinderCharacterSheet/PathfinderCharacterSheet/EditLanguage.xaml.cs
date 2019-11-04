@@ -13,47 +13,38 @@ namespace PathfinderCharacterSheet
 	public partial class EditLanguage : ContentPage
     {
         private int itemIndex = -1;
-        private List<string> items
-        {
-            get
-            {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-                if (sheet != null)
-                    return sheet.languages;
-                return null;
-            }
-        }
+        private List<string> languages = null;
 
         public EditLanguage()
         {
             InitializeComponent();
         }
 
-        public void InitEditor(string language = null, int index = -1)
+        public void InitEditor(List<string> languages, string language = null, int index = -1)
         {
-            if (!string.IsNullOrWhiteSpace(language))
-                Language.Text = language;
+            Language.Text = language;
+            this.languages = languages;
             itemIndex = index;
             Delete.IsEnabled = index >= 0;
         }
 
         private void EditToView()
         {
-            if (items == null)
+            if (languages == null)
                 return;
             var language = Language.Text;
             var hasChanges = false;
             if (itemIndex >= 0)
             {
-                if (language != items[itemIndex])
+                if (language != languages[itemIndex])
                 {
-                    items[itemIndex] = language;
+                    languages[itemIndex] = language;
                     hasChanges = true;
                 }
             }
             else
             {
-                items.Add(language);
+                languages.Add(language);
                 hasChanges = true;
             }
             if (hasChanges)
@@ -73,13 +64,13 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            var language = itemIndex < 0 ? string.Empty : items[itemIndex];
+            var language = itemIndex < 0 ? string.Empty : languages[itemIndex];
             if (!string.IsNullOrWhiteSpace(language))
                 language = " \"" + language + "\"";
             bool allow = await DisplayAlert("Remove language" + language, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.RemoveAt(itemIndex);
+                languages.RemoveAt(itemIndex);
                 await Navigation.PopAsync();
             }
         }
