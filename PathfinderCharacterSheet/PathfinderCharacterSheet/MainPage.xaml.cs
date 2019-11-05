@@ -21,6 +21,10 @@ namespace PathfinderCharacterSheet
             UpdateView();
             tabs.CurrentPageChanged += (s, e) =>
             {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    tabs.MoveTabs();
+                });
                 var c = CharacterSheetStorage.Instance.selectedCharacter;
                 if (c != null)
                     tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
@@ -183,12 +187,7 @@ namespace PathfinderCharacterSheet
         {
             Characters.IsVisible = false;
             CharacterSheetStorage.Instance.selectedCharacter = sheet;
-            foreach (var tab in tabs.Children)
-            {
-                var view = tab as ISheetView;
-                if (view != null)
-                    view.UpdateView();
-            }
+            tabs.InitTabs();
             tabs.Title = sheet.Name + ": " + tabs.CurrentPage.Title;
             Navigation.PushAsync(tabs);
         }

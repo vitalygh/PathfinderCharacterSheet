@@ -77,9 +77,16 @@ namespace PathfinderCharacterSheet
             const int columns = 4;
             var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
             var abilitiesCount = sheet.abilityScores.Length;
+            var hasChanges = false;
             for (var i = 0; i < abilitiesCount; i++)
             {
                 var ab = sheet.abilityScores[i];
+                if (ab == null)
+                {
+                    ab = new CharacterSheet.AbilityScore();
+                    sheet.abilityScores[i] = ab;
+                    hasChanges = true;
+                }
                 var abscindex = (i + 1) * columns;
                 (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
@@ -96,7 +103,8 @@ namespace PathfinderCharacterSheet
                 else
                     temp.TextColor = Color.Black;
             }
-
+            if (hasChanges)
+                CharacterSheetStorage.Instance.SaveCharacter();
             MaxHP.Text = sheet.hp.maxHP.GetTotal(sheet).ToString();
             HP.Text = sheet.hp.hp.GetTotal(sheet).ToString();
             DamageResist.Text = sheet.hp.damageResist.GetTotal(sheet).ToString();

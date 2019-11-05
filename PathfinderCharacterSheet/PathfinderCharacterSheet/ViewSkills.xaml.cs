@@ -53,6 +53,16 @@ namespace PathfinderCharacterSheet
             var skillsCount = sheet.skills.Count;
             var rowsCount = skillRows.Count;
             var updateCount = Math.Min(skillsCount, rowsCount);
+            var index = skillsCount;
+            var hasChanges = false;
+            while (--index >= 0)
+                if (sheet.skills[index] == null)
+                {
+                    sheet.skills.RemoveAt(index);
+                    hasChanges = true;
+                }
+            if (hasChanges)
+                CharacterSheetStorage.Instance.SaveCharacter();
             for (var i = 0; i < updateCount; i++)
             {
                 var skillIndex = i;

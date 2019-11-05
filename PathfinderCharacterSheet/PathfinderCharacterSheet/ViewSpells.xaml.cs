@@ -296,10 +296,17 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+            bool hasChanges = false;
             for (var i = 0; i < CharacterSheet.spellLevelsCount; i++)
             {
                 var level = levels[i + 1];
                 var spells = sheet.spellLevel[i];
+                if (spells == null)
+                {
+                    spells = new CharacterSheet.SpellLevel();
+                    sheet.spellLevel[i] = spells;
+                    hasChanges = true;
+                }
                 var spellsKnown = spells.spellsKnown.GetTotal(sheet).ToString();
                 if (level.spellsKnown.Text != spellsKnown)
                     level.spellsKnown.Text = spellsKnown;
@@ -316,6 +323,8 @@ namespace PathfinderCharacterSheet
                         level.bonusSpells.Text = bonusSpells;
                 }
             }
+            if (hasChanges)
+                CharacterSheetStorage.Instance.SaveCharacter();
             var channelsLeft = sheet.channelsLeft.GetTotal(sheet).ToString();
             if (ChannelsLeft.Text != channelsLeft)
                 ChannelsLeft.Text = channelsLeft;
