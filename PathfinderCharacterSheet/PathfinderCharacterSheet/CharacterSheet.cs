@@ -1567,11 +1567,12 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public const int spellLevesCount = 10;
+        public const int spellLevelsCount = 10;
 
         public class SpellLevel
         {
             public ValueWithIntModifiers spellsKnown = new ValueWithIntModifiers();
+            public ValueWithIntModifiers spellSaveDC = new ValueWithIntModifiers();
             public ValueWithIntModifiers spellsPerDay = new ValueWithIntModifiers();
             public ValueWithIntModifiers bonusSpells = new ValueWithIntModifiers();
         }
@@ -1805,11 +1806,21 @@ namespace PathfinderCharacterSheet
         #endregion
 
         #region Spells
-        public ValueWithIntModifiers channelsMaxCount = new ValueWithIntModifiers();
-        public int channelsCurrentCount = 0;
-        public Ability spellDCAbilityModifierSource = Ability.None;
-        public int GetSpellSaveDC(int level) { return 10 + GetAbilityModifier(this, spellDCAbilityModifierSource) + level; }
-        public SpellLevel[] spellLevel = new SpellLevel[spellLevesCount];
+        public ValueWithIntModifiers channelsPerDay = new ValueWithIntModifiers();
+        public ValueWithIntModifiers channelsLeft = new ValueWithIntModifiers();
+        public SpellLevel[] spellLevel = new SpellLevel[spellLevelsCount]
+        {
+            new SpellLevel(),
+            new SpellLevel(),
+            new SpellLevel(),
+            new SpellLevel(),
+            new SpellLevel(),
+            new SpellLevel(),
+            new SpellLevel(),
+            new SpellLevel(),
+            new SpellLevel(),
+            new SpellLevel(),
+        };
         #endregion
 
         #region Notes

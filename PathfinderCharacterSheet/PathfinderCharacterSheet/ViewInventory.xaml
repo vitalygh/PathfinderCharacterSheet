@@ -8,14 +8,14 @@
             <StackLayout>
                 <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label x:Name="PPTitle" Text="PP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
                     </Label>
@@ -64,15 +64,15 @@
                         </TapGestureRecognizer>
                     </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Label x:Name="LightLoadTitle" Text="Light Load: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
                     </Label>
@@ -111,19 +111,12 @@
                         </Label>
                     </Frame>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Label x:Name="GearTitle" Text="Gear: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Grid.Column="0" Grid.Row="0">
+                <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Label x:Name="GearTitle" Text="Gear: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
                     </Label>
-                    <Button x:Name="AddGear" Text="Add" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="0" Clicked="AddGear_Clicked">
+                    <Button x:Name="AddGear" Text="Add" FontSize="Medium" TextColor="Black" Clicked="AddGear_Clicked">
                     </Button>
-                </Grid>
+                </StackLayout>
                 <StackLayout x:Name="Gear">
                 </StackLayout>
             </StackLayout>

@@ -24,7 +24,7 @@ namespace PathfinderCharacterSheet
             Children.Add(new ViewSkills());
             Children.Add(new ViewFeats());
             Children.Add(new ViewSpecialAbilities());
-            Children.Add(new ContentPage() { Title = "Spells" });
+            Children.Add(new ViewSpells());
             Children.Add(new ViewNotes());
         }
 

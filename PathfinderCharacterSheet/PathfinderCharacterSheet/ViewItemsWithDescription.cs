@@ -316,7 +316,9 @@ namespace PathfinderCharacterSheet
             itemGrid.selected.CheckedChanged += itemGrid.selectedHandler;
             MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
 #endif
-            itemGrid.name.Text = item.AsString(sheet);
+            var name = item.AsString(sheet);
+            if (itemGrid.name.Text != name)
+                itemGrid.name.Text = name;
             if (itemGrid.viewButtonHandler != null)
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
             itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item, itemIndex);

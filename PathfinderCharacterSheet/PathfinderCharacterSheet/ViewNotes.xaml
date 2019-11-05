@@ -6,19 +6,12 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Label x:Name="ItemsTitle" Text="Notes: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Grid.Column="0" Grid.Row="0">
+                <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Label x:Name="ItemsTitle" Text="Notes: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
                     </Label>
-                    <Button x:Name="AddItem" Text="Add" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="0" Clicked="AddItem_Clicked">
+                    <Button x:Name="AddItem" Text="Add" FontSize="Medium" TextColor="Black" Clicked="AddItem_Clicked">
                     </Button>
-                </Grid>
+                </StackLayout>
                 <StackLayout x:Name="Items">
                 </StackLayout>
             </StackLayout>

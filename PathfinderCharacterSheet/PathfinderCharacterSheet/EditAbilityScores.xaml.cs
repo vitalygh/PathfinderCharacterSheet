@@ -114,10 +114,12 @@ namespace PathfinderCharacterSheet
                         }
                         */
                     }
-                    if (i == 0)
+                    //if (i == 0)
                         AbilityScores.Children.Add(child, j, i);
+                    /*
                     else
                         AbilityScores.Children.Add(child, j, i * 2 - 1);
+                    */
                 }
             //(AbilityScores.Children[0] as Label).Text = "Ability Name";
             (AbilityScores.Children[1] as Label).Text = "Ability Score";

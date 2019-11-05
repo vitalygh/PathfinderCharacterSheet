@@ -5,7 +5,11 @@
              Title="Weapon">
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout x:Name="Weapon">
+            <StackLayout>
+                <StackLayout x:Name="Header">
+                </StackLayout>
+                <StackLayout x:Name="Weapon">
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

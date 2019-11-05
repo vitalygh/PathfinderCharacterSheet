@@ -1,4 +1,7 @@
-﻿using System;
+﻿#define EXPAND_SELECTED
+//#define USE_GRID
+#define USE_GRID_IN_HEADER
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +15,10 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewWeapon : ContentPage, ISheetView
     {
-        public class SelectedWeaponGrid
+#if EXPAND_SELECTED
+        public class SelectedWeaponGrid: WeaponGrid
         {
-            public Grid grid = null;
-            public EventHandler<CheckedChangedEventArgs> handler = null;
-            public CheckBox selected = null;
             public Label nameTitle = null;
-            public Label name = null;
             public Label attackBonusTitle = null;
             public Label attackBonus = null;
             public Label criticalTitle = null;
@@ -40,27 +40,33 @@ namespace PathfinderCharacterSheet
             public Label descriptionTitle = null;
             public Label description = null;
         }
+#endif
 
         public class WeaponGrid
         {
-            public Grid grid = null;
+            public View container = null;
+#if EXPAND_SELECTED
             public EventHandler<CheckedChangedEventArgs> handler = null;
             public CheckBox selected = null;
-            public Label text = null;
+#endif
+            public Label name = null;
+            public Frame nameFrame = null;
         }
 
         private Page pushedPage = null;
         private Label attackBonus = null;
         private Label damageBonus = null;
+#if EXPAND_SELECTED
         List<SelectedWeaponGrid> selectedWeaponGrids = new List<SelectedWeaponGrid>();
         List<SelectedWeaponGrid> selectedWeaponGridsPool = new List<SelectedWeaponGrid>();
+#endif
         List<WeaponGrid> weaponGrids = new List<WeaponGrid>();
         List<WeaponGrid> weaponGridsPool = new List<WeaponGrid>();
 
         public ViewWeapon()
         {
             InitializeComponent();
-            CreateHeaderGrids();
+            CreateHeader();
             UpdateView();
         }
 
@@ -80,42 +86,46 @@ namespace PathfinderCharacterSheet
                 var db = sheet.DamageBonus;
                 damageBonus.Text = db >= 0 ? "+" + db : db.ToString();
             }
-
-            List<KeyValuePair<CharacterSheet.WeaponItem, int>> selectedWeaponItems = new List<KeyValuePair<CharacterSheet.WeaponItem, int>>();
-            List<KeyValuePair<CharacterSheet.WeaponItem, int>> weaponItems = new List<KeyValuePair<CharacterSheet.WeaponItem, int>>();
+#if EXPAND_SELECTED
+            var selectedWeaponItems = new List<KeyValuePair<CharacterSheet.WeaponItem, int>>();
+#endif
+            var weaponItems = new List<KeyValuePair<CharacterSheet.WeaponItem, int>>();
             var totalItemsCount = sheet.weaponItems.Count;
             for (var i = 0; i < totalItemsCount; i++)
             {
                 var wpn = sheet.weaponItems[i];
                 if (wpn == null)
                     continue;
+#if EXPAND_SELECTED
                 if (wpn.selected)
                     selectedWeaponItems.Add(new KeyValuePair<CharacterSheet.WeaponItem, int>(wpn, i));
                 else
+#endif
                     weaponItems.Add(new KeyValuePair<CharacterSheet.WeaponItem, int>(wpn, i));
             }
-            var itemsCount = selectedWeaponItems.Count;
-            var gridsCount = selectedWeaponGrids.Count;
+#if EXPAND_SELECTED
+            var selectedItemsCount = selectedWeaponItems.Count;
+            var selectedGridsCount = selectedWeaponGrids.Count;
+            var selectedUpdate = Math.Min(selectedGridsCount, selectedItemsCount);
+            for (var i = 0; i < selectedUpdate; i++)
+                UpdateWeaponGrid(selectedWeaponGrids[i], selectedWeaponItems[i]);
+            var selectedCreate = selectedGridsCount < selectedItemsCount;
+            var selectedLeft = selectedCreate ? selectedItemsCount - selectedGridsCount : selectedGridsCount - selectedItemsCount;
+            for (int i = 0; i < selectedLeft; i++)
+            {
+                if (selectedCreate)
+                    CreateSelectedWeaponGrid(selectedWeaponItems[i + selectedUpdate]);
+                else
+                    RemoveWeaponGrid(selectedWeaponGrids[selectedUpdate]);
+            }
+#endif
+            var itemsCount = weaponItems.Count;
+            var gridsCount = weaponGrids.Count;
             var update = Math.Min(gridsCount, itemsCount);
             for (var i = 0; i < update; i++)
-                UpdateWeaponGrid(selectedWeaponGrids[i], selectedWeaponItems[i]);
+                UpdateWeaponGrid(weaponGrids[i], weaponItems[i]);
             var create = gridsCount < itemsCount;
             var left = create ? itemsCount - gridsCount : gridsCount - itemsCount;
-            for (int i = 0; i < left; i++)
-            {
-                if (create)
-                    CreateSelectedWeaponGrid(selectedWeaponItems[i + update]);
-                else
-                    RemoveWeaponGrid(selectedWeaponGrids[update]);
-            }
-
-            itemsCount = weaponItems.Count;
-            gridsCount = weaponGrids.Count;
-            update = Math.Min(gridsCount, itemsCount);
-            for (var i = 0; i < update; i++)
-                UpdateWeaponGrid(weaponGrids[i], weaponItems[i]);
-            create = gridsCount < itemsCount;
-            left = create ? itemsCount - gridsCount : gridsCount - itemsCount;
             for (int i = 0; i < left; i++)
             {
                 if (create)
@@ -125,27 +135,36 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        private void CreateHeaderGrids()
+
+        private void CreateHeader()
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            var grid = new Grid()
+#if USE_GRID || USE_GRID_IN_HEADER
+            var container = new Grid()
             {
                 ColumnSpacing = 5,
                 RowSpacing = 5,
                 BackgroundColor = Color.LightGray,
             };
-            grid.ColumnDefinitions = new ColumnDefinitionCollection()
+            container.ColumnDefinitions = new ColumnDefinitionCollection()
             {
                 new ColumnDefinition() { Width = GridLength.Auto },
                 new ColumnDefinition() { Width = GridLength.Star },
                 new ColumnDefinition() { Width = GridLength.Auto },
                 new ColumnDefinition() { Width = GridLength.Star },
             };
-            grid.RowDefinitions = new RowDefinitionCollection()
+            container.RowDefinitions = new RowDefinitionCollection()
             {
                 new RowDefinition() { Height = GridLength.Auto },
             };
-            var attackBonusTitle = CreateLabel("Attack Bonus: ", TextAlignment.Start);
+#else
+            var container = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+            };
+#endif
+            var attackBonusTitle = CreateLabel("Attack Bonus: ");
             MainPage.AddTapHandler(attackBonusTitle, AttackBonus_DoubleTap, 2);
             var ab = (sheet != null) ? sheet.AttackBonus : 0;
             var attackBonusFrame = new Frame()
@@ -164,7 +183,7 @@ namespace PathfinderCharacterSheet
             MainPage.AddTapHandler(attackBonusFrame, AttackBonus_DoubleTap, 2);
             attackBonus = attackBonusFrame.Content as Label;
 
-            var damageBonusTitle = CreateLabel("Damage Bonus: ", TextAlignment.Start);
+            var damageBonusTitle = CreateLabel("Damage Bonus: ");
             MainPage.AddTapHandler(damageBonusTitle, DamageBonus_DoubleTap, 2);
             var db = (sheet != null) ? sheet.DamageBonus : 0;
             var damageBonusFrame = new Frame()
@@ -183,46 +202,79 @@ namespace PathfinderCharacterSheet
             MainPage.AddTapHandler(damageBonusFrame, DamageBonus_DoubleTap, 2);
             damageBonus = damageBonusFrame.Content as Label;
 
-            grid.Children.Add(attackBonusTitle, 0, 0);
-            grid.Children.Add(attackBonusFrame, 1, 0);
-            grid.Children.Add(damageBonusTitle, 2, 0);
-            grid.Children.Add(damageBonusFrame, 3, 0);
-
-            Weapon.Children.Add(grid);
-
-            grid = new Grid()
+#if USE_GRID || USE_GRID_IN_HEADER
+            container.Children.Add(attackBonusTitle, 0, 0);
+            container.Children.Add(attackBonusFrame, 1, 0);
+            container.Children.Add(damageBonusTitle, 2, 0);
+            container.Children.Add(damageBonusFrame, 3, 0);
+#else
+            var attack = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                BackgroundColor = Color.LightGray,
+            };
+            attack.Children.Add(attackBonusTitle);
+            attack.Children.Add(attackBonusFrame);
+            container.Children.Add(attack);
+            var damage = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                BackgroundColor = Color.LightGray,
+            };
+            damage.Children.Add(damageBonusTitle);
+            damage.Children.Add(damageBonusFrame);
+            container.Children.Add(damage);
+#endif
+            Header.Children.Add(container);
+#if USE_GRID
+            var weapon = new Grid()
             {
                 ColumnSpacing = 5,
                 RowSpacing = 5,
                 BackgroundColor = Color.LightGray,
             };
-            grid.ColumnDefinitions = new ColumnDefinitionCollection()
+            weapon.ColumnDefinitions = new ColumnDefinitionCollection()
             {
                 new ColumnDefinition() { Width = GridLength.Star },
                 new ColumnDefinition() { Width = GridLength.Auto },
             };
-            grid.RowDefinitions = new RowDefinitionCollection()
+            weapon.RowDefinitions = new RowDefinitionCollection()
             {
                 new RowDefinition() { Height = GridLength.Auto },
             };
+#else
+            var weapon = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                BackgroundColor = Color.LightGray,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+            };
+#endif
             var weaponTitle = CreateLabel("Weapon:");
             var weaponAddButton = new Button()
             {
                 Text = "Add",
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
                 TextColor = Color.Black,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
             };
             weaponAddButton.Clicked += (s, e) => Weapon_DoubleTap();
-            grid.Children.Add(weaponTitle, 0, 0);
-            grid.Children.Add(weaponAddButton, 1, 0);
-            Weapon.Children.Add(grid);
+#if USE_GRID
+            weapon.Children.Add(weaponTitle, 0, 0);
+            weapon.Children.Add(weaponAddButton, 1, 0);
+#else
+            weapon.Children.Add(weaponTitle);
+            weapon.Children.Add(weaponAddButton);
+#endif
+            Header.Children.Add(weapon);
         }
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
         {
-            return MainPage.CreateLabel(text, horz);
+            var label = MainPage.CreateLabel(text, horz);
+            label.HorizontalOptions = LayoutOptions.FillAndExpand;
+            return label;
         }
 
         private Frame CreateFrame(string text)
@@ -230,11 +282,12 @@ namespace PathfinderCharacterSheet
             return MainPage.CreateFrame(text);
         }
 
+#if EXPAND_SELECTED
         private void RemoveWeaponGrid(SelectedWeaponGrid weaponGrid)
         {
             if (weaponGrid == null)
                 return;
-            Weapon.Children.Remove(weaponGrid.grid);
+            Weapon.Children.Remove(weaponGrid.container);
             selectedWeaponGrids.Remove(weaponGrid);
             selectedWeaponGridsPool.Add(weaponGrid);
         }
@@ -266,9 +319,9 @@ namespace PathfinderCharacterSheet
             weaponGrid.weight.Text = item.weight.GetTotal(sheet).ToString();
             weaponGrid.description.Text = item.description;
 
-            weaponGrid.grid.GestureRecognizers.Clear();
-            MainPage.AddTapHandler(weaponGrid.grid, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
-            MainPage.AddTapHandler(weaponGrid.grid, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
+            weaponGrid.container.GestureRecognizers.Clear();
+            MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
+            MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
         }
 
         private void CreateSelectedWeaponGrid(KeyValuePair<CharacterSheet.WeaponItem, int> kvp)
@@ -288,9 +341,9 @@ namespace PathfinderCharacterSheet
                 var weaponGrid = selectedWeaponGridsPool[0];
                 selectedWeaponGridsPool.RemoveAt(0);
                 UpdateWeaponGrid(weaponGrid, item, itemIndex);
-                var pos = 2 + selectedWeaponGrids.Count;
+                var pos = selectedWeaponGrids.Count;
                 selectedWeaponGrids.Add(weaponGrid);
-                Weapon.Children.Insert(pos, weaponGrid.grid);
+                Weapon.Children.Insert(pos, weaponGrid.container);
                 return;
             }
             var grid = new Grid()
@@ -400,10 +453,11 @@ namespace PathfinderCharacterSheet
 
             var newWeaponGrid = new SelectedWeaponGrid()
             {
-                grid = grid,
+                container = grid,
                 handler = handler,
                 selected = selectedcb,
                 nameTitle = nameTitle,
+                nameFrame = nameValue,
                 name = nameValue.Content as Label,
                 attackBonusTitle = attackBonusTitle,
                 attackBonus = attackBonusValue.Content as Label,
@@ -427,16 +481,17 @@ namespace PathfinderCharacterSheet
                 description = descriptionValue.Content as Label,
             };
 
-            var newpos = 2 + selectedWeaponGrids.Count;
+            var newpos = selectedWeaponGrids.Count;
             selectedWeaponGrids.Add(newWeaponGrid);
-            Weapon.Children.Insert(newpos, newWeaponGrid.grid);
+            Weapon.Children.Insert(newpos, newWeaponGrid.container);
         }
+#endif
 
         private void RemoveWeaponGrid(WeaponGrid weaponGrid)
         {
             if (weaponGrid == null)
                 return;
-            Weapon.Children.Remove(weaponGrid.grid);
+            Weapon.Children.Remove(weaponGrid.container);
             weaponGrids.Remove(weaponGrid);
             weaponGridsPool.Add(weaponGrid);
         }
@@ -451,16 +506,17 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+            weaponGrid.container.GestureRecognizers.Clear();
+#if EXPAND_SELECTED
             if (weaponGrid.handler != null)
                 weaponGrid.selected.CheckedChanged -= weaponGrid.handler;
             weaponGrid.handler = (s, e) => Weapon_CheckedChanged(item, e.Value);
             weaponGrid.selected.IsChecked = item.selected;
             weaponGrid.selected.CheckedChanged += weaponGrid.handler;
-            weaponGrid.text.Text = item.AsString(sheet);
-
-            weaponGrid.grid.GestureRecognizers.Clear();
-            MainPage.AddTapHandler(weaponGrid.grid, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
-            MainPage.AddTapHandler(weaponGrid.grid, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
+            MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
+#endif
+            weaponGrid.name.Text = item.AsString(sheet);
+            MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
         }
 
         private void CreateWeaponGrid(KeyValuePair<CharacterSheet.WeaponItem, int> kvp)
@@ -480,27 +536,42 @@ namespace PathfinderCharacterSheet
                 var weaponGrid = weaponGridsPool[0];
                 weaponGridsPool.RemoveAt(0);
                 UpdateWeaponGrid(weaponGrid, item, itemIndex);
-                var pos = 2 + selectedWeaponGrids.Count + weaponGrids.Count;
+                var pos =
+#if EXPAND_SELECTED
+                    selectedWeaponGrids.Count + 
+#endif
+                    weaponGrids.Count;
                 weaponGrids.Add(weaponGrid);
-                Weapon.Children.Insert(pos, weaponGrid.grid);
+                Weapon.Children.Insert(pos, weaponGrid.container);
                 return;
             }
-            var grid = new Grid()
+#if USE_GRID
+            var container = new Grid()
             {
                 ColumnSpacing = 5,
                 RowSpacing = 5,
                 BackgroundColor = Color.LightGray,
             };
-            grid.ColumnDefinitions = new ColumnDefinitionCollection()
+            container.ColumnDefinitions = new ColumnDefinitionCollection()
             {
                 new ColumnDefinition() { Width = GridLength.Auto },
                 new ColumnDefinition() { Width = GridLength.Star },
             };
-            grid.RowDefinitions = new RowDefinitionCollection()
+            container.RowDefinitions = new RowDefinitionCollection()
             {
                 new RowDefinition() { Height = GridLength.Auto },
             };
-
+#else
+            var container = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                BackgroundColor = Color.LightGray,
+            };
+#endif
+            var weaponNameFrame = CreateFrame(item.AsString(sheet));
+            weaponNameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
+            MainPage.AddTapHandler(container, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
+#if EXPAND_SELECTED
             var selectedcb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -509,23 +580,37 @@ namespace PathfinderCharacterSheet
             };
             EventHandler<CheckedChangedEventArgs> handler = (s, e) => Weapon_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += handler;
-            var weaponNameFrame = CreateFrame(item.AsString(sheet));
-            MainPage.AddTapHandler(grid, (s, e) => Weapon_Tap(selectedcb), 1);
-            MainPage.AddTapHandler(grid, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
-            grid.Children.Add(selectedcb, 0, 0);
-            grid.Children.Add(weaponNameFrame, 1, 0);
+            MainPage.AddTapHandler(container, (s, e) => Weapon_Tap(selectedcb), 1);
+#if USE_GRID
+            container.Children.Add(selectedcb, 0, 0);
+#else
+            container.Children.Add(selectedcb);
+#endif
+#endif
+#if USE_GRID
+            container.Children.Add(weaponNameFrame, 1, 0);
+#else
+            container.Children.Add(weaponNameFrame);
+#endif
 
             var newWeaponGrid = new WeaponGrid()
             {
-                grid = grid,
+                container = container,
+#if EXPAND_SELECTED
                 handler = handler,
                 selected = selectedcb,
-                text = weaponNameFrame.Content as Label,
+#endif
+                name = weaponNameFrame.Content as Label,
+                nameFrame = weaponNameFrame,
             };
 
-            var newpos = 2 + selectedWeaponGrids.Count + weaponGrids.Count;
+            var newpos =
+#if EXPAND_SELECTED
+                selectedWeaponGrids.Count +
+#endif
+                weaponGrids.Count;
             weaponGrids.Add(newWeaponGrid);
-            Weapon.Children.Insert(newpos, newWeaponGrid.grid);
+            Weapon.Children.Insert(newpos, newWeaponGrid.container);
         }
 
         public void AttackBonus_DoubleTap(object sender, EventArgs e)
@@ -550,6 +635,7 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(eivwm);
         }
 
+#if EXPAND_SELECTED
         public void Weapon_CheckedChanged(CharacterSheet.WeaponItem weapon, bool value)
         {
             if (weapon == null)
@@ -565,6 +651,7 @@ namespace PathfinderCharacterSheet
         {
             selectedcb.IsChecked = !selectedcb.IsChecked;
         }
+#endif
 
         public void Weapon_DoubleTap(CharacterSheet.WeaponItem item = null, int index = -1)
         {
