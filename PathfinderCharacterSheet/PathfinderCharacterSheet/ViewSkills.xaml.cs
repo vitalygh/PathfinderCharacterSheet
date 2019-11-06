@@ -73,10 +73,10 @@ namespace PathfinderCharacterSheet
                 var skillIndex = i;
                 var row = skillRows[i];
                 var skill = sheet.skills[i];
-                row.classSkill.IsChecked = skill.classSkill;
-                row.name.Text = skill.Name;
+                UpdateValue(row.classSkill, skill.classSkill);
+                UpdateValue(row.name, skill.Name);
                 row.name.TextColor = (skill.trainedOnly && (skill.rank.GetTotal(sheet) <= 0)) ? Color.Red : Color.Black;
-                row.total.Text = skill.GetTotal(sheet).ToString();
+                UpdateValue(row.total, skill.GetTotal(sheet).ToString());
                 EventHandler handler = (s, e) => Skill_DoubleTap(skill, skillIndex);
                 row.nameFrame.GestureRecognizers.Clear();
                 MainPage.AddTapHandler(row.nameFrame, handler, 2);
@@ -166,6 +166,22 @@ namespace PathfinderCharacterSheet
         private Frame CreateFrame(string text)
         {
             return MainPage.CreateFrame(text);
+        }
+
+        private void UpdateValue(CheckBox checkbox, bool value)
+        {
+            if (checkbox == null)
+                return;
+            if (checkbox.IsChecked != value)
+                checkbox.IsChecked = value;
+        }
+
+        private void UpdateValue(Label label, string text)
+        {
+            if (label == null)
+                return;
+            if (label.Text != text)
+                label.Text = text;
         }
 
         public void Skill_DoubleTap(CharacterSheet.SkillRank skill = null, int index = -1)

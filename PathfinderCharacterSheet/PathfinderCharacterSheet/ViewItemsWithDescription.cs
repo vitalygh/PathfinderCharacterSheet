@@ -114,6 +114,22 @@ namespace PathfinderCharacterSheet
             return MainPage.CreateFrame(text);
         }
 
+        private void UpdateValue(CheckBox checkbox, bool value)
+        {
+            if (checkbox == null)
+                return;
+            if (checkbox.IsChecked != value)
+                checkbox.IsChecked = value;
+        }
+
+        private void UpdateValue(Label label, string text)
+        {
+            if (label == null)
+                return;
+            if (label.Text != text)
+                label.Text = text;
+        }
+
 #if EXPAND_SELECTED
         private void RemoveItemGrid(SelectedItemGrid itemGrid)
         {
@@ -139,11 +155,11 @@ namespace PathfinderCharacterSheet
             if (itemGrid.selectedHandler != null)
                 itemGrid.selected.CheckedChanged -= itemGrid.selectedHandler;
             itemGrid.selectedHandler = (s, e) => Item_CheckedChanged(item, e.Value);
-            itemGrid.selected.IsChecked = item.selected;
+            UpdateValue(itemGrid.selected, item.selected);
             itemGrid.selected.CheckedChanged += itemGrid.selectedHandler;
 
-            itemGrid.name.Text = item.name;
-            itemGrid.description.Text = item.description;
+            UpdateValue(itemGrid.name, item.name);
+            UpdateValue(itemGrid.description, item.description);
 
             if (itemGrid.viewButtonHandler != null)
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
@@ -312,13 +328,12 @@ namespace PathfinderCharacterSheet
             if (itemGrid.selectedHandler != null)
                 itemGrid.selected.CheckedChanged -= itemGrid.selectedHandler;
             itemGrid.selectedHandler = (s, e) => Item_CheckedChanged(item, e.Value);
-            itemGrid.selected.IsChecked = item.selected;
+            UpdateValue(itemGrid.selected, item.selected);
             itemGrid.selected.CheckedChanged += itemGrid.selectedHandler;
             MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
 #endif
             var name = item.AsString(sheet);
-            if (itemGrid.name.Text != name)
-                itemGrid.name.Text = name;
+            UpdateValue(itemGrid.name, name);
             if (itemGrid.viewButtonHandler != null)
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
             itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item, itemIndex);

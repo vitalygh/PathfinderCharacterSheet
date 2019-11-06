@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define EXPAND_SELECTED
+//#define USE_GRID
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,17 +14,13 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewArmor : ContentPage, ISheetView
     {
-        public class SelectedArmorGrid
+#if EXPAND_SELECTED
+        public class SelectedArmorGrid : ArmorGrid
         {
-            public Grid grid = null;
-            public EventHandler<CheckedChangedEventArgs> selectedHandler = null;
-            public CheckBox selected = null;
-
             public EventHandler<CheckedChangedEventArgs> activeHandler = null;
             public CheckBox active = null;
 
             public Label nameTitle = null;
-            public Label name = null;
 
             public Label armorBonusTitle = null;
             public Label armorBonus = null;
@@ -48,23 +46,31 @@ namespace PathfinderCharacterSheet
             public Label descriptionTitle = null;
             public Label description = null;
         }
+#endif
 
         public class ArmorGrid
         {
-            public Grid grid = null;
-            public EventHandler<CheckedChangedEventArgs> handler = null;
+            public View container = null;
+#if EXPAND_SELECTED
+            public EventHandler<CheckedChangedEventArgs> selectedHandler = null;
             public CheckBox selected = null;
-            public Label text = null;
+#endif
+            public Label name = null;
+            public Frame nameFrame = null;
         }
 
         private Page pushedPage = null;
+#if EXPAND_SELECTED
         List<SelectedArmorGrid> selectedArmorGrids = new List<SelectedArmorGrid>();
+        List<SelectedArmorGrid> selectedArmorGridsPool = new List<SelectedArmorGrid>();
+#endif
         List<ArmorGrid> armorGrids = new List<ArmorGrid>();
+        List<ArmorGrid> armorGridsPool = new List<ArmorGrid>();
 
         public ViewArmor()
         {
             InitializeComponent();
-            CreateHeaderGrids();
+            CreateHeader();
             UpdateView();
         }
 
@@ -74,113 +80,106 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            List<KeyValuePair<CharacterSheet.ArmorClassItem, int>> selectedArmorClassItems = new List<KeyValuePair<CharacterSheet.ArmorClassItem, int>>();
-            List<KeyValuePair<CharacterSheet.ArmorClassItem, int>> armorClassItems = new List<KeyValuePair<CharacterSheet.ArmorClassItem, int>>();
+#if EXPAND_SELECTED
+            var selectedArmorItems = new List<KeyValuePair<CharacterSheet.ArmorClassItem, int>>();
+#endif
+            var armorItems = new List<KeyValuePair<CharacterSheet.ArmorClassItem, int>>();
             var totalItemsCount = sheet.armorClassItems.Count;
             for (var i = 0; i < totalItemsCount; i++)
             {
-                var arm = sheet.armorClassItems[i];
-                if (arm == null)
+                var wpn = sheet.armorClassItems[i];
+                if (wpn == null)
                     continue;
-                if (arm.selected)
-                    selectedArmorClassItems.Add(new KeyValuePair<CharacterSheet.ArmorClassItem, int>(arm, i));
+#if EXPAND_SELECTED
+                if (wpn.selected)
+                    selectedArmorItems.Add(new KeyValuePair<CharacterSheet.ArmorClassItem, int>(wpn, i));
                 else
-                    armorClassItems.Add(new KeyValuePair<CharacterSheet.ArmorClassItem, int>(arm, i));
+#endif
+                    armorItems.Add(new KeyValuePair<CharacterSheet.ArmorClassItem, int>(wpn, i));
             }
-            var count = armorClassItems.Count;
-            var selectedCount = selectedArmorClassItems.Count;
-            if ((selectedCount != selectedArmorGrids.Count) || (count != armorGrids.Count))
+#if EXPAND_SELECTED
+            var selectedItemsCount = selectedArmorItems.Count;
+            var selectedGridsCount = selectedArmorGrids.Count;
+            var selectedUpdate = Math.Min(selectedGridsCount, selectedItemsCount);
+            for (var i = 0; i < selectedUpdate; i++)
+                UpdateArmorGrid(selectedArmorGrids[i], selectedArmorItems[i]);
+            var selectedCreate = selectedGridsCount < selectedItemsCount;
+            var selectedLeft = selectedCreate ? selectedItemsCount - selectedGridsCount : selectedGridsCount - selectedItemsCount;
+            for (int i = 0; i < selectedLeft; i++)
             {
-                foreach (var arm in selectedArmorGrids)
-                    Armor.Children.Remove(arm.grid);
-                selectedArmorGrids.Clear();
-                foreach (var arm in armorGrids)
-                    Armor.Children.Remove(arm.grid);
-                armorGrids.Clear();
-                foreach (var kvp in selectedArmorClassItems)
-                    CreateSelectedArmorGrid(kvp.Key, kvp.Value);
-                CreateArmorGrid(armorClassItems);
-                return;
+                if (selectedCreate)
+                    CreateSelectedArmorGrid(selectedArmorItems[i + selectedUpdate]);
+                else
+                    RemoveArmorGrid(selectedArmorGrids[selectedUpdate]);
             }
-            for (var i = 0; i < selectedCount; i++)
+#endif
+            var itemsCount = armorItems.Count;
+            var gridsCount = armorGrids.Count;
+            var update = Math.Min(gridsCount, itemsCount);
+            for (var i = 0; i < update; i++)
+                UpdateArmorGrid(armorGrids[i], armorItems[i]);
+            var create = gridsCount < itemsCount;
+            var left = create ? itemsCount - gridsCount : gridsCount - itemsCount;
+            for (int i = 0; i < left; i++)
             {
-                var grid = selectedArmorGrids[i];
-                var kvp = selectedArmorClassItems[i];
-                var arm = kvp.Key;
-                var index = kvp.Value;
-                if (grid.selectedHandler != null)
-                    grid.selected.CheckedChanged -= grid.selectedHandler;
-                grid.selectedHandler = (s, e) => ArmorSelected_CheckedChanged(arm, e.Value);
-                grid.selected.CheckedChanged += grid.selectedHandler;
-                if (grid.activeHandler != null)
-                    grid.active.CheckedChanged -= grid.activeHandler;
-                grid.activeHandler = (s, e) => ArmorActive_CheckedChanged(arm, e.Value);
-                grid.active.CheckedChanged += grid.activeHandler;
-                grid.name.Text = arm.name;
-                grid.armorBonus.Text = arm.ArmorBonus(sheet);
-                grid.armorType.Text = arm.ArmorType.ToString();
-                grid.maxDexBonus.Text = arm.MaxDexBonus(sheet);
-                grid.checkPenalty.Text = arm.CheckPenalty(sheet);
-                grid.spellFailure.Text = arm.SpellFailure(sheet);
-                grid.properties.Text = arm.properties;
-                grid.weight.Text = arm.weight.GetTotal(sheet).ToString();
-                grid.description.Text = arm.description;
-                grid.grid.GestureRecognizers.Clear();
-                MainPage.AddTapHandler(grid.grid, (s, e) => Armor_DoubleTap(arm, index), 2);
-            }
-            for (var i = 0; i < count; i++)
-            {
-                var grid = armorGrids[i];
-                var kvp = armorClassItems[i];
-                var arm = kvp.Key;
-                var index = kvp.Value;
-                if (grid.handler != null)
-                    grid.selected.CheckedChanged -= grid.handler;
-                grid.handler = (s, e) => ArmorSelected_CheckedChanged(arm, e.Value);
-                grid.selected.CheckedChanged += grid.handler;
-                grid.text.Text = arm.AsString(sheet);
-                grid.text.FontAttributes = arm.active ? FontAttributes.Bold : FontAttributes.None;
-                grid.grid.GestureRecognizers.Clear();
-                MainPage.AddTapHandler(grid.grid, (s, e) => Armor_DoubleTap(arm, index), 2);
+                if (create)
+                    CreateArmorGrid(armorItems[i + update]);
+                else
+                    RemoveArmorGrid(armorGrids[update]);
             }
         }
 
-        private void CreateHeaderGrids()
+
+        private void CreateHeader()
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            var grid = new Grid()
+#if USE_GRID
+            var armor = new Grid()
             {
                 ColumnSpacing = 5,
                 RowSpacing = 5,
                 BackgroundColor = Color.LightGray,
             };
-            grid.ColumnDefinitions = new ColumnDefinitionCollection()
+            armor.ColumnDefinitions = new ColumnDefinitionCollection()
             {
                 new ColumnDefinition() { Width = GridLength.Star },
                 new ColumnDefinition() { Width = GridLength.Auto },
             };
-            grid.RowDefinitions = new RowDefinitionCollection()
+            armor.RowDefinitions = new RowDefinitionCollection()
             {
                 new RowDefinition() { Height = GridLength.Auto },
             };
+#else
+            var armor = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                BackgroundColor = Color.LightGray,
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+            };
+#endif
             var armorTitle = CreateLabel("Armor:");
             var armorAddButton = new Button()
             {
                 Text = "Add",
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
                 TextColor = Color.Black,
-                HorizontalOptions = LayoutOptions.Center,
-                VerticalOptions = LayoutOptions.Center,
             };
             armorAddButton.Clicked += (s, e) => Armor_DoubleTap();
-            grid.Children.Add(armorTitle, 0, 0);
-            grid.Children.Add(armorAddButton, 1, 0);
-            Armor.Children.Add(grid);
+#if USE_GRID
+            armor.Children.Add(armorTitle, 0, 0);
+            armor.Children.Add(armorAddButton, 1, 0);
+#else
+            armor.Children.Add(armorTitle);
+            armor.Children.Add(armorAddButton);
+#endif
+            Header.Children.Add(armor);
         }
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
         {
-            return MainPage.CreateLabel(text, horz);
+            var label = MainPage.CreateLabel(text, horz);
+            label.HorizontalOptions = LayoutOptions.FillAndExpand;
+            return label;
         }
 
         private Frame CreateFrame(string text)
@@ -188,13 +187,94 @@ namespace PathfinderCharacterSheet
             return MainPage.CreateFrame(text);
         }
 
-        private void CreateSelectedArmorGrid(CharacterSheet.ArmorClassItem armor, int index)
+        private void UpdateValue(CheckBox checkbox, bool value)
         {
-            if (armor == null)
+            if (checkbox == null)
+                return;
+            if (checkbox.IsChecked != value)
+                checkbox.IsChecked = value;
+        }
+
+        private void UpdateValue(Label label, string text)
+        {
+            if (label == null)
+                return;
+            if (label.Text != text)
+                label.Text = text;
+        }
+
+#if EXPAND_SELECTED
+        private void RemoveArmorGrid(SelectedArmorGrid armorGrid)
+        {
+            if (armorGrid == null)
+                return;
+            Armor.Children.Remove(armorGrid.container);
+            selectedArmorGrids.Remove(armorGrid);
+            selectedArmorGridsPool.Add(armorGrid);
+        }
+
+        private void UpdateArmorGrid(SelectedArmorGrid armorGrid, KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
+        {
+            UpdateArmorGrid(armorGrid, kvp.Key, kvp.Value);
+        }
+
+        private void UpdateArmorGrid(SelectedArmorGrid armorGrid, CharacterSheet.ArmorClassItem item, int itemIndex)
+        {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+
+            if (armorGrid.selectedHandler != null)
+                armorGrid.selected.CheckedChanged -= armorGrid.selectedHandler;
+            armorGrid.selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
+            UpdateValue(armorGrid.selected, item.selected);
+            armorGrid.selected.IsChecked = item.selected;
+            armorGrid.selected.CheckedChanged += armorGrid.selectedHandler;
+
+            if (armorGrid.activeHandler != null)
+                armorGrid.active.CheckedChanged -= armorGrid.activeHandler;
+            armorGrid.activeHandler = (s, e) => ArmorActive_CheckedChanged(item, e.Value);
+            UpdateValue(armorGrid.active, item.active);
+            armorGrid.active.IsChecked = item.active;
+            armorGrid.active.CheckedChanged += armorGrid.activeHandler;
+
+            UpdateValue(armorGrid.name, item.name);
+            UpdateValue(armorGrid.armorBonus, item.ArmorBonus(sheet));
+            UpdateValue(armorGrid.armorType, item.armorType);
+            UpdateValue(armorGrid.maxDexBonus, item.MaxDexBonus(sheet));
+            UpdateValue(armorGrid.checkPenalty, item.CheckPenalty(sheet));
+            UpdateValue(armorGrid.spellFailure, item.SpellFailure(sheet));
+            UpdateValue(armorGrid.properties, item.properties);
+            UpdateValue(armorGrid.weight, item.weight.GetTotal(sheet).ToString());
+            UpdateValue(armorGrid.description, item.description);
+
+            armorGrid.container.GestureRecognizers.Clear();
+            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
+            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item, itemIndex), 2);
+        }
+
+        private void CreateSelectedArmorGrid(KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
+        {
+            CreateSelectedArmorGrid(kvp.Key, kvp.Value);
+        }
+
+        private void CreateSelectedArmorGrid(CharacterSheet.ArmorClassItem item, int itemIndex)
+        {
+            if (item == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+            if (selectedArmorGridsPool.Count > 0)
+            {
+                var armorGrid = selectedArmorGridsPool[0];
+                selectedArmorGridsPool.RemoveAt(0);
+                UpdateArmorGrid(armorGrid, item, itemIndex);
+                var pos = selectedArmorGrids.Count;
+                selectedArmorGrids.Add(armorGrid);
+                Armor.Children.Insert(pos, armorGrid.container);
+                return;
+            }
             var grid = new Grid()
             {
                 ColumnSpacing = 5,
@@ -215,9 +295,9 @@ namespace PathfinderCharacterSheet
             {
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
-                IsChecked = armor.selected,
+                IsChecked = item.selected,
             };
-            EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(armor, e.Value);
+            EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
             var nameTitle = CreateLabel("Name: ", TextAlignment.Start);
             var nameStack = new StackLayout()
@@ -230,7 +310,7 @@ namespace PathfinderCharacterSheet
             nameStack.Children.Add(nameTitle);
 
             var row = 0;
-            var nameValue = CreateFrame(armor.name);
+            var nameValue = CreateFrame(item.name);
             grid.Children.Add(nameStack, 0, row);
             grid.Children.Add(nameValue, 1, row);
             row += 1;
@@ -240,53 +320,53 @@ namespace PathfinderCharacterSheet
             {
                 HorizontalOptions = LayoutOptions.Center,
                 VerticalOptions = LayoutOptions.Center,
-                IsChecked = armor.active,
+                IsChecked = item.active,
                 IsEnabled = false,
             };
-            EventHandler<CheckedChangedEventArgs> activeHandler = (s, e) => ArmorSelected_CheckedChanged(armor, e.Value);
+            EventHandler<CheckedChangedEventArgs> activeHandler = (s, e) => ArmorActive_CheckedChanged(item, e.Value);
             activecb.CheckedChanged += activeHandler;
             grid.Children.Add(activeTitle, 0, row);
             grid.Children.Add(activecb, 1, row);
             row += 1;
 
             var armorBonusTitle = CreateLabel("Armor Bonus: ", TextAlignment.Start);
-            var armorBonusValue = CreateFrame(armor.ArmorBonus(sheet));
+            var armorBonusValue = CreateFrame(item.ArmorBonus(sheet));
             grid.Children.Add(armorBonusTitle, 0, row);
             grid.Children.Add(armorBonusValue, 1, row);
             row += 1;
 
             var armorTypeTitle = CreateLabel("Armor Type: ", TextAlignment.Start);
-            var armorTypeValue = CreateFrame(armor.ArmorType.ToString());
+            var armorTypeValue = CreateFrame(item.ArmorType.ToString());
             grid.Children.Add(armorTypeTitle, 0, row);
             grid.Children.Add(armorTypeValue, 1, row);
             row += 1;
 
             var maxDexBonusTitle = CreateLabel("Max Dex Bonus: ", TextAlignment.Start);
-            var maxDexBonusValue = CreateFrame(armor.MaxDexBonus(sheet));
+            var maxDexBonusValue = CreateFrame(item.MaxDexBonus(sheet));
             grid.Children.Add(maxDexBonusTitle, 0, row);
             grid.Children.Add(maxDexBonusValue, 1, row);
             row += 1;
 
             var checkPenaltyTitle = CreateLabel("Check Penalty: ", TextAlignment.Start);
-            var checkPenaltyValue = CreateFrame(armor.CheckPenalty(sheet));
+            var checkPenaltyValue = CreateFrame(item.CheckPenalty(sheet));
             grid.Children.Add(checkPenaltyTitle, 0, row);
             grid.Children.Add(checkPenaltyValue, 1, row);
             row += 1;
 
             var spellFailureTitle = CreateLabel("Spell Failure: ", TextAlignment.Start);
-            var spellFailureValue = CreateFrame(armor.SpellFailure(sheet));
+            var spellFailureValue = CreateFrame(item.SpellFailure(sheet));
             grid.Children.Add(spellFailureTitle, 0, row);
             grid.Children.Add(spellFailureValue, 1, row);
             row += 1;
 
             var propertiesTitle = CreateLabel("Properties: ", TextAlignment.Start);
-            var propertiesValue = CreateFrame(armor.properties);
+            var propertiesValue = CreateFrame(item.properties);
             grid.Children.Add(propertiesTitle, 0, row);
             grid.Children.Add(propertiesValue, 1, row);
             row += 1;
 
             var weightTitle = CreateLabel("Weight: ", TextAlignment.Start);
-            var weightValue = CreateFrame(armor.weight.GetTotal(sheet).ToString());
+            var weightValue = CreateFrame(item.weight.GetTotal(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;
@@ -295,17 +375,16 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
             row += 1;
 
-            var descriptionValue = CreateFrame(armor.description);
+            var descriptionValue = CreateFrame(item.description);
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
-            MainPage.AddTapHandler(grid, (s, e) => Armor_DoubleTap(armor, index), 2);
+            MainPage.AddTapHandler(grid, (s, e) => Armor_Tap(selectedcb), 1);
+            MainPage.AddTapHandler(grid, (s, e) => Armor_DoubleTap(item, itemIndex), 2);
 
-            Armor.Children.Add(grid);
-
-            selectedArmorGrids.Add(new SelectedArmorGrid()
+            var newArmorGrid = new SelectedArmorGrid()
             {
-                grid = grid,
+                container = grid,
                 selectedHandler = selectedHandler,
                 selected = selectedcb,
                 activeHandler = activeHandler,
@@ -328,78 +407,142 @@ namespace PathfinderCharacterSheet
                 weight = weightValue.Content as Label,
                 descriptionTitle = descriptionTitle,
                 description = descriptionValue.Content as Label,
-            });
+            };
+
+            var newpos = selectedArmorGrids.Count;
+            selectedArmorGrids.Add(newArmorGrid);
+            Armor.Children.Insert(newpos, newArmorGrid.container);
+        }
+#endif
+
+        private void RemoveArmorGrid(ArmorGrid armorGrid)
+        {
+            if (armorGrid == null)
+                return;
+            Armor.Children.Remove(armorGrid.container);
+            armorGrids.Remove(armorGrid);
+            armorGridsPool.Add(armorGrid);
         }
 
-        private void CreateArmorGrid(List<KeyValuePair<CharacterSheet.ArmorClassItem, int>> armorItems)
+        private void UpdateArmorGrid(ArmorGrid armorGrid, KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
         {
-            if (armorItems == null)
+            UpdateArmorGrid(armorGrid, kvp.Key, kvp.Value);
+        }
+
+        private void UpdateArmorGrid(ArmorGrid armorGrid, CharacterSheet.ArmorClassItem item, int itemIndex)
+        {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            armorGrid.container.GestureRecognizers.Clear();
+#if EXPAND_SELECTED
+            if (armorGrid.selectedHandler != null)
+                armorGrid.selected.CheckedChanged -= armorGrid.selectedHandler;
+            armorGrid.selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
+            UpdateValue(armorGrid.selected, item.selected);
+            armorGrid.selected.CheckedChanged += armorGrid.selectedHandler;
+            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
+#endif
+            UpdateValue(armorGrid.name, item.AsString(sheet));
+            armorGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
+            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item, itemIndex), 2);
+        }
+
+        private void CreateArmorGrid(KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
+        {
+            CreateArmorGrid(kvp.Key, kvp.Value);
+        }
+
+        private void CreateArmorGrid(CharacterSheet.ArmorClassItem item, int itemIndex)
+        {
+            if (item == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var count = armorItems.Count;
-            if (count <= 0)
+            if (armorGridsPool.Count > 0)
+            {
+                var armorGrid = armorGridsPool[0];
+                armorGridsPool.RemoveAt(0);
+                UpdateArmorGrid(armorGrid, item, itemIndex);
+                var pos =
+#if EXPAND_SELECTED
+                    selectedArmorGrids.Count +
+#endif
+                    armorGrids.Count;
+                armorGrids.Add(armorGrid);
+                Armor.Children.Insert(pos, armorGrid.container);
                 return;
-            var grid = new Grid()
+            }
+#if USE_GRID
+            var container = new Grid()
             {
                 ColumnSpacing = 5,
                 RowSpacing = 5,
                 BackgroundColor = Color.LightGray,
             };
-            grid.ColumnDefinitions = new ColumnDefinitionCollection()
+            container.ColumnDefinitions = new ColumnDefinitionCollection()
             {
                 new ColumnDefinition() { Width = GridLength.Auto },
                 new ColumnDefinition() { Width = GridLength.Star },
             };
-            var rowDefinitions = new RowDefinitionCollection();
-            for (var i = 0; i < count; i++)
-                rowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-            grid.RowDefinitions = rowDefinitions;
-            for (var i = 0; i < count; i++)
+            container.RowDefinitions = new RowDefinitionCollection()
             {
-                var arm = armorItems[i].Key;
-                var index = armorItems[i].Value;
-                if (arm == null)
-                    continue;
-                var selectedcb = new CheckBox()
-                {
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
-                    IsChecked = arm.selected,
-                };
-                EventHandler<CheckedChangedEventArgs> handler = (s, e) => ArmorSelected_CheckedChanged(arm, e.Value);
-                selectedcb.CheckedChanged += handler;
-                var armorNameFrame = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        Text = arm.AsString(sheet),
-                        FontAttributes = arm.active ? FontAttributes.Bold : FontAttributes.None,
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        HorizontalOptions = LayoutOptions.Center,
-                        VerticalOptions = LayoutOptions.Center,
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
-                MainPage.AddTapHandler(armorNameFrame, (s, e) => Armor_DoubleTap(arm, index), 2);
-                grid.Children.Add(selectedcb, 0, i);
-                grid.Children.Add(armorNameFrame, 1, i);
+                new RowDefinition() { Height = GridLength.Auto },
+            };
+#else
+            var container = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                BackgroundColor = Color.LightGray,
+            };
+#endif
+            var armorNameFrame = CreateFrame(item.AsString(sheet));
+            armorNameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
+            MainPage.AddTapHandler(container, (s, e) => Armor_DoubleTap(item, itemIndex), 2);
+#if EXPAND_SELECTED
+            var selectedcb = new CheckBox()
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                IsChecked = item.selected,
+            };
+            EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
+            selectedcb.CheckedChanged += selectedHandler;
+            MainPage.AddTapHandler(container, (s, e) => Armor_Tap(selectedcb), 1);
+#if USE_GRID
+            container.Children.Add(selectedcb, 0, 0);
+#else
+            container.Children.Add(selectedcb);
+#endif
+#endif
+#if USE_GRID
+            container.Children.Add(armorNameFrame, 1, 0);
+#else
+            container.Children.Add(armorNameFrame);
+#endif
 
-                armorGrids.Add(new ArmorGrid()
-                {
-                    grid = grid,
-                    handler = handler,
-                    selected = selectedcb,
-                    text = armorNameFrame.Content as Label,
-                });
-            }
-            Armor.Children.Add(grid);
+            var newArmorGrid = new ArmorGrid()
+            {
+                container = container,
+#if EXPAND_SELECTED
+                selectedHandler = selectedHandler,
+                selected = selectedcb,
+#endif
+                name = armorNameFrame.Content as Label,
+                nameFrame = armorNameFrame,
+            };
+
+            var newpos =
+#if EXPAND_SELECTED
+                selectedArmorGrids.Count +
+#endif
+                armorGrids.Count;
+            armorGrids.Add(newArmorGrid);
+            Armor.Children.Insert(newpos, newArmorGrid.container);
         }
 
+#if EXPAND_SELECTED
         public void ArmorSelected_CheckedChanged(CharacterSheet.ArmorClassItem armor, bool value)
         {
             if (armor == null)
@@ -410,6 +553,12 @@ namespace PathfinderCharacterSheet
             CharacterSheetStorage.Instance.SaveCharacter();
             UpdateView();
         }
+
+        public void Armor_Tap(CheckBox selectedcb)
+        {
+            selectedcb.IsChecked = !selectedcb.IsChecked;
+        }
+#endif
 
         public void ArmorActive_CheckedChanged(CharacterSheet.ArmorClassItem armor, bool value)
         {
@@ -429,9 +578,9 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var ea = new EditArmor();
-            ea.InitEditor(item, index);
-            pushedPage = ea;
+            var ew = new EditArmor();
+            ew.InitEditor(item, index);
+            pushedPage = ew;
             Navigation.PushAsync(pushedPage);
         }
     }
