@@ -52,17 +52,17 @@ namespace PathfinderCharacterSheet
             };
             grid.RowDefinitions = new RowDefinitionCollection()
             {
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
-                new RowDefinition() { Height = GridLength.Star, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
+                new RowDefinition() { Height = GridLength.Auto, },
             };
             var column = 0;
             var row = 0;
@@ -290,6 +290,12 @@ namespace PathfinderCharacterSheet
             return MainPage.CreateFrame(text);
         }
 
+        private void UpdateText(Label label, string text)
+        {
+            if (label.Text != text)
+                label.Text = text;
+        }
+
         public void UpdateView()
         {
             pushedPage = null;
@@ -308,29 +314,23 @@ namespace PathfinderCharacterSheet
                     hasChanges = true;
                 }
                 var spellsKnown = spells.spellsKnown.GetTotal(sheet).ToString();
-                if (level.spellsKnown.Text != spellsKnown)
-                    level.spellsKnown.Text = spellsKnown;
+                UpdateText(level.spellsKnown, spellsKnown);
                 var spellSaveDC = spells.spellSaveDC.GetTotal(sheet).ToString();
-                if (level.spellSaveDC.Text != spellSaveDC)
-                    level.spellSaveDC.Text = spellSaveDC;
+                UpdateText(level.spellSaveDC, spellSaveDC);
                 var spellsPerDay = spells.spellsPerDay.GetTotal(sheet).ToString();
-                if (level.spellsPerDay.Text != spellsPerDay)
-                    level.spellsPerDay.Text = spellsPerDay;
+                UpdateText(level.spellsPerDay, spellsPerDay);
                 if (i > 0)
                 {
                     var bonusSpells = spells.bonusSpells.GetTotal(sheet).ToString();
-                    if (level.bonusSpells.Text != bonusSpells)
-                        level.bonusSpells.Text = bonusSpells;
+                    UpdateText(level.bonusSpells, bonusSpells);
                 }
             }
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
             var channelsLeft = sheet.channelsLeft.GetTotal(sheet).ToString();
-            if (ChannelsLeft.Text != channelsLeft)
-                ChannelsLeft.Text = channelsLeft;
+            UpdateText(ChannelsLeft, channelsLeft);
             var channelsPerDay = sheet.channelsPerDay.GetTotal(sheet).ToString();
-            if (ChannelsPerDay.Text != channelsPerDay)
-                ChannelsPerDay.Text = channelsPerDay;
+            UpdateText(ChannelsPerDay, channelsPerDay);
         }
 
         private void ChannelsLeft_DoubleTapped(object sender, EventArgs e)

@@ -32,8 +32,9 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             languages = new List<string>();
-            foreach (var l in sheet.languages)
-                languages.Add(l);
+            if (sheet.languages != null)
+                foreach (var l in sheet.languages)
+                    languages.Add(l);
             UpdateView();
         }
 

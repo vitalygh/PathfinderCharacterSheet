@@ -6,6 +6,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
+                <!--
                 <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -19,6 +20,14 @@
                     <Button x:Name="AddSkill" Text="Add" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="0" Clicked="AddSkill_Clicked">
                     </Button>
                 </Grid>
+                -->
+                <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Label x:Name="SkillsTitle" Text="Skills: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
+                    </Label>
+                    <Button x:Name="AddSkill" Text="Add" FontSize="Medium" TextColor="Black" Clicked="AddSkill_Clicked">
+                    </Button>
+                </StackLayout>
+                <!--
                 <Grid x:Name="Skills" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -29,6 +38,10 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                 </Grid>
+                -->
+                <StackLayout x:Name="Skills" BackgroundColor="LightGray">
+                </StackLayout>
+                <!--
                 <Grid x:Name="SkillsFooter" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -43,6 +56,29 @@
                     </StackLayout>
                     <Label x:Name="TrainedOnlyTitle" Text="* Trained Only" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" HorizontalTextAlignment="Center" Grid.Column="1" Grid.Row="0"></Label>
                 </Grid>
+                -->
+                <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                            <CheckBox IsChecked="True" VerticalOptions="Center" HorizontalOptions="Fill"></CheckBox>
+                            <Label x:Name="ClassSkillsTitle" Text="Class Skill" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Fill" HorizontalTextAlignment="Center"></Label>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                        <Label x:Name="TrainedOnlyTitle" Text="* Trained Only" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout BackgroundColor="LightGray">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Languages_DoubleTapped">
+                        </TapGestureRecognizer>
+                    </StackLayout.GestureRecognizers>
+                    <Label x:Name="LanguagesTitle" Text="Languages: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
+                    <Frame BorderColor="Black" Padding="5">
+                        <Label x:Name="Languages" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" FontSize="Medium" TextColor="Black"></Label>
+                    </Frame>
+                </StackLayout>
+                <!--
                 <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Languages_DoubleTapped">
@@ -60,6 +96,7 @@
                         <Label x:Name="Languages" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" FontSize="Medium" TextColor="Black" Grid.Column="0"></Label>
                     </Frame>
                 </Grid>
+                -->
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

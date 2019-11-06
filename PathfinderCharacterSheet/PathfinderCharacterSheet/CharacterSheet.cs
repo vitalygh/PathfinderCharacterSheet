@@ -1774,7 +1774,7 @@ namespace PathfinderCharacterSheet
                 new SkillRank(Skills.UseMagicDevice, Ability.Charisma, true),
             };
         }
-        public List<string> languages = null;
+        public List<string> languages = new List<string>();
         public string Languages
         {
             get

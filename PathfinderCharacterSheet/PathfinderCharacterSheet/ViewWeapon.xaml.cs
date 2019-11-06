@@ -148,13 +148,12 @@ namespace PathfinderCharacterSheet
             };
             container.ColumnDefinitions = new ColumnDefinitionCollection()
             {
-                new ColumnDefinition() { Width = GridLength.Auto },
                 new ColumnDefinition() { Width = GridLength.Star },
-                new ColumnDefinition() { Width = GridLength.Auto },
                 new ColumnDefinition() { Width = GridLength.Star },
             };
             container.RowDefinitions = new RowDefinitionCollection()
             {
+                new RowDefinition() { Height = GridLength.Auto },
                 new RowDefinition() { Height = GridLength.Auto },
             };
 #else
@@ -164,7 +163,7 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 #endif
-            var attackBonusTitle = CreateLabel("Attack Bonus: ");
+            var attackBonusTitle = CreateLabel("Attack Bonus: ", TextAlignment.Start);
             MainPage.AddTapHandler(attackBonusTitle, AttackBonus_DoubleTap, 2);
             var ab = (sheet != null) ? sheet.AttackBonus : 0;
             var attackBonusFrame = new Frame()
@@ -183,7 +182,7 @@ namespace PathfinderCharacterSheet
             MainPage.AddTapHandler(attackBonusFrame, AttackBonus_DoubleTap, 2);
             attackBonus = attackBonusFrame.Content as Label;
 
-            var damageBonusTitle = CreateLabel("Damage Bonus: ");
+            var damageBonusTitle = CreateLabel("Damage Bonus: ", TextAlignment.Start);
             MainPage.AddTapHandler(damageBonusTitle, DamageBonus_DoubleTap, 2);
             var db = (sheet != null) ? sheet.DamageBonus : 0;
             var damageBonusFrame = new Frame()
@@ -205,8 +204,8 @@ namespace PathfinderCharacterSheet
 #if USE_GRID || USE_GRID_IN_HEADER
             container.Children.Add(attackBonusTitle, 0, 0);
             container.Children.Add(attackBonusFrame, 1, 0);
-            container.Children.Add(damageBonusTitle, 2, 0);
-            container.Children.Add(damageBonusFrame, 3, 0);
+            container.Children.Add(damageBonusTitle, 0, 1);
+            container.Children.Add(damageBonusFrame, 1, 1);
 #else
             var attack = new StackLayout()
             {
@@ -282,6 +281,22 @@ namespace PathfinderCharacterSheet
             return MainPage.CreateFrame(text);
         }
 
+        private void UpdateValue(CheckBox checkbox, bool value)
+        {
+            if (checkbox == null)
+                return;
+            if (checkbox.IsChecked != value)
+                checkbox.IsChecked = value;
+        }
+
+        private void UpdateValue(Label label, string text)
+        {
+            if (label == null)
+                return;
+            if (label.Text != text)
+                label.Text = text;
+        }
+
 #if EXPAND_SELECTED
         private void RemoveWeaponGrid(SelectedWeaponGrid weaponGrid)
         {
@@ -305,19 +320,20 @@ namespace PathfinderCharacterSheet
             if (weaponGrid.handler != null)
                 weaponGrid.selected.CheckedChanged -= weaponGrid.handler;
             weaponGrid.handler = (s, e) => Weapon_CheckedChanged(item, e.Value);
+            UpdateValue(weaponGrid.selected, item.selected);
             weaponGrid.selected.IsChecked = item.selected;
             weaponGrid.selected.CheckedChanged += weaponGrid.handler;
-            weaponGrid.name.Text = item.name;
-            weaponGrid.attackBonus.Text = item.AttackBonus(sheet);
-            weaponGrid.critical.Text = item.critical.AsString(sheet);
-            weaponGrid.damage.Text = item.damage.AsString(sheet);
-            weaponGrid.damageBonus.Text = item.DamageBonus(sheet);
-            weaponGrid.type.Text = item.type;
-            weaponGrid.range.Text = item.Range(sheet);
-            weaponGrid.ammunition.Text = item.ammunition.GetTotal(sheet).ToString();
-            weaponGrid.special.Text = item.special;
-            weaponGrid.weight.Text = item.weight.GetTotal(sheet).ToString();
-            weaponGrid.description.Text = item.description;
+            UpdateValue(weaponGrid.name, item.name);
+            UpdateValue(weaponGrid.attackBonus, item.AttackBonus(sheet));
+            UpdateValue(weaponGrid.critical, item.critical.AsString(sheet));
+            UpdateValue(weaponGrid.damage, item.damage.AsString(sheet));
+            UpdateValue(weaponGrid.damageBonus, item.DamageBonus(sheet));
+            UpdateValue(weaponGrid.type, item.type);
+            UpdateValue(weaponGrid.range, item.Range(sheet));
+            UpdateValue(weaponGrid.ammunition, item.ammunition.GetTotal(sheet).ToString());
+            UpdateValue(weaponGrid.special, item.special);
+            UpdateValue(weaponGrid.weight, item.weight.GetTotal(sheet).ToString());
+            UpdateValue(weaponGrid.description, item.description);
 
             weaponGrid.container.GestureRecognizers.Clear();
             MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
@@ -511,11 +527,11 @@ namespace PathfinderCharacterSheet
             if (weaponGrid.handler != null)
                 weaponGrid.selected.CheckedChanged -= weaponGrid.handler;
             weaponGrid.handler = (s, e) => Weapon_CheckedChanged(item, e.Value);
-            weaponGrid.selected.IsChecked = item.selected;
+            UpdateValue(weaponGrid.selected, item.selected);
             weaponGrid.selected.CheckedChanged += weaponGrid.handler;
             MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
 #endif
-            weaponGrid.name.Text = item.AsString(sheet);
+            UpdateValue(weaponGrid.name, item.AsString(sheet));
             MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item, itemIndex), 2);
         }
 

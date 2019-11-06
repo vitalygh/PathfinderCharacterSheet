@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define USE_GRID
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,9 @@ namespace PathfinderCharacterSheet
     {
         public class SkillRow
         {
+#if !USE_GRID
+            public StackLayout layout = null;
+#endif
             public CheckBox classSkill = null;
             public Frame nameFrame = null;
             public Label name = null;
@@ -22,26 +26,12 @@ namespace PathfinderCharacterSheet
         }
 
         private Page pushedPage = null;
-        private Label skillNameTitle = null;
-        private Label skillTotalTitle = null;
         private List<SkillRow> skillRows = new List<SkillRow>();
 
         public ViewSkills()
         {
             InitializeComponent();
-            CreateControls();
             UpdateView();
-        }
-
-        private void CreateControls()
-        {
-            if (Skills.Children.Count <= 0)
-            {
-                skillNameTitle = CreateLabel("Name:");
-                skillTotalTitle = CreateLabel("Total:");
-                Skills.Children.Add(skillNameTitle, 1, 0);
-                Skills.Children.Add(skillTotalTitle, 2, 0);
-            }
         }
 
         public void UpdateView()
@@ -50,6 +40,21 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+#if USE_GRID
+            var grid = new Grid()
+            {
+                ColumnSpacing = 5,
+                RowSpacing = 5,
+                BackgroundColor = Color.LightGray,
+            };
+            grid.ColumnDefinitions = new ColumnDefinitionCollection()
+            {
+                new ColumnDefinition() { Width = GridLength.Auto, },
+                new ColumnDefinition() { Width = GridLength.Star, },
+                new ColumnDefinition() { Width = GridLength.Auto, },
+            };
+            Skills.Children.Add(grid);
+#endif
             var skillsCount = sheet.skills.Count;
             var rowsCount = skillRows.Count;
             var updateCount = Math.Min(skillsCount, rowsCount);
@@ -90,22 +95,38 @@ namespace PathfinderCharacterSheet
                     {
                         IsChecked = skill.classSkill,
                         IsEnabled = false,
-                        HorizontalOptions = LayoutOptions.Center,
+                        HorizontalOptions = LayoutOptions.Start,
                         VerticalOptions = LayoutOptions.Center,
                     };
+#if !USE_GRID
+                    skillRow.layout = new StackLayout()
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                    };
+#endif
                     skillRow.nameFrame = CreateFrame(skill.Name);
+                    skillRow.nameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
                     skillRow.name = skillRow.nameFrame.Content as Label;
                     skillRow.name.TextColor = (skill.trainedOnly && (skill.rank.GetTotal(sheet) <= 0)) ? Color.Red : Color.Black;
                     skillRow.totalFrame = CreateFrame(skill.GetTotal(sheet).ToString());
+                    skillRow.totalFrame.HorizontalOptions = LayoutOptions.End;
+                    skillRow.totalFrame.WidthRequest = 40;
                     skillRow.total = skillRow.totalFrame.Content as Label;
                     EventHandler handler = (s, e) => Skill_DoubleTap(skill, skillIndex);
                     MainPage.AddTapHandler(skillRow.nameFrame, handler, 2);
                     MainPage.AddTapHandler(skillRow.totalFrame, handler, 2);
                     skillRows.Add(skillRow);
+#if USE_GRID
                     var row = skillIndex + 1;
-                    Skills.Children.Add(skillRow.classSkill, 0, row);
-                    Skills.Children.Add(skillRow.nameFrame, 1, row);
-                    Skills.Children.Add(skillRow.totalFrame, 2, row);
+                    grid.Children.Add(skillRow.classSkill, 0, row);
+                    grid.Children.Add(skillRow.nameFrame, 1, row);
+                    grid.Children.Add(skillRow.totalFrame, 2, row);
+#else
+                    skillRow.layout.Children.Add(skillRow.classSkill);
+                    skillRow.layout.Children.Add(skillRow.nameFrame);
+                    skillRow.layout.Children.Add(skillRow.totalFrame);
+                    Skills.Children.Add(skillRow.layout);
+#endif
                 }
             }
             else if (count < 0)
@@ -120,18 +141,20 @@ namespace PathfinderCharacterSheet
                     Skills.Children.Remove(skillRow.classSkill);
                 }
             }
+#if USE_GRID
             rowsCount = skillRows.Count + 1;
-            if ((Skills.RowDefinitions == null) || (Skills.RowDefinitions.Count != rowsCount))
+            if ((grid.RowDefinitions == null) || (grid.RowDefinitions.Count != rowsCount))
             {
-                Skills.RowDefinitions = new RowDefinitionCollection();
+                grid.RowDefinitions = new RowDefinitionCollection();
                 for (int i = 0; i < rowsCount; i++)
                 {
-                    Skills.RowDefinitions.Add(new RowDefinition()
+                    grid.RowDefinitions.Add(new RowDefinition()
                     {
                         Height = GridLength.Auto,
                     });
                 }
             }
+#endif
             Languages.Text = sheet.Languages;
         }
 
