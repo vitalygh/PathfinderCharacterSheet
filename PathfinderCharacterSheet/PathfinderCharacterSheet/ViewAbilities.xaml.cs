@@ -119,7 +119,29 @@ namespace PathfinderCharacterSheet
             Reflex.Text = sheet.GetSavingThrowTotal(CharacterSheet.Save.Reflex).ToString();
             Will.Text = sheet.GetSavingThrowTotal(CharacterSheet.Save.Will).ToString();
 
-            BaseAttackBonus.Text = sheet.baseAttackBonus.GetTotal(sheet).ToString();
+            var attacksCount = sheet.baseAttackBonus != null ? sheet.baseAttackBonus.Count : 0;
+            attacksCount = Math.Max(1, attacksCount);
+            var colsCount = BaseAttackBonus.Children.Count;
+            var update = Math.Min(colsCount, attacksCount);
+            for (var i = 0; i < update; i++)
+            {
+                var bonus = sheet.GetBaseAttackBonus(i);
+                //var b = bonus > 0 ? "+" + bonus : bonus.ToString();
+                UpdateValue((BaseAttackBonus.Children[i] as Frame).Content as Label, bonus.ToString());
+            }
+            var create = colsCount < attacksCount;
+            var left = create ? attacksCount - colsCount : colsCount - attacksCount;
+            for (int i = 0; i < left; i++)
+            {
+                if (create)
+                {
+                    var bonus = sheet.GetBaseAttackBonus(i + update);
+                    //var b = bonus > 0 ? "+" + bonus : bonus.ToString();
+                    BaseAttackBonus.Children.Add(CreateFrame(bonus.ToString()));
+                }
+                else
+                    BaseAttackBonus.Children.RemoveAt(update);
+            }
 
             SpellResistance.Text = sheet.spellResistance.GetTotal(sheet).ToString();
 
@@ -135,6 +157,24 @@ namespace PathfinderCharacterSheet
             SwimSpeed.Text = sheet.speed.GetSwimSpeed(sheet).ToString() + " ft";
             ClimbSpeed.Text = sheet.speed.GetClimbSpeed(sheet).ToString() + " ft";
             BurrowSpeed.Text = sheet.speed.burrowSpeed.GetTotal(sheet).ToString() + " ft";
+        }
+
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        {
+            return MainPage.CreateLabel(text, horz);
+        }
+
+        private Frame CreateFrame(string text)
+        {
+            return MainPage.CreateFrame(text);
+        }
+
+        private void UpdateValue(Label label, string text)
+        {
+            if (label == null)
+                return;
+            if (label.Text != text)
+                label.Text = text;
         }
 
         private void AbilityScores_DoubleTapped(object sender, EventArgs e)
@@ -224,10 +264,10 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.baseAttackBonus, "Edit Base Attack Bonus", "Base Attack Bonus: ", true);
-            pushedPage = eivwm;
-            Navigation.PushAsync(eivwm);
+            var ebab = new EditBaseAttackBonus();
+            ebab.InitEditor();
+            pushedPage = ebab;
+            Navigation.PushAsync(pushedPage);
         }
 
         private void SpellResistance_DoubleTapped(object sender, EventArgs e)

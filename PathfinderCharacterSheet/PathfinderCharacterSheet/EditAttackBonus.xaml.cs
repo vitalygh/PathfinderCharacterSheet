@@ -15,6 +15,7 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private CharacterSheet.ValueWithIntModifiers sizeModifiers = null;
         private CharacterSheet.ValueWithIntModifiers attackBonus = null;
+        private int currentAttack = 0;
 
         public EditAttackBonus ()
 		{
@@ -29,6 +30,8 @@ namespace PathfinderCharacterSheet
                 return;
             sizeModifiers = sheet.attackSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
             attackBonus = sheet.attackBonusModifiers.Clone as CharacterSheet.ValueWithIntModifiers;
+            currentAttack = sheet.currentAttack;
+            UpdateCurrentAttackPicker();
             UpdateView();
         }
 
@@ -38,11 +41,51 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            BaseAttackBonus.Text = sheet.baseAttackBonus.GetTotal(sheet).ToString();
+            //BaseAttackBonus.Text = sheet.GetBaseAttackBonus().ToString();
             SizeModifier.Text = sizeModifiers.GetTotal(sheet).ToString();
             Value.Text = attackBonus.baseValue.ToString();
             UpdateModifiersSum();
             MainPage.FillIntMLGrid(Modifiers, sheet, attackBonus.modifiers, "Modifiers:", EditModifier, EditModifier, (modifiers, modifier) => UpdateModifiersSum());
+        }
+
+        private void UpdateCurrentAttackPicker()
+        {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var babs = sheet.baseAttackBonus;
+            if (babs == null)
+                return;
+            var count = babs.Count;
+            if (count <= 0)
+                return;
+            var items = new List<CharacterSheet.IntPickerItem>();
+            var selectedIndex = -1;
+            for (var i = 0; i < count; i++)
+            {
+                if (i == currentAttack)
+                    selectedIndex = i;
+                var item = new CharacterSheet.IntPickerItem()
+                {
+                    Name = sheet.GetBaseAttackBonusForPicker(i),
+                    Value = i,
+                };
+                items.Add(item);
+            }
+            CurrentBaseAttackBonus.ItemsSource = items;
+            CurrentBaseAttackBonus.SelectedIndex = selectedIndex;
+            var oneAttack = count < 2;
+            CurrentBaseAttackBonus.InputTransparent = oneAttack;
+            CurrentBaseAttackBonusFrame.BackgroundColor = oneAttack ? Color.LightGray : Color.White;
+        }
+
+        private void CurrentBaseAttackBonus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedItem = (CurrentBaseAttackBonus.SelectedItem as CharacterSheet.IntPickerItem);
+            if (selectedItem == null)
+                return;
+            currentAttack = selectedItem.Value;
+            UpdateTotal();
         }
 
         private void UpdateTotal()
@@ -52,7 +95,7 @@ namespace PathfinderCharacterSheet
                 return;
             var total = 0;
             MainPage.StrToInt(Value.Text, ref attackBonus.baseValue);
-            total += sheet.baseAttackBonus.GetTotal(sheet);
+            total += sheet.GetBaseAttackBonus(currentAttack);
             total += sizeModifiers.GetTotal(sheet);
             total += attackBonus.GetTotal(sheet);
             Total.Text = total.ToString();
@@ -120,8 +163,9 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             MainPage.StrToInt(Value.Text, ref attackBonus.baseValue);
-            if (!sizeModifiers.Equals(sheet.attackSizeModifier) || !attackBonus.Equals(sheet.attackBonusModifiers))
+            if (!sizeModifiers.Equals(sheet.attackSizeModifier) || !attackBonus.Equals(sheet.attackBonusModifiers) || (currentAttack != sheet.currentAttack))
             {
+                sheet.currentAttack = currentAttack;
                 sheet.attackBonusModifiers = attackBonus;
                 sheet.attackSizeModifier = sizeModifiers;
                 CharacterSheetStorage.Instance.SaveCharacter();

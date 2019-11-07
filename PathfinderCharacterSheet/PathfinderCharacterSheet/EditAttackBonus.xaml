@@ -30,8 +30,9 @@
                     </Frame>
                     <Label Text="=" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="2"></Label>
                     <Label x:Name="BaseAttackBonusTitle" Text="Base Attack Bonus: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="3"></Label>
-                    <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="3">
-                        <Label x:Name="BaseAttackBonus"  FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
+                    <Frame x:Name="CurrentBaseAttackBonusFrame" BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="3">
+                        <!--<Label x:Name="BaseAttackBonus"  FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>-->
+                        <Picker x:Name="CurrentBaseAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="CurrentBaseAttackBonus_SelectedIndexChanged"></Picker>
                     </Frame>
                     <Label Text="+" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="4"></Label>
                     <Label x:Name="SizeModifierTitle" Text="Size Modifier: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="5"></Label>

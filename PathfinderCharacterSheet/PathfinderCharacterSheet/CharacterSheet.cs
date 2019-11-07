@@ -14,7 +14,7 @@ namespace PathfinderCharacterSheet
             public string ClassName { get { return className; } }
 
             public virtual object Clone
-            { 
+            {
                 get
                 {
                     return new LevelOfClass()
@@ -123,6 +123,12 @@ namespace PathfinderCharacterSheet
         {
             public string Name { set; get; }
             public Ability Value { set; get; }
+        }
+
+        public class IntPickerItem
+        {
+            public string Name { set; get; }
+            public int Value { set; get; }
         }
 
         public enum Save
@@ -1598,6 +1604,8 @@ namespace PathfinderCharacterSheet
                 return name;
             }
         }
+        public DateTime CreationTime = DateTime.Now;
+        public DateTime ModificationTime = DateTime.Now;
         public string biography = null;
         public string alignment = Alignments.Neutral.ToString();
         public Alignments Alignment
@@ -1693,18 +1701,55 @@ namespace PathfinderCharacterSheet
         public Initiative initiative = new Initiative();
         public int CurrentInitiative { get { return initiative.GetInitiative(this); } }
 
-        public ValueWithIntModifiers baseAttackBonus = new ValueWithIntModifiers();
+        public List<ValueWithIntModifiers> baseAttackBonus = new List<ValueWithIntModifiers>();
+        public int currentAttack = 0;
+        public int GetBaseAttackBonus()
+        {
+            return GetBaseAttackBonus(currentAttack);
+        }
+        public int GetBaseAttackBonus(int attack)
+        {
+            return GetBaseAttackBonus(baseAttackBonus, attack);
+        }
+        public int GetBaseAttackBonus(List<ValueWithIntModifiers> babs, int attack)
+        {
+            var count = babs.Count;
+            if (count <= 0)
+                return 0;
+            ValueWithIntModifiers bab = null;
+            if (attack < 0)
+                bab = babs[0];
+            else if (attack >= count)
+                bab = babs[count - 1];
+            else
+                bab = babs[attack];
+            if (bab != null)
+                return bab.GetTotal(this);
+            return 0;
+        }
+        public string GetBaseAttackBonusForPicker(int attack)
+        {
+            return GetBaseAttackBonusForPicker(baseAttackBonus, attack);
+        }
+        public string GetBaseAttackBonusForPicker(List<ValueWithIntModifiers> babs, int attack, bool addAttackNumber = false)
+        {
+            var bab = GetBaseAttackBonus(babs, attack);
+            var text = bab > 0 ? "+" + bab : bab.ToString();
+            if (addAttackNumber && (babs != null) && (babs.Count > 1))
+                text = (attack + 1) + ": (" + text + ")";
+            return text;
+        }
 
         public ValueWithIntModifiers cmdSizeModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers cmbSizeModifier = new ValueWithIntModifiers();
-        public int GetCMD(CharacterSheet sheet, ValueWithIntModifiers sizeModifier) { return 10 + baseAttackBonus.GetTotal(sheet) + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.GetTotal(sheet); }
-        public int CMD { get { return GetCMD(this, cmdSizeModifier); } }
-        public int GetCMB(CharacterSheet sheet, ValueWithIntModifiers sizeModifier) { return baseAttackBonus.GetTotal(sheet) + GetAbilityModifier(this, Ability.Strength) + sizeModifier.GetTotal(sheet); }
-        public int CMB { get { return GetCMB(this, cmbSizeModifier); } }
+        public int GetCMD(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return 10 + GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.GetTotal(sheet); }
+        public int CMD { get { return GetCMD(this, cmdSizeModifier, currentAttack); } }
+        public int GetCMB(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + sizeModifier.GetTotal(sheet); }
+        public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
 
         public ValueWithIntModifiers attackSizeModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers attackBonusModifiers = new ValueWithIntModifiers();
-        public int AttackBonus { get { return baseAttackBonus.GetTotal(this) + attackBonusModifiers.GetTotal(this) + attackSizeModifier.GetTotal(this); } }
+        public int AttackBonus { get { return GetBaseAttackBonus() + attackBonusModifiers.GetTotal(this) + attackSizeModifier.GetTotal(this); } }
         public ValueWithIntModifiers damageBonusModifiers = new ValueWithIntModifiers();
         public int DamageBonus { get { return damageBonusModifiers.GetTotal(this); } }
         #endregion

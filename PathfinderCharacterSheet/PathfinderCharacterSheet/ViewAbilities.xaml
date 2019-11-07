@@ -30,7 +30,7 @@
                 </Grid>
                 <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -87,7 +87,7 @@
                         </TapGestureRecognizer>
                     </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -106,7 +106,7 @@
                         </TapGestureRecognizer>
                     </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -139,7 +139,7 @@
                         </TapGestureRecognizer>
                     </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -172,7 +172,7 @@
                         </TapGestureRecognizer>
                     </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -180,10 +180,8 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="BaseAttackBonusTitle" Text="Base Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                        <Label x:Name="BaseAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
-                        </Label>
-                    </Frame>
+                    <StackLayout x:Name="BaseAttackBonus" Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                    </StackLayout>
                 </Grid>
                 <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.GestureRecognizers>
@@ -191,7 +189,7 @@
                         </TapGestureRecognizer>
                     </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -210,7 +208,7 @@
                         </TapGestureRecognizer>
                     </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -236,7 +234,7 @@
                         </TapGestureRecognizer>
                     </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>

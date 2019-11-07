@@ -71,28 +71,31 @@ namespace PathfinderCharacterSheet
             return null;
         }
 
-        private string GeneratePath(CharacterSheet sheet)
+        private string GeneratePath(CharacterSheet sheet, int index = 0)
         {
             if (sheet == null)
                 return null;
             var name = string.IsNullOrWhiteSpace(sheet.Name) ? string.Empty : sheet.Name;
-            name += "_" + Guid.NewGuid().ToString();
+            //name += "_" + Guid.NewGuid().ToString();
+            if (index > 0)
+                name = name + "_" + index;
             var invalid = Path.GetInvalidFileNameChars();
             foreach (var c in invalid)
                 name = name.Replace(c, '_');
             return Path.Combine(CharactersPath, name + ".xml");
         }
 
-        private void SaveCharacter(CharacterSheet sheet, string path)
+        private bool SaveCharacter(CharacterSheet sheet, string path)
         {
             if (sheet == null)
-                return;
+                return false;
             var dir = CharactersPath;
             var characterName = string.IsNullOrWhiteSpace(sheet.Name) ? "unnamed character" : "character \"" + sheet.Name + "\"";
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             try
             {
+                sheet.ModificationTime = DateTime.Now;
                 using (var writer = new StreamWriter(path))
                 {
                     var serializer = new XmlSerializer(typeof(CharacterSheet));
@@ -100,11 +103,13 @@ namespace PathfinderCharacterSheet
                     writer.Flush();
                 }
                 Console.WriteLine("Serialization " + characterName + " to \"" + path + "\" complete");
+                return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Serialization " + characterName + " to \"" + path + "\" failed: " + ex.ToString());
             }
+            return false;
         }
 
         public void SaveCharacter()
@@ -120,11 +125,24 @@ namespace PathfinderCharacterSheet
                 SaveCharacter(sheet, path);
                 return;
             }
-            path = GeneratePath(sheet);
-            if (path != null)
+            var index = 0;
+            path = GeneratePath(sheet, index);
+            if (path == null)
+                return;
+            var safeCounter = 1000;
+            while (safeCounter > 0)
             {
-                SaveCharacter(sheet, path);
-                characters.Add(sheet, path);
+                safeCounter -= 1;
+                while (File.Exists(path))
+                {
+                    index += 1;
+                    path = GeneratePath(sheet, index);
+                }
+                if (SaveCharacter(sheet, path))
+                {
+                    characters.Add(sheet, path);
+                    break;
+                }
             }
         }
 

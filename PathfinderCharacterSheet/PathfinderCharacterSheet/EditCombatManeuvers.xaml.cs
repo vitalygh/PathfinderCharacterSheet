@@ -15,6 +15,7 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private CharacterSheet.ValueWithIntModifiers cmdSizeModifier = null;
         private CharacterSheet.ValueWithIntModifiers cmbSizeModifier = null;
+        private int currentAttack = 0;
 
         public EditCombatManeuvers ()
 		{
@@ -30,10 +31,9 @@ namespace PathfinderCharacterSheet
                 return;
             cmdSizeModifier = sheet.cmdSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
             cmbSizeModifier = sheet.cmbSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
-            CMDBaseAttackBonus.Text = sheet.baseAttackBonus.GetTotal(sheet).ToString();
-            CMBBaseAttackBonus.Text = CMDBaseAttackBonus.Text;
-            CMDStrengthModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Strength).ToString();
-            CMBStrengthModifier.Text = CMDStrengthModifier.Text;
+            currentAttack = sheet.currentAttack;
+            UpdateCurrentAttackPicker();
+            StrengthModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Strength).ToString();
             CMDDexterityModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
         }
 
@@ -45,8 +45,16 @@ namespace PathfinderCharacterSheet
                 return;
             CMDSizeModifier.Text = cmdSizeModifier.GetTotal(sheet).ToString();
             CMBSizeModifier.Text = cmbSizeModifier.GetTotal(sheet).ToString();
-            CMDTotal.Text = sheet.GetCMD(sheet, cmdSizeModifier).ToString();
-            CMBTotal.Text = sheet.GetCMB(sheet, cmbSizeModifier).ToString();
+            UpdateTotal();
+        }
+
+        private void UpdateTotal()
+        {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            CMDTotal.Text = sheet.GetCMD(sheet, cmdSizeModifier, currentAttack).ToString();
+            CMBTotal.Text = sheet.GetCMB(sheet, cmbSizeModifier, currentAttack).ToString();
         }
 
         private void EditToView()
@@ -65,8 +73,54 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
                 sheet.cmbSizeModifier = cmbSizeModifier;
             }
+            if (currentAttack != sheet.currentAttack)
+            {
+                hasChanges = true;
+                sheet.currentAttack = currentAttack;
+            }
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
+        }
+
+
+        private void UpdateCurrentAttackPicker()
+        {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var bab = sheet.baseAttackBonus;
+            if (bab == null)
+                return;
+            var count = bab.Count;
+            if (count <= 0)
+                return;
+            var items = new List<CharacterSheet.IntPickerItem>();
+            var selectedIndex = -1;
+            for (var i = 0; i < count; i++)
+            {
+                if (i == currentAttack)
+                    selectedIndex = i;
+                var item = new CharacterSheet.IntPickerItem()
+                {
+                    Name = sheet.GetBaseAttackBonusForPicker(i),
+                    Value = i,
+                };
+                items.Add(item);
+            }
+            CurrentBaseAttackBonus.ItemsSource = items;
+            CurrentBaseAttackBonus.SelectedIndex = selectedIndex;
+            var oneAttack = count < 2;
+            CurrentBaseAttackBonus.InputTransparent = oneAttack;
+            CurrentBaseAttackBonusFrame.BackgroundColor = oneAttack ? Color.LightGray : Color.White;
+        }
+
+        private void CurrentBaseAttackBonus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedItem = (CurrentBaseAttackBonus.SelectedItem as CharacterSheet.IntPickerItem);
+            if (selectedItem == null)
+                return;
+            currentAttack = selectedItem.Value;
+            UpdateTotal();
         }
 
         private void CMDSizeModifier_Tapped(object sender, EventArgs e)
