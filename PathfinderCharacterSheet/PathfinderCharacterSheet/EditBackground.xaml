@@ -41,11 +41,19 @@
 
                     <Label VerticalOptions="Center" x:Name="ExperienceTitle" Text="Experience: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="2"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
-                        <Entry x:Name="Experience" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black" Keyboard="Numeric"></Entry>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Experience_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Experience" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"></Label>
                     </Frame>
                     <Label VerticalOptions="Center" x:Name="NextLevelTitle" Text="NextLevel: " FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="3"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
-                        <Entry x:Name="NextLevel" HorizontalTextAlignment="Center"  FontSize="Medium" TextColor="Black" Keyboard="Numeric"></Entry>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="NextLevel_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="NextLevel" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"></Label>
                     </Frame>
 
                     <Label VerticalOptions="Center" x:Name="LevelTitle" Text="Level:" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="4">

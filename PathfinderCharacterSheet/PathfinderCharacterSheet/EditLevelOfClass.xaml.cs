@@ -12,8 +12,9 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditLevelOfClass : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
         private List<CharacterSheet.LevelOfClass> levelOfClass = null;
-        private List<CharacterSheet.LevelOfClass> currentLevelOfClass = new List<CharacterSheet.LevelOfClass>();
+        private List<CharacterSheet.LevelOfClass> currentLevelOfClass = null;
 
         public EditLevelOfClass ()
 		{
@@ -29,6 +30,10 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
+            pushedPage = null;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             var grid = LevelOfClass;
             grid.Children.Clear();
             var stack = new StackLayout()
@@ -58,7 +63,7 @@ namespace PathfinderCharacterSheet
                     HorizontalOptions = LayoutOptions.End,
                     Text = "Add",
                 };
-                addButton.Clicked += (s, e) => EditLevel(currentLevelOfClass);
+                addButton.Clicked += (s, e) => EditLevel();
                 stack.Children.Add(addButton);
             }
             grid.Children.Add(stack, 0, 2, 0, 1);
@@ -95,13 +100,13 @@ namespace PathfinderCharacterSheet
                         TextColor = Color.Black,
                         VerticalTextAlignment = TextAlignment.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
-                        Text = loc.Level.ToString(),
+                        Text = loc.GetLevel(sheet).ToString(),
                     },
                     BorderColor = Color.Black,
                     Padding = 5,
                 };
                 var valueTapped = new TapGestureRecognizer();
-                valueTapped.Tapped += (s, e) => EditLevel(currentLevelOfClass, loc);
+                valueTapped.Tapped += (s, e) => EditLevel(loc);
                 value.GestureRecognizers.Add(valueTapped);
                 grid.Children.Add(value, 0, index);
                 var name = new Frame()
@@ -118,7 +123,7 @@ namespace PathfinderCharacterSheet
                     Padding = 5,
                 };
                 var nameTapped = new TapGestureRecognizer();
-                nameTapped.Tapped += (s, e) => EditLevel(currentLevelOfClass, loc);
+                nameTapped.Tapped += (s, e) => EditLevel(loc);
                 name.GestureRecognizers.Add(nameTapped);
                 grid.Children.Add(name, 1, index);
             }
@@ -131,16 +136,14 @@ namespace PathfinderCharacterSheet
                 levelOfClass.Add(l);
         }
 
-        private void EditLevel(List<CharacterSheet.LevelOfClass> levelOfClass)
+        private void EditLevel(CharacterSheet.LevelOfClass level = null)
         {
-            EditLevel(currentLevelOfClass, null);
-        }
-
-        private void EditLevel(List<CharacterSheet.LevelOfClass> levelOfClass, CharacterSheet.LevelOfClass level)
-        {
+            if (pushedPage != null)
+                return;
             var page = new EditLevel();
-            page.Init(levelOfClass, level);
-            Navigation.PushAsync(page);
+            page.Init(currentLevelOfClass, level);
+            pushedPage = page;
+            Navigation.PushAsync(pushedPage);
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

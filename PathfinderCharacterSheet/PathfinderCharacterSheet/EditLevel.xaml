@@ -18,7 +18,11 @@
                     <Label x:Name="LevelTitle" Text="Level" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
                     <Label x:Name="ClassNameTitle" Text="Class" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="0"></Label>
                     <Frame Padding="5" BorderColor="Black" Grid.Column="0" Grid.Row="1">
-                        <Entry x:Name="Level" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" Keyboard="Numeric"></Entry>
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Level_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Level" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center"></Label>
                     </Frame>
                     <Frame Padding="5" BorderColor="Black" Grid.Column="1" Grid.Row="1">
                         <Entry x:Name="ClassName" HorizontalTextAlignment="Center" VerticalOptions="FillAndExpand"  HorizontalOptions="FillAndExpand" ></Entry>

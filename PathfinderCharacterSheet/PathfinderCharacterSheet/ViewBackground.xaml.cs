@@ -22,25 +22,25 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
-            CharacterName.Text = c.Name;
-            Alignment.Text = c.Alignment.ToString();
-            Experience.Text = c.experience.ToString();
-            NextLevel.Text = c.nextLevelExperience.ToString();
-            Level.Text = c.LevelAsString;
-            Deity.Text = c.deity;
-            Homeland.Text = c.homeland;
-            Race.Text = c.Race;
-            Size.Text = c.size;
-            Gender.Text = c.gender;
-            Age.Text = c.age;
-            CharacterHeight.Text = c.height;
-            Weight.Text = c.weight;
-            Hair.Text = c.hair;
-            Eyes.Text = c.eyes;
-            Biography.Text = c.biography;
+            CharacterName.Text = sheet.Name;
+            Alignment.Text = sheet.Alignment.ToString();
+            Experience.Text = sheet.experience.GetTotal(sheet).ToString();
+            NextLevel.Text = sheet.nextLevelExperience.GetTotal(sheet).ToString();
+            Level.Text = sheet.LevelAsString;
+            Deity.Text = sheet.deity;
+            Homeland.Text = sheet.homeland;
+            Race.Text = sheet.Race;
+            Size.Text = sheet.size;
+            Gender.Text = sheet.gender;
+            Age.Text = sheet.age;
+            CharacterHeight.Text = sheet.height;
+            Weight.Text = sheet.weight;
+            Hair.Text = sheet.hair;
+            Eyes.Text = sheet.eyes;
+            Biography.Text = sheet.biography;
         }
 
         private void Background_DoubleTapped(object sender, EventArgs e)

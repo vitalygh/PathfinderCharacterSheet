@@ -10,9 +10,11 @@ using Xamarin.Forms.Xaml;
 namespace PathfinderCharacterSheet
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditLevel : ContentPage
+	public partial class EditLevel : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
         private List<CharacterSheet.LevelOfClass> levelsOfClass = null;
+        private CharacterSheet.LevelOfClass source = null;
         private CharacterSheet.LevelOfClass level = null;
 
         public EditLevel ()
@@ -23,28 +25,41 @@ namespace PathfinderCharacterSheet
         public void Init(List<CharacterSheet.LevelOfClass> levelsOfClass, CharacterSheet.LevelOfClass level)
         {
             this.levelsOfClass = levelsOfClass;
-            this.level = level;
-            ViewToEdit();
+            source = level;
+            if (source != null)
+            {
+                this.level = source.Clone as CharacterSheet.LevelOfClass;
+                ClassName.Text = source.ClassName.ToString();
+            }
+            else
+            {
+                this.level = new CharacterSheet.LevelOfClass();
+                ClassName.Text = string.Empty;
+            }
+            Delete.IsEnabled = source != null;
+            UpdateView();
         }
 
-        private void ViewToEdit()
+        public void UpdateView()
         {
-            Delete.IsEnabled = level != null;
+            pushedPage = null;
             if (level == null)
                 return;
-            Level.Text = level.Level.ToString();
-            ClassName.Text = level.ClassName.ToString();
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            Level.Text = level.GetLevel(sheet).ToString();
         }
 
         private void EditToView()
         {
-            if (level == null)
-            {
-                level = new CharacterSheet.LevelOfClass();
-                levelsOfClass.Add(level);
-            }
-            MainPage.StrToInt(Level.Text, ref level.level);
             level.className = ClassName.Text;
+            if (source == null)
+            {
+                levelsOfClass.Add(level);
+                return;
+            }
+            source.Fill(level);
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)
@@ -61,14 +76,33 @@ namespace PathfinderCharacterSheet
         async void Delete_Clicked(object sender, EventArgs e)
         {
             var className = string.Empty;
-            if ((level != null) && !string.IsNullOrWhiteSpace(level.ClassName))
-                className = " of class \"" + level.ClassName + "\"";
+            if (source != null)
+            {
+                if (!string.IsNullOrWhiteSpace(source.ClassName))
+                    className = " of class \"" + level.ClassName + "\"";
+                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                if ((sheet != null) && (source.level.GetTotal(sheet) > 1))
+                    className = "s" + className;
+            }
             bool allow = await DisplayAlert("Remove level" + className, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                levelsOfClass.Remove(level);
+                levelsOfClass.Remove(source);
                 await Navigation.PopAsync();
             }
+        }
+
+        private void Level_Tapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, level.level, "Edit Experience", "Experience: ", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
         }
     }
 }

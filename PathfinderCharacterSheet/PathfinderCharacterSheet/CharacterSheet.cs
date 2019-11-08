@@ -8,8 +8,8 @@ namespace PathfinderCharacterSheet
     {
         public class LevelOfClass
         {
-            public int level = 0;
-            public int Level { get { return level; } }
+            public ValueWithIntModifiers level = new ValueWithIntModifiers();
+            public int GetLevel(CharacterSheet sheet) { return level.GetTotal(sheet); }
             public string className = null;
             public string ClassName { get { return className; } }
 
@@ -17,12 +17,19 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return new LevelOfClass()
-                    {
-                        level = Level,
-                        className = ClassName,
-                    };
+                    var loc = new LevelOfClass();
+                    loc.Fill(this);
+                    return loc;
                 }
+            }
+
+            public virtual LevelOfClass Fill(LevelOfClass source)
+            {
+                if (source == null)
+                    return this;
+                level = source.level.Clone as ValueWithIntModifiers;
+                className = source.className;
+                return this;
             }
 
             public static List<LevelOfClass> CreateClone(List<LevelOfClass> loc)
@@ -38,7 +45,7 @@ namespace PathfinderCharacterSheet
                 return list;
             }
 
-            public static int Total(List<LevelOfClass> levelOfClass)
+            public static int Total(CharacterSheet sheet, List<LevelOfClass> levelOfClass)
             {
                 var level = 0;
                 if (levelOfClass != null)
@@ -46,12 +53,12 @@ namespace PathfinderCharacterSheet
                     {
                         if (loc == null)
                             continue;
-                        level += loc.Level;
+                        level += loc.GetLevel(sheet);
                     }
                 return level;
             }
 
-            public static string AsString(List<LevelOfClass> levelOfClass)
+            public static string AsString(CharacterSheet sheet, List<LevelOfClass> levelOfClass)
             {
                 var level = string.Empty;
                 var totalLevel = 0;
@@ -62,20 +69,20 @@ namespace PathfinderCharacterSheet
                             continue;
                         if (level.Length > 0)
                             level += ", ";
-                        level += loc.ClassName + " (" + loc.Level.ToString() + ")";
-                        totalLevel += loc.Level;
+                        var lvl = loc.GetLevel(sheet); ;
+                        level += loc.ClassName + " (" + lvl.ToString() + ")";
+                        totalLevel += lvl;
                     }
                 if (level.Length > 0)
                     level = totalLevel.ToString() + ": " + level;
                 return level;
             }
 
-            public bool Equals(LevelOfClass obj)
+            public bool Equals(LevelOfClass other)
             {
-                var other = obj as LevelOfClass;
                 if (other == null)
                     return false;
-                if (other.Level != Level)
+                if (!other.level.Equals(level))
                     return false;
                 if (other.ClassName != ClassName)
                     return false;
@@ -1636,10 +1643,10 @@ namespace PathfinderCharacterSheet
 
         #region Level
         public List<LevelOfClass> levelOfClass = new List<LevelOfClass>();
-        public int TotalLevel { get { return LevelOfClass.Total(levelOfClass); } }
-        public string LevelAsString { get { return LevelOfClass.AsString(levelOfClass); } }
-        public int experience = 0;
-        public int nextLevelExperience = 0;
+        public int TotalLevel { get { return LevelOfClass.Total(this, levelOfClass); } }
+        public string LevelAsString { get { return LevelOfClass.AsString(this, levelOfClass); } }
+        public ValueWithIntModifiers experience = new ValueWithIntModifiers();
+        public ValueWithIntModifiers nextLevelExperience = new ValueWithIntModifiers();
         #endregion
 
         #region Ability Score

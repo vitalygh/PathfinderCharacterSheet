@@ -30,10 +30,10 @@ namespace PathfinderCharacterSheet
 
         private void InitEditor()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
-            ac = c.armorClass.Clone as CharacterSheet.ArmorClass;
+            ac = sheet.armorClass.Clone as CharacterSheet.ArmorClass;
             var values = Enum.GetValues(typeof(CharacterSheet.ArmorClass.DexterityModifierSources));
             var count = -1;
             var valueIndex = 0;
