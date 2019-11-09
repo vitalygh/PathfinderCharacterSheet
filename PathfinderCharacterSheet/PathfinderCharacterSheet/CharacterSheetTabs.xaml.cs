@@ -1,4 +1,5 @@
 ﻿//#define MOVE_TABS
+//#define DEBUG_ONE_TAB
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,13 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 
 namespace PathfinderCharacterSheet
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class CharacterSheetTabs : TabbedPage, ISheetView
+    public partial class CharacterSheetTabs : Xamarin.Forms.TabbedPage, ISheetView
     {
 #if MOVE_TABS
         Page[] pages = new Page[]
@@ -32,10 +35,15 @@ namespace PathfinderCharacterSheet
         public CharacterSheetTabs()
         {
             InitializeComponent();
+            On<Android>().SetOffscreenPageLimit(10);
 #if MOVE_TABS
             Children.Add(pages[0]);
             Children.Add(pages[1]);
             Children.Add(pages[2]);
+#else
+#if DEBUG_ONE_TAB
+            for (var i = 0; i < 10; i++)
+                Children.Add(new ViewSkills());
 #else
             Children.Add(new ViewBackground());
             Children.Add(new ViewAbilities());
@@ -47,6 +55,7 @@ namespace PathfinderCharacterSheet
             Children.Add(new ViewSpecialAbilities());
             Children.Add(new ViewSpells());
             Children.Add(new ViewNotes());
+#endif
 #endif
         }
 
