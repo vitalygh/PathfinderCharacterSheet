@@ -33,8 +33,8 @@ namespace PathfinderCharacterSheet
             public Button viewButton = null;
         }
 
-        public Action<ItemType, int> actEditItem = null;
-        public Action<ItemType, int> actViewItem = null;
+        public Action<ItemType> actEditItem = null;
+        public Action<ItemType> actViewItem = null;
         public StackLayout layout = null;
         public Func<List<ItemType>> items = null;
 
@@ -163,12 +163,12 @@ namespace PathfinderCharacterSheet
 
             if (itemGrid.viewButtonHandler != null)
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
-            itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item, itemIndex);
+            itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             itemGrid.viewButton.Clicked += itemGrid.viewButtonHandler;
 
             itemGrid.container.GestureRecognizers.Clear();
             MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
-            MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item, itemIndex), 2);
+            MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
         }
 
         private void CreateSelectedItemGrid(KeyValuePair<ItemType, int> kvp)
@@ -224,7 +224,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
             };
-            EventHandler viewButtonHandler = (s, e) => ItemViewButton_Tap(item, itemIndex);
+            EventHandler viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             viewButton.Clicked += viewButtonHandler;
             nameValueStack.Children.Add(nameValue);
             nameValueStack.Children.Add(viewButton);
@@ -277,7 +277,7 @@ namespace PathfinderCharacterSheet
 #endif
 
             MainPage.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
-            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item, itemIndex), 2);
+            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
 
             var newItemGrid = new SelectedItemGrid()
             {
@@ -336,9 +336,9 @@ namespace PathfinderCharacterSheet
             UpdateValue(itemGrid.name, name);
             if (itemGrid.viewButtonHandler != null)
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
-            itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item, itemIndex);
+            itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             itemGrid.viewButton.Clicked += itemGrid.viewButtonHandler;
-            MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item, itemIndex), 2);
+            MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
         }
 
         private void CreateItemGrid(KeyValuePair<ItemType, int> kvp)
@@ -379,7 +379,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
             };
-            EventHandler viewButtonHandler = (s, e) => ItemViewButton_Tap(item, itemIndex);
+            EventHandler viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             viewButton.Clicked += viewButtonHandler;
 #if USE_GRID
             var container = new Grid()
@@ -421,7 +421,7 @@ namespace PathfinderCharacterSheet
 #if EXPAND_SELECTED
             MainPage.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
 #endif
-            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item, itemIndex), 2);
+            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
 
             var newItemGrid = new ItemGrid()
             {
@@ -454,16 +454,16 @@ namespace PathfinderCharacterSheet
             selectedcb.IsChecked = !selectedcb.IsChecked;
         }
 
-        public void Item_DoubleTap(ItemType item = null, int index = -1)
+        public void Item_DoubleTap(ItemType item = null)
         {
             if (actEditItem != null)
-                actEditItem(item, index);
+                actEditItem(item);
         }
 
-        public void ItemViewButton_Tap(ItemType item = null, int index = -1)
+        public void ItemViewButton_Tap(ItemType item = null)
         {
             if (actViewItem != null)
-                actViewItem(item, index);
+                actViewItem(item);
         }
     }
 }

@@ -19,6 +19,18 @@ namespace PathfinderCharacterSheet.Droid
         {
             this.activity = activity;
         }
-        public string PersistentDataPath { get { return activity.GetExternalFilesDir("").AbsolutePath; } }
+        public string PersistentDataPath
+        {
+            get
+            {
+                if (activity != null)
+                {
+                    var path = activity.GetExternalFilesDir("");
+                    if (path != null)
+                        return path.AbsolutePath;
+                }
+                return System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+            }
+        }
     }
 }

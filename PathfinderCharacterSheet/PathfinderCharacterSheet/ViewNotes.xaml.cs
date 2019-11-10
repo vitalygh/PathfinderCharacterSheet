@@ -44,7 +44,7 @@ namespace PathfinderCharacterSheet
             view.UpdateItemsView();
         }
 
-        private void EditItem(ItemType item = null, int index = -1)
+        private void EditItem(ItemType item = null)
         {
             if (pushedPage != null)
                 return;
@@ -52,12 +52,12 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eit = new EditItemType();
-            eit.InitEditor(item, index);
+            eit.InitEditor(item);
             pushedPage = eit;
             Navigation.PushAsync(pushedPage);
         }
 
-        private void ViewItem(ItemType item = null, int index = -1)
+        private void ViewItem(ItemType item = null)
         {
             if (pushedPage != null)
                 return;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Xml.Serialization;
@@ -19,19 +20,21 @@ namespace PathfinderCharacterSheet
             InitializeComponent();
             CharacterSheetStorage.Instance.LoadCharacters();
             UpdateView();
+#if !DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
             tabs.CurrentPageChanged += (s, e) =>
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     tabs.MoveTabs();
+                    var c = CharacterSheetStorage.Instance.selectedCharacter;
+                    if (c != null)
+                        tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
+                    var sheet = (tabs.CurrentPage as ISheetView);
+                    if (sheet != null)
+                        sheet.UpdateView();
                 });
-                var c = CharacterSheetStorage.Instance.selectedCharacter;
-                if (c != null)
-                    tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
-                var sheet = (tabs.CurrentPage as ISheetView);
-                if (sheet != null)
-                    sheet.UpdateView();
             };
+#endif
         }
 
         public void UpdateView()
@@ -49,11 +52,10 @@ namespace PathfinderCharacterSheet
             {
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 TextColor = Color.Black,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Start,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
+                HorizontalTextAlignment = TextAlignment.Center,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                Text = "Characters",
+                VerticalOptions = LayoutOptions.Center,
+                Text = "Characters: ",
             };
             stack.Children.Add(gridTitle);
             var addModifierButton = new Button()
@@ -212,9 +214,8 @@ namespace PathfinderCharacterSheet
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 TextColor = Color.Black,
                 HorizontalTextAlignment = horz,
-                VerticalTextAlignment = TextAlignment.Center,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.Center,
             };
         }
 
@@ -227,13 +228,12 @@ namespace PathfinderCharacterSheet
                     Text = text,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     TextColor = Color.Black,
-                    VerticalTextAlignment = TextAlignment.Center,
                     HorizontalTextAlignment = TextAlignment.Center,
                     HorizontalOptions = LayoutOptions.FillAndExpand,
-                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.Center,
                 },
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.Center,
                 BorderColor = Color.Black,
                 Padding = 5,
             };
@@ -360,7 +360,7 @@ namespace PathfinderCharacterSheet
                         TextColor = Color.Black,
                         VerticalTextAlignment = TextAlignment.Center,
                         HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.SourceAbility != CharacterSheet.Ability.None ? "(= " + t.SourceAbility + " modifier) " + t.Name : t.Name,
+                        Text = t.AsString(sheet),
                     },
                     BorderColor = Color.Black,
                     Padding = 5,

@@ -43,6 +43,11 @@ namespace PathfinderCharacterSheet
             pushedPage = null;
             if (item == null)
                 return;
+            if ((items != null) && !items.Contains(item))
+            {
+                Navigation.PopAsync();
+                return;
+            }
             ItemName.Text = item.name;
             Description.Text = item.description;
         }
@@ -57,8 +62,7 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             var eit = new EditItemType();
-            var itemIndex = items.IndexOf(item);
-            eit.InitEditor(item, itemIndex);
+            eit.InitEditor(item);
             pushedPage = eit;
             Navigation.PushAsync(pushedPage);
         }
@@ -67,19 +71,15 @@ namespace PathfinderCharacterSheet
         {
             if (items == null)
                 return;
-            var itemIndex = items.IndexOf(this.item);
-            if (itemIndex < 0)
+            if (item == null)
                 return;
-            if (itemIndex >= items.Count)
-                return;
-            var item = items[itemIndex];
             var itemName = string.Empty;
             if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
                 itemName = " \"" + item.name + "\"";
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.RemoveAt(itemIndex);
+                items.Remove(item);
                 CharacterSheetStorage.Instance.SaveCharacter();
                 await Navigation.PopAsync();
             }

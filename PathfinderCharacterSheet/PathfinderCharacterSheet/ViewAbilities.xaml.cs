@@ -37,7 +37,6 @@ namespace PathfinderCharacterSheet
                                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                                 TextColor = Color.Black,
                                 HorizontalTextAlignment = (j == 0) ? TextAlignment.Start : TextAlignment.Center,
-                                VerticalTextAlignment = TextAlignment.Center,
                             };
                         }
                         else
@@ -48,7 +47,6 @@ namespace PathfinderCharacterSheet
                                 {
                                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                                     TextColor = Color.Black,
-                                    VerticalTextAlignment = TextAlignment.Center,
                                     HorizontalTextAlignment = TextAlignment.Center,
                                 },
                                 BorderColor = Color.Black,

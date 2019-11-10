@@ -222,14 +222,45 @@ namespace PathfinderCharacterSheet
             public int multiplier = 1;
             public int divider = 1;
 
+            public int sourceItemUID = InvalidUID;
+            public bool mustBeActive = true;
+
             public override int GetValue(CharacterSheet sheet)
             {
+                if ((sourceItemUID != InvalidUID) && (sheet != null))
+                {
+                    var item = sheet.GetItemByUID(sourceItemUID);
+                    if (item == null)
+                        return 0;
+                    if (!item.active && mustBeActive)
+                        return 0;
+                }
                 if ((sheet == null) || (SourceAbility == Ability.None))
                     return value;
                 var ability = multiplier * sheet.GetAbilityModifier(SourceAbility);
                 if (divider != 0)
                     ability /= divider;
                 return ability;
+            }
+
+            public string AsString(CharacterSheet sheet)
+            {
+                var text = Name;
+                if (SourceAbility != Ability.None)
+                    text = "(= " + sourceAbility + ") " + text;
+                if (sourceItemUID != InvalidUID)
+                {
+                    var item = sheet.GetItemByUID(sourceItemUID);
+                    if (item == null)
+                        text = "[item missing] " + text;
+                    else if (!mustBeActive)
+                        text = "[with " + item.name + "] " + text;
+                    else if (item.active)
+                        text = "[with active " + item.name + "] " + text;
+                    else
+                        text = "[need active " + item.name + "] " + text;
+                }
+                return text;
             }
 
             public override object Clone
@@ -265,6 +296,9 @@ namespace PathfinderCharacterSheet
                 multiplier = source.multiplier;
                 divider = source.divider;
 
+                sourceItemUID = source.sourceItemUID;
+                mustBeActive = source.mustBeActive;
+
                 return this;
             }
 
@@ -279,6 +313,10 @@ namespace PathfinderCharacterSheet
                 if (other.multiplier != multiplier)
                     return false;
                 if (other.divider != divider)
+                    return false;
+                if (other.sourceItemUID != sourceItemUID)
+                    return false;
+                if (other.mustBeActive != mustBeActive)
                     return false;
                 return true;
             }
@@ -806,9 +844,16 @@ namespace PathfinderCharacterSheet
 
         public class ItemWithDescription
         {
+            public int uid = -1;
             public bool selected = false;
             public string name = null;
             public string description = null;
+
+            public ItemWithDescription()
+            {
+                uid = CharacterSheetStorage.GetUID();
+            }
+
             public virtual object Clone
             {
                 get
@@ -823,6 +868,8 @@ namespace PathfinderCharacterSheet
             {
                 if (other == null)
                     return false;
+                if (uid != other.uid)
+                    return false;
                 if (selected != other.selected)
                     return false;
                 if (name != other.name)
@@ -836,6 +883,7 @@ namespace PathfinderCharacterSheet
             {
                 if (source == null)
                     return this;
+                uid = source.uid;
                 selected = source.selected;
                 name = source.name;
                 description = source.description;
@@ -889,6 +937,7 @@ namespace PathfinderCharacterSheet
 
         public class GearItem: ItemWithDescription
         {
+            public bool active = false;
             public ValueWithIntModifiers amount = new ValueWithIntModifiers() { baseValue = 1, };
             public ValueWithIntModifiers weight = new ValueWithIntModifiers();
             public int TotalWeight(CharacterSheet sheet) { return amount.GetTotal(sheet) * weight.GetTotal(sheet); }
@@ -917,6 +966,8 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!base.Equals(other))
                     return false;
+                if (active != other.active)
+                    return false;
                 if (!amount.Equals(other.amount))
                     return false;
                 if (!weight.Equals(other.weight))
@@ -929,6 +980,7 @@ namespace PathfinderCharacterSheet
                 if (source == null)
                     return this;
                 base.Fill(source);
+                active = source.active;
                 amount = source.amount;
                 weight = source.weight;
                 return this;
@@ -1058,7 +1110,6 @@ namespace PathfinderCharacterSheet
                 Other,
             }
 
-            public bool active = false;
             public ValueWithIntModifiers armorBonus = new ValueWithIntModifiers();
             public string ArmorBonus(CharacterSheet sheet)
             {
@@ -1097,8 +1148,8 @@ namespace PathfinderCharacterSheet
                 if (!string.IsNullOrWhiteSpace(name))
                     armor += name + " ";
                 armor += "(" + armorType;
-                if (active)
-                    armor += ", active";
+                //if (active)
+                //    armor += ", active";
                 armor += "): ";
                 armor += ArmorBonus(sheet);
                 if (limitMaxDexBonus)
@@ -1126,8 +1177,6 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!base.Equals(other))
                     return false;
-                if (active != other.active)
-                    return false;
                 if (!armorBonus.Equals(other.armorBonus))
                     return false;
                 if (armorType != other.armorType)
@@ -1151,7 +1200,6 @@ namespace PathfinderCharacterSheet
                     return this;
                 base.Fill(source);
                 selected = source.selected;
-                active = source.active;
                 armorBonus = source.armorBonus.Clone as ValueWithIntModifiers;
                 armorType = source.armorType;
                 limitMaxDexBonus = source.limitMaxDexBonus;
@@ -1526,7 +1574,7 @@ namespace PathfinderCharacterSheet
             public int DragOrPush(CharacterSheet sheet)
             {
                 if (defaultDragOrPush)
-                    return 5 * LiftOffGround(sheet);
+                    return 5 * LiftOverHead(sheet);
                 return dragOrPush.GetTotal(sheet);
             }
 
@@ -1600,6 +1648,14 @@ namespace PathfinderCharacterSheet
             InitSkills();
         }
 
+        #region Technical info
+        public DateTime CreationTime = DateTime.Now;
+        public DateTime ModificationTime = DateTime.Now;
+        public int currentUID = 0;
+        public const int InvalidUID = -1;
+        public int GetUID() { return currentUID++; }
+        #endregion
+
         #region Character Background
         public string name = null;
         public string Name
@@ -1611,8 +1667,6 @@ namespace PathfinderCharacterSheet
                 return name;
             }
         }
-        public DateTime CreationTime = DateTime.Now;
-        public DateTime ModificationTime = DateTime.Now;
         public string biography = null;
         public string alignment = Alignments.Neutral.ToString();
         public Alignments Alignment
@@ -1855,6 +1909,53 @@ namespace PathfinderCharacterSheet
         public List<GearItem> gear = new List<GearItem>();
         public Encumbrance encumbrance = new Encumbrance();
         public Money money = new Money();
+        public GearItem GetItemByUID(int uid)
+        {
+            if (uid == InvalidUID)
+                return null;
+            foreach (var item in gear)
+                if (item.uid == uid)
+                    return item;
+            foreach (var item in armorClassItems)
+                if (item.uid == uid)
+                    return item;
+            foreach (var item in weaponItems)
+                if (item.uid == uid)
+                    return item;
+            return null;
+        }
+        public List<GearItem> GetAllGearItems()
+        {
+            var items = new List<GearItem>();
+            items.AddRange(gear);
+            items.AddRange(weaponItems);
+            items.AddRange(armorClassItems);
+            return items;
+        }
+#if DEBUG_FIX_UID
+        public bool FixUIDs<T>(List<T> items) where T: ItemWithDescription
+        {
+            var hasChanges = false;
+            foreach (var item in items)
+                if ((item != null) && (item.uid == InvalidUID))
+                {
+                    item.uid = GetUID();
+                    hasChanges = true;
+                }
+            return hasChanges;
+        }
+        public void FixUIDs()
+        {
+            var hasChanges = false;
+            hasChanges |= FixUIDs(feats);
+            hasChanges |= FixUIDs(specialAbilities);
+            hasChanges |= FixUIDs(gear);
+            hasChanges |= FixUIDs(armorClassItems);
+            hasChanges |= FixUIDs(weaponItems);
+            if (hasChanges)
+                CharacterSheetStorage.Instance.SaveCharacter(this);
+        }
+#endif
         #endregion
 
         #region Spells

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ItemType = PathfinderCharacterSheet.CharacterSheet.ArmorClassItem;
 
 namespace PathfinderCharacterSheet
 {
@@ -15,36 +16,44 @@ namespace PathfinderCharacterSheet
         public class ArmorTypePickerItem
         {
             public string Name { get; set; }
-            public CharacterSheet.ArmorClassItem.ArmorTypes Value { get; set; }
+            public ItemType.ArmorTypes Value { get; set; }
         }
 
-        private int itemIndex = -1;
-        private CharacterSheet.ArmorClassItem item = null;
         private Page pushedPage = null;
+        private ItemType source = null;
+        private ItemType item = null;
+        private List<ItemType> items
+        {
+            get
+            {
+                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                if (sheet != null)
+                    return sheet.armorClassItems;
+                return null;
+            }
+        }
 
         public EditArmor ()
 		{
 			InitializeComponent ();
 		}
 
-        public void InitEditor(CharacterSheet.ArmorClassItem item = null, int index = -1)
+        public void InitEditor(ItemType item = null)
         {
+            source = item;
             if (item == null)
-            {
-                item = new CharacterSheet.ArmorClassItem();
-                index = -1;
-            }
-            itemIndex = index;
-            this.item = item;
+                this.item = new ItemType();
+            else
+                this.item = item.Clone as ItemType;
             var armorTypeIndex = -1;
-            var armorTypeValues = Enum.GetValues(typeof(CharacterSheet.ArmorClassItem.ArmorTypes));
+            var armorTypeValues = Enum.GetValues(typeof(ItemType.ArmorTypes));
             var pickerItems = new List<ArmorTypePickerItem>();
             var armorTypeCounter = -1;
             foreach (var atv in armorTypeValues)
             {
                 armorTypeCounter += 1;
-                var value = (CharacterSheet.ArmorClassItem.ArmorTypes)atv;
-                if (value == item.ArmorType)
+                var value = (ItemType.ArmorTypes)atv;
+                if (value == this.item.ArmorType)
                     armorTypeIndex = armorTypeCounter;
                 pickerItems.Add(new ArmorTypePickerItem()
                 {
@@ -54,13 +63,13 @@ namespace PathfinderCharacterSheet
             }
             ArmorType.ItemsSource = pickerItems;
             ArmorType.SelectedIndex = armorTypeIndex;
-            ArmorName.Text = item.name;
-            ArmorActive.IsChecked = item.active;
-            LimitMaxDexBonus.IsChecked = item.limitMaxDexBonus;
+            ArmorName.Text = this.item.name;
+            ArmorActive.IsChecked = this.item.active;
+            LimitMaxDexBonus.IsChecked = this.item.limitMaxDexBonus;
             UpdateMaxDexBonus();
-            Properties.Text = item.properties;
-            Description.Text = item.description;
-            Delete.IsEnabled = index >= 0;
+            Properties.Text = this.item.properties;
+            Description.Text = this.item.description;
+            Delete.IsEnabled = source != null;
             UpdateView();
         }
 
@@ -95,18 +104,17 @@ namespace PathfinderCharacterSheet
             item.properties = Properties.Text;
             item.description = Description.Text;
             var hasChanges = false;
-            if (itemIndex >= 0)
+            if (source != null)
             {
-                var sourceItem = sheet.armorClassItems[itemIndex];
-                if (!item.Equals(sourceItem))
+                if (!item.Equals(source))
                 {
-                    sheet.armorClassItems[itemIndex] = item;
+                    source.Fill(item);
                     hasChanges = true;
                 }
             }
             else
             {
-                sheet.armorClassItems.Add(item);
+                items.Add(item);
                 hasChanges = true;
             }
             if (hasChanges)
@@ -193,21 +201,17 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
+            if (items == null)
                 return;
-            if (itemIndex < 0)
+            if (source == null)
                 return;
-            if (itemIndex >= sheet.armorClassItems.Count)
-                return;
-            var item = sheet.armorClassItems[itemIndex];
             var itemName = string.Empty;
-            if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
-                itemName = " \"" + item.name + "\"";
+            if (!string.IsNullOrWhiteSpace(source.name))
+                itemName = " \"" + source.name + "\"";
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                sheet.weaponItems.RemoveAt(itemIndex);
+                items.Remove(source);
                 CharacterSheetStorage.Instance.SaveCharacter();
                 await Navigation.PopAsync();
             }

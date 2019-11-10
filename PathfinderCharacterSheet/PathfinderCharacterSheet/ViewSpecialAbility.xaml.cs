@@ -43,6 +43,11 @@ namespace PathfinderCharacterSheet
             pushedPage = null;
             if (item == null)
                 return;
+            if ((items != null) && !items.Contains(item))
+            {
+                Navigation.PopAsync();
+                return;
+            }
             ItemName.Text = item.name;
             Description.Text = item.description;
         }
@@ -57,8 +62,7 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             var eit = new EditItemType();
-            var itemIndex = items.IndexOf(item);
-            eit.InitEditor(item, itemIndex);
+            eit.InitEditor(item);
             pushedPage = eit;
             Navigation.PushAsync(pushedPage);
         }

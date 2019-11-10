@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.SelectGearItem"
+             Title="Select Item">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout x:Name="Items">
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" TextColor="Black" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Select Nothing" TextColor="Black" Clicked="SelectNothing_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

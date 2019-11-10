@@ -13,7 +13,6 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditGearItem : ContentPage, ISheetView
     {
-        private int itemIndex = -1;
         private List<ItemsType> items
         {
             get
@@ -24,6 +23,7 @@ namespace PathfinderCharacterSheet
                 return null;
             }
         }
+        private ItemsType source = null;
         private ItemsType item = null;
         private Page pushedPage = null;
 
@@ -32,19 +32,17 @@ namespace PathfinderCharacterSheet
             InitializeComponent();
         }
 
-        public void InitEditor(ItemsType item = null, int index = -1)
+        public void InitEditor(ItemsType item = null)
         {
+            source = item;
             if (item == null)
-            {
                 this.item = new ItemsType();
-                index = -1;
-            }
             else
                 this.item = item.Clone as ItemsType;
-            itemIndex = index;
             ItemName.Text = this.item.name;
             Description.Text = this.item.description;
-            Delete.IsEnabled = index >= 0;
+            ItemActive.IsChecked = this.item.active;
+            Delete.IsEnabled = source != null;
             UpdateView();
         }
 
@@ -64,13 +62,13 @@ namespace PathfinderCharacterSheet
                 return;
             item.name = ItemName.Text;
             item.description = Description.Text;
+            item.active = ItemActive.IsChecked;
             var hasChanges = false;
-            if (itemIndex >= 0)
+            if (source != null)
             {
-                var sourceItem = items[itemIndex];
-                if (!item.Equals(sourceItem))
+                if (!item.Equals(source))
                 {
-                    items[itemIndex] = item;
+                    source.Fill(item);
                     hasChanges = true;
                 }
             }
@@ -124,18 +122,15 @@ namespace PathfinderCharacterSheet
         {
             if (items == null)
                 return;
-            if (itemIndex < 0)
+            if (source == null)
                 return;
-            if (itemIndex >= items.Count)
-                return;
-            var item = items[itemIndex];
             var itemName = string.Empty;
-            if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
-                itemName = " \"" + item.name + "\"";
+            if ((source != null) && !string.IsNullOrWhiteSpace(source.name))
+                itemName = " \"" + source.name + "\"";
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.RemoveAt(itemIndex);
+                items.Remove(source);
                 CharacterSheetStorage.Instance.SaveCharacter();
                 await Navigation.PopAsync();
             }

@@ -10,10 +10,12 @@ using Xamarin.Forms.Xaml;
 namespace PathfinderCharacterSheet
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class EditIntModifier : ContentPage
+	public partial class EditIntModifier : ContentPage, ISheetView
 	{
+        private Page pushedPage = null;
         private CharacterSheet sheet = null;
         private CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiersList = null;
+        private CharacterSheet.IntModifier source = null;
         private CharacterSheet.IntModifier modifier = null;
 
         private Label IsActiveTitle = null;
@@ -38,6 +40,13 @@ namespace PathfinderCharacterSheet
         private Frame DividerFrame = null;
         private Entry Divider = null;
 
+        private Label LinkedItemTitle = null;
+        private Frame LinkedItemFrame = null;
+        private Label LinkedItem = null;
+
+        private Label ItemMustBeActiveTitle = null;
+        private CheckBox ItemMustBeActive = null;
+
         private Button Cancel = null;
         private Button Save = null;
         private Button Delete = null;
@@ -61,79 +70,84 @@ namespace PathfinderCharacterSheet
                 new ColumnDefinition() { Width = GridLength.Auto, },
                 new ColumnDefinition() { Width = GridLength.Star, },
             };
-            grid.RowDefinitions = new RowDefinitionCollection()
-            {
-                new RowDefinition() { Height = GridLength.Auto, },
-                new RowDefinition() { Height = GridLength.Auto, },
-                new RowDefinition() { Height = GridLength.Auto, },
-                new RowDefinition() { Height = GridLength.Auto, },
-                new RowDefinition() { Height = GridLength.Auto, },
-                new RowDefinition() { Height = GridLength.Auto, },
-            };
             IsActiveTitle = new Label()
             {
                 Text = "Active: ",
                 TextColor = Color.Black,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Start,
+                //VerticalTextAlignment = TextAlignment.Center,
             };
-            grid.Children.Add(IsActiveTitle, 0, 0);
             IsActive = new CheckBox()
             {
                 IsChecked = true,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
-            grid.Children.Add(IsActive, 1, 0);
+
+            var row = 0;
+            grid.Children.Add(IsActiveTitle, 0, row);
+            grid.Children.Add(IsActive, 1, row);
+            row += 1;
+
             ValueTitle = new Label()
             {
                 Text = "Value: ",
                 TextColor = Color.Black,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Start,
+                //VerticalTextAlignment = TextAlignment.Center,
             };
-            grid.Children.Add(ValueTitle, 0, 1);
             ModifierValue = new Entry()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
                 Keyboard = Keyboard.Numeric,
             };
+            /*
             ModifierValue.TextChanged += (s, e) =>
             {
                 UpdateValue();
             };
+            */
             ModifierValueFrame = new Frame()
             {
                 Content = ModifierValue,
                 BorderColor = Color.Black,
                 Padding = 5,
             };
-            grid.Children.Add(ModifierValueFrame, 1, 1);
+
+            grid.Children.Add(ValueTitle, 0, row);
+            grid.Children.Add(ModifierValueFrame, 1, row);
+            row += 1;
+
             NameTitle = new Label()
             {
                 Text = "Name: ",
                 TextColor = Color.Black,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center,
+                HorizontalTextAlignment = TextAlignment.Start,
+                //VerticalTextAlignment = TextAlignment.Center,
             };
-            grid.Children.Add(NameTitle, 0, 2);
             ModifierName = new Entry()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
             };
+            /*
             ModifierName.TextChanged += (s, e) =>
             {
                 UpdateValue();
             };
+            */
             ModifierNameFrame = new Frame()
             {
                 Content = ModifierName,
                 BorderColor = Color.Black,
                 Padding = 5,
             };
-            grid.Children.Add(ModifierNameFrame, 1, 2);
+
+            grid.Children.Add(NameTitle, 0, row);
+            grid.Children.Add(ModifierNameFrame, 1, row);
+            row += 1;
+
             if (allowUseAbilities)
             {
                 AbilityTitle = new Label()
@@ -141,10 +155,9 @@ namespace PathfinderCharacterSheet
                     Text = "Ability: ",
                     TextColor = Color.Black,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    HorizontalTextAlignment = TextAlignment.Center,
-                    VerticalTextAlignment = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Start,
+                    //VerticalTextAlignment = TextAlignment.Center,
                 };
-                grid.Children.Add(AbilityTitle, 0, 3);
                 Ability = new Picker()
                 {
                     TextColor = Color.Black,
@@ -182,16 +195,19 @@ namespace PathfinderCharacterSheet
                 {
                     UpdateValue();
                 };
-                grid.Children.Add(abilityFrame, 1, 3);
+
+                grid.Children.Add(AbilityTitle, 0, row);
+                grid.Children.Add(abilityFrame, 1, row);
+                row += 1;
+
                 MultiplierTitle = new Label()
                 {
                     Text = "Multiplier: ",
                     TextColor = Color.Black,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    HorizontalTextAlignment = TextAlignment.Center,
-                    VerticalTextAlignment = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Start,
+                    //VerticalTextAlignment = TextAlignment.Center,
                 };
-                grid.Children.Add(MultiplierTitle, 0, 4);
                 Multiplier = new Entry()
                 {
                     HorizontalTextAlignment = TextAlignment.Center,
@@ -207,16 +223,19 @@ namespace PathfinderCharacterSheet
                     BorderColor = Color.Black,
                     Padding = 5,
                 };
-                grid.Children.Add(MultiplierFrame, 1, 4);
+
+                grid.Children.Add(MultiplierTitle, 0, row);
+                grid.Children.Add(MultiplierFrame, 1, row);
+                row += 1;
+
                 DividerTitle = new Label()
                 {
                     Text = "Divider: ",
                     TextColor = Color.Black,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    HorizontalTextAlignment = TextAlignment.Center,
-                    VerticalTextAlignment = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Start,
+                    //VerticalTextAlignment = TextAlignment.Center,
                 };
-                grid.Children.Add(DividerTitle, 0, 5);
                 Divider = new Entry()
                 {
                     HorizontalTextAlignment = TextAlignment.Center,
@@ -232,8 +251,38 @@ namespace PathfinderCharacterSheet
                     BorderColor = Color.Black,
                     Padding = 5,
                 };
-                grid.Children.Add(DividerFrame, 1, 5);
+                grid.Children.Add(DividerTitle, 0, row);
+                grid.Children.Add(DividerFrame, 1, row);
+                row += 1;
             }
+
+            LinkedItemTitle = CreateLabel("Linked To Item: ", TextAlignment.Start);
+            LinkedItemFrame = CreateFrame(string.Empty);
+            LinkedItem = LinkedItemFrame.Content as Label;
+
+            grid.Children.Add(LinkedItemTitle, 0, row);
+            grid.Children.Add(LinkedItemFrame, 1, row);
+            row += 1;
+
+            ItemMustBeActiveTitle = CreateLabel("Item Must Be Active: ", TextAlignment.Start);
+            ItemMustBeActive = new CheckBox()
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+            };
+            ItemMustBeActive.CheckedChanged += (s, e) =>
+            {
+                modifier.mustBeActive = e.Value;
+                UpdateView();
+            };
+
+            grid.Children.Add(ItemMustBeActiveTitle, 0, row);
+            grid.Children.Add(ItemMustBeActive, 1, row);
+            row += 1;
+
+            grid.RowDefinitions = new RowDefinitionCollection();
+            for (var i = 0; i < row; i++)
+                grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
             Root.Children.Add(grid);
 
             var buttons = new StackLayout()
@@ -270,33 +319,81 @@ namespace PathfinderCharacterSheet
             Root.Children.Add(buttons);
         }
 
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        {
+            return MainPage.CreateLabel(text, horz);
+        }
+
+        private Frame CreateFrame(string text)
+        {
+            return MainPage.CreateFrame(text);
+        }
+
         public void Init(CharacterSheet sheet, CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiersList, CharacterSheet.IntModifier modifier, bool allowUseAbilities = true)
         {
             this.sheet = sheet;
             this.modifiersList = modifiersList;
-            this.modifier = modifier;
+            source = modifier;
+            if (modifier != null)
+                this.modifier = modifier.Clone as CharacterSheet.IntModifier;
+            else
+                this.modifier = new CharacterSheet.IntModifier();
             InitControls(allowUseAbilities);
-            ViewToEdit();
+            IsActive.IsChecked = this.modifier.IsActive;
+            ItemMustBeActive.IsChecked = this.modifier.mustBeActive;
+            ModifierName.Text = this.modifier.Name;
+            Delete.IsEnabled = source != null;
+            if (Multiplier != null)
+                Multiplier.Text = this.modifier.multiplier.ToString();
+            if (Divider != null)
+                Divider.Text = this.modifier.divider.ToString();
+            UpdateView();
         }
 
-        private void ViewToEdit()
+        public void UpdateView()
         {
+            pushedPage = null;
             if (sheet == null)
                 return;
-            Delete.IsEnabled = modifier != null;
             UpdateValue();
             if (modifier == null)
                 return;
-            IsActive.IsChecked = modifier.IsActive;
-            ModifierName.Text = modifier.Name;
-            ModifierValue.Text = modifier.GetValue(sheet).ToString();
-            if (Multiplier != null)
-                Multiplier.Text = modifier.multiplier.ToString();
-            if (Divider != null)
-                Divider.Text = modifier.divider.ToString();
+            CharacterSheet.GearItem item = null;
+            if (modifier.sourceItemUID == CharacterSheet.InvalidUID)
+                LinkedItem.Text = string.Empty;
+            else
+            {
+                item = sheet.GetItemByUID(modifier.sourceItemUID);
+                if (item != null)
+                {
+                    LinkedItem.Text = item.AsString(sheet);
+                    LinkedItem.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
+                    LinkedItem.TextColor = (item.active || !modifier.mustBeActive) ? Color.Green : Color.Red;
+                    LinkedItemFrame.GestureRecognizers.Clear();
+                }
+                else
+                {
+                    LinkedItem.Text = "Item not found";
+                    LinkedItem.TextColor = Color.Red;
+                }
+            }
+            MainPage.AddTapHandler(LinkedItemFrame, (s, e) => SelectItem(item));
         }
 
-        void UpdateValue()
+        private void SelectItem(CharacterSheet.GearItem item)
+        {
+            if (pushedPage != null)
+                return;
+            var sgi = new SelectGearItem();
+            sgi.InitSelection((selected) =>
+            {
+                modifier.sourceItemUID = selected == null ? CharacterSheet.InvalidUID : selected.uid;
+            }, item);
+            pushedPage = sgi;
+            Navigation.PushAsync(pushedPage);
+        }
+
+        private void UpdateValue()
         {
             if (sheet == null)
                 return;
@@ -313,14 +410,13 @@ namespace PathfinderCharacterSheet
             }
             ModifierValue.IsReadOnly = ab;
             ModifierValueFrame.BackgroundColor = ab ? Color.LightGray : Color.White;
-            var currentModifier = new CharacterSheet.IntModifier();
-            currentModifier.SourceAbility = currentAbility;
-            MainPage.StrToInt(ModifierValue.Text, ref currentModifier.value);
+            modifier.SourceAbility = currentAbility;
+            MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
             if (Multiplier != null)
-                MainPage.StrToInt(Multiplier.Text, ref currentModifier.multiplier);
+                MainPage.StrToInt(Multiplier.Text, ref modifier.multiplier);
             if (Divider != null)
-                MainPage.StrToInt(Divider.Text, ref currentModifier.divider);
-            ModifierValue.Text = currentModifier.GetValue(sheet).ToString();
+                MainPage.StrToInt(Divider.Text, ref modifier.divider);
+            ModifierValue.Text = ab ? modifier.GetValue(sheet).ToString() : modifier.value.ToString();
             if (Multiplier != null)
             {
                 Multiplier.IsReadOnly = !ab;
@@ -335,31 +431,23 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var anyChanged = false;
-            if (modifier ==  null)
-            {
-                modifier = new CharacterSheet.IntModifier();
+            if (source == null)
                 modifiersList.Add(modifier);
-                anyChanged = true;
-            }
-            anyChanged |= modifier.IsActive != IsActive.IsChecked;
             modifier.active = IsActive.IsChecked;
-            anyChanged |= MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
-            anyChanged |= ModifierName.Text != modifier.name;
+            MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
             modifier.name = ModifierName.Text;
             if (Ability != null)
             {
                 var selectedItem = Ability.SelectedItem as CharacterSheet.AbilityPickerItem;
                 if (selectedItem != null)
-                {
-                    anyChanged |= modifier.SourceAbility != selectedItem.Value;
                     modifier.SourceAbility = selectedItem.Value;
-                }
             }
             if (Multiplier != null)
-                anyChanged |= MainPage.StrToInt(Multiplier.Text, ref modifier.multiplier);
+                MainPage.StrToInt(Multiplier.Text, ref modifier.multiplier);
             if (Divider != null)
-                anyChanged |= MainPage.StrToInt(Divider.Text, ref modifier.divider);
+                MainPage.StrToInt(Divider.Text, ref modifier.divider);
+            if ((source != null) && !source.Equals(modifier))
+                source.Fill(modifier);
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

@@ -7,7 +7,7 @@
         <ScrollView>
             <StackLayout>
                 <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
-                    <Label Text="Name:" FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" HorizontalOptions="Start"></Label>
+                    <Label Text="Name:" FontSize="Medium" TextColor="Black" HorizontalOptions="Start"></Label>
                     <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand">
                         <Entry x:Name="CharacterName" FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Entry>
                     </Frame>

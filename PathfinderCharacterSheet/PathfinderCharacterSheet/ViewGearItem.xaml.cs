@@ -31,9 +31,9 @@ namespace PathfinderCharacterSheet
             InitializeComponent();
         }
 
-        public void InitView(ItemsType item, int index)
+        public void InitView(ItemsType gearItem)
         {
-            this.item = item;
+            item = gearItem;
             UpdateView();
         }
 
@@ -43,7 +43,15 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+            if (item == null)
+                return;
+            if ((items != null) && !items.Contains(item))
+            {
+                Navigation.PopAsync();
+                return;
+            }
             ItemName.Text = item.name;
+            ItemActive.IsChecked = item.active;
             Amount.Text = item.amount.GetTotal(sheet).ToString();
             Weight.Text = item.weight.GetTotal(sheet).ToString();
             Description.Text = item.description;
@@ -85,8 +93,7 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             var egi = new EditGearItem();
-            var itemIndex = items.IndexOf(item);
-            egi.InitEditor(item, itemIndex);
+            egi.InitEditor(item);
             pushedPage = egi;
             Navigation.PushAsync(pushedPage);
         }
@@ -95,19 +102,13 @@ namespace PathfinderCharacterSheet
         {
             if (items == null)
                 return;
-            var itemIndex = items.IndexOf(this.item);
-            if (itemIndex < 0)
-                return;
-            if (itemIndex >= items.Count)
-                return;
-            var item = items[itemIndex];
             var itemName = string.Empty;
             if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
                 itemName = " \"" + item.name + "\"";
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.RemoveAt(itemIndex);
+                items.Remove(item);
                 CharacterSheetStorage.Instance.SaveCharacter();
                 await Navigation.PopAsync();
             }

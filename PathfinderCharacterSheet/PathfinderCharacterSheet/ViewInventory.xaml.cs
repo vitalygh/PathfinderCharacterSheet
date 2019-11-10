@@ -337,9 +337,10 @@ namespace PathfinderCharacterSheet
             gearItemGrid.name.Text = item.AsString(sheet);
             if (gearItemGrid.viewButtonHandler != null)
                 gearItemGrid.viewButton.Clicked -= gearItemGrid.viewButtonHandler;
-            gearItemGrid.viewButtonHandler = (s, e) => GearItemViewButton_Tap(item, itemIndex);
+            gearItemGrid.viewButtonHandler = (s, e) => GearItemViewButton_Tap(item);
             gearItemGrid.viewButton.Clicked += gearItemGrid.viewButtonHandler;
-            MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
+            gearItemGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
+            MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item), 2);
         }
 
         private void CreateGearItemGrid(KeyValuePair<CharacterSheet.GearItem, int> kvp)
@@ -391,7 +392,9 @@ namespace PathfinderCharacterSheet
             MainPage.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
 #endif
             var gearItemNameFrame = CreateFrame(item.AsString(sheet));
-            MainPage.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
+            var gearItemName = gearItemNameFrame.Content as Label;
+            gearItemName.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
+            MainPage.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item), 2);
             var viewButton = new Button()
             {
                 Text = "View",
@@ -400,7 +403,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
             };
-            EventHandler viewButtonHandler = (s, e) => GearItemViewButton_Tap(item, itemIndex);
+            EventHandler viewButtonHandler = (s, e) => GearItemViewButton_Tap(item);
             viewButton.Clicked += viewButtonHandler;
             var column = 0;
 #if EXPAND_SELECTED
@@ -415,7 +418,7 @@ namespace PathfinderCharacterSheet
                 selectedHandler = selectedHandler,
                 selected = selectedcb,
 #endif
-                name = gearItemNameFrame.Content as Label,
+                name = gearItemName,
                 viewButton = viewButton,
                 viewButtonHandler = viewButtonHandler,
             };
@@ -439,28 +442,22 @@ namespace PathfinderCharacterSheet
             selectedcb.IsChecked = !selectedcb.IsChecked;
         }
 
-        public void GearItemViewButton_Tap(CharacterSheet.GearItem gearItem = null, int index = -1)
+        public void GearItemViewButton_Tap(CharacterSheet.GearItem gearItem = null)
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
-                return;
             var vgi = new ViewGearItem();
-            vgi.InitView(gearItem, index);
+            vgi.InitView(gearItem);
             pushedPage = vgi;
             Navigation.PushAsync(pushedPage);
         }
 
-        public void GearItem_DoubleTap(CharacterSheet.GearItem gearItem = null, int index = -1)
+        public void GearItem_DoubleTap(CharacterSheet.GearItem gearItem = null)
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
-                return;
             var egi = new EditGearItem();
-            egi.InitEditor(gearItem, index);
+            egi.InitEditor(gearItem);
             pushedPage = egi;
             Navigation.PushAsync(pushedPage);
         }

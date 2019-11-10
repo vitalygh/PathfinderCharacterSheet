@@ -1,5 +1,6 @@
 ﻿#define EXPAND_SELECTED
-//#define USE_GRID
+//#define EXPAND_CHECKBOX
+#define USE_GRID
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,7 +52,7 @@ namespace PathfinderCharacterSheet
         public class ArmorGrid
         {
             public View container = null;
-#if EXPAND_SELECTED
+#if EXPAND_SELECTED && EXPAND_CHECKBOX
             public EventHandler<CheckedChangedEventArgs> selectedHandler = null;
             public CheckBox selected = null;
 #endif
@@ -224,12 +225,14 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
 
+#if EXPAND_CHECKBOX
             if (armorGrid.selectedHandler != null)
                 armorGrid.selected.CheckedChanged -= armorGrid.selectedHandler;
             armorGrid.selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             UpdateValue(armorGrid.selected, item.selected);
             armorGrid.selected.IsChecked = item.selected;
             armorGrid.selected.CheckedChanged += armorGrid.selectedHandler;
+#endif
 
             if (armorGrid.activeHandler != null)
                 armorGrid.active.CheckedChanged -= armorGrid.activeHandler;
@@ -249,8 +252,12 @@ namespace PathfinderCharacterSheet
             UpdateValue(armorGrid.description, item.description);
 
             armorGrid.container.GestureRecognizers.Clear();
+#if EXPAND_CHECKBOX
             MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
-            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item, itemIndex), 2);
+#else
+            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(item), 1);
+#endif
+            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
         }
 
         private void CreateSelectedArmorGrid(KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
@@ -291,6 +298,7 @@ namespace PathfinderCharacterSheet
             for (var i = 0; i < count; i++)
                 rowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             grid.RowDefinitions = rowDefinitions;
+#if EXPAND_CHECKBOX
             var selectedcb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -299,14 +307,17 @@ namespace PathfinderCharacterSheet
             };
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
+#endif
             var nameTitle = CreateLabel("Name: ", TextAlignment.Start);
             var nameStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
-                HorizontalOptions = LayoutOptions.Center,
+                HorizontalOptions = LayoutOptions.Start,
                 VerticalOptions = LayoutOptions.Center,
             };
+#if EXPAND_CHECKBOX
             nameStack.Children.Add(selectedcb);
+#endif
             nameStack.Children.Add(nameTitle);
 
             var row = 0;
@@ -378,15 +389,20 @@ namespace PathfinderCharacterSheet
             var descriptionValue = CreateFrame(item.description);
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
-
+#if EXPAND_CHECKBOX
             MainPage.AddTapHandler(grid, (s, e) => Armor_Tap(selectedcb), 1);
-            MainPage.AddTapHandler(grid, (s, e) => Armor_DoubleTap(item, itemIndex), 2);
+#else
+            MainPage.AddTapHandler(grid, (s, e) => Armor_Tap(item), 1);
+#endif
+            MainPage.AddTapHandler(grid, (s, e) => Armor_DoubleTap(item), 2);
 
             var newArmorGrid = new SelectedArmorGrid()
             {
                 container = grid,
+#if EXPAND_CHECKBOX
                 selectedHandler = selectedHandler,
                 selected = selectedcb,
+#endif
                 activeHandler = activeHandler,
                 active = activecb,
                 nameTitle = nameTitle,
@@ -415,7 +431,7 @@ namespace PathfinderCharacterSheet
         }
 #endif
 
-        private void RemoveArmorGrid(ArmorGrid armorGrid)
+            private void RemoveArmorGrid(ArmorGrid armorGrid)
         {
             if (armorGrid == null)
                 return;
@@ -436,16 +452,20 @@ namespace PathfinderCharacterSheet
                 return;
             armorGrid.container.GestureRecognizers.Clear();
 #if EXPAND_SELECTED
+#if EXPAND_CHECKBOX
             if (armorGrid.selectedHandler != null)
                 armorGrid.selected.CheckedChanged -= armorGrid.selectedHandler;
             armorGrid.selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             UpdateValue(armorGrid.selected, item.selected);
             armorGrid.selected.CheckedChanged += armorGrid.selectedHandler;
             MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
+#else
+            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(item), 1);
+#endif
 #endif
             UpdateValue(armorGrid.name, item.AsString(sheet));
             armorGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
-            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item, itemIndex), 2);
+            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
         }
 
         private void CreateArmorGrid(KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
@@ -499,8 +519,11 @@ namespace PathfinderCharacterSheet
 #endif
             var armorNameFrame = CreateFrame(item.AsString(sheet));
             armorNameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
-            MainPage.AddTapHandler(container, (s, e) => Armor_DoubleTap(item, itemIndex), 2);
+            var armorName = armorNameFrame.Content as Label;
+            armorName.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
+            MainPage.AddTapHandler(container, (s, e) => Armor_DoubleTap(item), 2);
 #if EXPAND_SELECTED
+#if EXPAND_CHECKBOX
             var selectedcb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -515,6 +538,9 @@ namespace PathfinderCharacterSheet
 #else
             container.Children.Add(selectedcb);
 #endif
+#else
+            MainPage.AddTapHandler(container, (s, e) => Armor_Tap(item), 1);
+#endif
 #endif
 #if USE_GRID
             container.Children.Add(armorNameFrame, 1, 0);
@@ -525,11 +551,11 @@ namespace PathfinderCharacterSheet
             var newArmorGrid = new ArmorGrid()
             {
                 container = container,
-#if EXPAND_SELECTED
+#if EXPAND_SELECTED && EXPAND_CHECKBOX
                 selectedHandler = selectedHandler,
                 selected = selectedcb,
 #endif
-                name = armorNameFrame.Content as Label,
+                name = armorName,
                 nameFrame = armorNameFrame,
             };
 
@@ -553,11 +579,21 @@ namespace PathfinderCharacterSheet
             CharacterSheetStorage.Instance.SaveCharacter();
             UpdateView();
         }
-
+#if EXPAND_CHECKBOX
         public void Armor_Tap(CheckBox selectedcb)
         {
             selectedcb.IsChecked = !selectedcb.IsChecked;
         }
+#else
+        public void Armor_Tap(CharacterSheet.ArmorClassItem armor)
+        {
+            if (armor == null)
+                return;
+            armor.selected = !armor.selected;
+            CharacterSheetStorage.Instance.SaveCharacter();
+            UpdateView();
+        }
+#endif
 #endif
 
         public void ArmorActive_CheckedChanged(CharacterSheet.ArmorClassItem armor, bool value)
@@ -571,7 +607,7 @@ namespace PathfinderCharacterSheet
             UpdateView();
         }
 
-        public void Armor_DoubleTap(CharacterSheet.ArmorClassItem item = null, int index = -1)
+        public void Armor_DoubleTap(CharacterSheet.ArmorClassItem item = null)
         {
             if (pushedPage != null)
                 return;
@@ -579,7 +615,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var ew = new EditArmor();
-            ew.InitEditor(item, index);
+            ew.InitEditor(item);
             pushedPage = ew;
             Navigation.PushAsync(pushedPage);
         }

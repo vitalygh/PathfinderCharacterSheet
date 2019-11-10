@@ -13,7 +13,6 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditNote : ContentPage
     {
-        private int itemIndex = -1;
         private List<ItemType> items
         {
             get
@@ -24,6 +23,7 @@ namespace PathfinderCharacterSheet
                 return null;
             }
         }
+        private ItemType source = null;
         private ItemType item = null;
 
         public EditNote()
@@ -31,19 +31,18 @@ namespace PathfinderCharacterSheet
             InitializeComponent();
         }
 
-        public void InitEditor(ItemType item = null, int index = -1)
+        public void InitEditor(ItemType item = null)
         {
+            source = item;
             if (item == null)
             {
                 this.item = new ItemType();
-                index = -1;
             }
             else
                 this.item = item.Clone as ItemType;
-            itemIndex = index;
             ItemName.Text = this.item.name;
             Description.Text = this.item.description;
-            Delete.IsEnabled = index >= 0;
+            Delete.IsEnabled = source != null;
         }
 
         private void EditToView()
@@ -53,12 +52,11 @@ namespace PathfinderCharacterSheet
             item.name = ItemName.Text;
             item.description = Description.Text;
             var hasChanges = false;
-            if (itemIndex >= 0)
+            if (source != null)
             {
-                var sourceItem = items[itemIndex];
-                if (!item.Equals(sourceItem))
+                if (!item.Equals(source))
                 {
-                    sourceItem.Fill(item);
+                    source.Fill(item);
                     hasChanges = true;
                 }
             }
@@ -86,18 +84,15 @@ namespace PathfinderCharacterSheet
         {
             if (items == null)
                 return;
-            if (itemIndex < 0)
+            if (source == null)
                 return;
-            if (itemIndex >= items.Count)
-                return;
-            var item = items[itemIndex];
             var itemName = string.Empty;
-            if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
-                itemName = " \"" + item.name + "\"";
+            if (!string.IsNullOrWhiteSpace(source.name))
+                itemName = " \"" + source.name + "\"";
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.RemoveAt(itemIndex);
+                items.Remove(source);
                 CharacterSheetStorage.Instance.SaveCharacter();
                 await Navigation.PopAsync();
             }

@@ -11,6 +11,6 @@ namespace PathfinderCharacterSheet.iOS
 {
     public class PlatformProxy: IPlatformProxy
     {
-        public string PersistentDataPath { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal)); } }
+        public string PersistentDataPath { get { return Environment.GetFolderPath(Environment.SpecialFolder.Personal); } }
     }
 }

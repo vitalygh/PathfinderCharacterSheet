@@ -6,14 +6,26 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ItemType = PathfinderCharacterSheet.CharacterSheet.WeaponItem;
 
 namespace PathfinderCharacterSheet
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditWeapon : ContentPage, ISheetView
 	{
-        private int itemIndex = -1;
+        private CharacterSheet.WeaponItem source = null;
         private CharacterSheet.WeaponItem item = null;
+        private List<ItemType> items
+        {
+            get
+            {
+                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                if (sheet != null)
+                    return sheet.weaponItems;
+                return null;
+            }
+        }
+
         private Page pushedPage = null;
 
         public EditWeapon ()
@@ -21,21 +33,19 @@ namespace PathfinderCharacterSheet
 			InitializeComponent ();
         }
 
-        public void InitEditor(CharacterSheet.WeaponItem item = null, int index = -1)
+        public void InitEditor(ItemType item = null)
         {
+            source = item;
             if (item == null)
-            {
-                this.item = new CharacterSheet.WeaponItem();
-                index = -1;
-            }
+                this.item = new ItemType();
             else
-                this.item = item.Clone as CharacterSheet.WeaponItem;
-            itemIndex = index;
+                this.item = item.Clone as ItemType;
+            ArmorActive.IsChecked = this.item.active;
             WeaponName.Text = this.item.name;
             WeaponType.Text = this.item.type;
             Special.Text = this.item.special;
             Description.Text = this.item.description;
-            Delete.IsEnabled = index >= 0;
+            Delete.IsEnabled = source != null;
             UpdateView();
         }
 
@@ -56,26 +66,25 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
+            if (items == null)
                 return;
+            item.active = ArmorActive.IsChecked;
             item.name = WeaponName.Text;
             item.type = WeaponType.Text;
             item.special = Special.Text;
             item.description = Description.Text;
             var hasChanges = false;
-            if (itemIndex >= 0)
+            if (source != null)
             {
-                var sourceItem = sheet.weaponItems[itemIndex];
-                if (!item.Equals(sourceItem))
+                if (!item.Equals(source))
                 {
-                    sheet.weaponItems[itemIndex] = item;
+                    source.Fill(item);
                     hasChanges = true;
                 }
             }
             else
             {
-                sheet.weaponItems.Add(item);
+                items.Add(item);
                 hasChanges = true;
             }
             if (hasChanges)
@@ -186,21 +195,17 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
+            if (items == null)
                 return;
-            if (itemIndex < 0)
+            if (source == null)
                 return;
-            if (itemIndex >= sheet.weaponItems.Count)
-                return;
-            var item = sheet.weaponItems[itemIndex];
             var itemName = string.Empty;
-            if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
-                itemName = " \"" + item.name + "\"";
+            if (!string.IsNullOrWhiteSpace(source.name))
+                itemName = " \"" + source.name + "\"";
             bool allow = await DisplayAlert("Remove weapon" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                sheet.weaponItems.RemoveAt(itemIndex);
+                items.Remove(source);
                 CharacterSheetStorage.Instance.SaveCharacter();
                 await Navigation.PopAsync();
             }

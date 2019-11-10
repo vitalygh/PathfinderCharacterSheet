@@ -112,6 +112,15 @@ namespace PathfinderCharacterSheet
             return false;
         }
 
+        public static int GetUID()
+        {
+            if (Instance == null)
+                return CharacterSheet.InvalidUID;
+            if (Instance.selectedCharacter == null)
+                return CharacterSheet.InvalidUID;
+            return Instance.selectedCharacter.GetUID();
+        }
+
         public void SaveCharacter()
         {
             SaveCharacter(selectedCharacter);

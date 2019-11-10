@@ -24,9 +24,13 @@
                         <Entry x:Name="ItemName" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
-                    <Label x:Name="AmountTitle" Text="Amount: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="ItemActiveTitle" Text="Active: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1" HorizontalOptions="FillAndExpand" >
+                    <CheckBox x:Name="ItemActive" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="1">
+                    </CheckBox>
+                    <Label x:Name="AmountTitle" Text="Amount: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Amount_Tapped">
                             </TapGestureRecognizer>
@@ -34,9 +38,9 @@
                         <Label x:Name="Amount" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    <Label x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Weight_Tapped">
                             </TapGestureRecognizer>
@@ -44,9 +48,9 @@
                         <Label x:Name="Weight" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="DescriptionTitle" Text="Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
+                    <Label x:Name="DescriptionTitle" Text="Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2">
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2">
                         <Editor x:Name="Description" FontSize="Medium" TextColor="Black" AutoSize="TextChanges">
                         </Editor>
                     </Frame>

@@ -13,7 +13,7 @@ namespace PathfinderCharacterSheet
 	public partial class EditAbilityScores : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private CharacterSheet localSheet = new CharacterSheet();
+        CharacterSheet.AbilityScore[] abilityScores = null;
 
         public EditAbilityScores()
 		{
@@ -28,11 +28,14 @@ namespace PathfinderCharacterSheet
             var asList = new List<CharacterSheet.AbilityScore>();
             foreach (var absc in CharacterSheetStorage.Instance.selectedCharacter.abilityScores)
                 asList.Add(absc.Clone as CharacterSheet.AbilityScore);
-            localSheet.abilityScores = asList.ToArray();
+            abilityScores = asList.ToArray();
         }
 
         private void CreateControls()
         {
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
             if (AbilityScores.Children.Count > 0)
                 return;
             var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
@@ -84,9 +87,9 @@ namespace PathfinderCharacterSheet
                                     var eivwm = new EditIntValueWithModifiers();
                                     var modname = (adj ? "Temp Adjustment" : "Score");
                                     var abmodname = abilities[index] + " " + modname;
-                                    var labs = localSheet.abilityScores[index];
+                                    var labs = abilityScores[index];
                                     var vwm = adj ? labs.tempAdjustment : labs.score;
-                                    eivwm.Init(localSheet, vwm, "Edit " + abmodname, abmodname + ": ", false, false);
+                                    eivwm.Init(sheet, vwm, "Edit " + abmodname, abmodname + ": ", false, false);
                                     pushedPage = eivwm;
                                     Navigation.PushAsync(eivwm);
                                 };
@@ -133,7 +136,7 @@ namespace PathfinderCharacterSheet
             var index = i * 5;
             if ((index + 5) > AbilityScores.Children.Count)
                 return;
-            var ab = localSheet.abilityScores[i - 1];
+            var ab = abilityScores[i - 1];
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             //var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
             //MainPage.StrToInt(entry.Text, ref ab.score);
@@ -150,10 +153,10 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
-            var abilitiesCount = localSheet.abilityScores.Length;
+            var abilitiesCount = abilityScores.Length;
             for (var i = 0; i < abilitiesCount; i++)
             {
-                var ab = localSheet.abilityScores[i];
+                var ab = abilityScores[i];
                 var index = (i + 1) * 5;
                 (AbilityScores.Children[index + 0] as Label).Text = abilities[i];
                 ((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
@@ -169,13 +172,13 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var anyChanged = false;
-            var abilitiesCount = localSheet.abilityScores.Length;
+            var abilitiesCount = abilityScores.Length;
             for (var i = 0; i < abilitiesCount; i++)
             {
-                if (sheet.abilityScores[i].Equals(localSheet.abilityScores[i]))
+                if (sheet.abilityScores[i].Equals(abilityScores[i]))
                     continue;
                 anyChanged = true;
-                sheet.abilityScores[i] = localSheet.abilityScores[i];
+                sheet.abilityScores[i] = abilityScores[i];
             }
             if (anyChanged)
                 CharacterSheetStorage.Instance.SaveCharacter();
