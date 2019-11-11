@@ -142,11 +142,17 @@ namespace PathfinderCharacterSheet
 
         private void Cancel_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             Navigation.PopAsync();
         }
 
         private void Save_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             EditToView();
             Navigation.PopAsync();
         }

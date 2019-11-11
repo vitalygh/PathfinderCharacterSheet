@@ -838,7 +838,14 @@ namespace PathfinderCharacterSheet
 
             public int GetTotal(CharacterSheet sheet)
             {
-                return GetAbilityModifier(sheet) + rank.GetTotal(sheet) + miscModifiers.GetTotal(sheet) + (classSkill ? 3 : 0) + (armorPenalty ? sheet.CheckPenalty() : 0);
+                var total = rank.GetTotal(sheet);
+                if (classSkill && (total > 0))
+                    total += 3;
+                if (armorPenalty)
+                    total += sheet.CheckPenalty();
+                total += GetAbilityModifier(sheet);
+                total += miscModifiers.GetTotal(sheet);
+                return total;
             }
         }
 

@@ -23,6 +23,7 @@ namespace PathfinderCharacterSheet
                 return null;
             }
         }
+        private Page pushedPage = null;
         private ItemType source = null;
         private ItemType item = null;
 
@@ -33,6 +34,7 @@ namespace PathfinderCharacterSheet
 
         public void InitEditor(ItemType item = null)
         {
+            pushedPage = null;
             source = item;
             if (item == null)
                 this.item = new ItemType();
@@ -69,11 +71,17 @@ namespace PathfinderCharacterSheet
 
         private void Cancel_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             Navigation.PopAsync();
         }
 
         private void Save_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             EditToView();
             Navigation.PopAsync();
         }

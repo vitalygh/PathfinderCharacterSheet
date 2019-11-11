@@ -452,11 +452,17 @@ namespace PathfinderCharacterSheet
 
         private void Cancel_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             Navigation.PopAsync();
         }
 
         private void Save_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             EditToView();
             Navigation.PopAsync();
         }
@@ -469,7 +475,7 @@ namespace PathfinderCharacterSheet
             bool allow = await DisplayAlert("Remove modifier" + modifierName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                modifiersList.Remove(modifier);
+                modifiersList.Remove(source);
                 await Navigation.PopAsync();
             }
         }

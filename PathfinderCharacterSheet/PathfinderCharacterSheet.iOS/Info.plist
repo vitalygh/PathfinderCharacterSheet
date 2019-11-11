@@ -25,7 +25,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>Pathfinder Character Sheet</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.vitaly.PathfinderCharacterSheet</string>
+	<string>com.github.vitalygh.PathfinderCharacterSheet</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>

@@ -155,11 +155,17 @@ namespace PathfinderCharacterSheet
 
         private void Cancel_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             Navigation.PopAsync();
         }
 
         private void Save_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             var rename = (sheet.Name != CharacterName.Text);
             if (rename)

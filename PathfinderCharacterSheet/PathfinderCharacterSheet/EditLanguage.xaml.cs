@@ -12,6 +12,7 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditLanguage : ContentPage
     {
+        private Page pushedPage = null;
         private int itemIndex = -1;
         private List<string> languages = null;
 
@@ -22,6 +23,7 @@ namespace PathfinderCharacterSheet
 
         public void InitEditor(List<string> languages, string language = null, int index = -1)
         {
+            pushedPage = null;
             Language.Text = language;
             this.languages = languages;
             itemIndex = index;
@@ -53,11 +55,17 @@ namespace PathfinderCharacterSheet
 
         private void Cancel_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             Navigation.PopAsync();
         }
 
         private void Save_Clicked(object sender, EventArgs e)
         {
+            if (pushedPage != null)
+                return;
+            pushedPage = this;
             EditToView();
             Navigation.PopAsync();
         }
