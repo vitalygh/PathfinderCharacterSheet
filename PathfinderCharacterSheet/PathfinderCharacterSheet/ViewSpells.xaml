@@ -19,21 +19,13 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="ChannelsLeftTitle" Text="Channels Left: " FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="0" Grid.Row="0">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="ChannelsLeft_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
+                    <Frame x:Name="ChannelsLeftFrame" BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="ChannelsLeft" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="ChannelsPerDayTitle" Text="Channels Per Day: " FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="ChannelsPerDay_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
+                    <Frame x:Name="ChannelsPerDayFrame" BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="ChannelsPerDay" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>

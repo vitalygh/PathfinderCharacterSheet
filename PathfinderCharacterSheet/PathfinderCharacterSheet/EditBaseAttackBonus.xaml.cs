@@ -108,8 +108,7 @@ namespace PathfinderCharacterSheet
                 return;
             var value = bab.GetTotal(sheet);
             UpdateValue(row.value, value > 0 ? "+" + value : value.ToString());
-            row.frame.GestureRecognizers.Clear();
-            MainPage.AddTapHandler(row.frame, (s, e) => EditBonus(bab), 1);
+            MainPage.SetTapHandler(row.frame, (s, e) => EditBonus(bab), 1);
         }
 
         private void CreateRow(CharacterSheet.ValueWithIntModifiers bab)
@@ -128,7 +127,7 @@ namespace PathfinderCharacterSheet
                 Attacks.Children.Add(row.frame, 1, rowIndex);
                 return;
             }
-            var title = CreateLabel("Attack " + (rows.Count + 1) + " Bonus: ", TextAlignment.Start);
+            var title = CreateLabel("Attack " + (rows.Count + 1) + " Bonus: ");
             var bonus = bab.GetTotal(sheet);
             var frame = CreateFrame(bonus > 0 ? "+" + bonus : bonus.ToString());
             var value = frame.Content as Label;
@@ -141,7 +140,7 @@ namespace PathfinderCharacterSheet
             };
             var newRowIndex = rows.Count;
             rows.Add(newRow);
-            MainPage.AddTapHandler(frame, (s, e) => EditBonus(bab), 1);
+            MainPage.SetTapHandler(frame, (s, e) => EditBonus(bab), 1);
             Attacks.Children.Add(newRow.title, 0, newRowIndex);
             Attacks.Children.Add(newRow.frame, 1, newRowIndex);
         }
@@ -169,7 +168,7 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(eivwm);
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             return MainPage.CreateLabel(text, horz);
         }

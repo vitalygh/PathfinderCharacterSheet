@@ -48,6 +48,8 @@ namespace PathfinderCharacterSheet.iOS
         {
             var command = LongPressedEffect.GetCommand(Element);
             command?.Execute(LongPressedEffect.GetCommandParameter(Element));
+            var action = LongPressedEffect.GetAction(Element);
+            action?.Invoke();
         }
 
         /// <summary>

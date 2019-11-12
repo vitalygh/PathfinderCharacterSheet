@@ -1,4 +1,5 @@
 ﻿//#define DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
+//#define LONG_TAP_INSTEAD_OF_DOUBLE_TAP
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -48,15 +49,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
-            var gridTitle = new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                HorizontalTextAlignment = TextAlignment.Center,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.Center,
-                Text = "Characters: ",
-            };
+            var gridTitle = CreateLabel("Characters", TextAlignment.Center);
             stack.Children.Add(gridTitle);
             var addModifierButton = new Button()
             {
@@ -74,50 +67,14 @@ namespace PathfinderCharacterSheet
              var count = characters.Count;
             if (count <= 0)
                 return;
-            grid.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Name",
-            }, 0, 1);
-            grid.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Race",
-            }, 1, 1);
-            grid.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Level",
-            }, 2, 1);
+            grid.Children.Add(CreateLabel("Name", TextAlignment.Center), 0, 1);
+            grid.Children.Add(CreateLabel("Race", TextAlignment.Center), 1, 1);
+            grid.Children.Add(CreateLabel("Level", TextAlignment.Center), 2, 1);
             for (var i = 0; i < count; i++)
             {
                 var index = i + 2;
                 var c = characters[i];
-                var name = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = c.Name.ToString(),
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
+                var name = CreateFrame(c.Name.ToString());
                 var tgr = new TapGestureRecognizer()
                 {
                     NumberOfTapsRequired = 1,
@@ -125,19 +82,7 @@ namespace PathfinderCharacterSheet
                 tgr.Tapped += (s, e) => SelectCharacter(c);
                 name.GestureRecognizers.Add(tgr);
                 grid.Children.Add(name, 0, index);
-                var race = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = c.Race.ToString(),
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
+                var race = CreateFrame(c.Race.ToString());
                 tgr = new TapGestureRecognizer()
                 {
                     NumberOfTapsRequired = 1,
@@ -145,19 +90,7 @@ namespace PathfinderCharacterSheet
                 tgr.Tapped += (s, e) => SelectCharacter(c);
                 race.GestureRecognizers.Add(tgr);
                 grid.Children.Add(race, 1, index);
-                var level = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = c.TotalLevel.ToString(),
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
+                var level = CreateFrame(c.TotalLevel.ToString());
                 tgr = new TapGestureRecognizer()
                 {
                     NumberOfTapsRequired = 1,
@@ -206,13 +139,14 @@ namespace PathfinderCharacterSheet
             return false;
         }
 
-        public static Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        public static Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             return new Label()
             {
                 Text = text,
                 FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                 TextColor = Color.Black,
+                VerticalTextAlignment = TextAlignment.Center,
                 HorizontalTextAlignment = horz,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.Center,
@@ -223,15 +157,7 @@ namespace PathfinderCharacterSheet
         {
             return new Frame()
             {
-                Content = new Label()
-                {
-                    Text = text,
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    TextColor = Color.Black,
-                    HorizontalTextAlignment = TextAlignment.Center,
-                    HorizontalOptions = LayoutOptions.FillAndExpand,
-                    VerticalOptions = LayoutOptions.Center,
-                },
+                Content = CreateLabel(text, TextAlignment.Center),
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.Center,
                 BorderColor = Color.Black,
@@ -239,14 +165,63 @@ namespace PathfinderCharacterSheet
             };
         }
 
+        public static void SetTapHandler(View view, Action handler, int tapCount = 1)
+        {
+            SetTapHandler(view, (s, e) =>
+            {
+                if (handler != null)
+                    handler();
+            }, tapCount);
+        }
+
+        public static void SetTapHandler(View view, EventHandler handler, int tapCount = 1)
+        {
+            view.GestureRecognizers.Clear();
+#if LONG_TAP_INSTEAD_OF_DOUBLE_TAP
+            view.Effects.Clear();
+#endif
+            AddTapHandler(view, handler, tapCount);
+        }
+
+        public static void AddTapHandler(View view, Action handler, int tapCount = 1)
+        {
+            AddTapHandler(view, (s, e) =>
+            {
+                if (handler != null)
+                    handler();
+            }, tapCount);
+        }
+
         public static void AddTapHandler(View view, EventHandler handler, int tapCount = 1)
         {
+            if (view == null)
+                return;
+#if LONG_TAP_INSTEAD_OF_DOUBLE_TAP
+            if (tapCount > 1)
+            {
+                AddLongTapHandler(view, () => handler?.Invoke(view, new EventArgs()));
+                return;
+            }
+#endif
             var tgr = new TapGestureRecognizer()
             {
                 NumberOfTapsRequired = tapCount,
             };
             tgr.Tapped += handler;
             view.GestureRecognizers.Add(tgr);
+        }
+
+        public static void SetLongTapHandler(View view, Action handler)
+        {
+            view.Effects.Clear();
+            AddLongTapHandler(view, handler);
+        }
+
+        public static void AddLongTapHandler(View view, Action handler)
+        {
+            var lte = new LongPressedEffect();
+            view.Effects.Add(lte);
+            LongPressedEffect.SetAction(view, handler);
         }
 
         public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, string title,
@@ -261,16 +236,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
-            var gridTitle = new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Start,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                Text = title,
-            };
+            var gridTitle = CreateLabel(title, TextAlignment.Center);
             stack.Children.Add(gridTitle);
             if (addModifier != null)
             {
@@ -289,33 +255,9 @@ namespace PathfinderCharacterSheet
             var count = modifiers.Count;
             if (count <= 0)
                 return;
-            grid.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Active",
-            }, 0, 1);
-            grid.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Value",
-            }, 1, 1);
-            grid.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Name",
-            }, 2, 1);
+            grid.Children.Add(CreateLabel("Active", TextAlignment.Center), 0, 1);
+            grid.Children.Add(CreateLabel("Value", TextAlignment.Center), 1, 1);
+            grid.Children.Add(CreateLabel("Name", TextAlignment.Center), 2, 1);
             for (var i = 0; i < count; i++)
             {
                 var index = i + 2;
@@ -332,19 +274,7 @@ namespace PathfinderCharacterSheet
                         activateModifier.Invoke(modifiers, t);
                 };
                 grid.Children.Add(active, 0, index);
-                var value = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.GetValue(sheet).ToString(),
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
+                var value = CreateFrame(t.GetValue(sheet).ToString());
                 if (editModifier != null)
                 {
                     var valueTapped = new TapGestureRecognizer();
@@ -352,19 +282,7 @@ namespace PathfinderCharacterSheet
                     value.GestureRecognizers.Add(valueTapped);
                 }
                 grid.Children.Add(value, 1, index);
-                var name = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = t.AsString(sheet),
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
+                var name = CreateFrame(t.AsString(sheet));
                 if (editModifier != null)
                 {
                     var nameTapped = new TapGestureRecognizer();

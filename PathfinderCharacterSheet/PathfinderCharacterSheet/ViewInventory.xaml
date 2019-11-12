@@ -19,50 +19,30 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="PPTitle" Text="PP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="PP_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
+                    <Frame x:Name="PPFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="PP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="GPTitle" Text="GP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="2" Grid.Row="0">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="GP_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
+                    <Frame x:Name="GPFrame" BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="0">
                         <Label x:Name="GP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="SPTitle" Text="SP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="SP_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
+                    <Frame x:Name="SPFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="SP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="CPTitle" Text="CP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="2" Grid.Row="1">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="CP_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
+                    <Frame x:Name="CPFrame" BorderColor="Black" Padding="5" Grid.Column="3" Grid.Row="1">
                         <Label x:Name="CP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Encumbrance_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="EncumbranceGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -112,7 +92,7 @@
                     </Frame>
                 </Grid>
                 <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
-                    <Label x:Name="GearTitle" Text="Gear: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
+                    <Label x:Name="GearTitle" Text="Gear" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
                     </Label>
                     <Button x:Name="AddGear" Text="Add" FontSize="Medium" TextColor="Black" Clicked="AddGear_Clicked">
                     </Button>

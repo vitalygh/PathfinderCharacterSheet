@@ -28,6 +28,10 @@ namespace PathfinderCharacterSheet
         public ViewSpells()
         {
             InitializeComponent();
+            MainPage.AddTapHandler(ChannelsLeftTitle, ChannelsLeft_DoubleTapped, 2);
+            MainPage.AddTapHandler(ChannelsLeftFrame, ChannelsLeft_DoubleTapped, 2);
+            MainPage.AddTapHandler(ChannelsPerDayTitle, ChannelsPerDay_DoubleTapped, 2);
+            MainPage.AddTapHandler(ChannelsPerDayTitle, ChannelsPerDay_DoubleTapped, 2);
             CreateControls();
             UpdateView();
         }
@@ -73,7 +77,7 @@ namespace PathfinderCharacterSheet
             };
 #endif
             var controls = new SpellLevelControls();
-            var label = CreateLabel("Spells Known:");
+            var label = CreateLabel("Spells Known", TextAlignment.Center);
             controls.spellsKnown = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -82,7 +86,7 @@ namespace PathfinderCharacterSheet
             horzLayout.Children.Add(label);
 #endif
 
-            label = CreateLabel("Spell Save DC:");
+            label = CreateLabel("Spell Save DC", TextAlignment.Center);
             controls.spellSaveDC = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -91,7 +95,7 @@ namespace PathfinderCharacterSheet
             horzLayout.Children.Add(label);
 #endif
 
-            label = CreateLabel("Level:");
+            label = CreateLabel("Level", TextAlignment.Center);
             controls.level = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -100,7 +104,7 @@ namespace PathfinderCharacterSheet
             horzLayout.Children.Add(label);
 #endif
 
-            label = CreateLabel("Spells Per Day:");
+            label = CreateLabel("Spells Per Day", TextAlignment.Center);
             controls.spellsPerDay = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -109,7 +113,7 @@ namespace PathfinderCharacterSheet
             horzLayout.Children.Add(label);
 #endif
 
-            label = CreateLabel("Bonus Spells:");
+            label = CreateLabel("Bonus Spells", TextAlignment.Center);
             controls.bonusSpells = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -272,17 +276,9 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(eivwm);
         }
 
-        private Label CreateLabel(string text)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return new Label()
-            {
-                Text = text,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                HorizontalTextAlignment = TextAlignment.Center,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-            };
+            return MainPage.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)

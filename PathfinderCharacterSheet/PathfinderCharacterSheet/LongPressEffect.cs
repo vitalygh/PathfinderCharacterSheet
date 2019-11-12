@@ -12,6 +12,17 @@ namespace PathfinderCharacterSheet
         {
         }
 
+        public static readonly BindableProperty ActionProperty = BindableProperty.CreateAttached("Action", typeof(Action), typeof(LongPressedEffect), (object)null);
+        public static Action GetAction(BindableObject view)
+        {
+            return (Action)view.GetValue(ActionProperty);
+        }
+
+        public static void SetAction(BindableObject view, Action value)
+        {
+            view.SetValue(ActionProperty, value);
+        }
+
         public static readonly BindableProperty CommandProperty = BindableProperty.CreateAttached("Command", typeof(ICommand), typeof(LongPressedEffect), (object)null);
         public static ICommand GetCommand(BindableObject view)
         {

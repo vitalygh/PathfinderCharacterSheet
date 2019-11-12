@@ -8,10 +8,6 @@
         <ScrollView>
             <StackLayout>
                 <Grid x:Name="AbilityScores" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="AbilityScores_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -38,54 +34,26 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="MaxHPTitle" Text="Max HP:" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="MaxHP_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Label.GestureRecognizers>
+                    <Label x:Name="MaxHPTitle" Text="Max HP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="MaxHP_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
                         <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="HPTitle" Text=" HP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Label.GestureRecognizers>
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="HP_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
                         <Label x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="DamageResistTitle" Text=" Damage Resist: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
-                        <Label.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="DamageResist_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Label.GestureRecognizers>
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="DamageResist_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
                         <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Initiative_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="InitiativeGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -100,11 +68,7 @@
                         </Label>
                     </Frame>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="ArmorClass_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="ArmorClassGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -133,11 +97,7 @@
                         </Label>
                     </Frame>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="SavingThrows_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="SavingThrowsGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -166,11 +126,7 @@
                         </Label>
                     </Frame>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="BaseAttackBonus_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="BaseAttackBonusGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -183,11 +139,7 @@
                     <StackLayout x:Name="BaseAttackBonus" Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
                     </StackLayout>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="SpellResistance_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="SpellResistanceGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -202,11 +154,7 @@
                         </Label>
                     </Frame>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="CombatManeuver_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="CombatManeuverGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
@@ -228,11 +176,7 @@
                         </Label>
                     </Frame>
                 </Grid>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Speed_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="SpeedGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />

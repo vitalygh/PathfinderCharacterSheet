@@ -23,7 +23,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="AttackBonusTitle" Text="Attack Bonus:" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label x:Name="AttackBonusTitle" Text="Attack Bonus" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
                     <Label x:Name="TotalTitle" Text="Total: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
                     <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>

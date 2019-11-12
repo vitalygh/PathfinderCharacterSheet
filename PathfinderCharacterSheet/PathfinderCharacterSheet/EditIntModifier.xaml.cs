@@ -70,14 +70,7 @@ namespace PathfinderCharacterSheet
                 new ColumnDefinition() { Width = GridLength.Auto, },
                 new ColumnDefinition() { Width = GridLength.Star, },
             };
-            IsActiveTitle = new Label()
-            {
-                Text = "Active: ",
-                TextColor = Color.Black,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                HorizontalTextAlignment = TextAlignment.Start,
-                //VerticalTextAlignment = TextAlignment.Center,
-            };
+            IsActiveTitle = CreateLabel("Active: ");
             IsActive = new CheckBox()
             {
                 IsChecked = true,
@@ -89,14 +82,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(IsActive, 1, row);
             row += 1;
 
-            ValueTitle = new Label()
-            {
-                Text = "Value: ",
-                TextColor = Color.Black,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                HorizontalTextAlignment = TextAlignment.Start,
-                //VerticalTextAlignment = TextAlignment.Center,
-            };
+            ValueTitle = CreateLabel("Value: ");
             ModifierValue = new Entry()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -119,14 +105,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(ModifierValueFrame, 1, row);
             row += 1;
 
-            NameTitle = new Label()
-            {
-                Text = "Name: ",
-                TextColor = Color.Black,
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                HorizontalTextAlignment = TextAlignment.Start,
-                //VerticalTextAlignment = TextAlignment.Center,
-            };
+            NameTitle = CreateLabel("Name: ");
             ModifierName = new Entry()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -150,14 +129,7 @@ namespace PathfinderCharacterSheet
 
             if (allowUseAbilities)
             {
-                AbilityTitle = new Label()
-                {
-                    Text = "Ability: ",
-                    TextColor = Color.Black,
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    HorizontalTextAlignment = TextAlignment.Start,
-                    //VerticalTextAlignment = TextAlignment.Center,
-                };
+                AbilityTitle = CreateLabel("Ability: ");
                 Ability = new Picker()
                 {
                     TextColor = Color.Black,
@@ -200,14 +172,7 @@ namespace PathfinderCharacterSheet
                 grid.Children.Add(abilityFrame, 1, row);
                 row += 1;
 
-                MultiplierTitle = new Label()
-                {
-                    Text = "Multiplier: ",
-                    TextColor = Color.Black,
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    HorizontalTextAlignment = TextAlignment.Start,
-                    //VerticalTextAlignment = TextAlignment.Center,
-                };
+                MultiplierTitle = CreateLabel("Multiplier: ");
                 Multiplier = new Entry()
                 {
                     HorizontalTextAlignment = TextAlignment.Center,
@@ -228,14 +193,7 @@ namespace PathfinderCharacterSheet
                 grid.Children.Add(MultiplierFrame, 1, row);
                 row += 1;
 
-                DividerTitle = new Label()
-                {
-                    Text = "Divider: ",
-                    TextColor = Color.Black,
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    HorizontalTextAlignment = TextAlignment.Start,
-                    //VerticalTextAlignment = TextAlignment.Center,
-                };
+                DividerTitle = CreateLabel("Divider: ");
                 Divider = new Entry()
                 {
                     HorizontalTextAlignment = TextAlignment.Center,
@@ -256,7 +214,7 @@ namespace PathfinderCharacterSheet
                 row += 1;
             }
 
-            LinkedItemTitle = CreateLabel("Linked To Item: ", TextAlignment.Start);
+            LinkedItemTitle = CreateLabel("Linked To Item: ");
             LinkedItemFrame = CreateFrame(string.Empty);
             LinkedItem = LinkedItemFrame.Content as Label;
 
@@ -264,7 +222,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(LinkedItemFrame, 1, row);
             row += 1;
 
-            ItemMustBeActiveTitle = CreateLabel("Item Must Be Active: ", TextAlignment.Start);
+            ItemMustBeActiveTitle = CreateLabel("Item Must Be Active: ");
             ItemMustBeActive = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -319,7 +277,7 @@ namespace PathfinderCharacterSheet
             Root.Children.Add(buttons);
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             return MainPage.CreateLabel(text, horz);
         }
@@ -369,7 +327,6 @@ namespace PathfinderCharacterSheet
                     LinkedItem.Text = item.AsString(sheet);
                     LinkedItem.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
                     LinkedItem.TextColor = (item.active || !modifier.mustBeActive) ? Color.Green : Color.Red;
-                    LinkedItemFrame.GestureRecognizers.Clear();
                 }
                 else
                 {
@@ -377,7 +334,7 @@ namespace PathfinderCharacterSheet
                     LinkedItem.TextColor = Color.Red;
                 }
             }
-            MainPage.AddTapHandler(LinkedItemFrame, (s, e) => SelectItem(item));
+            MainPage.SetTapHandler(LinkedItemFrame, (s, e) => SelectItem(item));
         }
 
         private void SelectItem(CharacterSheet.GearItem item)

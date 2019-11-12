@@ -54,8 +54,7 @@ namespace PathfinderCharacterSheet
                 var language = languages[i];
                 row.name.Text = language;
                 EventHandler handler = (s, e) => Language_Tap(language, languageIndex);
-                row.frame.GestureRecognizers.Clear();
-                MainPage.AddTapHandler(row.frame, handler, 1);
+                MainPage.SetTapHandler(row.frame, handler, 1);
             }
             var count = languagesCount - rowsCount;
             if (count > 0)
@@ -68,7 +67,7 @@ namespace PathfinderCharacterSheet
                     row.frame  = CreateFrame(language);
                     row.name = row.frame.Content as Label;
                     EventHandler handler = (s, e) => Language_Tap(language, languageIndex);
-                    MainPage.AddTapHandler(row.frame, handler, 2);
+                    MainPage.SetTapHandler(row.frame, handler, 2);
                     languageRows.Add(row);
                     var rowIndex = languageIndex;
                     Languages.Children.Add(row.frame, 0, rowIndex);
@@ -98,7 +97,7 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             return MainPage.CreateLabel(text, horz);
         }

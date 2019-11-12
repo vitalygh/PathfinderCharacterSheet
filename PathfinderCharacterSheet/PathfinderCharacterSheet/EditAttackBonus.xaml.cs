@@ -45,7 +45,7 @@ namespace PathfinderCharacterSheet
             SizeModifier.Text = sizeModifiers.GetTotal(sheet).ToString();
             Value.Text = attackBonus.baseValue.ToString();
             UpdateModifiersSum();
-            MainPage.FillIntMLGrid(Modifiers, sheet, attackBonus.modifiers, "Modifiers:", EditModifier, EditModifier, (modifiers, modifier) => UpdateModifiersSum());
+            MainPage.FillIntMLGrid(Modifiers, sheet, attackBonus.modifiers, "Modifiers", EditModifier, EditModifier, (modifiers, modifier) => UpdateModifiersSum());
         }
 
         private void UpdateCurrentAttackPicker()

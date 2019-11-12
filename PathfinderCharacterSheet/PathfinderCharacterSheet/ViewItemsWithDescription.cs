@@ -1,4 +1,5 @@
 ﻿//#define EXPAND_SELECTED
+//#define EXPAND_WITH_TAP
 //#define USE_GRID
 using System;
 using System.Collections.Generic;
@@ -104,7 +105,7 @@ namespace PathfinderCharacterSheet
                 RemoveItemGrid(itemGrids[itemGrids.Count - 1]);
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             return MainPage.CreateLabel(text, horz);
         }
@@ -166,9 +167,10 @@ namespace PathfinderCharacterSheet
             itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             itemGrid.viewButton.Clicked += itemGrid.viewButtonHandler;
 
-            itemGrid.container.GestureRecognizers.Clear();
+            MainPage.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
+#if EXPAND_WITH_TAP
             MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
-            MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
+#endif
         }
 
         private void CreateSelectedItemGrid(KeyValuePair<ItemType, int> kvp)
@@ -199,7 +201,7 @@ namespace PathfinderCharacterSheet
 
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => Item_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
-            var nameTitle = CreateLabel("Name: ", TextAlignment.Start);
+            var nameTitle = CreateLabel("Name: ");
             var nameTitleStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -229,7 +231,7 @@ namespace PathfinderCharacterSheet
             nameValueStack.Children.Add(nameValue);
             nameValueStack.Children.Add(viewButton);
 
-            var descriptionTitle = CreateLabel("Description: ", TextAlignment.Start);
+            var descriptionTitle = CreateLabel("Description: ");
             var descriptionValue = CreateFrame(item.description);
 
 #if USE_GRID
@@ -276,8 +278,10 @@ namespace PathfinderCharacterSheet
             container.Children.Add(descriptionValue);
 #endif
 
-            MainPage.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
             MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
+#if EXPAND_WITH_TAP
+            MainPage.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
+#endif
 
             var newItemGrid = new SelectedItemGrid()
             {
@@ -323,14 +327,16 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            itemGrid.container.GestureRecognizers.Clear();
+            MainPage.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
 #if EXPAND_SELECTED
             if (itemGrid.selectedHandler != null)
                 itemGrid.selected.CheckedChanged -= itemGrid.selectedHandler;
             itemGrid.selectedHandler = (s, e) => Item_CheckedChanged(item, e.Value);
             UpdateValue(itemGrid.selected, item.selected);
             itemGrid.selected.CheckedChanged += itemGrid.selectedHandler;
+#if EXPAND_WITH_TAP
             MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
+#endif
 #endif
             var name = item.AsString(sheet);
             UpdateValue(itemGrid.name, name);
@@ -338,7 +344,6 @@ namespace PathfinderCharacterSheet
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
             itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             itemGrid.viewButton.Clicked += itemGrid.viewButtonHandler;
-            MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
         }
 
         private void CreateItemGrid(KeyValuePair<ItemType, int> kvp)
@@ -418,11 +423,10 @@ namespace PathfinderCharacterSheet
             container.Children.Add(itemNameFrame);
             container.Children.Add(viewButton);
 #endif
+            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
 #if EXPAND_SELECTED
             MainPage.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
 #endif
-            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
-
             var newItemGrid = new ItemGrid()
             {
                 container = container,

@@ -13,7 +13,7 @@ using PathfinderCharacterSheet.Droid;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ResolutionGroupName("PathfinderCharacterSheet.App")]
+[assembly: ResolutionGroupName("PathfinderCharacterSheet")]
 [assembly: ExportEffect(typeof(AndroidLongPressedEffect), "LongPressedEffect")]
 namespace PathfinderCharacterSheet.Droid
 {
@@ -71,6 +71,8 @@ namespace PathfinderCharacterSheet.Droid
             Console.WriteLine("Invoking long click command");
             var command = LongPressedEffect.GetCommand(Element);
             command?.Execute(LongPressedEffect.GetCommandParameter(Element));
+            var action = LongPressedEffect.GetAction(Element);
+            action?.Invoke();
         }
 
         /// <summary>

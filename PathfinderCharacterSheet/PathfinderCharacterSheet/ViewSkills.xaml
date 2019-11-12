@@ -7,7 +7,7 @@
         <ScrollView>
             <StackLayout>
                 <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
-                    <Label x:Name="SkillsTitle" Text="Skills: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
+                    <Label x:Name="SkillsTitle" Text="Skills" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
                     </Label>
                     <Button x:Name="AddSkill" Text="Add" FontSize="Medium" TextColor="Black" Clicked="AddSkill_Clicked">
                     </Button>
@@ -25,11 +25,7 @@
                         <Label x:Name="TrainedOnlyTitle" Text="* Trained Only" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
                     </StackLayout>
                 </StackLayout>
-                <StackLayout BackgroundColor="LightGray">
-                    <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Languages_DoubleTapped">
-                        </TapGestureRecognizer>
-                    </StackLayout.GestureRecognizers>
+                <StackLayout x:Name="LanguagesLayout" BackgroundColor="LightGray">
                     <Label x:Name="LanguagesTitle" Text="Languages: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
                     <Frame BorderColor="Black" Padding="5">
                         <Label x:Name="Languages" HorizontalTextAlignment="Center" HorizontalOptions="FillAndExpand" FontSize="Medium" TextColor="Black"></Label>

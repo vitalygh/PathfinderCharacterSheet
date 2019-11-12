@@ -42,16 +42,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
-            var gridTitle = new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Start,
-                VerticalOptions = LayoutOptions.CenterAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                Text = "Level Of Class:",
-            };
+            var gridTitle = CreateLabel("Level Of Class", TextAlignment.Center);
             stack.Children.Add(gridTitle);
             if (gridTitle != null)
             {
@@ -70,63 +61,33 @@ namespace PathfinderCharacterSheet
             var count = currentLevelOfClass.Count;
             if (count <= 0)
                 return;
-            grid.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Level",
-            }, 0, 1);
-            grid.Children.Add(new Label()
-            {
-                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                TextColor = Color.Black,
-                BackgroundColor = Color.LightGray,
-                VerticalTextAlignment = TextAlignment.Center,
-                HorizontalTextAlignment = TextAlignment.Center,
-                Text = "Class",
-            }, 1, 1);
+            grid.Children.Add(CreateLabel("Level", TextAlignment.Center), 0, 1);
+            grid.Children.Add(CreateLabel("Class", TextAlignment.Center), 1, 1);
             for (var i = 0; i < count; i++)
             {
                 var index = i + 2;
                 var loc = currentLevelOfClass[i];
-                var value = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = loc.GetLevel(sheet).ToString(),
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
+                var value = CreateFrame(loc.GetLevel(sheet).ToString());
                 var valueTapped = new TapGestureRecognizer();
                 valueTapped.Tapped += (s, e) => EditLevel(loc);
                 value.GestureRecognizers.Add(valueTapped);
                 grid.Children.Add(value, 0, index);
-                var name = new Frame()
-                {
-                    Content = new Label()
-                    {
-                        FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                        TextColor = Color.Black,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        Text = loc.ClassName,
-                    },
-                    BorderColor = Color.Black,
-                    Padding = 5,
-                };
+                var name = CreateFrame(loc.ClassName);
                 var nameTapped = new TapGestureRecognizer();
                 nameTapped.Tapped += (s, e) => EditLevel(loc);
                 name.GestureRecognizers.Add(nameTapped);
                 grid.Children.Add(name, 1, index);
             }
+        }
+
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
+        {
+            return MainPage.CreateLabel(text, horz);
+        }
+
+        private Frame CreateFrame(string text)
+        {
+            return MainPage.CreateFrame(text);
         }
 
         private void EditToView()

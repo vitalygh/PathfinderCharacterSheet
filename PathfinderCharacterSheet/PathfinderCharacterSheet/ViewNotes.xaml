@@ -7,7 +7,7 @@
         <ScrollView>
             <StackLayout>
                 <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
-                    <Label x:Name="ItemsTitle" Text="Notes: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
+                    <Label x:Name="ItemsTitle" Text="Notes" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
                     </Label>
                     <Button x:Name="AddItem" Text="Add" FontSize="Medium" TextColor="Black" Clicked="AddItem_Clicked">
                     </Button>

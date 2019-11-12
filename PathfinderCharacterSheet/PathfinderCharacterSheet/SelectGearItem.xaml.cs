@@ -81,8 +81,7 @@ namespace PathfinderCharacterSheet
             label.Text = item.AsString(sheet);
             label.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
             label.TextColor = selected == item ? Color.Green : Color.Black;
-            frame.GestureRecognizers.Clear();
-            MainPage.AddTapHandler(frame, (s, e) => SelectItem(item));
+            MainPage.SetTapHandler(frame, (s, e) => SelectItem(item));
         }
 
         private void SelectItem(ItemType item)

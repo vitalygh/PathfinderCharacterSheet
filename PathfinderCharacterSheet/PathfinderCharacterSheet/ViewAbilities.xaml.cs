@@ -32,26 +32,11 @@ namespace PathfinderCharacterSheet
                         View child = null;
                         if ((i <= 0) || (j <= 0))
                         {
-                            child = new Label()
-                            {
-                                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                                TextColor = Color.Black,
-                                HorizontalTextAlignment = (j == 0) ? TextAlignment.Start : TextAlignment.Center,
-                            };
+                            child = CreateLabel(string.Empty, (j == 0) ? TextAlignment.Start : TextAlignment.Center);
                         }
                         else
                         {
-                            child = new Frame()
-                            {
-                                Content = new Label()
-                                {
-                                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                                    TextColor = Color.Black,
-                                    HorizontalTextAlignment = TextAlignment.Center,
-                                },
-                                BorderColor = Color.Black,
-                                Padding = 5,
-                            };
+                            child = CreateFrame(string.Empty);
                         }
                         AbilityScores.Children.Add(child, j, i);
                     }
@@ -62,6 +47,21 @@ namespace PathfinderCharacterSheet
             (AbilityScores.Children[abscindex++] as Label).Text = "Ability Modifier";
             //(AbilityScores.Children[abscindex++] as Label).Text = "Temp Adjustment";
             (AbilityScores.Children[abscindex++] as Label).Text = "Temp Modifier";
+
+            MainPage.AddTapHandler(AbilityScores, AbilityScores_DoubleTapped, 2);
+            MainPage.AddTapHandler(MaxHPTitle, MaxHP_DoubleTapped, 2);
+            MainPage.AddTapHandler(MaxHP, MaxHP_DoubleTapped, 2);
+            MainPage.AddTapHandler(HPTitle, HP_DoubleTapped, 2);
+            MainPage.AddTapHandler(HP, HP_DoubleTapped, 2);
+            MainPage.AddTapHandler(DamageResistTitle, DamageResist_DoubleTapped, 2);
+            MainPage.AddTapHandler(DamageResist, DamageResist_DoubleTapped, 2);
+            MainPage.AddTapHandler(InitiativeGrid, Initiative_DoubleTapped, 2);
+            MainPage.AddTapHandler(ArmorClassGrid, ArmorClass_DoubleTapped, 2);
+            MainPage.AddTapHandler(SavingThrowsGrid, SavingThrows_DoubleTapped, 2);
+            MainPage.AddTapHandler(BaseAttackBonusGrid, BaseAttackBonus_DoubleTapped, 2);
+            MainPage.AddTapHandler(SpellResistanceGrid, SpellResistance_DoubleTapped, 2);
+            MainPage.AddTapHandler(CombatManeuverGrid, CombatManeuver_DoubleTapped, 2);
+            MainPage.AddTapHandler(SpeedGrid, Speed_DoubleTapped, 2);
         }
 
         public void UpdateView()
@@ -157,7 +157,7 @@ namespace PathfinderCharacterSheet
             BurrowSpeed.Text = sheet.speed.burrowSpeed.GetTotal(sheet).ToString() + " ft";
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             return MainPage.CreateLabel(text, horz);
         }

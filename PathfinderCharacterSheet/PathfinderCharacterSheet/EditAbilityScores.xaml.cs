@@ -45,33 +45,16 @@ namespace PathfinderCharacterSheet
                     View child = null;
                     if ((i <= 0) || (j <= 0))
                     {
-                        child = new Label()
-                        {
-                            FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                            TextColor = Color.Black,
-                            HorizontalTextAlignment = TextAlignment.Center,
-                            VerticalTextAlignment = TextAlignment.Center,
-                        };
+                        child = CreateLabel(string.Empty, i > 0 ? TextAlignment.Start : TextAlignment.Center);
                     }
                     else
                     {
                         //if (j != 1)
                         {
                             var readOnly = j % 2 == 0;
-                            child = new Frame()
-                            {
-                                Content = new Label()
-                                {
-                                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                                    TextColor = Color.Black,
-                                    HorizontalOptions = LayoutOptions.Center,
-                                    VerticalOptions = LayoutOptions.Center,
-                                    TextDecorations = readOnly ? TextDecorations.None : TextDecorations.Underline,
-                                },
-                                BorderColor = Color.Black,
-                                BackgroundColor = readOnly ? Color.LightGray : Color.White,
-                                Padding = 5,
-                            };
+                            child = CreateFrame(string.Empty);
+                            ((child as Frame).Content as Label).TextDecorations = readOnly ? TextDecorations.None : TextDecorations.Underline;
+                            child.BackgroundColor = readOnly ? Color.LightGray : Color.White;
                             if (!readOnly)
                             {
                                 var tgr = new TapGestureRecognizer()
@@ -129,6 +112,16 @@ namespace PathfinderCharacterSheet
             (AbilityScores.Children[2] as Label).Text = "Ability Modifier";
             (AbilityScores.Children[3] as Label).Text = "Temp Adjustment";
             (AbilityScores.Children[4] as Label).Text = "Temp Modifier";
+        }
+
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
+        {
+            return MainPage.CreateLabel(text, horz);
+        }
+
+        private Frame CreateFrame(string text)
+        {
+            return MainPage.CreateFrame(text);
         }
 
         private void UpdateModifier(int i)

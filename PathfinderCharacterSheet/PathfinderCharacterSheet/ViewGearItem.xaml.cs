@@ -29,6 +29,9 @@ namespace PathfinderCharacterSheet
         public ViewGearItem()
         {
             InitializeComponent();
+            MainPage.AddTapHandler(GearItemGrid, Edit_Clicked, 2);
+            MainPage.AddTapHandler(AmountFrame, Amount_DoubleTapped, 2);
+            MainPage.AddTapHandler(WeightFrame, Weight_DoubleTapped, 2);
         }
 
         public void InitView(ItemsType gearItem)

@@ -30,6 +30,7 @@ namespace PathfinderCharacterSheet
         public ViewSpecialAbility()
         {
             InitializeComponent();
+            MainPage.AddTapHandler(SpecialAbilitiesGrid, Edit_Clicked, 2);
         }
 
         public void InitView(ItemType item)

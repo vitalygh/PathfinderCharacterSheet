@@ -31,6 +31,7 @@ namespace PathfinderCharacterSheet
         public ViewSkills()
         {
             InitializeComponent();
+            MainPage.AddTapHandler(LanguagesLayout, Languages_DoubleTapped, 2);
             UpdateView();
         }
 
@@ -78,10 +79,8 @@ namespace PathfinderCharacterSheet
                 row.name.TextColor = (skill.trainedOnly && (skill.rank.GetTotal(sheet) <= 0)) ? Color.Red : Color.Black;
                 UpdateValue(row.total, skill.GetTotal(sheet).ToString());
                 EventHandler handler = (s, e) => Skill_DoubleTap(skill, skillIndex);
-                row.nameFrame.GestureRecognizers.Clear();
-                MainPage.AddTapHandler(row.nameFrame, handler, 2);
-                row.totalFrame.GestureRecognizers.Clear();
-                MainPage.AddTapHandler(row.totalFrame, handler, 2);
+                MainPage.SetTapHandler(row.nameFrame, handler, 2);
+                MainPage.SetTapHandler(row.totalFrame, handler, 2);
             }
             var count = skillsCount - rowsCount;
             if (count > 0)
@@ -158,7 +157,7 @@ namespace PathfinderCharacterSheet
             Languages.Text = sheet.Languages;
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             return MainPage.CreateLabel(text, horz);
         }

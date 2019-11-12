@@ -6,11 +6,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Edit_Clicked">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="FeatGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />

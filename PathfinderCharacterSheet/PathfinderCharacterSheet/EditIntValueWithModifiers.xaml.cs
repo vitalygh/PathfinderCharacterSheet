@@ -45,7 +45,7 @@ namespace PathfinderCharacterSheet
             UpdateModifiersSum();
             if (modifiers == null)
                 return;
-            MainPage.FillIntMLGrid(Modifiers, sheet, modifiers, "Modifiers:", EditModifier, EditModifier, (modifiers, modifier) => UpdateModifiersSum());
+            MainPage.FillIntMLGrid(Modifiers, sheet, modifiers, "Modifiers", EditModifier, EditModifier, (modifiers, modifier) => UpdateModifiersSum());
         }
 
         private void UpdateTotal()

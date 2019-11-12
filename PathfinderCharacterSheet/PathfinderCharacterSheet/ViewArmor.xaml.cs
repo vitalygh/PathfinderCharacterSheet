@@ -1,5 +1,6 @@
 ﻿#define EXPAND_SELECTED
 //#define EXPAND_CHECKBOX
+#define EXPAND_WITH_TAP
 #define USE_GRID
 using System;
 using System.Collections.Generic;
@@ -158,7 +159,7 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 #endif
-            var armorTitle = CreateLabel("Armor:");
+            var armorTitle = CreateLabel("Armor", TextAlignment.Center);
             var armorAddButton = new Button()
             {
                 Text = "Add",
@@ -176,7 +177,7 @@ namespace PathfinderCharacterSheet
             Header.Children.Add(armor);
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             var label = MainPage.CreateLabel(text, horz);
             label.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -251,13 +252,14 @@ namespace PathfinderCharacterSheet
             UpdateValue(armorGrid.weight, item.weight.GetTotal(sheet).ToString());
             UpdateValue(armorGrid.description, item.description);
 
-            armorGrid.container.GestureRecognizers.Clear();
+            MainPage.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
+#if EXPAND_WITH_TAP
 #if EXPAND_CHECKBOX
             MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
 #else
             MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(item), 1);
 #endif
-            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
+#endif
         }
 
         private void CreateSelectedArmorGrid(KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
@@ -308,7 +310,7 @@ namespace PathfinderCharacterSheet
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
 #endif
-            var nameTitle = CreateLabel("Name: ", TextAlignment.Start);
+            var nameTitle = CreateLabel("Name: ");
             var nameStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -326,7 +328,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(nameValue, 1, row);
             row += 1;
 
-            var activeTitle = CreateLabel("Active: ", TextAlignment.Start);
+            var activeTitle = CreateLabel("Active: ");
             var activecb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -340,61 +342,64 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(activecb, 1, row);
             row += 1;
 
-            var armorBonusTitle = CreateLabel("Armor Bonus: ", TextAlignment.Start);
+            var armorBonusTitle = CreateLabel("Armor Bonus: ");
             var armorBonusValue = CreateFrame(item.ArmorBonus(sheet));
             grid.Children.Add(armorBonusTitle, 0, row);
             grid.Children.Add(armorBonusValue, 1, row);
             row += 1;
 
-            var armorTypeTitle = CreateLabel("Armor Type: ", TextAlignment.Start);
+            var armorTypeTitle = CreateLabel("Armor Type: ");
             var armorTypeValue = CreateFrame(item.ArmorType.ToString());
             grid.Children.Add(armorTypeTitle, 0, row);
             grid.Children.Add(armorTypeValue, 1, row);
             row += 1;
 
-            var maxDexBonusTitle = CreateLabel("Max Dex Bonus: ", TextAlignment.Start);
+            var maxDexBonusTitle = CreateLabel("Max Dex Bonus: ");
             var maxDexBonusValue = CreateFrame(item.MaxDexBonus(sheet));
             grid.Children.Add(maxDexBonusTitle, 0, row);
             grid.Children.Add(maxDexBonusValue, 1, row);
             row += 1;
 
-            var checkPenaltyTitle = CreateLabel("Check Penalty: ", TextAlignment.Start);
+            var checkPenaltyTitle = CreateLabel("Check Penalty: ");
             var checkPenaltyValue = CreateFrame(item.CheckPenalty(sheet));
             grid.Children.Add(checkPenaltyTitle, 0, row);
             grid.Children.Add(checkPenaltyValue, 1, row);
             row += 1;
 
-            var spellFailureTitle = CreateLabel("Spell Failure: ", TextAlignment.Start);
+            var spellFailureTitle = CreateLabel("Spell Failure: ");
             var spellFailureValue = CreateFrame(item.SpellFailure(sheet));
             grid.Children.Add(spellFailureTitle, 0, row);
             grid.Children.Add(spellFailureValue, 1, row);
             row += 1;
 
-            var propertiesTitle = CreateLabel("Properties: ", TextAlignment.Start);
+            var propertiesTitle = CreateLabel("Properties: ");
             var propertiesValue = CreateFrame(item.properties);
             grid.Children.Add(propertiesTitle, 0, row);
             grid.Children.Add(propertiesValue, 1, row);
             row += 1;
 
-            var weightTitle = CreateLabel("Weight: ", TextAlignment.Start);
+            var weightTitle = CreateLabel("Weight: ");
             var weightValue = CreateFrame(item.weight.GetTotal(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;
 
-            var descriptionTitle = CreateLabel("Description: ", TextAlignment.Start);
+            var descriptionTitle = CreateLabel("Description: ");
             grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
             row += 1;
 
             var descriptionValue = CreateFrame(item.description);
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
+
+            MainPage.AddTapHandler(grid, (s, e) => Armor_DoubleTap(item), 2);
+#if EXPAND_WITH_TAP
 #if EXPAND_CHECKBOX
             MainPage.AddTapHandler(grid, (s, e) => Armor_Tap(selectedcb), 1);
 #else
             MainPage.AddTapHandler(grid, (s, e) => Armor_Tap(item), 1);
 #endif
-            MainPage.AddTapHandler(grid, (s, e) => Armor_DoubleTap(item), 2);
+#endif
 
             var newArmorGrid = new SelectedArmorGrid()
             {
@@ -450,7 +455,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            armorGrid.container.GestureRecognizers.Clear();
+            MainPage.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
 #if EXPAND_SELECTED
 #if EXPAND_CHECKBOX
             if (armorGrid.selectedHandler != null)
@@ -458,14 +463,17 @@ namespace PathfinderCharacterSheet
             armorGrid.selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             UpdateValue(armorGrid.selected, item.selected);
             armorGrid.selected.CheckedChanged += armorGrid.selectedHandler;
-            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
+#if EXPAND_WITH_TAP
+MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
+#endif
 #else
+#if EXPAND_WITH_TAP
             MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(item), 1);
+#endif
 #endif
 #endif
             UpdateValue(armorGrid.name, item.AsString(sheet));
             armorGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
-            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
         }
 
         private void CreateArmorGrid(KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
@@ -532,14 +540,18 @@ namespace PathfinderCharacterSheet
             };
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
+#if EXPAND_WITH_TAP
             MainPage.AddTapHandler(container, (s, e) => Armor_Tap(selectedcb), 1);
+#endif
 #if USE_GRID
             container.Children.Add(selectedcb, 0, 0);
 #else
             container.Children.Add(selectedcb);
 #endif
 #else
+#if EXPAND_WITH_TAP
             MainPage.AddTapHandler(container, (s, e) => Armor_Tap(item), 1);
+#endif
 #endif
 #endif
 #if USE_GRID

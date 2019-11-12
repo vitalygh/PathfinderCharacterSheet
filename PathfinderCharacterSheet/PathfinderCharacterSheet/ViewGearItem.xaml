@@ -6,11 +6,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Edit_Clicked">
-                        </TapGestureRecognizer>
-                    </Grid.GestureRecognizers>
+                <Grid x:Name="GearItemGrid" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -34,21 +30,13 @@
                     </CheckBox>
                     <Label x:Name="AmountTitle" Text="Amount: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Amount_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
+                    <Frame x:Name="AmountFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >
                         <Label x:Name="Amount" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="2" Tapped="Weight_DoubleTapped">
-                            </TapGestureRecognizer>
-                        </Frame.GestureRecognizers>
+                    <Frame x:Name="WeightFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
                         <Label x:Name="Weight" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>

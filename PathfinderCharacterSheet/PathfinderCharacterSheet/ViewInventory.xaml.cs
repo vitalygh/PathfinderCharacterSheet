@@ -1,4 +1,5 @@
 ﻿//#define EXPAND_SELECTED
+#define EXPAND_WITH_TAP
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,16 @@ namespace PathfinderCharacterSheet
         public ViewInventory()
         {
             InitializeComponent();
+            MainPage.AddTapHandler(PPTitle, PP_DoubleTapped, 2);
+            MainPage.AddTapHandler(PPFrame, PP_DoubleTapped, 2);
+            MainPage.AddTapHandler(GPTitle, PP_DoubleTapped, 2);
+            MainPage.AddTapHandler(GPFrame, PP_DoubleTapped, 2);
+            MainPage.AddTapHandler(SPTitle, PP_DoubleTapped, 2);
+            MainPage.AddTapHandler(SPFrame, PP_DoubleTapped, 2);
+            MainPage.AddTapHandler(PPTitle, PP_DoubleTapped, 2);
+            MainPage.AddTapHandler(PPFrame, PP_DoubleTapped, 2); 
+            MainPage.AddTapHandler(EncumbranceGrid, Encumbrance_DoubleTapped, 2);
+
             UpdateView();
         }
 
@@ -125,7 +136,7 @@ namespace PathfinderCharacterSheet
                 RemoveGearItemGrid(gearItemGrids[gearItemGrids.Count - 1]);
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Center)
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
             return MainPage.CreateLabel(text, horz);
         }
@@ -172,9 +183,10 @@ namespace PathfinderCharacterSheet
             gearItemGrid.viewButtonHandler = (s, e) => GearItemViewButton_Tap(item, itemIndex);
             gearItemGrid.viewButton.Clicked += gearItemGrid.viewButtonHandler;
 
-            gearItemGrid.grid.GestureRecognizers.Clear();
+            MainPage.SetTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
+#if EXPAND_WITH_TAP
             MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
-            MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
+#endif
         }
 
         private void CreateSelectedGearItemGrid(KeyValuePair<CharacterSheet.GearItem, int> kvp)
@@ -220,7 +232,7 @@ namespace PathfinderCharacterSheet
             };
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
-            var nameTitle = CreateLabel("Name: ", TextAlignment.Start);
+            var nameTitle = CreateLabel("Name: ");
             var nameTitleStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -255,19 +267,19 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(nameValueStack, 1, row);
             row += 1;
 
-            var amountTitle = CreateLabel("Amount: ", TextAlignment.Start);
+            var amountTitle = CreateLabel("Amount: ");
             var amountValue = CreateFrame(item.amount.GetTotal(sheet).ToString());
             grid.Children.Add(amountTitle, 0, row);
             grid.Children.Add(amountValue, 1, row);
             row += 1;
 
-            var weightTitle = CreateLabel("Weight: ", TextAlignment.Start);
+            var weightTitle = CreateLabel("Weight: ");
             var weightValue = CreateFrame(item.weight.GetTotal(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;
 
-            var descriptionTitle = CreateLabel("Description: ", TextAlignment.Start);
+            var descriptionTitle = CreateLabel("Description: ");
             grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
             row += 1;
 
@@ -275,9 +287,10 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
-            MainPage.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
             MainPage.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
-
+#if EXPAND_WITH_TAP
+            MainPage.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
+#endif
             var newGearItemGrid = new SelectedGearItemGrid()
             {
                 grid = grid,
@@ -325,14 +338,16 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            gearItemGrid.grid.GestureRecognizers.Clear();
+            MainPage.SetTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item), 2);
 #if EXPAND_SELECTED
             if (gearItemGrid.selectedHandler != null)
                 gearItemGrid.selected.CheckedChanged -= gearItemGrid.selectedHandler;
             gearItemGrid.selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
             gearItemGrid.selected.IsChecked = item.selected;
             gearItemGrid.selected.CheckedChanged += gearItemGrid.selectedHandler;
+#if EXPAND_WITH_TAP
             MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
+#endif
 #endif
             gearItemGrid.name.Text = item.AsString(sheet);
             if (gearItemGrid.viewButtonHandler != null)
@@ -340,7 +355,6 @@ namespace PathfinderCharacterSheet
             gearItemGrid.viewButtonHandler = (s, e) => GearItemViewButton_Tap(item);
             gearItemGrid.viewButton.Clicked += gearItemGrid.viewButtonHandler;
             gearItemGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
-            MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item), 2);
         }
 
         private void CreateGearItemGrid(KeyValuePair<CharacterSheet.GearItem, int> kvp)
@@ -380,6 +394,7 @@ namespace PathfinderCharacterSheet
             {
                 new RowDefinition() { Height = GridLength.Auto },
             };
+            MainPage.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item), 2);
 #if EXPAND_SELECTED
             var selectedcb = new CheckBox()
             {
@@ -389,12 +404,13 @@ namespace PathfinderCharacterSheet
             };
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
+#if EXPAND_WITH_TAP
             MainPage.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
+#endif
 #endif
             var gearItemNameFrame = CreateFrame(item.AsString(sheet));
             var gearItemName = gearItemNameFrame.Content as Label;
             gearItemName.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
-            MainPage.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item), 2);
             var viewButton = new Button()
             {
                 Text = "View",
