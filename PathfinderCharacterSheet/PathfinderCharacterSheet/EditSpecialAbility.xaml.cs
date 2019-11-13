@@ -11,7 +11,7 @@ using ItemType = PathfinderCharacterSheet.CharacterSheet.SpecialAbility;
 namespace PathfinderCharacterSheet
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditSpecialAbility : ContentPage
+    public partial class EditSpecialAbility : ContentPage, ISheetView
     {
         private List<ItemType> items
         {
@@ -43,6 +43,17 @@ namespace PathfinderCharacterSheet
             ItemName.Text = this.item.name;
             Description.Text = this.item.description;
             Delete.IsEnabled = source != null;
+            UpdateView();
+        }
+
+        public void UpdateView()
+        {
+            pushedPage = null;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            Left.Text = item.left.GetTotal(sheet).ToString();
+            Total.Text = item.total.GetTotal(sheet).ToString();
         }
 
         private void EditToView()
@@ -67,6 +78,32 @@ namespace PathfinderCharacterSheet
             }
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
+        }
+
+        private void Left_Tapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, item.left, "Edit Special Ability", "Uses Left: ", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void Total_Tapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, item.total, "Edit Special Ability", "Uses Allowed: ", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

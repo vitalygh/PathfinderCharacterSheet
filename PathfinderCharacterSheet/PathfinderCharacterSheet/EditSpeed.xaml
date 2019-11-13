@@ -22,7 +22,7 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="SpeedTitle" Text="Speed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center" Grid.Column="1" Grid.Row="0">
                     </Label>
-                    <Label x:Name="BaseSpeedTitle" Text="Base: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="BaseSpeedTitle" Text="Base: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Frame.GestureRecognizers>

@@ -918,6 +918,9 @@ namespace PathfinderCharacterSheet
 
         public class SpecialAbility: ItemWithDescription
         {
+            public ValueWithIntModifiers left = new ValueWithIntModifiers();
+            public ValueWithIntModifiers total = new ValueWithIntModifiers();
+
             public override object Clone
             {
                 get
@@ -926,6 +929,41 @@ namespace PathfinderCharacterSheet
                     clone.Fill(this);
                     return clone;
                 }
+            }
+
+            public bool Equals(SpecialAbility other)
+            {
+                if (other == null)
+                    return false;
+                if (!base.Equals(other))
+                    return false;
+                if (!left.Equals(other.left))
+                    return false;
+                if (!total.Equals(other.total))
+                    return false;
+                return true;
+            }
+
+            public SpecialAbility Fill(SpecialAbility source)
+            {
+                if (source == null)
+                    return this;
+                base.Fill(source);
+                left = source.left.Clone as ValueWithIntModifiers;
+                total = source.total.Clone as ValueWithIntModifiers;
+                return this;
+            }
+
+            public override string AsString(CharacterSheet sheet)
+            {
+                var text = name;
+                var t = total.GetTotal(sheet);
+                if (t > 0)
+                {
+                    var l = left.GetTotal(sheet);
+                    text += " (" + l + " / " + t + ")";
+                }
+                return text;
             }
         }
 
@@ -988,8 +1026,8 @@ namespace PathfinderCharacterSheet
                     return this;
                 base.Fill(source);
                 active = source.active;
-                amount = source.amount;
-                weight = source.weight;
+                amount = source.amount.Clone as ValueWithIntModifiers;
+                weight = source.weight.Clone as ValueWithIntModifiers;
                 return this;
             }
         }
@@ -1645,6 +1683,46 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers bonusSpells = new ValueWithIntModifiers();
         }
 
+        public class ChannelEnergy
+        {
+            public ValueWithIntModifiers left = new ValueWithIntModifiers();
+            public ValueWithIntModifiers total = new ValueWithIntModifiers();
+            public DiceRoll points = new DiceRoll();
+
+            public object Clone
+            {
+                get
+                {
+                    var clone = new ChannelEnergy();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
+
+            public bool Equals(ChannelEnergy other)
+            {
+                if (other == null)
+                    return false;
+                if (!left.Equals(other.left))
+                    return false;
+                if (!total.Equals(other.total))
+                    return false;
+                if (!points.Equals(other.points))
+                    return false;
+                return true;
+            }
+
+            public ChannelEnergy Fill(ChannelEnergy source)
+            {
+                if (source == null)
+                    return this;
+                left = source.left.Clone as ValueWithIntModifiers;
+                total = source.total.Clone as ValueWithIntModifiers;
+                points = source.points.Clone as DiceRoll;
+                return this;
+            }
+        }
+
         public CharacterSheet()
         {
 
@@ -1966,8 +2044,7 @@ namespace PathfinderCharacterSheet
         #endregion
 
         #region Spells
-        public ValueWithIntModifiers channelsPerDay = new ValueWithIntModifiers();
-        public ValueWithIntModifiers channelsLeft = new ValueWithIntModifiers();
+        public ChannelEnergy channelEnergy = new ChannelEnergy();
         public SpellLevel[] spellLevel = new SpellLevel[spellLevelsCount]
         {
             new SpellLevel(),

@@ -31,6 +31,8 @@ namespace PathfinderCharacterSheet
         {
             InitializeComponent();
             MainPage.AddTapHandler(SpecialAbilitiesGrid, Edit_Clicked, 2);
+            MainPage.AddTapHandler(LeftFrame, Left_DoubleTapped, 2);
+            MainPage.AddTapHandler(TotalFrame, Total_DoubleTapped, 2);
         }
 
         public void InitView(ItemType item)
@@ -51,6 +53,37 @@ namespace PathfinderCharacterSheet
             }
             ItemName.Text = item.name;
             Description.Text = item.description;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            Left.Text = item.left.GetTotal(sheet).ToString();
+            Total.Text = item.total.GetTotal(sheet).ToString();
+        }
+
+        private void Left_DoubleTapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, item.left, "Edit Special Ability", "Uses Left: ", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void Total_DoubleTapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, item.total, "Edit Special Ability", "Uses Allowed: ", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
         }
 
         private void Back_Clicked(object sender, EventArgs e)

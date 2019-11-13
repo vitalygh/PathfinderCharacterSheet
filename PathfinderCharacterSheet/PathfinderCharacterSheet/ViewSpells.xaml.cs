@@ -28,11 +28,9 @@ namespace PathfinderCharacterSheet
         public ViewSpells()
         {
             InitializeComponent();
-            MainPage.AddTapHandler(ChannelsLeftTitle, ChannelsLeft_DoubleTapped, 2);
-            MainPage.AddTapHandler(ChannelsLeftFrame, ChannelsLeft_DoubleTapped, 2);
-            MainPage.AddTapHandler(ChannelsPerDayTitle, ChannelsPerDay_DoubleTapped, 2);
-            MainPage.AddTapHandler(ChannelsPerDayTitle, ChannelsPerDay_DoubleTapped, 2);
             CreateControls();
+            MainPage.AddTapHandler(ChannelsTitle, Channels_DoubleTapped, 2);
+            MainPage.AddTapHandler(ChannelsFrame, Channels_DoubleTapped, 2);
             UpdateView();
         }
 
@@ -148,7 +146,7 @@ namespace PathfinderCharacterSheet
 #else
                 horzLayout.Children.Add(frame);
 #endif
-                MainPage.AddTapHandler(controls.spellsKnown, (s, e) => SpellsKnown_DoubleTap(level), 2);
+                MainPage.AddTapHandler(frame, (s, e) => SpellsKnown_DoubleTap(level), 2);
 
                 frame = CreateFrame(string.Empty);
                 controls.spellSaveDC = frame.Content as Label;
@@ -158,7 +156,7 @@ namespace PathfinderCharacterSheet
 #else
                 horzLayout.Children.Add(frame);
 #endif
-                MainPage.AddTapHandler(controls.spellSaveDC, (s, e) => SpellSaveDC_DoubleTap(level), 2);
+                MainPage.AddTapHandler(frame, (s, e) => SpellSaveDC_DoubleTap(level), 2);
 
                 frame = CreateFrame(level.ToString());
                 frame.BackgroundColor = Color.LightGray;
@@ -178,7 +176,7 @@ namespace PathfinderCharacterSheet
 #else
                 horzLayout.Children.Add(frame);
 #endif
-                MainPage.AddTapHandler(controls.spellsPerDay, (s, e) => SpellsPerDay_DoubleTap(level), 2);
+                MainPage.AddTapHandler(frame, (s, e) => SpellsPerDay_DoubleTap(level), 2);
 
                 frame = CreateFrame(string.Empty);
                 controls.bonusSpells = frame.Content as Label;
@@ -188,7 +186,7 @@ namespace PathfinderCharacterSheet
                     controls.bonusSpells.Text = "-";
                 }
                 else
-                    MainPage.AddTapHandler(controls.bonusSpells, (s, e) => BonusSpells_DoubleTap(level), 2);
+                    MainPage.AddTapHandler(frame, (s, e) => BonusSpells_DoubleTap(level), 2);
 #if USE_GRID
                 grid.Children.Add(frame, column++, row);
 #else
@@ -323,32 +321,26 @@ namespace PathfinderCharacterSheet
             }
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
-            var channelsLeft = sheet.channelsLeft.GetTotal(sheet).ToString();
-            UpdateText(ChannelsLeft, channelsLeft);
-            var channelsPerDay = sheet.channelsPerDay.GetTotal(sheet).ToString();
-            UpdateText(ChannelsPerDay, channelsPerDay);
+            var points = sheet.channelEnergy.points.AsString(sheet);
+            var channels = "Channels";
+            if (!string.IsNullOrWhiteSpace(points))
+                channels += " " + points;
+            channels += ": ";
+            UpdateText(ChannelsTitle, channels);
+            var left = sheet.channelEnergy.left.GetTotal(sheet);
+            var total = sheet.channelEnergy.total.GetTotal(sheet);
+            UpdateText(Channels, left + " / " + total);
         }
 
-        private void ChannelsLeft_DoubleTapped(object sender, EventArgs e)
+        private void Channels_DoubleTapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.channelsLeft, "Edit Channels Left", "Channels Left: ", true);
-            pushedPage = eivwm;
-            Navigation.PushAsync(eivwm);
-        }
-
-        private void ChannelsPerDay_DoubleTapped(object sender, EventArgs e)
-        {
-            if (pushedPage != null)
-                return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.channelsPerDay, "Edit Channels Per Day", "Channels Per Day: ", true);
-            pushedPage = eivwm;
-            Navigation.PushAsync(eivwm);
+            var ece = new EditChannelEnergy();
+            ece.InitEditor();
+            pushedPage = ece;
+            Navigation.PushAsync(ece);
         }
     }
 }

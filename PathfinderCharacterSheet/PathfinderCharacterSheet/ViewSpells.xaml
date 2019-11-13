@@ -8,28 +8,14 @@
             <StackLayout>
                 <StackLayout x:Name="Spells" BackgroundColor="LightGray">
                 </StackLayout>
-                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <Label x:Name="ChannelsLeftTitle" Text="Channels Left: " FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="0" Grid.Row="0">
+                <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Label x:Name="ChannelsTitle" Text="Channels: " FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Start" VerticalTextAlignment="Center">
                     </Label>
-                    <Frame x:Name="ChannelsLeftFrame" BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0">
-                        <Label x:Name="ChannelsLeft" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                    <Frame x:Name="ChannelsFrame" BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Label x:Name="Channels" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="ChannelsPerDayTitle" Text="Channels Per Day: " FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1">
-                    </Label>
-                    <Frame x:Name="ChannelsPerDayFrame" BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
-                        <Label x:Name="ChannelsPerDay" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
-                        </Label>
-                    </Frame>
-                </Grid>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>
