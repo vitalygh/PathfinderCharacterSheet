@@ -1,5 +1,5 @@
 ﻿//#define MOVE_TABS
-//#define DEBUG_ONE_TAB
+#define MOVE_TABS_IOS
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,8 +16,8 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CharacterSheetTabs : Xamarin.Forms.TabbedPage, ISheetView
     {
-#if MOVE_TABS
-        Page[] pages = new Page[]
+        private const int visibleTabsLimit = 5;
+        private static readonly List<Page> pages = new List<Page>()
         {
             new ViewBackground(),
             new ViewAbilities(),
@@ -30,83 +30,69 @@ namespace PathfinderCharacterSheet
             new ViewSpells(),
             new ViewNotes(),
         };
+
+        private static bool NeedMoveTabs
+        {
+            get
+            {
+#if MOVE_TABS
+                return true;
+#elif MOVE_TABS_IOS
+                return Device.RuntimePlatform == Device.iOS;
+#else
+                return false;
 #endif
+            }
+        }
+
 
         public CharacterSheetTabs()
         {
             InitializeComponent();
-            On<Android>().SetOffscreenPageLimit(10);
-#if MOVE_TABS
-            Children.Add(pages[0]);
-            Children.Add(pages[1]);
-            Children.Add(pages[2]);
-#else
-#if DEBUG_ONE_TAB
-            for (var i = 0; i < 10; i++)
-                Children.Add(new ViewSkills());
-#else
-            Children.Add(new ViewBackground());
-            Children.Add(new ViewAbilities());
-            Children.Add(new ViewWeapon());
-            Children.Add(new ViewArmor());
-            Children.Add(new ViewInventory());
-            Children.Add(new ViewSkills());
-            Children.Add(new ViewFeats());
-            Children.Add(new ViewSpecialAbilities());
-            Children.Add(new ViewSpells());
-            Children.Add(new ViewNotes());
-#endif
-#endif
+            On<Android>().SetOffscreenPageLimit(pages.Count);
+            var startTabsCount = NeedMoveTabs ? visibleTabsLimit : pages.Count;
+            for (var i = 0; i < startTabsCount; i++)
+                Children.Add(pages[i]);
         }
 
         public void InitTabs()
         {
-#if MOVE_TABS
             foreach (var tab in pages)
             {
-                var sheet = tab as ISheetView;
-                if (sheet != null)
-                    sheet.UpdateView();
+                var view = tab as ISheetView;
+                if (view != null)
+                    view.UpdateView();
             }
-#else
-            foreach (var tab in Children)
-            {
-                var sheet = tab as ISheetView;
-                if (sheet != null)
-                    sheet.UpdateView();
-            }
-#endif
+        }
+
+        private List<Page> GetVisiblePages()
+        {
+            var index = pages.IndexOf(CurrentPage);
+            var count = pages.Count;
+            var center = Math.Min(count, visibleTabsLimit) / 2;
+            var visiblePages = new List<Page>();
+            var start = index - center;
+            start = Math.Max(0, start);
+            start = Math.Min(Math.Max(0, count - visibleTabsLimit), start);
+            var end = start + visibleTabsLimit;
+            end = Math.Min(count, end);
+            for (var i = start; i < end; i++)
+                visiblePages.Add(pages[i]);
+            return visiblePages;
         }
 
         public void MoveTabs()
         {
-#if MOVE_TABS
-            const int size = 3;
-            var p = CurrentPage;
-            var count = pages.Length;
-            if (Children[0] == p)
-            {
-                for (var i = 1; i < count; i++)
-                    if (pages[i] == p)
-                    {
-                        Children.RemoveAt(2);
-                        Children.Insert(0, pages[i - 1]);
-                        CurrentPage = p;
-                        break;
-                    }
-            }
-            else if (Children[size - 1] == p)
-            {
-                for (var i = count - 2; i >= 0; i--)
-                    if (pages[i] == p)
-                    {
-                        Children.RemoveAt(0);
-                        Children.Add(pages[i + 1]);
-                        CurrentPage = p;
-                        break;
-                    }
-            }
-#endif
+            if (!NeedMoveTabs)
+                return;
+            var vp = GetVisiblePages();
+            if (vp[0] == Children[0])
+                return;
+            var cp = CurrentPage;
+            Children.Clear();
+            for (var i = 0; i < vp.Count; i++)
+                Children.Add(vp[i]);
+            CurrentPage = cp;
         }
 
         public void UpdateView()

@@ -27,12 +27,17 @@ namespace PathfinderCharacterSheet
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     tabs.MoveTabs();
-                    var c = CharacterSheetStorage.Instance.selectedCharacter;
-                    if (c != null)
-                        tabs.Title = c.Name + ": " + tabs.CurrentPage.Title;
-                    var sheet = (tabs.CurrentPage as ISheetView);
+                    var sheet = CharacterSheetStorage.Instance.selectedCharacter;
                     if (sheet != null)
-                        sheet.UpdateView();
+                    {
+                        var title = sheet.Name;
+                        if (tabs.CurrentPage != null)
+                            title += ": " + tabs.CurrentPage.Title;
+                        tabs.Title = title;
+                    }
+                    var view = (tabs.CurrentPage as ISheetView);
+                    if (view != null)
+                        view.UpdateView();
                 });
             };
 #endif
@@ -123,7 +128,10 @@ namespace PathfinderCharacterSheet
             Characters.IsVisible = false;
             CharacterSheetStorage.Instance.selectedCharacter = sheet;
             tabs.InitTabs();
-            tabs.Title = sheet.Name + ": " + tabs.CurrentPage.Title;
+            var title = sheet.Name;
+            if (tabs.CurrentPage != null) 
+                title += ": " + tabs.CurrentPage.Title;
+            tabs.Title = title;
             Navigation.PushAsync(tabs);
         }
 
@@ -159,7 +167,7 @@ namespace PathfinderCharacterSheet
             {
                 Content = CreateLabel(text, TextAlignment.Center),
                 HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.FillAndExpand,
                 BorderColor = Color.Black,
                 Padding = 5,
             };

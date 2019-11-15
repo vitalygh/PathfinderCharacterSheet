@@ -21,9 +21,9 @@ namespace PathfinderCharacterSheet
 
         void OnNavigationPopped(object s, NavigationEventArgs e)
         {
-            var uv = (MainPage as NavigationPage).CurrentPage as ISheetView;
-            if (uv != null)
-                uv.UpdateView();
+            var view = (MainPage as NavigationPage).CurrentPage as ISheetView;
+            if (view != null)
+                view.UpdateView();
         }
 
         protected override void OnStart()

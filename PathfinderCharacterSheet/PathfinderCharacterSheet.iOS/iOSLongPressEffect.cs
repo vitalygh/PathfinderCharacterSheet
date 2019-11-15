@@ -9,7 +9,7 @@ using PathfinderCharacterSheet.iOS;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 
-[assembly: ResolutionGroupName("PathfinderCharacterSheet.App")]
+[assembly: ResolutionGroupName("PathfinderCharacterSheet")]
 [assembly: ExportEffect(typeof(iOSLongPressedEffect), "LongPressedEffect")]
 namespace PathfinderCharacterSheet.iOS
 {

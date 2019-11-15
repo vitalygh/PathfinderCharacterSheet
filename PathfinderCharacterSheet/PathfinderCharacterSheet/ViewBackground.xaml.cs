@@ -26,22 +26,30 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            CharacterName.Text = sheet.Name;
-            Alignment.Text = sheet.Alignment.ToString();
-            Experience.Text = sheet.experience.GetTotal(sheet).ToString();
-            NextLevel.Text = sheet.nextLevelExperience.GetTotal(sheet).ToString();
-            Level.Text = sheet.LevelAsString;
-            Deity.Text = sheet.deity;
-            Homeland.Text = sheet.homeland;
-            Race.Text = sheet.Race;
-            Size.Text = sheet.size;
-            Gender.Text = sheet.gender;
-            Age.Text = sheet.age;
-            CharacterHeight.Text = sheet.height;
-            Weight.Text = sheet.weight;
-            Hair.Text = sheet.hair;
-            Eyes.Text = sheet.eyes;
-            Biography.Text = sheet.biography;
+            UpdateValue(CharacterName, sheet.Name);
+            UpdateValue(Alignment, sheet.Alignment.ToString());
+            UpdateValue(Experience, sheet.experience.GetTotal(sheet).ToString());
+            UpdateValue(NextLevel, sheet.nextLevelExperience.GetTotal(sheet).ToString());
+            UpdateValue(Level, sheet.LevelAsString);
+            UpdateValue(Deity, sheet.deity);
+            UpdateValue(Homeland, sheet.homeland);
+            UpdateValue(Race, sheet.Race);
+            UpdateValue(Size, sheet.size);
+            UpdateValue(Gender, sheet.gender);
+            UpdateValue(Age, sheet.age);
+            UpdateValue(CharacterHeight, sheet.height);
+            UpdateValue(Weight, sheet.weight);
+            UpdateValue(Hair, sheet.hair);
+            UpdateValue(Eyes, sheet.eyes);
+            UpdateValue(Biography, sheet.biography);
+        }
+
+        private void UpdateValue(Label label, string text)
+        {
+            if (label == null)
+                return;
+            if (label.Text != text)
+                label.Text = text;
         }
 
         private void Background_DoubleTapped(object sender, EventArgs e)
