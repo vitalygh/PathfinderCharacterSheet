@@ -10,8 +10,18 @@ namespace PathfinderCharacterSheet
     {
         private static CharacterSheetStorage instance = null;
 
-        //private static string CharactersPath { get { return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "characters"); } }
-        private static string CharactersPath { get { return Path.Combine(App.PlatformProxy.PersistentDataPath, "characters"); } }
+        private static string CharactersPath
+        {
+            get
+            {
+                string persistentDataPath = null;
+                if (App.PlatformProxy != null)
+                    persistentDataPath = App.PlatformProxy.PersistentDataPath;
+                if (persistentDataPath == null)
+                    persistentDataPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+                return Path.Combine(persistentDataPath, "characters");
+            }
+        }
 
         public Dictionary<CharacterSheet, string> characters = null;
         public CharacterSheet selectedCharacter = null;
