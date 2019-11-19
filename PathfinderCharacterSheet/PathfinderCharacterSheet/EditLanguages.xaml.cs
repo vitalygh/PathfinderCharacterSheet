@@ -68,7 +68,7 @@ namespace PathfinderCharacterSheet
                     row.name = row.frame.Content as Label;
                     row.name.TextDecorations = TextDecorations.Underline;
                     EventHandler handler = (s, e) => Language_Tap(language, languageIndex);
-                    MainPage.SetTapHandler(row.frame, handler, 2);
+                    MainPage.SetTapHandler(row.frame, handler, 1);
                     languageRows.Add(row);
                     var rowIndex = languageIndex;
                     Languages.Children.Add(row.frame, 0, rowIndex);
