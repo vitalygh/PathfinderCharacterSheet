@@ -9,7 +9,7 @@
                 <StackLayout x:Name="Spells" BackgroundColor="LightGray">
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
-                    <Label x:Name="ChannelsTitle" Text="Channels: " FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Start" VerticalTextAlignment="Center">
+                    <Label x:Name="ChannelsTitle" Text=" Channels: " FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Start" VerticalTextAlignment="Center">
                     </Label>
                     <Frame x:Name="ChannelsFrame" BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <Label x:Name="Channels" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">

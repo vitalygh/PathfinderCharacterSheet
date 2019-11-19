@@ -61,8 +61,8 @@ namespace PathfinderCharacterSheet
             var count = currentLevelOfClass.Count;
             if (count <= 0)
                 return;
-            grid.Children.Add(CreateLabel("Level", TextAlignment.Center), 0, 1);
-            grid.Children.Add(CreateLabel("Class", TextAlignment.Center), 1, 1);
+            grid.Children.Add(CreateLabel(" Level ", TextAlignment.Center), 0, 1);
+            grid.Children.Add(CreateLabel(" Class ", TextAlignment.Center), 1, 1);
             for (var i = 0; i < count; i++)
             {
                 var index = i + 2;

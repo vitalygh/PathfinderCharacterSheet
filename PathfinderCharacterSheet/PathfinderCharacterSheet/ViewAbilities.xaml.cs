@@ -86,7 +86,7 @@ namespace PathfinderCharacterSheet
                     hasChanges = true;
                 }
                 var abscindex = (i + 1) * columns;
-                (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
+                (AbilityScores.Children[abscindex++] as Label).Text = " " + abilities[i] + ":";
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
                 var modValue = ab.GetModifier(sheet);
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = modValue.ToString();
@@ -103,8 +103,16 @@ namespace PathfinderCharacterSheet
             }
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
-            MaxHP.Text = sheet.hp.maxHP.GetTotal(sheet).ToString();
-            HP.Text = sheet.hp.hp.GetTotal(sheet).ToString();
+            var maxHP = sheet.hp.maxHP.GetTotal(sheet);
+            MaxHP.Text = maxHP.ToString();
+            var hp = sheet.hp.hp.GetTotal(sheet);
+            HP.Text = hp.ToString();
+            if (hp > (2 * maxHP / 3))
+                HP.TextColor = Color.Green;
+            else if (hp > (maxHP / 3))
+                HP.TextColor = Color.Orange;
+            else
+                HP.TextColor = Color.Red;
             DamageResist.Text = sheet.hp.damageResist.GetTotal(sheet).ToString();
 
             Initiative.Text = sheet.CurrentInitiative.ToString();

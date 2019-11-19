@@ -20,7 +20,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="DiceRollTitle" Text="Dice Roll" Grid.Column="1" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DiceCountTitle" Text="Dice Count: " Grid.Column="0" Grid.Row="1"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DiceCountTitle" Text=" Dice Count: " Grid.Column="0" Grid.Row="1"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DiceCount_Tapped">
@@ -29,7 +29,7 @@
                         <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="DiceCount"></Label>
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" d " Grid.Column="1" Grid.Row="2"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DiceSidesTitle" Text="Dice Sides: " Grid.Column="0" Grid.Row="3"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DiceSidesTitle" Text=" Dice Sides: " Grid.Column="0" Grid.Row="3"></Label>
                     <Frame x:Name="ArmorBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="DiceSides_Tapped">
@@ -39,7 +39,7 @@
                         </Label>
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="4"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="AdditionalTitle" Text="Additional: " Grid.Column="0" Grid.Row="5"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="AdditionalTitle" Text=" Additional: " Grid.Column="0" Grid.Row="5"></Label>
                     <Frame x:Name="ShieldBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Additional_Tapped">

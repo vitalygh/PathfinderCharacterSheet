@@ -69,16 +69,26 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            PP.Text = sheet.money.platinumPoints.GetTotal(sheet).ToString();
-            GP.Text = sheet.money.goldenPoints.GetTotal(sheet).ToString();
-            SP.Text = sheet.money.silverPoints.GetTotal(sheet).ToString();
-            CP.Text = sheet.money.cuprumPoints.GetTotal(sheet).ToString();
-            LightLoad.Text = sheet.encumbrance.LightLoad(sheet);
-            MediumLoad.Text = sheet.encumbrance.MediumLoad(sheet);
-            HeavyLoad.Text = sheet.encumbrance.HeavyLoad(sheet);
-            LiftOverHead.Text = sheet.encumbrance.LiftOverHead(sheet) + " lbs";
-            LiftOffGround.Text = sheet.encumbrance.LiftOffGround(sheet) + " lbs";
-            DragOrPush.Text = sheet.encumbrance.DragOrPush(sheet) + " lbs";
+            UpdateValue(PP, sheet.money.platinumPoints.GetTotal(sheet).ToString());
+            UpdateValue(GP, sheet.money.goldenPoints.GetTotal(sheet).ToString());
+            UpdateValue(SP, sheet.money.silverPoints.GetTotal(sheet).ToString());
+            UpdateValue(CP, sheet.money.cuprumPoints.GetTotal(sheet).ToString());
+            UpdateValue(LightLoad, sheet.encumbrance.LightLoad(sheet));
+            UpdateValue(MediumLoad, sheet.encumbrance.MediumLoad(sheet));
+            UpdateValue(HeavyLoad, sheet.encumbrance.HeavyLoad(sheet));
+            UpdateValue(LiftOverHead, sheet.encumbrance.LiftOverHead(sheet) + " lbs");
+            UpdateValue(LiftOffGround, sheet.encumbrance.LiftOffGround(sheet) + " lbs");
+            UpdateValue(DragOrPush, sheet.encumbrance.DragOrPush(sheet) + " lbs");
+            var items = sheet.GetAllGearItems();
+            var totalWeight = 0;
+            foreach (var item in items)
+                if (item != null)
+                    totalWeight += item.TotalWeight(sheet);
+            var heavy = sheet.encumbrance.heavyLoad.GetTotal(sheet);
+            var medium = sheet.encumbrance.mediumLoad.GetTotal(sheet);
+            var light = sheet.encumbrance.lightLoad.GetTotal(sheet);
+            TotalWeight.TextColor = totalWeight >= heavy ? Color.Red : (totalWeight > medium ? Color.Orange : (totalWeight > light ? Color.Yellow : Color.Green));
+            UpdateValue(TotalWeight, totalWeight + " lbs");
             UpdateGearView();
         }
 
@@ -134,6 +144,14 @@ namespace PathfinderCharacterSheet
             }
             while (gearItemGrids.Count > sheet.gear.Count)
                 RemoveGearItemGrid(gearItemGrids[gearItemGrids.Count - 1]);
+        }
+
+        private void UpdateValue(Label label, string text)
+        {
+            if (label == null)
+                return;
+            if (label.Text != text)
+                label.Text = text;
         }
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)

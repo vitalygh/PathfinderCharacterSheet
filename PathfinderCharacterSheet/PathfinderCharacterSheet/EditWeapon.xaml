@@ -26,17 +26,17 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="WeaponNameTitle" Text="Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="WeaponNameTitle" Text=" Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand">
                         <Entry x:Name="WeaponName" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
-                    <Label x:Name="ArmorActiveTitle" Text="Active: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="ArmorActiveTitle" Text=" Active: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
                     <CheckBox x:Name="ArmorActive" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="1">
                     </CheckBox>
-                    <Label x:Name="AttackBonusTitle" Text="Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    <Label x:Name="AttackBonusTitle" Text=" Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -46,7 +46,7 @@
                         <Label x:Name="AttackBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="CriticalTitle" Text="Critical: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    <Label x:Name="CriticalTitle" Text=" Critical: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -56,7 +56,7 @@
                         <Label x:Name="Critical" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="DamageTitle" Text="Damage: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    <Label x:Name="DamageTitle" Text=" Damage: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -66,7 +66,7 @@
                         <Label x:Name="Damage" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="DamageBonusTitle" Text="Damage Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    <Label x:Name="DamageBonusTitle" Text=" Damage Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -76,13 +76,13 @@
                         <Label x:Name="DamageBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="WeaponTypeTitle" Text="Type: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
+                    <Label x:Name="WeaponTypeTitle" Text=" Type: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6" HorizontalOptions="FillAndExpand" >
                         <Entry x:Name="WeaponType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
-                    <Label x:Name="RangeTitle" Text="Range: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="7">
+                    <Label x:Name="RangeTitle" Text=" Range: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="7">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -92,7 +92,7 @@
                         <Label x:Name="Range" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="AmmunitionTitle" Text="Ammunition: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
+                    <Label x:Name="AmmunitionTitle" Text=" Ammunition: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="8" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -102,13 +102,13 @@
                         <Label x:Name="Ammunition" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="SpecialTitle" Text="Special: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="9">
+                    <Label x:Name="SpecialTitle" Text=" Special: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="9">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="9" HorizontalOptions="FillAndExpand" >
                         <Entry x:Name="Special" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
-                    <Label x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="10">
+                    <Label x:Name="WeightTitle" Text=" Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="10">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="10" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -118,7 +118,7 @@
                         <Label x:Name="Weight" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="DescriptionTitle" Text="Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2">
+                    <Label x:Name="DescriptionTitle" Text=" Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="12" Grid.ColumnSpan="2">
                         <Editor x:Name="Description" FontSize="Medium" TextColor="Black" AutoSize="TextChanges">

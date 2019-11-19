@@ -16,7 +16,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="ChannelsLeftTitle" Text="Channels Left: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="ChannelsLeftTitle" Text=" Channels Left: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Frame.GestureRecognizers>
@@ -26,7 +26,7 @@
                         <Label x:Name="ChannelsLeft" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="ChannelsTotalTitle" Text="Channels Total: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="ChannelsTotalTitle" Text=" Channels Total: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Frame.GestureRecognizers>
@@ -36,7 +36,7 @@
                         <Label x:Name="ChannelsTotal" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="ChannelPointsTitle" Text="Channel Points: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    <Label x:Name="ChannelPointsTitle" Text=" Channel Points: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
                         <Frame.GestureRecognizers>

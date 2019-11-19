@@ -322,7 +322,7 @@ namespace PathfinderCharacterSheet
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
             var points = sheet.channelEnergy.points.AsString(sheet);
-            var channels = "Channels";
+            var channels = " Channels";
             if (!string.IsNullOrWhiteSpace(points))
                 channels += " " + points;
             channels += ": ";

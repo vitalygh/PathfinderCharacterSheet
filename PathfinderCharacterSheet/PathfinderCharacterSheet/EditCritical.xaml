@@ -20,7 +20,7 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="CriticalHitTitle" Text="Critical Hit" Grid.Column="1" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MinTitle" Text="Min: " Grid.Column="0" Grid.Row="1"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MinTitle" Text=" Min: " Grid.Column="0" Grid.Row="1"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Min_Tapped">
@@ -29,7 +29,7 @@
                         <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="CriticalMin"></Label>
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" - " Grid.Column="1" Grid.Row="2"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MaxTitle" Text="Max: " Grid.Column="0" Grid.Row="3"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MaxTitle" Text=" Max: " Grid.Column="0" Grid.Row="3"></Label>
                     <Frame x:Name="ArmorBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Max_Tapped">
@@ -39,7 +39,7 @@
                         </Label>
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" /x " Grid.Column="1" Grid.Row="4"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MultiplierTitle" Text="Multiplier: " Grid.Column="0" Grid.Row="5"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MultiplierTitle" Text=" Multiplier: " Grid.Column="0" Grid.Row="5"></Label>
                     <Frame x:Name="ShieldBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Multiplier_Tapped">

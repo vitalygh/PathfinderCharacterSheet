@@ -34,7 +34,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="MaxHPTitle" Text="Max HP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="MaxHPTitle" Text=" Max HP: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
@@ -78,19 +78,19 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="ArmorClassTitle" Text="Armor Class: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="ArmorClassTitle" Text=" Armor Class: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="ArmorClass" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="TouchACTitle" Text="Touch AC: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="TouchACTitle" Text=" Touch AC: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="TouchAC" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="FlatFootedACTitle" Text="Flat-Footed AC: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
+                    <Label x:Name="FlatFootedACTitle" Text=" Flat-Footed AC: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
                         <Label x:Name="FlatFootedAC" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
@@ -107,19 +107,19 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="FortitudeTitle" Text="Fortitude: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="FortitudeTitle" Text=" Fortitude: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="Fortitude" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="ReflexTitle" Text="Reflex: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="ReflexTitle" Text=" Reflex: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="Reflex" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="WillTitle" Text="Will: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
+                    <Label x:Name="WillTitle" Text=" Will: " FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
                         <Label x:Name="Will" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
@@ -134,7 +134,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="BaseAttackBonusTitle" Text="Base Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="BaseAttackBonusTitle" Text=" Base Attack Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <StackLayout x:Name="BaseAttackBonus" Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
                     </StackLayout>
@@ -147,7 +147,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="SpellResistanceTitle" Text="Spell Resistance: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="SpellResistanceTitle" Text=" Spell Resistance: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="SpellResistance" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
@@ -163,13 +163,13 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="CMBTitle" Text="CMB: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="CMBTitle" Text=" CMB: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="CMB" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="CMDTitle" Text="CMD: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="CMDTitle" Text=" CMD: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="CMD" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
@@ -190,43 +190,43 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="BaseSpeedTitle" Text="Base Speed: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="BaseSpeedTitle" Text=" Base Speed: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="BaseSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="SpeedWithArmorTitle" Text="With Armor: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="SpeedWithArmorTitle" Text=" With Armor: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="SpeedWithArmor" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="FlySpeedTitle" Text="Fly: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    <Label x:Name="FlySpeedTitle" Text=" Fly: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
                         <Label x:Name="FlySpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="ManeuverabilityTitle" Text="Maneuverability: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    <Label x:Name="ManeuverabilityTitle" Text=" Maneuverability: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
                         <Label x:Name="Maneuverability" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="SwimSpeedTitle" Text="Swim: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    <Label x:Name="SwimSpeedTitle" Text=" Swim: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4">
                         <Label x:Name="SwimSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="ClimbSpeedTitle" Text="Climb: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    <Label x:Name="ClimbSpeedTitle" Text=" Climb: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5">
                         <Label x:Name="ClimbSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="BurrowSpeedTitle" Text="Burrow: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
+                    <Label x:Name="BurrowSpeedTitle" Text=" Burrow: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6">
                         <Label x:Name="BurrowSpeed" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">

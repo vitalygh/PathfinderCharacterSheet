@@ -25,17 +25,17 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="ArmorNameTitle" Text="Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
+                    <Label x:Name="ArmorNameTitle" Text=" Name: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0" HorizontalOptions="FillAndExpand">
                         <Entry x:Name="ArmorName" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
-                    <Label x:Name="ArmorActiveTitle" Text="Active: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    <Label x:Name="ArmorActiveTitle" Text=" Active: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
                     <CheckBox x:Name="ArmorActive" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="1">
                     </CheckBox>
-                    <Label x:Name="ArmorBonusTitle" Text="Armor Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    <Label x:Name="ArmorBonusTitle" Text=" Armor Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -45,17 +45,17 @@
                         <Label x:Name="ArmorBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="ArmorTypeTitle" Text="Type: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    <Label x:Name="ArmorTypeTitle" Text=" Type: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
                         <Picker x:Name="ArmorType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}">
                         </Picker>
                     </Frame>
-                    <Label x:Name="LimitMaxDexBonusTitle" Text="Limit Dex Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    <Label x:Name="LimitMaxDexBonusTitle" Text=" Limit Dex Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
                     </Label>
                     <CheckBox x:Name="LimitMaxDexBonus" VerticalOptions="Center" HorizontalOptions="Center" CheckedChanged="LimitMaxDexBonus_CheckedChanged" Grid.Column="1" Grid.Row="4">
                     </CheckBox>
-                    <Label x:Name="MaxDexBonusTitle" Text="Max Dex Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    <Label x:Name="MaxDexBonusTitle" Text=" Max Dex Bonus: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
                     </Label>
                     <Frame x:Name="MaxDexBonusFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -65,7 +65,7 @@
                         <Label x:Name="MaxDexBonus" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="CheckPenaltyTitle" Text="Check Penalty: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
+                    <Label x:Name="CheckPenaltyTitle" Text=" Check Penalty: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="6" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -75,7 +75,7 @@
                         <Label x:Name="CheckPenalty" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="SpellFailureTitle" Text="Spell Failure: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="7">
+                    <Label x:Name="SpellFailureTitle" Text=" Spell Failure: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="7">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -85,13 +85,13 @@
                         <Label x:Name="SpellFailure" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="PropertiesTitle" Text="Properties: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
+                    <Label x:Name="PropertiesTitle" Text=" Properties: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="8">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="8" HorizontalOptions="FillAndExpand" >
                         <Entry x:Name="Properties" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Entry>
                     </Frame>
-                    <Label x:Name="WeightTitle" Text="Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="9">
+                    <Label x:Name="WeightTitle" Text=" Weight: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="9">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="9" HorizontalOptions="FillAndExpand" >
                         <Frame.GestureRecognizers>
@@ -101,7 +101,7 @@
                         <Label x:Name="Weight" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="DescriptionTitle" Text="Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2">
+                    <Label x:Name="DescriptionTitle" Text=" Description: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="2">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="11" Grid.ColumnSpan="2">
                         <Editor x:Name="Description" FontSize="Medium" TextColor="Black" AutoSize="TextChanges">
