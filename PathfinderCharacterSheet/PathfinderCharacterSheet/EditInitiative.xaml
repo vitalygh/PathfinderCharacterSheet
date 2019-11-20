@@ -20,17 +20,17 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Label x:Name="InitiativeTitle" Text="Initiative: " FontSize="Medium" HorizontalTextAlignment="Center" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="0"></Label>
-                    <Label x:Name="TotalTitle" Text=" Total: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
+                    <Label x:Name="TotalTitle" Text="Total:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="1"></Label>
                     <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="Total" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
                     </Frame>
                     <Label Text="=" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="2"></Label>
-                    <Label x:Name="DexModifierTitle" Text=" Dexterity Modifier: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="3"></Label>
+                    <Label x:Name="DexModifierTitle" Text="Dexterity Modifier:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="3"></Label>
                     <Frame x:Name="DexModifierFrame" BackgroundColor="LightGray" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="3">
                         <Label x:Name="DexModifier" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand"></Label>
                     </Frame>
                     <Label Text="+" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="4"></Label>
-                    <Label x:Name="MiscModifiersTitle" Text=" Misc Modifiers: " FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="5"></Label>
+                    <Label x:Name="MiscModifiersTitle" Text="Misc Modifiers:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="5"></Label>
                     <Frame BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="5">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="MiscModifiers_Tapped">

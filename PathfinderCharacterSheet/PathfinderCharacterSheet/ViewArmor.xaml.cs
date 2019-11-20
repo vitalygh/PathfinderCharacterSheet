@@ -310,7 +310,7 @@ namespace PathfinderCharacterSheet
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
 #endif
-            var nameTitle = CreateLabel(" Name: ");
+            var nameTitle = CreateLabel("Name:");
             var nameStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -328,7 +328,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(nameValue, 1, row);
             row += 1;
 
-            var activeTitle = CreateLabel(" Active: ");
+            var activeTitle = CreateLabel("Active:");
             var activecb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -342,49 +342,49 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(activecb, 1, row);
             row += 1;
 
-            var armorBonusTitle = CreateLabel(" Armor Bonus: ");
+            var armorBonusTitle = CreateLabel("Armor Bonus:");
             var armorBonusValue = CreateFrame(item.ArmorBonus(sheet));
             grid.Children.Add(armorBonusTitle, 0, row);
             grid.Children.Add(armorBonusValue, 1, row);
             row += 1;
 
-            var armorTypeTitle = CreateLabel(" Armor Type: ");
+            var armorTypeTitle = CreateLabel("Armor Type:");
             var armorTypeValue = CreateFrame(item.ArmorType.ToString());
             grid.Children.Add(armorTypeTitle, 0, row);
             grid.Children.Add(armorTypeValue, 1, row);
             row += 1;
 
-            var maxDexBonusTitle = CreateLabel(" Max Dex Bonus: ");
+            var maxDexBonusTitle = CreateLabel("Max Dex Bonus:");
             var maxDexBonusValue = CreateFrame(item.MaxDexBonus(sheet));
             grid.Children.Add(maxDexBonusTitle, 0, row);
             grid.Children.Add(maxDexBonusValue, 1, row);
             row += 1;
 
-            var checkPenaltyTitle = CreateLabel(" Check Penalty: ");
+            var checkPenaltyTitle = CreateLabel("Check Penalty:");
             var checkPenaltyValue = CreateFrame(item.CheckPenalty(sheet));
             grid.Children.Add(checkPenaltyTitle, 0, row);
             grid.Children.Add(checkPenaltyValue, 1, row);
             row += 1;
 
-            var spellFailureTitle = CreateLabel(" Spell Failure: ");
+            var spellFailureTitle = CreateLabel("Spell Failure:");
             var spellFailureValue = CreateFrame(item.SpellFailure(sheet));
             grid.Children.Add(spellFailureTitle, 0, row);
             grid.Children.Add(spellFailureValue, 1, row);
             row += 1;
 
-            var propertiesTitle = CreateLabel(" Properties: ");
+            var propertiesTitle = CreateLabel("Properties:");
             var propertiesValue = CreateFrame(item.properties);
             grid.Children.Add(propertiesTitle, 0, row);
             grid.Children.Add(propertiesValue, 1, row);
             row += 1;
 
-            var weightTitle = CreateLabel(" Weight: ");
+            var weightTitle = CreateLabel("Weight:");
             var weightValue = CreateFrame(item.weight.GetTotal(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;
 
-            var descriptionTitle = CreateLabel(" Description: ");
+            var descriptionTitle = CreateLabel("Description:");
             grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
             row += 1;
 

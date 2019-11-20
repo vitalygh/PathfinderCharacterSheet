@@ -62,7 +62,7 @@ namespace PathfinderCharacterSheet
             if (roll == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, roll.diceCount, "Edit Dice Count", "Dice Count: ", false);
+            eivwm.Init(sheet, roll.diceCount, "Edit Dice Count", "Dice Count", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -76,7 +76,7 @@ namespace PathfinderCharacterSheet
             if (roll == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, roll.diceSides, "Edit Dice Sides", "Dice Sides: ", false);
+            eivwm.Init(sheet, roll.diceSides, "Edit Dice Sides", "Dice Sides", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -90,7 +90,7 @@ namespace PathfinderCharacterSheet
             if (roll == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, roll.additional, "Edit Dice Additional", "Dice Additional: ", false);
+            eivwm.Init(sheet, roll.additional, "Edit Dice Additional", "Dice Additional", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

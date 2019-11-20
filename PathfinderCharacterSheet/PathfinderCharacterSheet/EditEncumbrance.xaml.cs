@@ -103,7 +103,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, encumbrance.lightLoad, "Edit Light Load", "Light Load: ", false);
+            eivwm.Init(sheet, encumbrance.lightLoad, "Edit Light Load", "Light Load", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -116,7 +116,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, encumbrance.mediumLoad, "Edit Medium Load", "Medium Load: ", false);
+            eivwm.Init(sheet, encumbrance.mediumLoad, "Edit Medium Load", "Medium Load", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -129,7 +129,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, encumbrance.heavyLoad, "Edit Heavy Load", "Heavy Load: ", false);
+            eivwm.Init(sheet, encumbrance.heavyLoad, "Edit Heavy Load", "Heavy Load", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -144,7 +144,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, encumbrance.liftOverHead, "Edit Lift Over Head", "Lift Over Head: ", false);
+            eivwm.Init(sheet, encumbrance.liftOverHead, "Edit Lift Over Head", "Lift Over Head", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -159,7 +159,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, encumbrance.liftOffGround, "Edit Lift Off Ground", "Lift Off Ground: ", false);
+            eivwm.Init(sheet, encumbrance.liftOffGround, "Edit Lift Off Ground", "Lift Off Ground", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -174,7 +174,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, encumbrance.dragOrPush, "Edit Drag Or Push", "Drag Or Push: ", false);
+            eivwm.Init(sheet, encumbrance.dragOrPush, "Edit Drag Or Push", "Drag Or Push", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

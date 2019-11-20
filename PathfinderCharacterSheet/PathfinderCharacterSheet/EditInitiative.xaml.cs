@@ -53,7 +53,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, modifiers, "Edit Initiative Misc Modifiers", "Misc Modifiers: ", false);
+            eivwm.Init(sheet, modifiers, "Edit Initiative Misc Modifiers", "Misc Modifiers", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

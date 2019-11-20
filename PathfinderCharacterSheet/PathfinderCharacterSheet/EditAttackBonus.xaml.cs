@@ -136,7 +136,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sizeModifiers, "Edit Size Modifier", "Size Modifier: ", false);
+            eivwm.Init(sheet, sizeModifiers, "Edit Size Modifier", "Size Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

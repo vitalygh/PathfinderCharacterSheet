@@ -200,7 +200,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.rank, "Edit Rank", "Rank: ", false);
+            eivwm.Init(sheet, item.rank, "Edit Rank", "Rank", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -213,7 +213,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.miscModifiers, "Edit Misc Modifiers", "Misc Modifiers: ", false);
+            eivwm.Init(sheet, item.miscModifiers, "Edit Misc Modifiers", "Misc Modifiers", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

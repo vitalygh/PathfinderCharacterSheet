@@ -62,7 +62,7 @@ namespace PathfinderCharacterSheet
             if (critical == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, critical.min, "Edit Critical Min", "Min: ", false);
+            eivwm.Init(sheet, critical.min, "Edit Critical Min", "Min", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -76,7 +76,7 @@ namespace PathfinderCharacterSheet
             if (critical == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, critical.max, "Edit Critical Max", "Max: ", false);
+            eivwm.Init(sheet, critical.max, "Edit Critical Max", "Max", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -90,7 +90,7 @@ namespace PathfinderCharacterSheet
             if (critical == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, critical.multiplier, "Edit Critical Multiplier", "Multiplier: ", false);
+            eivwm.Init(sheet, critical.multiplier, "Edit Critical Multiplier", "Multiplier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

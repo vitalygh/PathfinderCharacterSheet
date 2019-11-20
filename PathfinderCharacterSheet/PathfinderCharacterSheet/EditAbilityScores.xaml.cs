@@ -72,7 +72,7 @@ namespace PathfinderCharacterSheet
                                     var abmodname = abilities[index] + " " + modname;
                                     var labs = abilityScores[index];
                                     var vwm = adj ? labs.tempAdjustment : labs.score;
-                                    eivwm.Init(sheet, vwm, "Edit " + abmodname, abmodname + ": ", false, false);
+                                    eivwm.Init(sheet, vwm, "Edit " + abmodname, abmodname, false, false);
                                     pushedPage = eivwm;
                                     Navigation.PushAsync(eivwm);
                                 };
@@ -151,7 +151,7 @@ namespace PathfinderCharacterSheet
             {
                 var ab = abilityScores[i];
                 var index = (i + 1) * 5;
-                (AbilityScores.Children[index + 0] as Label).Text = " " + abilities[i] + ": ";
+                (AbilityScores.Children[index + 0] as Label).Text = abilities[i] + ":";
                 ((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
                 ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.GetModifier(sheet).ToString();
                 ((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.GetTotal(sheet).ToString();

@@ -127,7 +127,7 @@ namespace PathfinderCharacterSheet
                 Attacks.Children.Add(row.frame, 1, rowIndex);
                 return;
             }
-            var title = CreateLabel(" Attack " + (rows.Count + 1) + " Bonus: ");
+            var title = CreateLabel("Attack " + (rows.Count + 1) + " Bonus:");
             var bonus = bab.GetTotal(sheet);
             var frame = CreateFrame(bonus > 0 ? "+" + bonus : bonus.ToString());
             var value = frame.Content as Label;
@@ -163,7 +163,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, bab, "Edit Base Attack Bonus", "Base Attack Bonus: ", false);
+            eivwm.Init(sheet, bab, "Edit Base Attack Bonus", "Base Attack Bonus", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

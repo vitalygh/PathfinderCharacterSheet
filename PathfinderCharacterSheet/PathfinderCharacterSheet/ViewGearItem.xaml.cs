@@ -68,7 +68,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.amount, "Edit Amount", "Amount: ", false);
+            eivwm.Init(sheet, item.amount, "Edit Amount", "Amount", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -81,7 +81,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.weight, "Edit Weapon Weight", "Weight: ", false);
+            eivwm.Init(sheet, item.weight, "Edit Weapon Weight", "Weight", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

@@ -200,7 +200,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, experience, "Edit Experience", "Experience: ", false);
+            eivwm.Init(sheet, experience, "Edit Experience", "Experience", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -213,7 +213,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, nextLevelExperience, "Edit Next Level Experience", "Next Level Experience: ", false);
+            eivwm.Init(sheet, nextLevelExperience, "Edit Next Level Experience", "Next Level Experience", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

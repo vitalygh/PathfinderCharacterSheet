@@ -72,9 +72,9 @@ namespace PathfinderCharacterSheet
              var count = characters.Count;
             if (count <= 0)
                 return;
-            grid.Children.Add(CreateLabel(" Name ", TextAlignment.Center), 0, 1);
-            grid.Children.Add(CreateLabel(" Race ", TextAlignment.Center), 1, 1);
-            grid.Children.Add(CreateLabel(" Level ", TextAlignment.Center), 2, 1);
+            grid.Children.Add(CreateLabel("Name", TextAlignment.Center), 0, 1);
+            grid.Children.Add(CreateLabel("Race", TextAlignment.Center), 1, 1);
+            grid.Children.Add(CreateLabel("Level", TextAlignment.Center), 2, 1);
             for (var i = 0; i < count; i++)
             {
                 var index = i + 2;
@@ -158,6 +158,7 @@ namespace PathfinderCharacterSheet
                 HorizontalTextAlignment = horz,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.Center,
+                Margin = new Thickness(5, 0, 5, 0),
             };
         }
 

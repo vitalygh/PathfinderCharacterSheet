@@ -167,14 +167,14 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 #endif
-            var attackBonusTitle = CreateLabel(" Attack Bonus: ");
+            var attackBonusTitle = CreateLabel("Attack Bonus:");
             MainPage.AddTapHandler(attackBonusTitle, AttackBonus_DoubleTap, 2);
             var ab = (sheet != null) ? sheet.AttackBonus : 0;
             var attackBonusFrame = CreateFrame(ab >= 0 ? "+" + ab : ab.ToString());
             MainPage.AddTapHandler(attackBonusFrame, AttackBonus_DoubleTap, 2);
             attackBonus = attackBonusFrame.Content as Label;
 
-            var damageBonusTitle = CreateLabel(" Damage Bonus: ");
+            var damageBonusTitle = CreateLabel("Damage Bonus:");
             MainPage.AddTapHandler(damageBonusTitle, DamageBonus_DoubleTap, 2);
             var db = (sheet != null) ? sheet.DamageBonus : 0;
             var damageBonusFrame = CreateFrame(db >= 0 ? "+" + db : db.ToString());
@@ -380,7 +380,7 @@ namespace PathfinderCharacterSheet
             EventHandler<CheckedChangedEventArgs> handler = (s, e) => Weapon_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += handler;
 #endif
-            var nameTitle = CreateLabel(" Name: ");
+            var nameTitle = CreateLabel("Name:");
             var nameStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -398,7 +398,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(nameValue, 1, row);
             row += 1;
 
-            var activeTitle = CreateLabel(" Active: ");
+            var activeTitle = CreateLabel("Active:");
             var activecb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -412,61 +412,61 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(activecb, 1, row);
             row += 1;
 
-            var attackBonusTitle = CreateLabel(" Attack Bonus: ");
+            var attackBonusTitle = CreateLabel("Attack Bonus:");
             var attackBonusValue = CreateFrame(item.AttackBonus(sheet));
             grid.Children.Add(attackBonusTitle, 0, row);
             grid.Children.Add(attackBonusValue, 1, row);
             row += 1;
 
-            var criticalTitle = CreateLabel(" Critical: ");
+            var criticalTitle = CreateLabel("Critical:");
             var criticalValue = CreateFrame(item.critical.AsString(sheet));
             grid.Children.Add(criticalTitle, 0, row);
             grid.Children.Add(criticalValue, 1, row);
             row += 1;
 
-            var damageTitle = CreateLabel(" Damage: ");
+            var damageTitle = CreateLabel("Damage:");
             var damageValue = CreateFrame(item.damage.AsString(sheet));
             grid.Children.Add(damageTitle, 0, row);
             grid.Children.Add(damageValue, 1, row);
             row += 1;
 
-            var damageBonusTitle = CreateLabel(" Damage Bonus: ");
+            var damageBonusTitle = CreateLabel("Damage Bonus:");
             var damageBonusValue = CreateFrame(item.DamageBonus(sheet));
             grid.Children.Add(damageBonusTitle, 0, row);
             grid.Children.Add(damageBonusValue, 1, row);
             row += 1;
 
-            var typeTitle = CreateLabel(" Type: ");
+            var typeTitle = CreateLabel("Type:");
             var typeValue = CreateFrame(item.type);
             grid.Children.Add(typeTitle, 0, row);
             grid.Children.Add(typeValue, 1, row);
             row += 1;
 
-            var rangeTitle = CreateLabel(" Range: ");
+            var rangeTitle = CreateLabel("Range:");
             var rangeValue = CreateFrame(item.Range(sheet));
             grid.Children.Add(rangeTitle, 0, row);
             grid.Children.Add(rangeValue, 1, row);
             row += 1;
 
-            var ammunitionTitle = CreateLabel(" Ammunition: ");
+            var ammunitionTitle = CreateLabel("Ammunition:");
             var ammunitionValue = CreateFrame(item.ammunition.GetTotal(sheet).ToString());
             grid.Children.Add(ammunitionTitle, 0, row);
             grid.Children.Add(ammunitionValue, 1, row);
             row += 1;
 
-            var specialTitle = CreateLabel(" Special: ");
+            var specialTitle = CreateLabel("Special:");
             var specialValue = CreateFrame(item.special);
             grid.Children.Add(specialTitle, 0, row);
             grid.Children.Add(specialValue, 1, row);
             row += 1;
 
-            var weightTitle = CreateLabel(" Weight: ");
+            var weightTitle = CreateLabel("Weight:");
             var weightValue = CreateFrame(item.weight.GetTotal(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;
 
-            var descriptionTitle = CreateLabel(" Description: ");
+            var descriptionTitle = CreateLabel("Description:");
             grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
             row += 1;
 
@@ -682,7 +682,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.damageBonusModifiers, "Edit Damage Bonus", "Damage Bonus: ", true);
+            eivwm.Init(sheet, sheet.damageBonusModifiers, "Edit Damage Bonus", "Damage Bonus", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

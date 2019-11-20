@@ -30,7 +30,7 @@
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="FortitudeTitle" Text="Fortitude" Grid.Column="1" Grid.Row="0"></Label>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="ReflexTitle" Text="Reflex" Grid.Column="2" Grid.Row="0"></Label>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" x:Name="WillTitle" Text="Will" Grid.Column="3" Grid.Row="0"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="TotalTitle" Text=" Total: " Grid.Column="0" Grid.Row="1"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="TotalTitle" Text="Total:" Margin="5, 0, 5, 0" Grid.Column="0" Grid.Row="1"></Label>
                     <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="FortitudeTotal"></Label>
                     </Frame>
@@ -40,10 +40,10 @@
                     <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="3" Grid.Row="1">
                         <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="WillTotal"></Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" = " Grid.Column="1" Grid.Row="2"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" = " Grid.Column="2" Grid.Row="2"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" = " Grid.Column="3" Grid.Row="2"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="BaseSaveTitle" Text=" Base Save: " Grid.Column="0" Grid.Row="3"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="=" Margin="5, 0, 5, 0" Grid.Column="1" Grid.Row="2"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="=" Margin="5, 0, 5, 0" Grid.Column="2" Grid.Row="2"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="=" Margin="5, 0, 5, 0" Grid.Column="3" Grid.Row="2"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="BaseSaveTitle" Text="Base Save:" Margin="5, 0, 5, 0" Grid.Column="0" Grid.Row="3"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FortitudeBaseSave_Tapped">
@@ -68,10 +68,10 @@
                         <Label TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="WillBaseSave">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="4"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="2" Grid.Row="4"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="3" Grid.Row="4"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="AbilityModifierTitle" Text=" Ability Modifier: " Grid.Column="0" Grid.Row="5"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="1" Grid.Row="4"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="2" Grid.Row="4"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="3" Grid.Row="4"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="AbilityModifierTitle" Text="Ability Modifier:" Margin="5, 0, 5, 0" Grid.Column="0" Grid.Row="5"></Label>
                     <Frame BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="5">
                         <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="FortitudeAbilityModifier">
                         </Label>
@@ -84,10 +84,10 @@
                         <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="WillAbilityModifier">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="6"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="2" Grid.Row="6"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="3" Grid.Row="6"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MagicModifierTitle" Text=" Magic Modifier: " Grid.Column="0" Grid.Row="7"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="1" Grid.Row="6"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="2" Grid.Row="6"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="3" Grid.Row="6"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MagicModifierTitle" Text="Magic Modifier:" Margin="5, 0, 5, 0" Grid.Column="0" Grid.Row="7"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="7">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FortitudeMagicModifier_Tapped">
@@ -112,10 +112,10 @@
                         <Label TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="WillMagicModifier">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="8"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="2" Grid.Row="8"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="3" Grid.Row="8"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MiscModifierTitle" Text=" Misc Modifier: " Grid.Column="0" Grid.Row="9"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="1" Grid.Row="8"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="2" Grid.Row="8"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="3" Grid.Row="8"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="MiscModifierTitle" Text="Misc Modifier:" Margin="5, 0, 5, 0" Grid.Column="0" Grid.Row="9"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="9">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FortitudeMiscModifier_Tapped">
@@ -140,10 +140,10 @@
                         <Label TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="WillMiscModifier">
                         </Label>
                     </Frame>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="1" Grid.Row="10"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="2" Grid.Row="10"></Label>
-                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text=" + " Grid.Column="3" Grid.Row="10"></Label>
-                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="TempModifierTitle" Text=" Temp Modifier: " Grid.Column="0" Grid.Row="11"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Grid.Column="1" Grid.Row="10"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Grid.Column="2" Grid.Row="10"></Label>
+                    <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Grid.Column="3" Grid.Row="10"></Label>
+                    <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="TempModifierTitle" Text="Temp Modifier:" Margin="5, 0, 5, 0" Grid.Column="0" Grid.Row="11"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="11">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="FortitudeTempModifier_Tapped">

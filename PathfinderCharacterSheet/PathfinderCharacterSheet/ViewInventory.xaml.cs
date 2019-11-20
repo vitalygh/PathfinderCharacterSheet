@@ -509,7 +509,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.money.platinumPoints, "Edit Platinum Points", "Platinum Points: ", true);
+            eivwm.Init(sheet, sheet.money.platinumPoints, "Edit Platinum Points", "Platinum Points", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -522,7 +522,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.money.goldenPoints, "Edit Gold Points", "Gold Points: ", true);
+            eivwm.Init(sheet, sheet.money.goldenPoints, "Edit Gold Points", "Gold Points", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -535,7 +535,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.money.silverPoints, "Edit Silver Points", "Silver Points: ", true);
+            eivwm.Init(sheet, sheet.money.silverPoints, "Edit Silver Points", "Silver Points", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -548,7 +548,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.money.cuprumPoints, "Edit Cuprum Points", "Cuprum Points: ", true);
+            eivwm.Init(sheet, sheet.money.cuprumPoints, "Edit Cuprum Points", "Cuprum Points", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

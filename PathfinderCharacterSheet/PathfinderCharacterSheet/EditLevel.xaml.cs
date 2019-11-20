@@ -106,7 +106,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, level.level, "Edit Experience", "Experience: ", false);
+            eivwm.Init(sheet, level.level, "Edit Experience", "Experience", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

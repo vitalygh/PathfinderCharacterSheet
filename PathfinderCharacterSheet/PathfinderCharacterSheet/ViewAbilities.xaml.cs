@@ -86,7 +86,7 @@ namespace PathfinderCharacterSheet
                     hasChanges = true;
                 }
                 var abscindex = (i + 1) * columns;
-                (AbilityScores.Children[abscindex++] as Label).Text = " " + abilities[i] + ":";
+                (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
                 var modValue = ab.GetModifier(sheet);
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = modValue.ToString();
@@ -199,7 +199,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.hp.maxHP, "Edit Max HP", "Max HP: ", true);
+            eivwm.Init(sheet, sheet.hp.maxHP, "Edit Max HP", "Max HP", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -212,7 +212,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.hp.hp, "Edit HP", "HP: ", true);
+            eivwm.Init(sheet, sheet.hp.hp, "Edit HP", "HP", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -225,7 +225,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.hp.damageResist, "Edit Damage Resist", "Damage Resist: ", true);
+            eivwm.Init(sheet, sheet.hp.damageResist, "Edit Damage Resist", "Damage Resist", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -284,7 +284,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet,  sheet.spellResistance, "Edit Spell Resistance", "Spell Resistance: ", true);
+            eivwm.Init(sheet,  sheet.spellResistance, "Edit Spell Resistance", "Spell Resistance", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

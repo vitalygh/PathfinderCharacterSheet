@@ -15,8 +15,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <Label x:Name="LevelTitle" Text=" Level " TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
-                    <Label x:Name="ClassNameTitle" Text=" Class " TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="0"></Label>
+                    <Label x:Name="LevelTitle" Text="Level" Margin="5, 0, 5, 0" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="0" Grid.Row="0"></Label>
+                    <Label x:Name="ClassNameTitle" Text="Class" Margin="5, 0, 5, 0" TextColor="Black" FontSize="Medium" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" Grid.Column="1" Grid.Row="0"></Label>
                     <Frame Padding="5" BorderColor="Black" Grid.Column="0" Grid.Row="1">
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Level_Tapped">

@@ -218,7 +218,7 @@ namespace PathfinderCharacterSheet
             if (level >= sheet.spellLevel.Length)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.spellLevel[level].spellsKnown, "Edit Spells Known (" + level + ")", "Spells Known: ", true);
+            eivwm.Init(sheet, sheet.spellLevel[level].spellsKnown, "Edit Spells Known (" + level + ")", "Spells Known", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -235,7 +235,7 @@ namespace PathfinderCharacterSheet
             if (level >= sheet.spellLevel.Length)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.spellLevel[level].spellSaveDC, "Edit Spell Save DC (" + level + ")", "Spell Save DC: ", true);
+            eivwm.Init(sheet, sheet.spellLevel[level].spellSaveDC, "Edit Spell Save DC (" + level + ")", "Spell Save DC", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -252,7 +252,7 @@ namespace PathfinderCharacterSheet
             if (level >= sheet.spellLevel.Length)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.spellLevel[level].spellsPerDay, "Edit Spells Per Day (" + level + ")", "Spells Per Day: ", true);
+            eivwm.Init(sheet, sheet.spellLevel[level].spellsPerDay, "Edit Spells Per Day (" + level + ")", "Spells Per Day", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -269,7 +269,7 @@ namespace PathfinderCharacterSheet
             if (level >= sheet.spellLevel.Length)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, sheet.spellLevel[level].bonusSpells, "Edit Bonus Spells (" + level + ")", "Bonus Spells: ", true);
+            eivwm.Init(sheet, sheet.spellLevel[level].bonusSpells, "Edit Bonus Spells (" + level + ")", "Bonus Spells", true);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -322,10 +322,10 @@ namespace PathfinderCharacterSheet
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
             var points = sheet.channelEnergy.points.AsString(sheet);
-            var channels = " Channels";
+            var channels = "Channels";
             if (!string.IsNullOrWhiteSpace(points))
                 channels += " " + points;
-            channels += ": ";
+            channels += ":";
             UpdateText(ChannelsTitle, channels);
             var left = sheet.channelEnergy.left.GetTotal(sheet);
             var total = sheet.channelEnergy.total.GetTotal(sheet);

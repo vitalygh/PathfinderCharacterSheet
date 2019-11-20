@@ -88,7 +88,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.left, "Edit Special Ability", "Uses Left: ", false);
+            eivwm.Init(sheet, item.left, "Edit Special Ability", "Uses Left", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -101,7 +101,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.total, "Edit Special Ability", "Uses Allowed: ", false);
+            eivwm.Init(sheet, item.total, "Edit Special Ability", "Uses Allowed", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

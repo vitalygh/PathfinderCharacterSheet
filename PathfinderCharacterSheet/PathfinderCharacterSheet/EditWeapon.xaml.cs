@@ -99,7 +99,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.attackBonus, "Edit Attack Bonus", "Attack Bonus: ", false);
+            eivwm.Init(sheet, item.attackBonus, "Edit Attack Bonus", "Attack Bonus", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -138,7 +138,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.damageBonus, "Edit Weapon Damage Bonus", "Damage Bonus: ", false);
+            eivwm.Init(sheet, item.damageBonus, "Edit Weapon Damage Bonus", "Damage Bonus", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -151,7 +151,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.range, "Edit Weapon Range", "Range: ", false);
+            eivwm.Init(sheet, item.range, "Edit Weapon Range", "Range", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -164,7 +164,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.ammunition, "Edit Weapon Ammunition", "Ammunition: ", false);
+            eivwm.Init(sheet, item.ammunition, "Edit Weapon Ammunition", "Ammunition", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -177,7 +177,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.weight, "Edit Weapon Weight", "Weight: ", false);
+            eivwm.Init(sheet, item.weight, "Edit Weapon Weight", "Weight", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

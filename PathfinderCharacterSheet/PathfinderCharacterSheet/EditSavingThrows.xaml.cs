@@ -103,7 +103,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.baseSave, "Edit Fortitude Base Save", "Base Save: ", false);
+            eivwm.Init(sheet, st.baseSave, "Edit Fortitude Base Save", "Base Save", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -119,7 +119,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.baseSave, "Edit Reflex Base Save", "Base Save: ", false);
+            eivwm.Init(sheet, st.baseSave, "Edit Reflex Base Save", "Base Save", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -135,7 +135,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.baseSave, "Edit Will Base Save", "Base Save: ", false);
+            eivwm.Init(sheet, st.baseSave, "Edit Will Base Save", "Base Save", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -151,7 +151,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.magicModifier, "Edit Fortitude Magic Modifier", "Magic Modifier: ", false);
+            eivwm.Init(sheet, st.magicModifier, "Edit Fortitude Magic Modifier", "Magic Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -167,7 +167,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.magicModifier, "Edit Reflex Magic Modifier", "Magic Modifier: ", false);
+            eivwm.Init(sheet, st.magicModifier, "Edit Reflex Magic Modifier", "Magic Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -183,7 +183,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.magicModifier, "Edit Will Magic Modifier", "Magic Modifier: ", false);
+            eivwm.Init(sheet, st.magicModifier, "Edit Will Magic Modifier", "Magic Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -199,7 +199,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.miscModifier, "Edit Fortitude Misc Modifier", "Misc Modifier: ", false);
+            eivwm.Init(sheet, st.miscModifier, "Edit Fortitude Misc Modifier", "Misc Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -215,7 +215,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.miscModifier, "Edit Reflex Misc Modifier", "Misc Modifier: ", false);
+            eivwm.Init(sheet, st.miscModifier, "Edit Reflex Misc Modifier", "Misc Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -231,7 +231,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.miscModifier, "Edit Will Misc Modifier", "Misc Modifier: ", false);
+            eivwm.Init(sheet, st.miscModifier, "Edit Will Misc Modifier", "Misc Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -247,7 +247,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.tempModifier, "Edit Fortitude Temp Modifier", "Temp Modifier: ", false);
+            eivwm.Init(sheet, st.tempModifier, "Edit Fortitude Temp Modifier", "Temp Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -263,7 +263,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.tempModifier, "Edit Reflex Temp Modifier", "Temp Modifier: ", false);
+            eivwm.Init(sheet, st.tempModifier, "Edit Reflex Temp Modifier", "Temp Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -279,7 +279,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, st.tempModifier, "Edit Will Temp Modifier", "Temp Modifier: ", false);
+            eivwm.Init(sheet, st.tempModifier, "Edit Will Temp Modifier", "Temp Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

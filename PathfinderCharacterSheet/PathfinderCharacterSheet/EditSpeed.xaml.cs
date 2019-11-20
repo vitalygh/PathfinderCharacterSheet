@@ -69,7 +69,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, speed.baseSpeed, "Edit Base Speed", "Base Speed: ", false);
+            eivwm.Init(sheet, speed.baseSpeed, "Edit Base Speed", "Base Speed", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -82,7 +82,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, speed.armorSpeed, "Edit Speed With Armor", "Speed With Armor: ", false);
+            eivwm.Init(sheet, speed.armorSpeed, "Edit Speed With Armor", "Speed With Armor", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -95,7 +95,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, speed.flySpeed, "Edit Fly Speed", "Fly Speed: ", false);
+            eivwm.Init(sheet, speed.flySpeed, "Edit Fly Speed", "Fly Speed", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -108,7 +108,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, speed.maneuverability, "Edit Maneuverability", "Maneuverability: ", false);
+            eivwm.Init(sheet, speed.maneuverability, "Edit Maneuverability", "Maneuverability", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -123,7 +123,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, speed.swimSpeed, "Edit Swim Speed", "Swim Speed: ", false);
+            eivwm.Init(sheet, speed.swimSpeed, "Edit Swim Speed", "Swim Speed", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -138,7 +138,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, speed.climbSpeed, "Edit Climb Speed", "Climb Speed: ", false);
+            eivwm.Init(sheet, speed.climbSpeed, "Edit Climb Speed", "Climb Speed", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -151,7 +151,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, speed.burrowSpeed, "Edit Burrow Speed", "Burrow Speed: ", false);
+            eivwm.Init(sheet, speed.burrowSpeed, "Edit Burrow Speed", "Burrow Speed", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

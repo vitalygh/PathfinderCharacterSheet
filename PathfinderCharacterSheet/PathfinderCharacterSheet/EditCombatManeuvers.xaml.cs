@@ -131,7 +131,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, cmdSizeModifier, "Edit CMD Size Modifier", "Size Modifier: ", false);
+            eivwm.Init(sheet, cmdSizeModifier, "Edit CMD Size Modifier", "Size Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -144,7 +144,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, cmbSizeModifier, "Edit CMB Size Modifier", "Size Modifier: ", false);
+            eivwm.Init(sheet, cmbSizeModifier, "Edit CMB Size Modifier", "Size Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

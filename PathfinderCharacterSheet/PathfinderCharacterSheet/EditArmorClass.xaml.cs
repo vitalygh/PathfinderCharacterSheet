@@ -96,7 +96,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, ac.armorBonus, "Edit Armor Class Armor Bonus", "Armor Bonus: ", false);
+            eivwm.Init(sheet, ac.armorBonus, "Edit Armor Class Armor Bonus", "Armor Bonus", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -111,7 +111,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, ac.armorBonus, "Edit Armor Class Shield Bonus", "Shield Bonus: ", false);
+            eivwm.Init(sheet, ac.armorBonus, "Edit Armor Class Shield Bonus", "Shield Bonus", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -126,7 +126,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, ac.dexterityModifier, "Edit Armor Class Dexterity Modifier", "Dexterity Modifier: ", false);
+            eivwm.Init(sheet, ac.dexterityModifier, "Edit Armor Class Dexterity Modifier", "Dexterity Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -139,7 +139,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, ac.sizeModifier, "Edit Armor Class Size Modifier", "Size Modifier: ", false);
+            eivwm.Init(sheet, ac.sizeModifier, "Edit Armor Class Size Modifier", "Size Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -152,7 +152,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, ac.naturalArmor, "Edit Armor Class Natural Armor", "Natural Armor: ", false);
+            eivwm.Init(sheet, ac.naturalArmor, "Edit Armor Class Natural Armor", "Natural Armor", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -165,7 +165,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, ac.deflectionModifier, "Edit Armor Class Deflection Modifier", "Deflection Modifier: ", false);
+            eivwm.Init(sheet, ac.deflectionModifier, "Edit Armor Class Deflection Modifier", "Deflection Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -178,7 +178,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, ac.miscModifiers, "Edit Armor Class Misc Modifiers", "Misc Modifier: ", false);
+            eivwm.Init(sheet, ac.miscModifiers, "Edit Armor Class Misc Modifiers", "Misc Modifier", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

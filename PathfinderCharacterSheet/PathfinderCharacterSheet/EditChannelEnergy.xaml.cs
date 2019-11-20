@@ -56,7 +56,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, channelEnergy.left, "Edit Channels Energy", "Channels Left: ", false);
+            eivwm.Init(sheet, channelEnergy.left, "Edit Channels Energy", "Channels Left", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -69,7 +69,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, channelEnergy.total, "Edit Channels Energy", "Channels Total: ", false);
+            eivwm.Init(sheet, channelEnergy.total, "Edit Channels Energy", "Channels Total", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
