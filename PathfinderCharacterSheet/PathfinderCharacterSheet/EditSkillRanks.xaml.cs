@@ -10,16 +10,22 @@ using Xamarin.Forms.Xaml;
 namespace PathfinderCharacterSheet
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditInitiative : ContentPage, ISheetView
+    public partial class EditSkillRanks : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private CharacterSheet.ValueWithIntModifiers modifiers = null;
+        private CharacterSheet.ValueWithIntModifiers skillRanks = null;
 
-        public EditInitiative()
+        public EditSkillRanks()
         {
             InitializeComponent();
+        }
+
+        public void InitEditor()
+        {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            modifiers = sheet.initiative.miscModifiers.Clone as CharacterSheet.ValueWithIntModifiers;
+            if (sheet == null)
+                return;
+            skillRanks = sheet.skillRanks.Clone as CharacterSheet.ValueWithIntModifiers;
             UpdateView();
         }
 
@@ -27,25 +33,27 @@ namespace PathfinderCharacterSheet
         {
             pushedPage = null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            var dexMod = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity);
-            DexModifier.Text = dexMod.ToString();
-            var miscMod = modifiers.GetTotal(sheet);
-            MiscModifiers.Text = miscMod.ToString();
-            Total.Text = (dexMod + miscMod).ToString();
+            var ranksSpent = 0;
+            foreach (var skill in sheet.skills)
+                ranksSpent += skill.rank.GetTotal(sheet);
+            var ranks = skillRanks.GetTotal(sheet);
+            var ranksLeft = ranks - ranksSpent;
+            Left.Text = ranksLeft.ToString();
+            Ranks.Text = ranks.ToString();
+            Spent.Text = ranksSpent.ToString();
         }
 
         private void EditToView()
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            var hasChanges = !sheet.initiative.miscModifiers.Equals(modifiers);
-            if (hasChanges)
+            if (!sheet.skillRanks.Equals(skillRanks))
             {
-                sheet.initiative.miscModifiers.Fill(modifiers);
+                sheet.skillRanks.Fill(skillRanks);
                 CharacterSheetStorage.Instance.SaveCharacter();
             }
         }
 
-        private void MiscModifiers_Tapped(object sender, EventArgs e)
+        private void Ranks_Tapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
                 return;
@@ -53,7 +61,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, modifiers, "Edit Initiative Misc Modifiers", "Misc Modifiers", false);
+            eivwm.Init(sheet, skillRanks, "Edit Skill Ranks", "Skill Ranks", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

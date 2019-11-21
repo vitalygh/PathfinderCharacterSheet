@@ -57,13 +57,9 @@ namespace PathfinderCharacterSheet
                             child.BackgroundColor = readOnly ? Color.LightGray : Color.White;
                             if (!readOnly)
                             {
-                                var tgr = new TapGestureRecognizer()
-                                {
-                                    NumberOfTapsRequired = 1,
-                                };
                                 var index = i - 1;
                                 var adj = j == 3;
-                                tgr.Tapped += (s, e) =>
+                                MainPage.AddTapHandler(child, (s, e) =>
                                 {
                                     if (pushedPage != null)
                                         return;
@@ -75,8 +71,7 @@ namespace PathfinderCharacterSheet
                                     eivwm.Init(sheet, vwm, "Edit " + abmodname, abmodname, false, false);
                                     pushedPage = eivwm;
                                     Navigation.PushAsync(eivwm);
-                                };
-                                (child as Frame).GestureRecognizers.Add(tgr);
+                                }, 1);
                             }
                         }
                         /*

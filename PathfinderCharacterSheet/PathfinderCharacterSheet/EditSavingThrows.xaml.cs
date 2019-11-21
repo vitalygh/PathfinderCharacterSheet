@@ -24,13 +24,13 @@ namespace PathfinderCharacterSheet
 
         private void InitEditor()
         {
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
                 return;
             savingThrows.Clear();
-            var count = c.savingThrows.Length;
+            var count = sheet.savingThrows.Length;
             for (var i = 0; i < count; i++)
-                savingThrows.Add(c.GetSavingThrow((CharacterSheet.Save)i).Clone as CharacterSheet.SavingThrow);
+                savingThrows.Add(sheet.GetSavingThrow((CharacterSheet.Save)i).Clone as CharacterSheet.SavingThrow);
         }
 
         public void UpdateView()

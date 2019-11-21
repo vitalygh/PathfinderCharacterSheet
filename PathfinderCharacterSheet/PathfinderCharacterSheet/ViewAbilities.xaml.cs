@@ -234,9 +234,6 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
-                return;
             pushedPage = new EditInitiative();
             Navigation.PushAsync(pushedPage);
         }
@@ -244,9 +241,6 @@ namespace PathfinderCharacterSheet
         private void ArmorClass_DoubleTapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
-                return;
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
                 return;
             pushedPage = new EditArmorClass();
             Navigation.PushAsync(pushedPage);
@@ -256,9 +250,6 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
-                return;
             pushedPage = new EditSavingThrows();
             Navigation.PushAsync(pushedPage);
         }
@@ -266,9 +257,6 @@ namespace PathfinderCharacterSheet
         private void BaseAttackBonus_DoubleTapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
-                return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
                 return;
             var ebab = new EditBaseAttackBonus();
             ebab.InitEditor();
@@ -300,9 +288,6 @@ namespace PathfinderCharacterSheet
         private void Speed_DoubleTapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
-                return;
-            var c = CharacterSheetStorage.Instance.selectedCharacter;
-            if (c == null)
                 return;
             pushedPage = new EditSpeed();
             Navigation.PushAsync(pushedPage);

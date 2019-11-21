@@ -31,6 +31,7 @@ namespace PathfinderCharacterSheet
         public ViewSkills()
         {
             InitializeComponent();
+            MainPage.AddTapHandler(SkillRanksLayout, SkillRanks_DoubleTapped, 2);
             MainPage.AddTapHandler(LanguagesLayout, Languages_DoubleTapped, 2);
             UpdateView();
         }
@@ -154,6 +155,17 @@ namespace PathfinderCharacterSheet
                 }
             }
 #endif
+            var ranksSpent = 0;
+            foreach (var skill in sheet.skills)
+                ranksSpent += skill.rank.GetTotal(sheet);
+            var ranksLeft = sheet.skillRanks.GetTotal(sheet) - ranksSpent;
+            SkillRanksLeft.Text = ranksLeft.ToString();
+            if (ranksLeft < 0)
+                SkillRanksLeft.TextColor = Color.Red;
+            else if (ranksLeft > 0)
+                SkillRanksLeft.TextColor = Color.Green;
+            else
+                SkillRanksLeft.TextColor = Color.Black;
             Languages.Text = sheet.Languages;
         }
 
@@ -199,6 +211,19 @@ namespace PathfinderCharacterSheet
         private void AddSkill_Clicked(object sender, EventArgs e)
         {
             Skill_DoubleTap();
+        }
+
+        private void SkillRanks_DoubleTapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var esr = new EditSkillRanks();
+            esr.InitEditor();
+            pushedPage = esr;
+            Navigation.PushAsync(pushedPage);
         }
 
         private void Languages_DoubleTapped(object sender, EventArgs e)

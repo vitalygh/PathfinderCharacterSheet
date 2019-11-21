@@ -1917,8 +1917,7 @@ namespace PathfinderCharacterSheet
         #endregion
 
         #region Skills
-        public ValueWithIntModifiers skillsPerLevel = new ValueWithIntModifiers();
-        public int currentSkillsPerLevel { get { return GetAbilityModifier(this, Ability.Intelligence) + skillsPerLevel.GetTotal(this); } }
+        public ValueWithIntModifiers skillRanks = new ValueWithIntModifiers();
         public List<SkillRank> skills = new List<SkillRank>();
         private void InitSkills()
         {

@@ -78,30 +78,15 @@ namespace PathfinderCharacterSheet
             for (var i = 0; i < count; i++)
             {
                 var index = i + 2;
-                var c = characters[i];
-                var name = CreateFrame(c.Name.ToString());
-                var tgr = new TapGestureRecognizer()
-                {
-                    NumberOfTapsRequired = 1,
-                };
-                tgr.Tapped += (s, e) => SelectCharacter(c);
-                name.GestureRecognizers.Add(tgr);
+                var sheet = characters[i];
+                var name = CreateFrame(sheet.Name.ToString());
+                AddTapHandler(name, (s, e) => SelectCharacter(sheet), 1);
                 grid.Children.Add(name, 0, index);
-                var race = CreateFrame(c.Race.ToString());
-                tgr = new TapGestureRecognizer()
-                {
-                    NumberOfTapsRequired = 1,
-                };
-                tgr.Tapped += (s, e) => SelectCharacter(c);
-                race.GestureRecognizers.Add(tgr);
+                var race = CreateFrame(sheet.Race.ToString());
+                AddTapHandler(race, (s, e) => SelectCharacter(sheet), 1);
                 grid.Children.Add(race, 1, index);
-                var level = CreateFrame(c.TotalLevel.ToString());
-                tgr = new TapGestureRecognizer()
-                {
-                    NumberOfTapsRequired = 1,
-                };
-                tgr.Tapped += (s, e) => SelectCharacter(c);
-                level.GestureRecognizers.Add(tgr);
+                var level = CreateFrame(sheet.TotalLevel.ToString());
+                AddTapHandler(level, (s, e) => SelectCharacter(sheet), 1);
                 grid.Children.Add(level, 2, index);
             }
         }

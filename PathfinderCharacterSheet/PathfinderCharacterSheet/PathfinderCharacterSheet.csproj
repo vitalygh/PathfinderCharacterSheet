@@ -30,6 +30,9 @@
     <Compile Update="EditBackground.xaml.cs">
       <DependentUpon>EditBackground.xaml</DependentUpon>
     </Compile>
+    <Compile Update="EditSkillRanks.xaml.cs">
+      <DependentUpon>EditSkillRanks.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -115,6 +118,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="EditBackground.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="EditSkillRanks.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="SelectGearItem.xaml">

@@ -25,6 +25,14 @@
                         <Label x:Name="TrainedOnlyTitle" Text="* Trained Only" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
                     </StackLayout>
                 </StackLayout>
+                <StackLayout x:Name="SkillRanksLayout" Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Label x:Name="SkillRanksLeftTitle" Text="Skill Ranks Left:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Start" VerticalTextAlignment="Center">
+                    </Label>
+                    <Frame x:Name="SkillRanksLeftFrame" BorderColor="Black" Padding="5"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Label x:Name="SkillRanksLeft" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                </StackLayout>
                 <StackLayout x:Name="LanguagesLayout" BackgroundColor="LightGray">
                     <Label x:Name="LanguagesTitle" Text="Languages: " FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
                     <Frame BorderColor="Black" Padding="5">
