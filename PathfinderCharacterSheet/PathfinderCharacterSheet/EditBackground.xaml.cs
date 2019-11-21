@@ -169,10 +169,11 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             var rename = (sheet.Name != CharacterName.Text);
             if (rename)
+            {
                 CharacterSheetStorage.Instance.DeleteCharacter(sheet);
-            var hasChanges = EditToView();
-            if (rename)
                 CharacterSheetStorage.Instance.selectedCharacter = sheet;
+            }
+            var hasChanges = EditToView();
             if (rename || hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
             Navigation.PopAsync();
