@@ -52,12 +52,12 @@ namespace PathfinderCharacterSheet
             InitializeComponent();
             MainPage.AddTapHandler(PPTitle, PP_DoubleTapped, 2);
             MainPage.AddTapHandler(PPFrame, PP_DoubleTapped, 2);
-            MainPage.AddTapHandler(GPTitle, PP_DoubleTapped, 2);
-            MainPage.AddTapHandler(GPFrame, PP_DoubleTapped, 2);
-            MainPage.AddTapHandler(SPTitle, PP_DoubleTapped, 2);
-            MainPage.AddTapHandler(SPFrame, PP_DoubleTapped, 2);
-            MainPage.AddTapHandler(PPTitle, PP_DoubleTapped, 2);
-            MainPage.AddTapHandler(PPFrame, PP_DoubleTapped, 2); 
+            MainPage.AddTapHandler(GPTitle, GP_DoubleTapped, 2);
+            MainPage.AddTapHandler(GPFrame, GP_DoubleTapped, 2);
+            MainPage.AddTapHandler(SPTitle, SP_DoubleTapped, 2);
+            MainPage.AddTapHandler(SPFrame, SP_DoubleTapped, 2);
+            MainPage.AddTapHandler(CPTitle, CP_DoubleTapped, 2);
+            MainPage.AddTapHandler(CPFrame, CP_DoubleTapped, 2); 
             MainPage.AddTapHandler(EncumbranceGrid, Encumbrance_DoubleTapped, 2);
 
             UpdateView();
