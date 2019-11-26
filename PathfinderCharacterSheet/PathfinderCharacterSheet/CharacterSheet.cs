@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define SELECT_CURRENT_ATTACK_FOR_COMBAT_MANEUVERS
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -168,11 +169,9 @@ namespace PathfinderCharacterSheet
             {
                 get
                 {
-                    return new AbilityScore()
-                    {
-                        score = score,
-                        tempAdjustment = tempAdjustment.Clone as ValueWithIntModifiers,
-                    };
+                    var abs = new AbilityScore();
+                    abs.Fill(this);
+                    return abs;
                 }
             }
             public bool Equals(AbilityScore obj)
@@ -180,11 +179,20 @@ namespace PathfinderCharacterSheet
                 var other = obj as AbilityScore;
                 if (other == null)
                     return false;
-                if (other.score != score)
+                if (!other.score.Equals(score))
                     return false;
                 if (!other.tempAdjustment.Equals(tempAdjustment))
                     return false;
                 return true;
+            }
+
+            public AbilityScore Fill(AbilityScore source)
+            {
+                if (source == null)
+                    return this;
+                score = source.score.Clone as ValueWithIntModifiers;
+                tempAdjustment = source.tempAdjustment.Clone as ValueWithIntModifiers;
+                return this;
             }
         }
 
@@ -213,6 +221,14 @@ namespace PathfinderCharacterSheet
 
         public class IntModifier: Modifier<int>
         {
+            public enum RoundingTypes
+            {
+                Down,
+                Up,
+                ToNearest,
+            };
+            public const RoundingTypes DefaultRounding = RoundingTypes.Up;
+
             public string sourceAbility = Ability.None.ToString();
             public Ability SourceAbility
             {
@@ -225,6 +241,18 @@ namespace PathfinderCharacterSheet
             public int sourceItemUID = InvalidUID;
             public bool mustBeActive = true;
 
+            public bool multiplyToLevel = false;
+            public string className = null;
+
+            public bool autoNaming = true;
+
+            public string roundingType = DefaultRounding.ToString();
+            public RoundingTypes RoundingType
+            {
+                get { return GetEnumValue(roundingType, DefaultRounding); }
+                set { roundingType = value.ToString(); }
+            }
+
             public override int GetValue(CharacterSheet sheet)
             {
                 if ((sourceItemUID != InvalidUID) && (sheet != null))
@@ -235,19 +263,63 @@ namespace PathfinderCharacterSheet
                     if (!item.active && mustBeActive)
                         return 0;
                 }
-                if ((sheet == null) || (SourceAbility == Ability.None))
-                    return value;
-                var ability = multiplier * sheet.GetAbilityModifier(SourceAbility);
-                if (divider != 0)
-                    ability /= divider;
-                return ability;
+                var totalValue = value;
+                if (sheet != null)
+                {
+                    if (SourceAbility != Ability.None)
+                    {
+                        float ability = multiplier * sheet.GetAbilityModifier(SourceAbility);
+                        if (divider != 0)
+                            ability /= divider;
+                        switch (RoundingType)
+                        {
+                            case RoundingTypes.ToNearest:
+                                totalValue += (int)Math.Floor(ability + (ability < 0.0f ? -0.5f : 0.5f));
+                                break;
+                            case RoundingTypes.Down:
+                                totalValue += (int)Math.Floor(ability);
+                                break;
+                            default:
+                                totalValue += (int)Math.Ceiling(ability);
+                                break;
+                        }
+                    }
+                }
+                if (multiplyToLevel)
+                {
+                    if (!string.IsNullOrWhiteSpace(className))
+                    {
+                        var level = sheet.GetLevelOfClass(className);
+                        if (level != null)
+                            totalValue *= level.GetTotal(sheet);
+                    }
+                    else
+                        totalValue *= sheet.TotalLevel;
+                }
+                return totalValue;
             }
 
             public string AsString(CharacterSheet sheet)
             {
-                var text = Name;
+                if (!autoNaming)
+                    return Name;
+                var text = string.Empty;
                 if (SourceAbility != Ability.None)
-                    text = "(= " + sourceAbility + ") " + text;
+                    text += value + " + " + sourceAbility;
+                if (multiplyToLevel)
+                {
+                    if (string.IsNullOrWhiteSpace(text))
+                        text += value;
+                    else
+                        text = "(" + text + ")";
+                    text += string.IsNullOrWhiteSpace(className) ? " * Total Level" : " * Level Of "
+                        + (string.IsNullOrWhiteSpace(className) ? "Unnamed Class" : className);
+                }
+                if (!string.IsNullOrWhiteSpace(Name))
+                    if (string.IsNullOrWhiteSpace(text))
+                        text = Name;
+                    else
+                        text = Name + " (" + text + ")";
                 if (sourceItemUID != InvalidUID)
                 {
                     var item = sheet.GetItemByUID(sourceItemUID);
@@ -299,6 +371,13 @@ namespace PathfinderCharacterSheet
                 sourceItemUID = source.sourceItemUID;
                 mustBeActive = source.mustBeActive;
 
+                RoundingType = source.RoundingType;
+
+                multiplyToLevel = source.multiplyToLevel;
+                className = source.className;
+
+                autoNaming = source.autoNaming;
+
                 return this;
             }
 
@@ -317,6 +396,14 @@ namespace PathfinderCharacterSheet
                 if (other.sourceItemUID != sourceItemUID)
                     return false;
                 if (other.mustBeActive != mustBeActive)
+                    return false;
+                if (other.RoundingType != RoundingType)
+                    return false;
+                if (other.multiplyToLevel != multiplyToLevel)
+                    return false;
+                if (other.className != className)
+                    return false;
+                if (other.autoNaming != autoNaming)
                     return false;
                 return true;
             }
@@ -1730,6 +1817,7 @@ namespace PathfinderCharacterSheet
 
         public void Init()
         {
+            InitAbilityScrores();
             InitSkills();
         }
 
@@ -1783,21 +1871,32 @@ namespace PathfinderCharacterSheet
         #region Level
         public List<LevelOfClass> levelOfClass = new List<LevelOfClass>();
         public int TotalLevel { get { return LevelOfClass.Total(this, levelOfClass); } }
+        public ValueWithIntModifiers GetLevelOfClass(string className)
+        {
+            foreach (var loc in levelOfClass)
+                if ((loc != null) && (loc.className == className))
+                    return loc.level;
+            return null;
+        }
         public string LevelAsString { get { return LevelOfClass.AsString(this, levelOfClass); } }
         public ValueWithIntModifiers experience = new ValueWithIntModifiers();
         public ValueWithIntModifiers nextLevelExperience = new ValueWithIntModifiers();
         #endregion
 
         #region Ability Score
-        public AbilityScore[] abilityScores = new AbilityScore[(int)Ability.Total]
+        public AbilityScore[] abilityScores = null;
+        private void InitAbilityScrores()
         {
-            new AbilityScore(),
-            new AbilityScore(),
-            new AbilityScore(),
-            new AbilityScore(),
-            new AbilityScore(),
-            new AbilityScore(),
-        };
+            abilityScores = new AbilityScore[(int)Ability.Total]
+            {
+                new AbilityScore(),
+                new AbilityScore(),
+                new AbilityScore(),
+                new AbilityScore(),
+                new AbilityScore(),
+                new AbilityScore(),
+            };
+        }
         #endregion
 
         #region Hit Points
@@ -1889,9 +1988,14 @@ namespace PathfinderCharacterSheet
         public ValueWithIntModifiers cmdSizeModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers cmbSizeModifier = new ValueWithIntModifiers();
         public int GetCMD(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return 10 + GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.GetTotal(sheet); }
-        public int CMD { get { return GetCMD(this, cmdSizeModifier, currentAttack); } }
         public int GetCMB(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + sizeModifier.GetTotal(sheet); }
+#if SELECT_CURRENT_ATTACK_FOR_COMBAT_MANEUVERS
+        public int CMD { get { return GetCMD(this, cmdSizeModifier, currentAttack); } }
         public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
+#else
+        public int CMD { get { return GetCMD(this, cmdSizeModifier, 0); } }
+        public int CMB { get { return GetCMB(this, cmbSizeModifier, 0); } }
+#endif
 
         public ValueWithIntModifiers attackSizeModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers attackBonusModifiers = new ValueWithIntModifiers();

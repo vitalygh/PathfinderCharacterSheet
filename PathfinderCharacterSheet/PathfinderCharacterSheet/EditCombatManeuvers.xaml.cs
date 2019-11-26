@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define SELECT_CURRENT_ATTACK_FOR_COMBAT_MANEUVERS
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,9 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private CharacterSheet.ValueWithIntModifiers cmdSizeModifier = null;
         private CharacterSheet.ValueWithIntModifiers cmbSizeModifier = null;
+#if SELECT_CURRENT_ATTACK
         private int currentAttack = 0;
+#endif
 
         public EditCombatManeuvers ()
 		{
@@ -31,8 +34,12 @@ namespace PathfinderCharacterSheet
                 return;
             cmdSizeModifier = sheet.cmdSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
             cmbSizeModifier = sheet.cmbSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
+#if SELECT_CURRENT_ATTACK
             currentAttack = sheet.currentAttack;
             UpdateCurrentAttackPicker();
+#else
+            BaseAttackBonus.Text = sheet.GetBaseAttackBonus(0).ToString();
+#endif
             StrengthModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Strength).ToString();
             CMDDexterityModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
         }
@@ -53,8 +60,13 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+#if SELECT_CURRENT_ATTACK
             CMDTotal.Text = sheet.GetCMD(sheet, cmdSizeModifier, currentAttack).ToString();
             CMBTotal.Text = sheet.GetCMB(sheet, cmbSizeModifier, currentAttack).ToString();
+#else
+            CMDTotal.Text = sheet.GetCMD(sheet, cmdSizeModifier, 0).ToString();
+            CMBTotal.Text = sheet.GetCMB(sheet, cmbSizeModifier, 0).ToString();
+#endif
         }
 
         private void EditToView()
@@ -73,16 +85,19 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
                 sheet.cmbSizeModifier = cmbSizeModifier;
             }
+#if SELECT_CURRENT_ATTACK
             if (currentAttack != sheet.currentAttack)
             {
                 hasChanges = true;
                 sheet.currentAttack = currentAttack;
             }
+#endif
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
         }
 
 
+#if SELECT_CURRENT_ATTACK
         private void UpdateCurrentAttackPicker()
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -107,11 +122,11 @@ namespace PathfinderCharacterSheet
                 };
                 items.Add(item);
             }
+            var oneAttack = count < 2;
             CurrentBaseAttackBonus.ItemsSource = items;
             CurrentBaseAttackBonus.SelectedIndex = selectedIndex;
-            var oneAttack = count < 2;
             CurrentBaseAttackBonus.InputTransparent = oneAttack;
-            CurrentBaseAttackBonusFrame.BackgroundColor = oneAttack ? Color.LightGray : Color.White;
+            BaseAttackBonusFrame.BackgroundColor = oneAttack ? Color.LightGray : Color.White;
         }
 
         private void CurrentBaseAttackBonus_SelectedIndexChanged(object sender, EventArgs e)
@@ -122,6 +137,7 @@ namespace PathfinderCharacterSheet
             currentAttack = selectedItem.Value;
             UpdateTotal();
         }
+#endif
 
         private void CMDSizeModifier_Tapped(object sender, EventArgs e)
         {

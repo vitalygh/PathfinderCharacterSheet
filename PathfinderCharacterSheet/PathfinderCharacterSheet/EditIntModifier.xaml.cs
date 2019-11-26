@@ -12,11 +12,20 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditIntModifier : ContentPage, ISheetView
 	{
+        public class RoundingTypesPickerItem
+        {
+            public string Name { set; get; }
+            public CharacterSheet.IntModifier.RoundingTypes  Value { set; get; }
+        }
+
         private Page pushedPage = null;
         private CharacterSheet sheet = null;
         private CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiersList = null;
         private CharacterSheet.IntModifier source = null;
         private CharacterSheet.IntModifier modifier = null;
+
+        private Label TotalTitle = null;
+        private Label TotalValue = null;
 
         private Label IsActiveTitle = null;
         private CheckBox IsActive = null;
@@ -40,12 +49,26 @@ namespace PathfinderCharacterSheet
         private Frame DividerFrame = null;
         private Entry Divider = null;
 
+        private Label RoundingTitle = null;
+        private Frame RoundingFrame = null;
+        private Picker Rounding = null;
+
         private Label LinkedItemTitle = null;
         private Frame LinkedItemFrame = null;
         private Label LinkedItem = null;
 
         private Label ItemMustBeActiveTitle = null;
         private CheckBox ItemMustBeActive = null;
+
+        //private Label MultiplyToLevelTitle = null;
+        //private CheckBox MultiplyToLevel = null;
+
+        private Label ClassNameTitle = null;
+        private Frame ClassNameFrame = null;
+        private Label ClassName = null;
+
+        private Label AutoNamingTitle = null;
+        private CheckBox AutoNaming = null;
 
         private Button Cancel = null;
         private Button Save = null;
@@ -70,30 +93,38 @@ namespace PathfinderCharacterSheet
                 new ColumnDefinition() { Width = GridLength.Auto, },
                 new ColumnDefinition() { Width = GridLength.Star, },
             };
-            IsActiveTitle = CreateLabel("Active: ");
+
+            TotalTitle = CreateLabel("Total:");
+            var totalFrame = CreateFrame(string.Empty);
+            totalFrame.BackgroundColor = Color.LightGray;
+            TotalValue = totalFrame.Content as Label;
+
+            var row = 0;
+            grid.Children.Add(TotalTitle, 0, row);
+            grid.Children.Add(totalFrame, 1, row);
+            row += 1;
+
+            IsActiveTitle = CreateLabel("Active:");
             IsActive = new CheckBox()
             {
                 IsChecked = true,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
             };
 
-            var row = 0;
             grid.Children.Add(IsActiveTitle, 0, row);
             grid.Children.Add(IsActive, 1, row);
             row += 1;
 
-            ValueTitle = CreateLabel("Value: ");
+            ValueTitle = CreateLabel("Value:");
             ModifierValue = new Entry()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
                 Keyboard = Keyboard.Numeric,
             };
-            /*
             ModifierValue.TextChanged += (s, e) =>
             {
                 UpdateValue();
             };
-            */
             ModifierValueFrame = new Frame()
             {
                 Content = ModifierValue,
@@ -212,6 +243,47 @@ namespace PathfinderCharacterSheet
                 grid.Children.Add(DividerTitle, 0, row);
                 grid.Children.Add(DividerFrame, 1, row);
                 row += 1;
+
+                RoundingTitle = CreateLabel("Rounding: ");
+                Rounding = new Picker()
+                {
+                    TextColor = Color.Black,
+                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Picker)),
+                    ItemDisplayBinding = new Binding("Name"),
+                };
+                RoundingFrame = new Frame()
+                {
+                    Content = Rounding,
+                    BorderColor = Color.Black,
+                    Padding = 5,
+                };
+                var roundingTypes = new List<RoundingTypesPickerItem>();
+                var roundingValues = Enum.GetValues(typeof(CharacterSheet.IntModifier.RoundingTypes));
+                var roundingIndex = -1;
+                var roundingSelectedIndex = -1;
+                var roundingSelectedValue = modifier != null ? modifier.RoundingType : CharacterSheet.IntModifier.DefaultRounding;
+                foreach (var v in roundingValues)
+                {
+                    var value = (CharacterSheet.IntModifier.RoundingTypes)v;
+                    roundingIndex += 1;
+                    if (roundingSelectedValue == value)
+                        roundingSelectedIndex = roundingIndex;
+                    roundingTypes.Add(new RoundingTypesPickerItem()
+                    {
+                        Name = v.ToString(),
+                        Value = value,
+                    });
+                }
+                Rounding.ItemsSource = roundingTypes;
+                Rounding.SelectedIndex = roundingSelectedIndex;
+                Rounding.SelectedIndexChanged += (s, e) =>
+                {
+                    UpdateValue();
+                };
+
+                grid.Children.Add(RoundingTitle, 0, row);
+                grid.Children.Add(RoundingFrame, 1, row);
+                row += 1;
             }
 
             LinkedItemTitle = CreateLabel("Linked To Item: ");
@@ -235,6 +307,41 @@ namespace PathfinderCharacterSheet
 
             grid.Children.Add(ItemMustBeActiveTitle, 0, row);
             grid.Children.Add(ItemMustBeActive, 1, row);
+            row += 1;
+
+            /*
+            MultiplyToLevelTitle = CreateLabel("Multiply To Level:");
+            MultiplyToLevel = new CheckBox()
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+            };
+            MultiplyToLevel.CheckedChanged += (s, e) =>
+            {
+                modifier.multiplyToLevel = e.Value;
+                UpdateView();
+            };
+
+            grid.Children.Add(MultiplyToLevelTitle, 0, row);
+            grid.Children.Add(MultiplyToLevel, 1, row);
+            row += 1;
+            */
+
+            ClassNameTitle = CreateLabel("Level Of Class: ");
+            ClassNameFrame = CreateFrame(string.Empty);
+            ClassName = ClassNameFrame.Content as Label;
+
+            grid.Children.Add(ClassNameTitle, 0, row);
+            grid.Children.Add(ClassNameFrame, 1, row);
+            row += 1;
+
+            AutoNamingTitle = CreateLabel("Auto Naming:");
+            AutoNaming = new CheckBox()
+            {
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+            };
+
+            grid.Children.Add(AutoNamingTitle, 0, row);
+            grid.Children.Add(AutoNaming, 1, row);
             row += 1;
 
             grid.RowDefinitions = new RowDefinitionCollection();
@@ -299,6 +406,7 @@ namespace PathfinderCharacterSheet
             InitControls(allowUseAbilities);
             IsActive.IsChecked = this.modifier.IsActive;
             ItemMustBeActive.IsChecked = this.modifier.mustBeActive;
+            ModifierValue.Text = this.modifier.value.ToString();
             ModifierName.Text = this.modifier.Name;
             Delete.IsEnabled = source != null;
             if (Multiplier != null)
@@ -335,6 +443,24 @@ namespace PathfinderCharacterSheet
                 }
             }
             MainPage.SetTapHandler(LinkedItemFrame, (s, e) => SelectItem(item));
+            if (!modifier.multiplyToLevel)
+                ClassName.Text = string.Empty;
+            else
+            {
+                var loc = sheet.GetLevelOfClass(modifier.className);
+                if (string.IsNullOrWhiteSpace(modifier.className) || (loc != null))
+                {
+                    ClassName.Text = loc == null ? "Total Level" : modifier.className;
+                    ClassName.TextColor = Color.Green;
+                }
+                else
+                {
+                    ClassName.Text = "Class \"" + modifier.className + "\" not found";
+                    ClassName.TextColor = Color.Red;
+                }
+            }
+            MainPage.SetTapHandler(ClassNameFrame, (s, e) => SelectClass(modifier.className));
+            AutoNaming.IsChecked = modifier.autoNaming;
         }
 
         private void SelectItem(CharacterSheet.GearItem item)
@@ -347,6 +473,26 @@ namespace PathfinderCharacterSheet
                 modifier.sourceItemUID = selected == null ? CharacterSheet.InvalidUID : selected.uid;
             }, item);
             pushedPage = sgi;
+            Navigation.PushAsync(pushedPage);
+        }
+
+        private void SelectClass(string className)
+        {
+            if (pushedPage != null)
+                return;
+            var sc = new SelectClass();
+            var level = modifier.multiplyToLevel ? new CharacterSheet.LevelOfClass() { className = className }: null;
+            sc.InitSelection((selected) =>
+            {
+                if (selected == null)
+                    modifier.multiplyToLevel = false;
+                else
+                {
+                    modifier.multiplyToLevel = true;
+                    modifier.className = selected.ClassName;
+                }
+            }, level);
+            pushedPage = sc;
             Navigation.PushAsync(pushedPage);
         }
 
@@ -365,15 +511,12 @@ namespace PathfinderCharacterSheet
                     ab = currentAbility != CharacterSheet.Ability.None;
                 }
             }
-            ModifierValue.IsReadOnly = ab;
-            ModifierValueFrame.BackgroundColor = ab ? Color.LightGray : Color.White;
             modifier.SourceAbility = currentAbility;
             MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
             if (Multiplier != null)
                 MainPage.StrToInt(Multiplier.Text, ref modifier.multiplier);
             if (Divider != null)
                 MainPage.StrToInt(Divider.Text, ref modifier.divider);
-            ModifierValue.Text = ab ? modifier.GetValue(sheet).ToString() : modifier.value.ToString();
             if (Multiplier != null)
             {
                 Multiplier.IsReadOnly = !ab;
@@ -384,6 +527,20 @@ namespace PathfinderCharacterSheet
                 Divider.IsReadOnly = !ab;
                 DividerFrame.BackgroundColor = !ab ? Color.LightGray : Color.White;
             }
+            if (Rounding != null)
+            {
+                Rounding.InputTransparent = !ab;
+                RoundingFrame.BackgroundColor = !ab ? Color.LightGray : Color.White;
+            }
+            var currentRoundingType = CharacterSheet.IntModifier.DefaultRounding;
+            if (Rounding != null)
+            {
+                var item = (Rounding.SelectedItem as RoundingTypesPickerItem);
+                if (item != null)
+                    currentRoundingType = item.Value;
+            }
+            modifier.RoundingType = currentRoundingType;
+            TotalValue.Text = modifier.GetValue(sheet).ToString();
         }
 
         private void EditToView()
@@ -403,6 +560,13 @@ namespace PathfinderCharacterSheet
                 MainPage.StrToInt(Multiplier.Text, ref modifier.multiplier);
             if (Divider != null)
                 MainPage.StrToInt(Divider.Text, ref modifier.divider);
+            if (Rounding != null)
+            {
+                var selectedItem = Rounding.SelectedItem as RoundingTypesPickerItem;
+                if (selectedItem != null)
+                    modifier.RoundingType = selectedItem.Value;
+            }
+            modifier.autoNaming = AutoNaming.IsChecked;
             if ((source != null) && !source.Equals(modifier))
                 source.Fill(modifier);
         }

@@ -166,7 +166,7 @@ namespace PathfinderCharacterSheet
                 if (sheet.abilityScores[i].Equals(abilityScores[i]))
                     continue;
                 anyChanged = true;
-                sheet.abilityScores[i] = abilityScores[i];
+                sheet.abilityScores[i].Fill(abilityScores[i]);
             }
             if (anyChanged)
                 CharacterSheetStorage.Instance.SaveCharacter();

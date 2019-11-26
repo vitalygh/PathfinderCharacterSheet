@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -32,6 +32,9 @@
     </Compile>
     <Compile Update="EditSkillRanks.xaml.cs">
       <DependentUpon>EditSkillRanks.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SelectClass.xaml.cs">
+      <DependentUpon>SelectClass.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -121,6 +124,9 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="EditSkillRanks.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SelectClass.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="SelectGearItem.xaml">
