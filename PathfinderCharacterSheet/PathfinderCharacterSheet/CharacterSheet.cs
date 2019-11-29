@@ -1044,11 +1044,16 @@ namespace PathfinderCharacterSheet
             public override string AsString(CharacterSheet sheet)
             {
                 var text = name;
+                var l = left.GetTotal(sheet);
                 var t = total.GetTotal(sheet);
-                if (t > 0)
+                if ((l > 0) || (t > 0))
                 {
-                    var l = left.GetTotal(sheet);
-                    text += " (" + l + " / " + t + ")";
+                    if (!string.IsNullOrWhiteSpace(text))
+                        text += " ";
+                    text += "[" + l;
+                    if (t > 0)
+                        text += " / " + t;
+                    text += "]";
                 }
                 return text;
             }
@@ -1072,14 +1077,35 @@ namespace PathfinderCharacterSheet
             public bool active = false;
             public ValueWithIntModifiers amount = new ValueWithIntModifiers() { baseValue = 1, };
             public ValueWithIntModifiers weight = new ValueWithIntModifiers();
+
+            public ValueWithIntModifiers left = new ValueWithIntModifiers();
+            public ValueWithIntModifiers total = new ValueWithIntModifiers();
+
             public int TotalWeight(CharacterSheet sheet) { return amount.GetTotal(sheet) * weight.GetTotal(sheet); }
             public override string AsString(CharacterSheet sheet)
             {
                 var text = string.Empty;
                 var count = amount.GetTotal(sheet);
                 if (count > 1)
-                    text += "(" + count + ") ";
-                return text + name;
+                    text += "(" + count + ")";
+
+                if (!string.IsNullOrWhiteSpace(name))
+                    text += " ";
+                text += name;
+
+                var l = left.GetTotal(sheet);
+                var t = total.GetTotal(sheet);
+                if ((l > 0) || (t > 0))
+                {
+                    if (!string.IsNullOrWhiteSpace(text))
+                        text += " ";
+                    text += "[" + l;
+                    if (t > 0)
+                        text += " / " + t;
+                    text += "]";
+                }
+
+                return text;
             }
 
             public override object Clone
@@ -1104,6 +1130,10 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!weight.Equals(other.weight))
                     return false;
+                if (!left.Equals(other.left))
+                    return false;
+                if (!total.Equals(other.total))
+                    return false;
                 return true;
             }
 
@@ -1115,6 +1145,8 @@ namespace PathfinderCharacterSheet
                 active = source.active;
                 amount = source.amount.Clone as ValueWithIntModifiers;
                 weight = source.weight.Clone as ValueWithIntModifiers;
+                left = source.left.Clone as ValueWithIntModifiers;
+                total = source.total.Clone as ValueWithIntModifiers;
                 return this;
             }
         }

@@ -25,13 +25,109 @@ namespace PathfinderCharacterSheet
         }
         private ItemsType item = null;
         private Page pushedPage = null;
+        Label NameTitle = null;
+        Label ActiveTitle = null;
+        Label AmountTitle = null;
+        Label WeightTitle = null;
+        Label LeftTitle = null;
+        Label TotalTitle = null;
+        Label DescriptionTitle = null;
 
         public ViewGearItem()
         {
             InitializeComponent();
+        }
+
+        private void InitControls()
+        {
+            if (item == null)
+                return;
+
+            GearItemGrid.Children.Clear();
+
+            NameTitle = CreateLabel("Name:");
+            var nameFrame = CreateFrame(item.name);
+
+            var row = 0;
+            GearItemGrid.Children.Add(NameTitle, 0, row);
+            GearItemGrid.Children.Add(nameFrame, 1, row);
+            row += 1;
+
+            ActiveTitle = CreateLabel("Active:");
+            var activecb = new CheckBox()
+            {
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center,
+                IsChecked = item.active,
+                IsEnabled = false,
+            };
+
+            GearItemGrid.Children.Add(ActiveTitle, 0, row);
+            GearItemGrid.Children.Add(activecb, 1, row);
+            row += 1;
+
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet != null)
+            {
+                AmountTitle = CreateLabel("Amount:");
+                var amountFrame = CreateFrame(item.amount.GetTotal(sheet).ToString());
+                MainPage.AddTapHandler(amountFrame, Amount_DoubleTapped, 2);
+
+                GearItemGrid.Children.Add(AmountTitle, 0, row);
+                GearItemGrid.Children.Add(amountFrame, 1, row);
+                row += 1;
+
+                WeightTitle = CreateLabel("Weight:");
+                var weightFrame = CreateFrame(item.weight.GetTotal(sheet).ToString());
+                MainPage.AddTapHandler(weightFrame, Weight_DoubleTapped, 2);
+
+                GearItemGrid.Children.Add(WeightTitle, 0, row);
+                GearItemGrid.Children.Add(weightFrame, 1, row);
+                row += 1;
+
+                var l = item.left.GetTotal(sheet);
+                var t = item.total.GetTotal(sheet);
+                if ((l > 0) || (t > 0))
+                {
+                    LeftTitle = CreateLabel("Charges Left:");
+                    var leftFrame = CreateFrame(l.ToString());
+
+                    GearItemGrid.Children.Add(LeftTitle, 0, row);
+                    GearItemGrid.Children.Add(leftFrame, 1, row);
+                    row += 1;
+
+                    MainPage.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
+
+                    if (t > 0)
+                    {
+                        TotalTitle = CreateLabel("Charges Per Day");
+                        var totalFrame = CreateFrame(t.ToString());
+
+                        GearItemGrid.Children.Add(TotalTitle, 0, row);
+                        GearItemGrid.Children.Add(totalFrame, 1, row);
+                        row += 1;
+
+                        MainPage.AddTapHandler(totalFrame, Total_DoubleTapped, 2);
+                    }
+                }
+            }
+
+            DescriptionTitle = CreateLabel("Description:");
+            var descriptionFrame = CreateFrame(item.description);
+
+            GearItemGrid.Children.Add(DescriptionTitle, 0, 2, row, row + 1);
+            row += 1;
+            GearItemGrid.Children.Add(descriptionFrame, 0, 2, row, row + 1);
+            row += 1;
+
+            if (GearItemGrid.RowDefinitions == null)
+                GearItemGrid.RowDefinitions = new RowDefinitionCollection();
+            else
+                GearItemGrid.RowDefinitions.Clear();
+            for (var i = 0; i < row; i++)
+                GearItemGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
             MainPage.AddTapHandler(GearItemGrid, Edit_Clicked, 2);
-            MainPage.AddTapHandler(AmountFrame, Amount_DoubleTapped, 2);
-            MainPage.AddTapHandler(WeightFrame, Weight_DoubleTapped, 2);
         }
 
         public void InitView(ItemsType gearItem)
@@ -53,11 +149,17 @@ namespace PathfinderCharacterSheet
                 Navigation.PopAsync();
                 return;
             }
-            ItemName.Text = item.name;
-            ItemActive.IsChecked = item.active;
-            Amount.Text = item.amount.GetTotal(sheet).ToString();
-            Weight.Text = item.weight.GetTotal(sheet).ToString();
-            Description.Text = item.description;
+            InitControls();
+        }
+
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
+        {
+            return MainPage.CreateLabel(text, horz);
+        }
+
+        private Frame CreateFrame(string text)
+        {
+            return MainPage.CreateFrame(text);
         }
 
         private void Amount_DoubleTapped(object sender, EventArgs e)
@@ -68,7 +170,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.amount, "Edit Amount", "Amount", false);
+            eivwm.Init(sheet, item.amount, "Edit Gear Item", "Amount", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -81,7 +183,33 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.weight, "Edit Weapon Weight", "Weight", false);
+            eivwm.Init(sheet, item.weight, "Edit Gear Item", "Weight", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void Left_DoubleTapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, item.left, "Edit Gear Item", "Charges Left", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void Total_DoubleTapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, item.total, "Edit Gear Item", "Charges Per Day", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

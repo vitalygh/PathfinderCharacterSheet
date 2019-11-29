@@ -17,6 +17,9 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Label x:Name="ItemNameTitle" Text="Name:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
@@ -48,9 +51,29 @@
                         <Label x:Name="Weight" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
-                    <Label x:Name="DescriptionTitle" Text="Description:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2">
+                    <Label x:Name="LeftTitle" Text="Charges Left:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2">
+                    <Frame x:Name="LeftFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Left_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Left" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="TotalTitle" Text="Charges Per Day:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="5">
+                    </Label>
+                    <Frame x:Name="TotalFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="5" HorizontalOptions="FillAndExpand" >
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Total_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Total" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>
+                    <Label x:Name="DescriptionTitle" Text="Description:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">
                         <Editor x:Name="Description" FontSize="Medium" TextColor="Black" AutoSize="TextChanges">
                         </Editor>
                     </Frame>

@@ -54,6 +54,8 @@ namespace PathfinderCharacterSheet
                 return;
             Amount.Text = item.amount.GetTotal(sheet).ToString();
             Weight.Text = item.weight.GetTotal(sheet).ToString();
+            Left.Text = item.left.GetTotal(sheet).ToString();
+            Total.Text = item.total.GetTotal(sheet).ToString();
         }
 
         private void EditToView()
@@ -89,7 +91,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.amount, "Edit Amount", "Amount", false);
+            eivwm.Init(sheet, item.amount, "Edit Gear Item", "Amount", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -102,7 +104,33 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.weight, "Edit Weapon Weight", "Weight", false);
+            eivwm.Init(sheet, item.weight, "Edit Gear Item", "Weight", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void Left_Tapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, item.left, "Edit Gear Item", "Charges Left", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
+        }
+
+        private void Total_Tapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, item.total, "Edit Gear Item", "Charges Per Day", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

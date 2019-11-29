@@ -15,6 +15,11 @@ namespace PathfinderCharacterSheet
     public partial class ViewSpecialAbility : ContentPage, ISheetView
     {
         private ItemType item = null;
+        Label NameTitle = null;
+        Label LeftTitle = null;
+        Label TotalTitle = null;
+        Label DescriptionTitle = null;
+
         private List<ItemType> items
         {
             get
@@ -30,9 +35,69 @@ namespace PathfinderCharacterSheet
         public ViewSpecialAbility()
         {
             InitializeComponent();
+        }
+
+        private void InitControls()
+        {
+            if (item == null)
+                return;
+
+            SpecialAbilitiesGrid.Children.Clear();
+
+            NameTitle = CreateLabel("Name:");
+            var nameFrame = CreateFrame(item.name);
+
+            var row = 0;
+            SpecialAbilitiesGrid.Children.Add(NameTitle, 0, row);
+            SpecialAbilitiesGrid.Children.Add(nameFrame, 1, row);
+            row += 1;
+
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet != null)
+            {
+                var l = item.left.GetTotal(sheet);
+                var t = item.total.GetTotal(sheet);
+                if ((l > 0) || (t > 0))
+                {
+                    LeftTitle = CreateLabel("Uses Left:");
+                    var leftFrame = CreateFrame(l.ToString());
+
+                    SpecialAbilitiesGrid.Children.Add(LeftTitle, 0, row);
+                    SpecialAbilitiesGrid.Children.Add(leftFrame, 1, row);
+                    row += 1;
+
+                    MainPage.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
+
+                    if (t > 0)
+                    {
+                        TotalTitle = CreateLabel("Uses Allowed:");
+                        var totalFrame = CreateFrame(t.ToString());
+
+                        SpecialAbilitiesGrid.Children.Add(TotalTitle, 0, row);
+                        SpecialAbilitiesGrid.Children.Add(totalFrame, 1, row);
+                        row += 1;
+
+                        MainPage.AddTapHandler(totalFrame, Total_DoubleTapped, 2);
+                    }
+                }
+            }
+
+            DescriptionTitle = CreateLabel("Description:");
+            var descriptionFrame = CreateFrame(item.description);
+
+            SpecialAbilitiesGrid.Children.Add(DescriptionTitle, 0, 2, row, row + 1);
+            row += 1;
+            SpecialAbilitiesGrid.Children.Add(descriptionFrame, 0, 2, row, row + 1);
+            row += 1;
+
+            if (SpecialAbilitiesGrid.RowDefinitions == null)
+                SpecialAbilitiesGrid.RowDefinitions = new RowDefinitionCollection();
+            else
+                SpecialAbilitiesGrid.RowDefinitions.Clear();
+            for (var i = 0; i < row; i++)
+                SpecialAbilitiesGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+
             MainPage.AddTapHandler(SpecialAbilitiesGrid, Edit_Clicked, 2);
-            MainPage.AddTapHandler(LeftFrame, Left_DoubleTapped, 2);
-            MainPage.AddTapHandler(TotalFrame, Total_DoubleTapped, 2);
         }
 
         public void InitView(ItemType item)
@@ -51,13 +116,17 @@ namespace PathfinderCharacterSheet
                 Navigation.PopAsync();
                 return;
             }
-            ItemName.Text = item.name;
-            Description.Text = item.description;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
-                return;
-            Left.Text = item.left.GetTotal(sheet).ToString();
-            Total.Text = item.total.GetTotal(sheet).ToString();
+            InitControls();
+        }
+
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
+        {
+            return MainPage.CreateLabel(text, horz);
+        }
+
+        private Frame CreateFrame(string text)
+        {
+            return MainPage.CreateFrame(text);
         }
 
         private void Left_DoubleTapped(object sender, EventArgs e)
