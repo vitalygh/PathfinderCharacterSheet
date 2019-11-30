@@ -42,6 +42,7 @@ namespace PathfinderCharacterSheet
                 this.item = item.Clone as ItemType;
             ItemName.Text = this.item.name;
             Description.Text = this.item.description;
+            HasUseLimit.IsChecked = this.item.hasUseLimit;
             Delete.IsEnabled = source != null;
             UpdateView();
         }
@@ -52,8 +53,9 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            Left.Text = item.left.GetTotal(sheet).ToString();
-            Total.Text = item.total.GetTotal(sheet).ToString();
+            Left.Text = item.useLimit.GetTotal(sheet).ToString();
+            Total.Text = item.dailyUseLimit.GetTotal(sheet).ToString();
+            UpdateHasUseLimit();
         }
 
         private void EditToView()
@@ -88,7 +90,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.left, "Edit Special Ability", "Uses Left", false);
+            eivwm.Init(sheet, item.useLimit, "Edit Special Ability", "Use Limit", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -101,9 +103,25 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.total, "Edit Special Ability", "Uses Allowed", false);
+            eivwm.Init(sheet, item.dailyUseLimit, "Edit Special Ability", "Daily Use Limit", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
+        }
+
+        private void UpdateHasUseLimit()
+        {
+            if (item == null)
+                return;
+            item.hasUseLimit = HasUseLimit.IsChecked;
+            Left.TextDecorations = item.hasUseLimit ? TextDecorations.Underline : TextDecorations.None;
+            LeftFrame.BackgroundColor = item.hasUseLimit ? Color.White : Color.LightGray;
+            Total.TextDecorations = item.hasUseLimit ? TextDecorations.Underline : TextDecorations.None;
+            TotalFrame.BackgroundColor = item.hasUseLimit ? Color.White : Color.LightGray;
+        }
+
+        private void HasUseLimit_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            UpdateHasUseLimit();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

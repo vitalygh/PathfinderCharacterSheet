@@ -85,12 +85,11 @@ namespace PathfinderCharacterSheet
                 GearItemGrid.Children.Add(weightFrame, 1, row);
                 row += 1;
 
-                var l = item.left.GetTotal(sheet);
-                var t = item.total.GetTotal(sheet);
-                if ((l > 0) || (t > 0))
+                if (item.hasUseLimit)
                 {
-                    LeftTitle = CreateLabel("Charges Left:");
-                    var leftFrame = CreateFrame(l.ToString());
+                    var ul = item.useLimit.GetTotal(sheet);
+                    LeftTitle = CreateLabel("Use Limit:");
+                    var leftFrame = CreateFrame(ul.ToString());
 
                     GearItemGrid.Children.Add(LeftTitle, 0, row);
                     GearItemGrid.Children.Add(leftFrame, 1, row);
@@ -98,10 +97,11 @@ namespace PathfinderCharacterSheet
 
                     MainPage.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
 
-                    if (t > 0)
+                    var dul = item.dailyUseLimit.GetTotal(sheet);
+                    if (dul > 0)
                     {
-                        TotalTitle = CreateLabel("Charges Per Day");
-                        var totalFrame = CreateFrame(t.ToString());
+                        TotalTitle = CreateLabel("Daily Use Limit:");
+                        var totalFrame = CreateFrame(dul.ToString());
 
                         GearItemGrid.Children.Add(TotalTitle, 0, row);
                         GearItemGrid.Children.Add(totalFrame, 1, row);
@@ -196,7 +196,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.left, "Edit Gear Item", "Charges Left", false);
+            eivwm.Init(sheet, item.useLimit, "Edit Gear Item", "Use Limit", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -209,7 +209,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.total, "Edit Gear Item", "Charges Per Day", false);
+            eivwm.Init(sheet, item.dailyUseLimit, "Edit Gear Item", "Daily Use Limit", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

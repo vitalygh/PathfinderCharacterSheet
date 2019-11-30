@@ -42,6 +42,7 @@ namespace PathfinderCharacterSheet
             ItemName.Text = this.item.name;
             Description.Text = this.item.description;
             ItemActive.IsChecked = this.item.active;
+            HasUseLimit.IsChecked = this.item.hasUseLimit;
             Delete.IsEnabled = source != null;
             UpdateView();
         }
@@ -54,8 +55,9 @@ namespace PathfinderCharacterSheet
                 return;
             Amount.Text = item.amount.GetTotal(sheet).ToString();
             Weight.Text = item.weight.GetTotal(sheet).ToString();
-            Left.Text = item.left.GetTotal(sheet).ToString();
-            Total.Text = item.total.GetTotal(sheet).ToString();
+            Left.Text = item.useLimit.GetTotal(sheet).ToString();
+            Total.Text = item.dailyUseLimit.GetTotal(sheet).ToString();
+            UpdateHasUseLimit();
         }
 
         private void EditToView()
@@ -116,8 +118,12 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+            if (item == null)
+                return;
+            if (!item.hasUseLimit)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.left, "Edit Gear Item", "Charges Left", false);
+            eivwm.Init(sheet, item.useLimit, "Edit Gear Item", "Uses Limit", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -129,10 +135,30 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+            if (item == null)
+                return;
+            if (!item.hasUseLimit)
+                return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.total, "Edit Gear Item", "Charges Per Day", false);
+            eivwm.Init(sheet, item.dailyUseLimit, "Edit Gear Item", "Daily Uses Limit", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
+        }
+
+        private void UpdateHasUseLimit()
+        {
+            if (item == null)
+                return;
+            item.hasUseLimit = HasUseLimit.IsChecked;
+            Left.TextDecorations = item.hasUseLimit ? TextDecorations.Underline : TextDecorations.None;
+            LeftFrame.BackgroundColor = item.hasUseLimit ? Color.White : Color.LightGray;
+            Total.TextDecorations = item.hasUseLimit ? TextDecorations.Underline : TextDecorations.None;
+            TotalFrame.BackgroundColor = item.hasUseLimit ? Color.White : Color.LightGray;
+        }
+
+        private void HasUseLimit_CheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            UpdateHasUseLimit();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

@@ -55,12 +55,11 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet != null)
             {
-                var l = item.left.GetTotal(sheet);
-                var t = item.total.GetTotal(sheet);
-                if ((l > 0) || (t > 0))
+                if (item.hasUseLimit)
                 {
-                    LeftTitle = CreateLabel("Uses Left:");
-                    var leftFrame = CreateFrame(l.ToString());
+                    var ul = item.useLimit.GetTotal(sheet);
+                    LeftTitle = CreateLabel("Use Left:");
+                    var leftFrame = CreateFrame(ul.ToString());
 
                     SpecialAbilitiesGrid.Children.Add(LeftTitle, 0, row);
                     SpecialAbilitiesGrid.Children.Add(leftFrame, 1, row);
@@ -68,10 +67,11 @@ namespace PathfinderCharacterSheet
 
                     MainPage.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
 
-                    if (t > 0)
+                    var dul = item.dailyUseLimit.GetTotal(sheet);
+                    if (dul > 0)
                     {
-                        TotalTitle = CreateLabel("Uses Allowed:");
-                        var totalFrame = CreateFrame(t.ToString());
+                        TotalTitle = CreateLabel("Daily Use Limit:");
+                        var totalFrame = CreateFrame(dul.ToString());
 
                         SpecialAbilitiesGrid.Children.Add(TotalTitle, 0, row);
                         SpecialAbilitiesGrid.Children.Add(totalFrame, 1, row);
@@ -137,7 +137,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.left, "Edit Special Ability", "Uses Left", false);
+            eivwm.Init(sheet, item.useLimit, "Edit Special Ability", "Use Limit", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }
@@ -150,7 +150,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
-            eivwm.Init(sheet, item.total, "Edit Special Ability", "Uses Allowed", false);
+            eivwm.Init(sheet, item.dailyUseLimit, "Edit Special Ability", "Daily Use Limit", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
         }

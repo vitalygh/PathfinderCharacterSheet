@@ -1003,11 +1003,70 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public class SpecialAbility: ItemWithDescription
+        public class ItemWithUseLimit: ItemWithDescription
         {
-            public ValueWithIntModifiers left = new ValueWithIntModifiers();
-            public ValueWithIntModifiers total = new ValueWithIntModifiers();
+            public bool hasUseLimit = false;
+            public ValueWithIntModifiers useLimit = new ValueWithIntModifiers();
+            public ValueWithIntModifiers dailyUseLimit = new ValueWithIntModifiers();
 
+            public override string AsString(CharacterSheet sheet)
+            {
+                var text = name;
+
+                if (hasUseLimit)
+                {
+                    if (!string.IsNullOrWhiteSpace(text))
+                        text += " ";
+                    var ul = useLimit.GetTotal(sheet);
+                    text += "[" + ul;
+                    var dul = dailyUseLimit.GetTotal(sheet);
+                    if (dul > 0)
+                        text += " / " + dul;
+                    text += "]";
+                }
+
+                return text;
+            }
+
+            public override object Clone
+            {
+                get
+                {
+                    var clone = new ItemWithUseLimit();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
+
+            public bool Equals(ItemWithUseLimit other)
+            {
+                if (other == null)
+                    return false;
+                if (!base.Equals(other))
+                    return false;
+                if (hasUseLimit != other.hasUseLimit)
+                    return false;
+                if (!useLimit.Equals(other.useLimit))
+                    return false;
+                if (!dailyUseLimit.Equals(other.dailyUseLimit))
+                    return false;
+                return true;
+            }
+
+            public ItemWithUseLimit Fill(ItemWithUseLimit source)
+            {
+                if (source == null)
+                    return this;
+                base.Fill(source);
+                hasUseLimit = source.hasUseLimit;
+                useLimit = source.useLimit.Clone as ValueWithIntModifiers;
+                dailyUseLimit = source.dailyUseLimit.Clone as ValueWithIntModifiers;
+                return this;
+            }
+        }
+
+        public class SpecialAbility: ItemWithUseLimit
+        {
             public override object Clone
             {
                 get
@@ -1016,46 +1075,6 @@ namespace PathfinderCharacterSheet
                     clone.Fill(this);
                     return clone;
                 }
-            }
-
-            public bool Equals(SpecialAbility other)
-            {
-                if (other == null)
-                    return false;
-                if (!base.Equals(other))
-                    return false;
-                if (!left.Equals(other.left))
-                    return false;
-                if (!total.Equals(other.total))
-                    return false;
-                return true;
-            }
-
-            public SpecialAbility Fill(SpecialAbility source)
-            {
-                if (source == null)
-                    return this;
-                base.Fill(source);
-                left = source.left.Clone as ValueWithIntModifiers;
-                total = source.total.Clone as ValueWithIntModifiers;
-                return this;
-            }
-
-            public override string AsString(CharacterSheet sheet)
-            {
-                var text = name;
-                var l = left.GetTotal(sheet);
-                var t = total.GetTotal(sheet);
-                if ((l > 0) || (t > 0))
-                {
-                    if (!string.IsNullOrWhiteSpace(text))
-                        text += " ";
-                    text += "[" + l;
-                    if (t > 0)
-                        text += " / " + t;
-                    text += "]";
-                }
-                return text;
             }
         }
 
@@ -1072,14 +1091,11 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public class GearItem: ItemWithDescription
+        public class GearItem: ItemWithUseLimit
         {
             public bool active = false;
             public ValueWithIntModifiers amount = new ValueWithIntModifiers() { baseValue = 1, };
             public ValueWithIntModifiers weight = new ValueWithIntModifiers();
-
-            public ValueWithIntModifiers left = new ValueWithIntModifiers();
-            public ValueWithIntModifiers total = new ValueWithIntModifiers();
 
             public int TotalWeight(CharacterSheet sheet) { return amount.GetTotal(sheet) * weight.GetTotal(sheet); }
             public override string AsString(CharacterSheet sheet)
@@ -1093,15 +1109,15 @@ namespace PathfinderCharacterSheet
                     text += " ";
                 text += name;
 
-                var l = left.GetTotal(sheet);
-                var t = total.GetTotal(sheet);
-                if ((l > 0) || (t > 0))
+                if (hasUseLimit)
                 {
                     if (!string.IsNullOrWhiteSpace(text))
                         text += " ";
-                    text += "[" + l;
-                    if (t > 0)
-                        text += " / " + t;
+                    var ul = useLimit.GetTotal(sheet);
+                    text += "[" + ul;
+                    var dul = dailyUseLimit.GetTotal(sheet);
+                    if (dul > 0)
+                        text += " / " + dul;
                     text += "]";
                 }
 
@@ -1130,10 +1146,6 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!weight.Equals(other.weight))
                     return false;
-                if (!left.Equals(other.left))
-                    return false;
-                if (!total.Equals(other.total))
-                    return false;
                 return true;
             }
 
@@ -1145,8 +1157,6 @@ namespace PathfinderCharacterSheet
                 active = source.active;
                 amount = source.amount.Clone as ValueWithIntModifiers;
                 weight = source.weight.Clone as ValueWithIntModifiers;
-                left = source.left.Clone as ValueWithIntModifiers;
-                total = source.total.Clone as ValueWithIntModifiers;
                 return this;
             }
         }
