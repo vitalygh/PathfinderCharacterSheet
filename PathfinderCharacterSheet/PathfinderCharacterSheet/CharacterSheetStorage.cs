@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define SAVE_BACKUPS
+using System;
 using System.IO;
 using System.Xml.Serialization;
 using System.Collections.Generic;
@@ -23,9 +24,12 @@ namespace PathfinderCharacterSheet
             }
         }
 
+        public int MaxBackupsCount { get { return 5; } }
         public Dictionary<CharacterSheet, string> characters = null;
         public CharacterSheet selectedCharacter = null;
-               
+        public Action<string, string, Exception> onCharacterSavingFailed = null;
+        public Action<string, Exception> onCharacterLoadingFailed = null;
+
         private CharacterSheetStorage()
         {
         }
@@ -52,6 +56,8 @@ namespace PathfinderCharacterSheet
             Console.WriteLine("Files: " + files.Length);
             foreach (var file in files)
             {
+                if (file.EndsWith("_backup.xml"))
+                    continue;
                 try
                 {
                     using (var stream = new StreamReader(file))
@@ -67,6 +73,7 @@ namespace PathfinderCharacterSheet
                 catch (Exception ex)
                 {
                     Console.WriteLine("File \"" + file + "\" loading failed: " + ex.ToString());
+                    onCharacterLoadingFailed?.Invoke(file, ex);
                 }
             }
         }
@@ -89,11 +96,96 @@ namespace PathfinderCharacterSheet
             //name += "_" + Guid.NewGuid().ToString();
             if (index > 0)
                 name = name + "_" + index;
+#if SAVE_BACKUPS
+            name += "_pcs";
+#endif
             var invalid = Path.GetInvalidFileNameChars();
             foreach (var c in invalid)
                 name = name.Replace(c, '_');
             return Path.Combine(CharactersPath, name + ".xml");
         }
+
+#if SAVE_BACKUPS
+        private string GetBackupFilename(string path, int index)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return null;
+            var ext = Path.GetExtension(path);
+            if (!string.IsNullOrWhiteSpace(ext))
+                path = path.Substring(0, path.Length - ext.Length);
+            var dt = DateTime.Now.ToString("yyyyMMddHHmmss");
+            return path + "_" + dt + index.ToString("000") + "_backup" + ext;
+        }
+
+        private string GetBackupFilename(string path)
+        {
+            var index = 0;
+            var filename = GetBackupFilename(path, index);
+            while (index < 10)
+            {
+                if (!File.Exists(filename))
+                    return filename;
+                index += 1;
+                filename = GetBackupFilename(path, index);
+            }
+            return filename;
+        }
+
+        private void SaveBackup(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return;
+            if (!File.Exists(path))
+                return;
+            var backup = GetBackupFilename(path);
+            try
+            {
+                File.Copy(path, backup, true);
+                RemoveOldBackups(path);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Saving backup of " + path + " to " + backup + " failed: " + ex.ToString());
+            }
+        }
+
+        private string[] GetBackupsList(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return null;
+            var dir = Path.GetDirectoryName(path);
+            var filename = Path.GetFileName(path);
+            var ext = Path.GetExtension(filename);
+            if (!string.IsNullOrWhiteSpace(ext))
+                filename = filename.Substring(0, filename.Length - ext.Length);
+            var pattern = filename + "*_backup" + ext;
+            return Directory.GetFiles(dir, pattern, SearchOption.TopDirectoryOnly);
+        }
+
+        private void RemoveOldBackups(string path)
+        {
+            var files = GetBackupsList(path);
+            if (files == null)
+                return;
+            if (files.Length <= MaxBackupsCount)
+                return;
+            var sorted = new List<string>(files);
+            sorted.Sort();
+            while (sorted.Count > MaxBackupsCount)
+            {
+                var file = sorted[0];
+                sorted.RemoveAt(0);
+                try
+                {
+                    File.Delete(file);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Removing backup " + file + ": " + ex.ToString());
+                }
+            }
+        }
+#endif
 
         private bool SaveCharacter(CharacterSheet sheet, string path)
         {
@@ -106,11 +198,19 @@ namespace PathfinderCharacterSheet
             try
             {
                 sheet.ModificationTime = DateTime.Now;
-                using (var writer = new StreamWriter(path))
+                using (var memoryStream = new MemoryStream())
                 {
                     var serializer = new XmlSerializer(typeof(CharacterSheet));
-                    serializer.Serialize(writer, sheet);
-                    writer.Flush();
+                    serializer.Serialize(memoryStream, sheet);
+                    memoryStream.Position = 0;
+#if SAVE_BACKUPS
+                    SaveBackup(path);
+#endif
+                    using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
+                    {
+                        memoryStream.WriteTo(fileStream);
+                        fileStream.Flush();
+                    }
                 }
                 Console.WriteLine("Serialization " + characterName + " to \"" + path + "\" complete");
                 return true;
@@ -118,6 +218,7 @@ namespace PathfinderCharacterSheet
             catch (Exception ex)
             {
                 Console.WriteLine("Serialization " + characterName + " to \"" + path + "\" failed: " + ex.ToString());
+                onCharacterSavingFailed?.Invoke(characterName, path, ex);
             }
             return false;
         }
@@ -152,10 +253,11 @@ namespace PathfinderCharacterSheet
             while (safeCounter > 0)
             {
                 safeCounter -= 1;
-                while (File.Exists(path))
+                if (File.Exists(path))
                 {
                     index += 1;
                     path = GeneratePath(sheet, index);
+                    continue;
                 }
                 if (SaveCharacter(sheet, path))
                 {

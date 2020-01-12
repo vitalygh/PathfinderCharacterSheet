@@ -1,4 +1,6 @@
-﻿//#define DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
+﻿#define SHOW_ERROR_MESSAGES
+#define SHOW_ERROR_DETAILS
+//#define DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
 //#define LONG_TAP_INSTEAD_OF_DOUBLE_TAP
 using System;
 using System.IO;
@@ -19,6 +21,9 @@ namespace PathfinderCharacterSheet
         public MainPage()
         {
             InitializeComponent();
+#if SHOW_ERROR_MESSAGES
+            CharacterSheetStorage.Instance.onCharacterSavingFailed += OnCharacterSavingFailed;
+#endif
             CharacterSheetStorage.Instance.LoadCharacters();
             UpdateView();
 #if !DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
@@ -42,6 +47,22 @@ namespace PathfinderCharacterSheet
             };
 #endif
         }
+
+#if SHOW_ERROR_MESSAGES
+        private void OnCharacterSavingFailed(string character, string path, Exception ex)
+        {
+            var message = "Character saving failed!";
+#if SHOW_ERROR_DETAILS
+            if (character != null)
+                message += "\n\nCharacter: " + character;
+            if (path != null)
+                message += "\n\nPath: " + path;
+            if (ex != null)
+                message += "\n\nException: " + ex.ToString();
+#endif
+            DisplayAlert("Error", message, "Noooooooo!!!");
+        }
+#endif
 
         public void UpdateView()
         {

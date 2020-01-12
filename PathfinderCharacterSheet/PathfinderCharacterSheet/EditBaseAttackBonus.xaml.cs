@@ -38,7 +38,7 @@ namespace PathfinderCharacterSheet
             if (sheet.baseAttackBonus != null)
                 foreach (var bab in sheet.baseAttackBonus)
                     if (bab != null)
-                        baseAttackBonus.Add(bab);
+                        baseAttackBonus.Add(bab.Clone as CharacterSheet.ValueWithIntModifiers);
             if (baseAttackBonus.Count <= 0)
                 baseAttackBonus.Add(new CharacterSheet.ValueWithIntModifiers());
             attacksCount = baseAttackBonus.Count;
