@@ -22,9 +22,75 @@ namespace PathfinderCharacterSheet
         {
             InitializeComponent();
 #if SHOW_ERROR_MESSAGES
-            CharacterSheetStorage.Instance.onCharacterSavingFailed += OnCharacterSavingFailed;
+            var failedToLoad = new List<KeyValuePair<string, Exception>>();
+            var loadedFromBackup = new List<KeyValuePair<string, string>>();
+            CharacterSheetStorage.Instance.onCharacterSavingFailed += (character, path, ex) =>
+            {
+                var message = "Character saving failed!";
+#if SHOW_ERROR_DETAILS
+                if (character != null)
+                    message += "\n\nCharacter: " + character;
+                if (path != null)
+                    message += "\n\nPath: " + path;
+                if (ex != null)
+                    message += "\n\nException: " + ex.ToString();
+#endif
+                DisplayAlert("Error", message, "Noooooooo!!!");
+            };
+            CharacterSheetStorage.Instance.onCharacterLoadingFailed += (path, ex) =>
+            {
+                failedToLoad.Add(new KeyValuePair<string, Exception>(path, ex));
+            };
+            CharacterSheetStorage.Instance.onCharacterLoadedFromBackup += (path, backup) =>
+            {
+                loadedFromBackup.Add(new KeyValuePair<string, string>(path, backup));
+            };
+            CharacterSheetStorage.Instance.onBackupSavingFailed += (from, to, ex) =>
+            {
+                var message = "Backup saving failed!";
+#if SHOW_ERROR_DETAILS
+                if (from != null)
+                    message += "\n\nFrom: " + from;
+                if (to != null)
+                    message += "\n\nTo: " + to;
+                if (ex != null)
+                    message += "\n\nException: " + ex.ToString();
+#endif
+                DisplayAlert("Error", message, "So sad...");
+            };
+            CharacterSheetStorage.Instance.onBackupRemovingFailed += (file, ex) =>
+            {
+                var message = "Old backup removing failed!";
+#if SHOW_ERROR_DETAILS
+                if (file != null)
+                    message += "\n\nFile: " + file;
+                if (ex != null)
+                    message += "\n\nException: " + ex.ToString();
+#endif
+                DisplayAlert("Error", message, "Interesting...");
+            };
 #endif
             CharacterSheetStorage.Instance.LoadCharacters();
+#if SHOW_ERROR_MESSAGES
+            if ((failedToLoad.Count > 0) || (loadedFromBackup.Count > 0))
+            {
+                var message = "Some characters loading failed!";
+#if SHOW_ERROR_DETAILS
+                if (loadedFromBackup.Count > 0)
+                    message += "\n";
+                foreach (var kvp in loadedFromBackup)
+                    message += "\nCharacter " + kvp.Key + " loaded from backup " + kvp.Value + "\n";
+                foreach (var kvp in failedToLoad)
+                {
+                    if (kvp.Key != null)
+                        message += "\n\nFailed to load: " + kvp.Key;
+                    if (kvp.Value != null)
+                        message += "\n\nException: " + kvp.Value.ToString();
+                }
+#endif
+                DisplayAlert("Error", message, "Unthinkable!");
+            }
+#endif
             UpdateView();
 #if !DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
             tabs.CurrentPageChanged += (s, e) =>
@@ -47,22 +113,6 @@ namespace PathfinderCharacterSheet
             };
 #endif
         }
-
-#if SHOW_ERROR_MESSAGES
-        private void OnCharacterSavingFailed(string character, string path, Exception ex)
-        {
-            var message = "Character saving failed!";
-#if SHOW_ERROR_DETAILS
-            if (character != null)
-                message += "\n\nCharacter: " + character;
-            if (path != null)
-                message += "\n\nPath: " + path;
-            if (ex != null)
-                message += "\n\nException: " + ex.ToString();
-#endif
-            DisplayAlert("Error", message, "Noooooooo!!!");
-        }
-#endif
 
         public void UpdateView()
         {

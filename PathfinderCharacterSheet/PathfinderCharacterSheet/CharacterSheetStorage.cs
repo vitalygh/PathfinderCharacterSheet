@@ -1,4 +1,5 @@
 ﻿#define SAVE_BACKUPS
+#define LOAD_FROM_BACKUPS
 using System;
 using System.IO;
 using System.Xml.Serialization;
@@ -24,11 +25,17 @@ namespace PathfinderCharacterSheet
             }
         }
 
+
         public int MaxBackupsCount { get { return 5; } }
+
         public Dictionary<CharacterSheet, string> characters = null;
         public CharacterSheet selectedCharacter = null;
         public Action<string, string, Exception> onCharacterSavingFailed = null;
         public Action<string, Exception> onCharacterLoadingFailed = null;
+
+        public Action<string, string, Exception> onBackupSavingFailed = null;
+        public Action<string, Exception> onBackupRemovingFailed = null;
+        public Action<string, string> onCharacterLoadedFromBackup = null;
 
         private CharacterSheetStorage()
         {
@@ -42,6 +49,28 @@ namespace PathfinderCharacterSheet
                     instance = new CharacterSheetStorage();
                 return instance;
             }
+        }
+
+        public CharacterSheet LoadCharacter(string path)
+        {
+            try
+            {
+                using (var stream = new StreamReader(path))
+                {
+                    var serializer = new XmlSerializer(typeof(CharacterSheet));
+                    var character = serializer.Deserialize(stream) as CharacterSheet;
+                    var name = character.Name;
+                    name = string.IsNullOrWhiteSpace(name) ? "unnamed character" : "character \"" + name + "\"";
+                    Console.WriteLine("Loaded " + name + " from file \"" + path + "\"");
+                    return character;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Loading character from file \"" + path + "\" failed: " + ex.ToString());
+                onCharacterLoadingFailed?.Invoke(path, ex);
+            }
+            return null;
         }
 
         public void LoadCharacters(bool reload = false)
@@ -58,23 +87,31 @@ namespace PathfinderCharacterSheet
             {
                 if (file.EndsWith("_backup.xml"))
                     continue;
-                try
+                var character = LoadCharacter(file);
+                if (character != null)
                 {
-                    using (var stream = new StreamReader(file))
+                    characters.Add(character, file);
+                    continue;
+                }
+#if LOAD_FROM_BACKUPS
+                var backups = GetBackupsList(file);
+                if (backups == null)
+                    continue;
+                var sorted = new List<string>(backups);
+                sorted.Sort();
+                var index = sorted.Count;
+                while (--index >= 0)
+                {
+                    var backup = sorted[index];
+                    var backupCharacter = LoadCharacter(backup);
+                    if (backupCharacter != null)
                     {
-                        var serializer = new XmlSerializer(typeof(CharacterSheet));
-                        var character = serializer.Deserialize(stream) as CharacterSheet;
-                        characters.Add(character, file);
-                        var name = character.Name;
-                        name = string.IsNullOrWhiteSpace(name) ? "unnamed character" : "character \"" + name + "\"";
-                        Console.WriteLine("Loaded " + name + " from file \"" + file + "\"");
+                        characters.Add(backupCharacter, file);
+                        onCharacterLoadedFromBackup?.Invoke(file, backup);
+                        break;
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("File \"" + file + "\" loading failed: " + ex.ToString());
-                    onCharacterLoadingFailed?.Invoke(file, ex);
-                }
+#endif
             }
         }
 
@@ -104,6 +141,21 @@ namespace PathfinderCharacterSheet
                 name = name.Replace(c, '_');
             return Path.Combine(CharactersPath, name + ".xml");
         }
+
+#if SAVE_BACKUPS || LOAD_FROM_BACKUPS
+        private string[] GetBackupsList(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return null;
+            var dir = Path.GetDirectoryName(path);
+            var filename = Path.GetFileName(path);
+            var ext = Path.GetExtension(filename);
+            if (!string.IsNullOrWhiteSpace(ext))
+                filename = filename.Substring(0, filename.Length - ext.Length);
+            var pattern = filename + "*_backup" + ext;
+            return Directory.GetFiles(dir, pattern, SearchOption.TopDirectoryOnly);
+        }
+#endif
 
 #if SAVE_BACKUPS
         private string GetBackupFilename(string path, int index)
@@ -141,25 +193,12 @@ namespace PathfinderCharacterSheet
             try
             {
                 File.Copy(path, backup, true);
-                RemoveOldBackups(path);
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Saving backup of " + path + " to " + backup + " failed: " + ex.ToString());
+                onBackupSavingFailed?.Invoke(path, backup, ex);
             }
-        }
-
-        private string[] GetBackupsList(string path)
-        {
-            if (string.IsNullOrWhiteSpace(path))
-                return null;
-            var dir = Path.GetDirectoryName(path);
-            var filename = Path.GetFileName(path);
-            var ext = Path.GetExtension(filename);
-            if (!string.IsNullOrWhiteSpace(ext))
-                filename = filename.Substring(0, filename.Length - ext.Length);
-            var pattern = filename + "*_backup" + ext;
-            return Directory.GetFiles(dir, pattern, SearchOption.TopDirectoryOnly);
         }
 
         private void RemoveOldBackups(string path)
@@ -181,7 +220,8 @@ namespace PathfinderCharacterSheet
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Removing backup " + file + ": " + ex.ToString());
+                    Console.WriteLine("Removing backup " + file + " failed: " + ex.ToString());
+                    onBackupRemovingFailed?.Invoke(file, ex);
                 }
             }
         }
@@ -211,6 +251,9 @@ namespace PathfinderCharacterSheet
                         memoryStream.WriteTo(fileStream);
                         fileStream.Flush();
                     }
+#if SAVE_BACKUPS
+                    RemoveOldBackups(path);
+#endif
                 }
                 Console.WriteLine("Serialization " + characterName + " to \"" + path + "\" complete");
                 return true;
