@@ -41,6 +41,10 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            Reorder.IsVisible = sheet.feats.Count > 1;
             view.UpdateItemsView();
         }
 
@@ -73,6 +77,28 @@ namespace PathfinderCharacterSheet
         private void AddItem_Clicked(object sender, EventArgs e)
         {
             EditItem();
+        }
+
+        private void Reorder_Clicked(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var ri = new ReorderItemsWithDescription();
+            pushedPage = ri;
+            var items = new List<CharacterSheet.ItemWithDescription>();
+            foreach (var item in sheet.feats)
+                items.Add(item);
+            ri.Init(items, (reordered) =>
+            {
+                sheet.feats.Clear();
+                foreach (var item in reordered)
+                    sheet.feats.Add(item as ItemType);
+                CharacterSheetStorage.Instance.SaveCharacter();
+            });
+            Navigation.PushAsync(pushedPage);
         }
     }
 }

@@ -62,6 +62,7 @@ namespace PathfinderCharacterSheet
         }
 
         private Page pushedPage = null;
+        private Button armorReorderButton = null;
 #if EXPAND_SELECTED
         List<SelectedArmorGrid> selectedArmorGrids = new List<SelectedArmorGrid>();
         List<SelectedArmorGrid> selectedArmorGridsPool = new List<SelectedArmorGrid>();
@@ -82,6 +83,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
+            armorReorderButton.IsVisible = sheet.armorClassItems.Count > 1;
 #if EXPAND_SELECTED
             var selectedArmorItems = new List<KeyValuePair<CharacterSheet.ArmorClassItem, int>>();
 #endif
@@ -144,6 +146,7 @@ namespace PathfinderCharacterSheet
             };
             armor.ColumnDefinitions = new ColumnDefinitionCollection()
             {
+                new ColumnDefinition() { Width = GridLength.Auto },
                 new ColumnDefinition() { Width = GridLength.Star },
                 new ColumnDefinition() { Width = GridLength.Auto },
             };
@@ -159,6 +162,13 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 #endif
+            armorReorderButton = new Button()
+            {
+                Text = "Reorder",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
+                TextColor = Color.Black,
+            };
+            armorReorderButton.Clicked += Reorder_Clicked;
             var armorTitle = CreateLabel("Armor", TextAlignment.Center);
             var armorAddButton = new Button()
             {
@@ -168,9 +178,11 @@ namespace PathfinderCharacterSheet
             };
             armorAddButton.Clicked += (s, e) => Armor_DoubleTap();
 #if USE_GRID
-            armor.Children.Add(armorTitle, 0, 0);
-            armor.Children.Add(armorAddButton, 1, 0);
+            armor.Children.Add(armorReorderButton, 0, 0);
+            armor.Children.Add(armorTitle, 1, 0);
+            armor.Children.Add(armorAddButton, 2, 0);
 #else
+            armor.Children.Add(armorReorderButton);
             armor.Children.Add(armorTitle);
             armor.Children.Add(armorAddButton);
 #endif
@@ -629,6 +641,28 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             var ew = new EditArmor();
             ew.InitEditor(item);
             pushedPage = ew;
+            Navigation.PushAsync(pushedPage);
+        }
+
+        private void Reorder_Clicked(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var ri = new ReorderItemsWithDescription();
+            pushedPage = ri;
+            var items = new List<CharacterSheet.ItemWithDescription>();
+            foreach (var item in sheet.armorClassItems)
+                items.Add(item);
+            ri.Init(items, (reordered) =>
+            {
+                sheet.armorClassItems.Clear();
+                foreach (var item in reordered)
+                    sheet.armorClassItems.Add(item as CharacterSheet.ArmorClassItem);
+                CharacterSheetStorage.Instance.SaveCharacter();
+            });
             Navigation.PushAsync(pushedPage);
         }
     }

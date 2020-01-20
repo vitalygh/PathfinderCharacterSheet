@@ -60,6 +60,7 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private Label attackBonus = null;
         private Label damageBonus = null;
+        private Button weaponReorderButton = null;
 #if EXPAND_SELECTED
         List<SelectedWeaponGrid> selectedWeaponGrids = new List<SelectedWeaponGrid>();
         List<SelectedWeaponGrid> selectedWeaponGridsPool = new List<SelectedWeaponGrid>();
@@ -90,6 +91,7 @@ namespace PathfinderCharacterSheet
                 var db = sheet.DamageBonus;
                 damageBonus.Text = db >= 0 ? "+" + db : db.ToString();
             }
+            weaponReorderButton.IsVisible = sheet.weaponItems.Count > 1;
 #if EXPAND_SELECTED
             var selectedWeaponItems = new List<KeyValuePair<CharacterSheet.WeaponItem, int>>();
 #endif
@@ -216,6 +218,7 @@ namespace PathfinderCharacterSheet
             };
             weapon.ColumnDefinitions = new ColumnDefinitionCollection()
             {
+                new ColumnDefinition() { Width = GridLength.Auto },
                 new ColumnDefinition() { Width = GridLength.Star },
                 new ColumnDefinition() { Width = GridLength.Auto },
             };
@@ -231,6 +234,13 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 #endif
+            weaponReorderButton = new Button()
+            {
+                Text = "Reorder",
+                FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button)),
+                TextColor = Color.Black,
+            };
+            weaponReorderButton.Clicked += Reorder_Clicked;
             var weaponTitle = CreateLabel("Weapon", TextAlignment.Center);
             var weaponAddButton = new Button()
             {
@@ -240,9 +250,11 @@ namespace PathfinderCharacterSheet
             };
             weaponAddButton.Clicked += (s, e) => Weapon_DoubleTap();
 #if USE_GRID
-            weapon.Children.Add(weaponTitle, 0, 0);
-            weapon.Children.Add(weaponAddButton, 1, 0);
+            weapon.Children.Add(weaponReorderButton, 0, 0);
+            weapon.Children.Add(weaponTitle, 1, 0);
+            weapon.Children.Add(weaponAddButton, 2, 0);
 #else
+            weapon.Children.Add(weaponReorderButton);
             weapon.Children.Add(weaponTitle);
             weapon.Children.Add(weaponAddButton);
 #endif
@@ -736,6 +748,28 @@ namespace PathfinderCharacterSheet
             var ew = new EditWeapon();
             ew.InitEditor(item);
             pushedPage = ew;
+            Navigation.PushAsync(pushedPage);
+        }
+
+        private void Reorder_Clicked(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var ri = new ReorderItemsWithDescription();
+            pushedPage = ri;
+            var items = new List<CharacterSheet.ItemWithDescription>();
+            foreach (var item in sheet.weaponItems)
+                items.Add(item);
+            ri.Init(items, (reordered) =>
+            {
+                sheet.weaponItems.Clear();
+                foreach (var item in reordered)
+                    sheet.weaponItems.Add(item as CharacterSheet.WeaponItem);
+                CharacterSheetStorage.Instance.SaveCharacter();
+            });
             Navigation.PushAsync(pushedPage);
         }
     }

@@ -100,6 +100,8 @@
                     </Frame>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Button x:Name="Reorder" Text="Reorder" FontSize="Medium" TextColor="Black" Clicked="Reorder_Clicked">
+                    </Button>
                     <Label x:Name="GearTitle" Text="Gear" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
                     </Label>
                     <Button x:Name="AddGear" Text="Add" FontSize="Medium" TextColor="Black" Clicked="AddGear_Clicked">

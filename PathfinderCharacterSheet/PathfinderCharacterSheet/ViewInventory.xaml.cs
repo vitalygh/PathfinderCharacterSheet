@@ -88,6 +88,7 @@ namespace PathfinderCharacterSheet
             var medium = sheet.encumbrance.mediumLoad.GetTotal(sheet);
             var light = sheet.encumbrance.lightLoad.GetTotal(sheet);
             TotalWeight.TextColor = totalWeight >= heavy ? Color.Red : (totalWeight > medium ? Color.Orange : (totalWeight > light ? Color.Yellow : Color.Green));
+            Reorder.IsVisible = sheet.gear.Count > 1;
             UpdateValue(TotalWeight, totalWeight + " lbs");
             UpdateGearView();
         }
@@ -562,6 +563,28 @@ namespace PathfinderCharacterSheet
                 return;
             var ee = new EditEncumbrance();
             pushedPage = ee;
+            Navigation.PushAsync(pushedPage);
+        }
+
+        private void Reorder_Clicked(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var ri = new ReorderItemsWithDescription();
+            pushedPage = ri;
+            var items = new List<CharacterSheet.ItemWithDescription>();
+            foreach (var item in sheet.gear)
+                items.Add(item);
+            ri.Init(items, (reordered) =>
+            {
+                sheet.gear.Clear();
+                foreach (var item in reordered)
+                    sheet.gear.Add(item as CharacterSheet.GearItem);
+                CharacterSheetStorage.Instance.SaveCharacter();
+            });
             Navigation.PushAsync(pushedPage);
         }
     }
