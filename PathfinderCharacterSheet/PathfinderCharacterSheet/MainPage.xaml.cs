@@ -292,6 +292,7 @@ namespace PathfinderCharacterSheet
         public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, string title,
                                                 Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>> addModifier,
                                                 Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>, CharacterSheet.IntModifier> editModifier,
+                                                Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>> reorderModifiers,
                                                 Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>, CharacterSheet.IntModifier> activateModifier)
         {
             grid.Children.Clear();
@@ -301,8 +302,21 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
-            var gridTitle = CreateLabel(title, TextAlignment.Center);
-            stack.Children.Add(gridTitle);
+            if ((reorderModifiers != null) && modifiers.Count > 1)
+            {
+                var reorderModifiersButton = new Button()
+                {
+                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                    TextColor = Color.Black,
+                    VerticalOptions = LayoutOptions.CenterAndExpand,
+                    HorizontalOptions = LayoutOptions.Start,
+                    Text = "Reorder",
+                };
+                reorderModifiersButton.Clicked += (s, e) => reorderModifiers(modifiers);
+                stack.Children.Add(reorderModifiersButton);
+            }
+            var stackTitle = CreateLabel(title, TextAlignment.Center);
+            stack.Children.Add(stackTitle);
             if (addModifier != null)
             {
                 var addModifierButton = new Button()

@@ -45,7 +45,7 @@ namespace PathfinderCharacterSheet
             UpdateModifiersSum();
             if (modifiers == null)
                 return;
-            MainPage.FillIntMLGrid(Modifiers, sheet, modifiers, "Modifiers", EditModifier, EditModifier, (modifiers, modifier) => UpdateModifiersSum());
+            MainPage.FillIntMLGrid(Modifiers, sheet, modifiers, "Modifiers", EditModifier, EditModifier, ReorderModifiers, (modifiers, modifier) => UpdateModifiersSum());
         }
 
         private void UpdateTotal()
@@ -62,6 +62,28 @@ namespace PathfinderCharacterSheet
             if (modifiers != null)
                 ModifiersSum.Text = modifiers.GetTotal(sheet).ToString();
             UpdateTotal();
+        }
+
+        private void ReorderModifiers(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var ri = new ReorderIntModifiers();
+            pushedPage = ri;
+            var items = new CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>();
+            foreach (var item in modifiers)
+                items.Add(item);
+            ri.Init(items, (reordered) =>
+            {
+                modifiers.Clear();
+                foreach (var item in reordered)
+                    modifiers.Add(item as CharacterSheet.IntModifier);
+                CharacterSheetStorage.Instance.SaveCharacter();
+            });
+            Navigation.PushAsync(pushedPage);
         }
 
         private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
