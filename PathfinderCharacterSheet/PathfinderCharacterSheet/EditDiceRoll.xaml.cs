@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using ItemType = PathfinderCharacterSheet.CharacterSheet.DiceRoll;
 
 namespace PathfinderCharacterSheet
 {
@@ -14,8 +15,10 @@ namespace PathfinderCharacterSheet
 	{
         private Page pushedPage = null;
         private CharacterSheet sheet = null;
-        private CharacterSheet.DiceRoll source = null;
-        private CharacterSheet.DiceRoll roll = null;
+        private List<ItemType> items = null;
+        private ItemType source = null;
+        private ItemType roll = null;
+        private bool saveCharacter = false;
 
         public EditDiceRoll()
         {
@@ -30,26 +33,43 @@ namespace PathfinderCharacterSheet
             DiceCount.Text = roll.diceCount.GetTotal(sheet).ToString();
             DiceSides.Text = roll.diceSides.GetTotal(sheet).ToString();
             Additional.Text = roll.additional.GetTotal(sheet).ToString();
+            Description.Text = roll.description;
         }
 
         private void EditToView()
         {
-            if (!roll.Equals(source))
+            roll.description = Description.Text;
+            var hasChanges = false;
+            if (source != null)
             {
-                source.Fill(roll);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                if (!roll.Equals(source))
+                {
+                    source.Fill(roll);
+                    hasChanges = true;
+                }
             }
+            else if (items != null)
+            {
+                items.Add(roll);
+                hasChanges = true;
+            }
+            if (hasChanges && saveCharacter)
+                CharacterSheetStorage.Instance.SaveCharacter();
         }
 
-        public void Init(CharacterSheet sheet, CharacterSheet.DiceRoll roll)
+        public void Init(CharacterSheet sheet, ItemType roll, List<ItemType> items, bool saveCharacter)
         {
             if (sheet == null)
                 return;
-            if (roll == null)
-                return;
             this.sheet = sheet;
+            this.items = items;
+            this.saveCharacter = saveCharacter;
             source = roll;
-            this.roll = roll.Clone as CharacterSheet.DiceRoll;
+            if (roll == null)
+                this.roll = new ItemType();
+            else
+                this.roll = roll.Clone as ItemType;
+            Delete.IsEnabled = items != null;
             UpdateView();
         }
 
@@ -110,6 +130,21 @@ namespace PathfinderCharacterSheet
             pushedPage = this;
             EditToView();
             Navigation.PopAsync();
+        }
+
+        async void Delete_Clicked(object sender, EventArgs e)
+        {
+            if (items == null)
+                return;
+            if (source == null)
+                return;
+            bool allow = await DisplayAlert("Remove dice roll", "Are you sure?", "Yes", "No");
+            if (allow)
+            {
+                items.Remove(source);
+                CharacterSheetStorage.Instance.SaveCharacter();
+                await Navigation.PopAsync();
+            }
         }
     }
 }

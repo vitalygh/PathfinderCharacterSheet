@@ -325,7 +325,7 @@ namespace PathfinderCharacterSheet
             UpdateValue(weaponGrid.name, item.name);
             UpdateValue(weaponGrid.attackBonus, item.AttackBonus(sheet));
             UpdateValue(weaponGrid.critical, item.critical.AsString(sheet));
-            UpdateValue(weaponGrid.damage, item.damage.AsString(sheet));
+            UpdateValue(weaponGrid.damage, item.Damage(sheet));
             UpdateValue(weaponGrid.damageBonus, item.DamageBonus(sheet));
             UpdateValue(weaponGrid.type, item.type);
             UpdateValue(weaponGrid.range, item.Range(sheet));
@@ -437,7 +437,7 @@ namespace PathfinderCharacterSheet
             row += 1;
 
             var damageTitle = CreateLabel("Damage:");
-            var damageValue = CreateFrame(item.damage.AsString(sheet));
+            var damageValue = CreateFrame(item.Damage(sheet));
             grid.Children.Add(damageTitle, 0, row);
             grid.Children.Add(damageValue, 1, row);
             row += 1;

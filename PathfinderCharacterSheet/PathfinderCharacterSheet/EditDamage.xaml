@@ -4,11 +4,19 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="PathfinderCharacterSheet.ReorderIntModifiers"
-             Title="Reorder Modifiers">
+             x:Class="PathfinderCharacterSheet.EditDamage"
+             Title="Edit Dice Rolls">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
+                <StackLayout Orientation="Horizontal" BackgroundColor="LightGray">
+                    <Button x:Name="Reorder" Text="Reorder" FontSize="Medium" TextColor="Black" Clicked="Reorder_Clicked">
+                    </Button>
+                    <Label x:Name="ItemsTitle" Text="Dice Rolls" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center">
+                    </Label>
+                    <Button x:Name="AddItem" Text="Add" FontSize="Medium" TextColor="Black" Clicked="AddItem_Clicked">
+                    </Button>
+                </StackLayout>
                 <StackLayout x:Name="Items">
                 </StackLayout>
                 <StackLayout Orientation="Horizontal">

@@ -1175,13 +1175,22 @@ namespace PathfinderCharacterSheet
                 return bonus;
             }
             public CriticalHit critical = new CriticalHit();
-            public DiceRoll damage = new DiceRoll();
+            public List<DiceRoll> damageRolls = new List<DiceRoll>();
             public string Damage(CharacterSheet sheet)
             {
                 if (sheet == null)
                     return null;
-                var wd = damage.AsString(sheet);
-                return wd + " " + DamageBonus(sheet);
+                var wd = string.Empty;
+                foreach (var roll in damageRolls)
+                {
+                    var rollStr = roll.AsString(sheet);
+                    if (string.IsNullOrWhiteSpace(rollStr))
+                        continue;
+                    if (!string.IsNullOrWhiteSpace(wd))
+                        wd += " + ";
+                    wd += rollStr;
+                }
+                return wd;
             }
             public string DamageBonus(CharacterSheet sheet)
             {
@@ -1202,7 +1211,7 @@ namespace PathfinderCharacterSheet
                 var c = critical.AsString(sheet);
                 if (!string.IsNullOrWhiteSpace(c))
                     weapon += ", " + c;
-                var d = Damage(sheet);
+                var d = Damage(sheet) + " " + DamageBonus(sheet);
                 if (!string.IsNullOrWhiteSpace(d))
                     weapon += ", " + d;
                 var r = range.GetTotal(sheet);
@@ -1243,7 +1252,7 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!critical.Equals(other.critical))
                     return false;
-                if (!damage.Equals(other.damage))
+                if (!IsEqual(damageRolls, other.damageRolls))
                     return false;
                 if (!damageBonus.Equals(other.damageBonus))
                     return false;
@@ -1265,7 +1274,9 @@ namespace PathfinderCharacterSheet
                 base.Fill(source);
                 attackBonus = source.attackBonus.Clone as ValueWithIntModifiers;
                 critical = source.critical.Clone as CriticalHit;
-                damage = source.damage.Clone as DiceRoll;
+                damageRolls = new List<DiceRoll>();
+                foreach (var roll in source.damageRolls)
+                    damageRolls.Add(roll.Clone as DiceRoll);
                 damageBonus = source.damageBonus.Clone as ValueWithIntModifiers;
                 type = source.type;
                 range = source.range.Clone as ValueWithIntModifiers;
@@ -1555,19 +1566,27 @@ namespace PathfinderCharacterSheet
             public ValueWithIntModifiers diceCount = new ValueWithIntModifiers();
             public ValueWithIntModifiers diceSides = new ValueWithIntModifiers();
             public ValueWithIntModifiers additional = new ValueWithIntModifiers();
+            public string description = null;
             public string AsString(CharacterSheet sheet)
             {
+                var roll = string.Empty;
                 var sides = diceSides.GetTotal(sheet);
-                if (sides <= 0)
-                    return string.Empty;
-                var roll = diceCount.GetTotal(sheet) + "d" + sides;
+                var count = diceCount.GetTotal(sheet);
                 var add = additional.GetTotal(sheet);
-                if (add == 0)
-                    return "(" + roll + ")";
-                if (add < 0)
-                    roll += " - " + Math.Abs(add);
+                if (((sides <= 0) || (count <= 0)) && (add == 0))
+                    return roll;
+                if ((sides > 0) && (count > 0))
+                {
+                    roll += count + "d" + sides;
+                    if (add < 0)
+                        roll += " - " + Math.Abs(add);
+                    else if (add > 0)
+                        roll += " + " + add;
+                }
                 else
-                    roll += " + " + add;
+                    roll += add;
+                if (!string.IsNullOrWhiteSpace(description))
+                    roll += " " + description;
                 return "(" + roll + ")";
             }
 
@@ -1589,6 +1608,8 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (!additional.Equals(other.additional))
                     return false;
+                if (description != other.description)
+                    return false;
                 return true;
             }
 
@@ -1599,6 +1620,7 @@ namespace PathfinderCharacterSheet
                 diceCount = source.diceCount.Clone as ValueWithIntModifiers;
                 diceSides = source.diceSides.Clone as ValueWithIntModifiers;
                 additional = source.additional.Clone as ValueWithIntModifiers;
+                description = source.description;
                 return this;
             }
         }

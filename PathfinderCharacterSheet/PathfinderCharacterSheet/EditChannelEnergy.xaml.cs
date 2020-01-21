@@ -82,7 +82,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var ed = new EditDiceRoll();
-            ed.Init(sheet, channelEnergy.points);
+            ed.Init(sheet, channelEnergy.points, null, true);
             pushedPage = ed;
             Navigation.PushAsync(ed);
         }

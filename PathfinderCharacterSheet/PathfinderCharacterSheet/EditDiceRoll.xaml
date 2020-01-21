@@ -48,10 +48,17 @@
                         <Label FontSize="Medium" TextColor="Black" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center" x:Name="Additional">
                         </Label>
                     </Frame>
+                    <Label x:Name="DescriptionTitle" Text="Description:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">
+                        <Editor x:Name="Description" FontSize="Medium" TextColor="Black" AutoSize="TextChanges">
+                        </Editor>
+                    </Frame>
                 </Grid>
                 <StackLayout Orientation="Horizontal">
                     <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
                     <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                    <Button x:Name="Delete" Text="Delete" TextColor="Black" Clicked="Delete_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
                 </StackLayout>
             </StackLayout>
         </ScrollView>

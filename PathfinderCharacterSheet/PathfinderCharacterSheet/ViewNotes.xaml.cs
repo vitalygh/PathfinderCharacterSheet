@@ -16,7 +16,7 @@ namespace PathfinderCharacterSheet
     public partial class ViewNotes : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private ViewItemsWithDecription<ItemType> view = null;
+        private ViewItemsWithDescription<ItemType> view = null;
         private List<ItemType> GetItems()
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -28,7 +28,7 @@ namespace PathfinderCharacterSheet
         public ViewNotes()
         {
             InitializeComponent();
-            view = new ViewItemsWithDecription<ItemType>()
+            view = new ViewItemsWithDescription<ItemType>()
             {
                 actEditItem = EditItem,
                 actViewItem = ViewItem,

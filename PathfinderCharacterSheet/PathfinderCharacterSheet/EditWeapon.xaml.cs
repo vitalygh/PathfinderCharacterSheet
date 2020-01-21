@@ -57,7 +57,7 @@ namespace PathfinderCharacterSheet
                 return;
             AttackBonus.Text = item.AttackBonus(sheet);
             Critical.Text = item.critical.AsString(sheet);
-            Damage.Text = item.damage.AsString(sheet);
+            Damage.Text = item.Damage(sheet);
             DamageBonus.Text = item.DamageBonus(sheet).ToString();
             Range.Text = item.range.GetTotal(sheet).ToString();
             Ammunition.Text = item.ammunition.GetTotal(sheet).ToString();
@@ -124,8 +124,8 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var ed = new EditDiceRoll();
-            ed.Init(sheet, item.damage);
+            var ed = new EditDamage();
+            ed.Init(sheet, item.damageRolls);
             pushedPage = ed;
             Navigation.PushAsync(ed);
         }

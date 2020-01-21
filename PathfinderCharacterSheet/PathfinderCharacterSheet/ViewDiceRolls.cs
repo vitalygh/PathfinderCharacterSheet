@@ -1,17 +1,17 @@
 ﻿//#define EXPAND_SELECTED
 //#define EXPAND_WITH_TAP
 //#define USE_GRID
+//#define SHOW_VIEW_BUTTON
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
+using ItemType = PathfinderCharacterSheet.CharacterSheet.DiceRoll;
 
 namespace PathfinderCharacterSheet
 {
-    public class ViewItemsWithDescription<ItemType> where ItemType: CharacterSheet.ItemWithDescription
+    public class ViewDiceRolls
     {
 #if EXPAND_SELECTED
         public class SelectedItemGrid : ItemGrid
@@ -30,8 +30,10 @@ namespace PathfinderCharacterSheet
             public CheckBox selected = null;
 #endif
             public Label name = null;
+#if SHOW_VIEW_BUTTON
             public EventHandler viewButtonHandler = null;
             public Button viewButton = null;
+#endif
         }
 
         public Action<ItemType> actEditItem = null;
@@ -45,7 +47,7 @@ namespace PathfinderCharacterSheet
         private List<ItemGrid> itemGridsPool = new List<ItemGrid>();
         private List<ItemGrid> itemGrids = new List<ItemGrid>();
 
-        public ViewItemsWithDescription()
+        public ViewDiceRolls()
         {
 
         }
@@ -90,8 +92,8 @@ namespace PathfinderCharacterSheet
                 if (selectedItemGrid == null)
                 {
 #endif
-                    UpdateItemGrid(itemGrid, item, i);
-                    continue;
+                UpdateItemGrid(itemGrid, item, i);
+                continue;
 #if EXPAND_SELECTED
                 }
                 RemoveItemGrid(itemGrid);
@@ -327,7 +329,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            MainPage.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
+            MainPage.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 1);
 #if EXPAND_SELECTED
             if (itemGrid.selectedHandler != null)
                 itemGrid.selected.CheckedChanged -= itemGrid.selectedHandler;
@@ -340,10 +342,12 @@ namespace PathfinderCharacterSheet
 #endif
             var name = item.AsString(sheet);
             UpdateValue(itemGrid.name, name);
+#if SHOW_VIEW_BUTTON
             if (itemGrid.viewButtonHandler != null)
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
             itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             itemGrid.viewButton.Clicked += itemGrid.viewButtonHandler;
+#endif
         }
 
         private void CreateItemGrid(KeyValuePair<ItemType, int> kvp)
@@ -376,6 +380,9 @@ namespace PathfinderCharacterSheet
             selectedcb.CheckedChanged += selectedHandler;
 #endif
             var itemNameFrame = CreateFrame(item.AsString(sheet));
+            var itemNameLabel = itemNameFrame.Content as Label;
+            itemNameLabel.TextDecorations = TextDecorations.Underline;
+#if SHOW_VIEW_BUTTON
             var viewButton = new Button()
             {
                 Text = "View",
@@ -386,6 +393,7 @@ namespace PathfinderCharacterSheet
             };
             EventHandler viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             viewButton.Clicked += viewButtonHandler;
+#endif
 #if USE_GRID
             var container = new Grid()
             {
@@ -421,9 +429,11 @@ namespace PathfinderCharacterSheet
             container.Children.Add(selectedcb);
 #endif
             container.Children.Add(itemNameFrame);
+#if SHOW_VIEW_BUTTON
             container.Children.Add(viewButton);
 #endif
-            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
+#endif
+            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 1);
 #if EXPAND_SELECTED
             MainPage.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
 #endif
@@ -434,14 +444,17 @@ namespace PathfinderCharacterSheet
                 selectedHandler = selectedHandler,
                 selected = selectedcb,
 #endif
-                name = itemNameFrame.Content as Label,
+                name = itemNameLabel,
+#if SHOW_VIEW_BUTTON
                 viewButton = viewButton,
                 viewButtonHandler = viewButtonHandler,
+#endif
             };
 
             return newItemGrid;
         }
 
+#if EXPAND_SELECTED
         public void Item_CheckedChanged(ItemType item, bool value)
         {
             if (item == null)
@@ -452,6 +465,7 @@ namespace PathfinderCharacterSheet
             CharacterSheetStorage.Instance.SaveCharacter();
             UpdateItemsView();
         }
+#endif
 
         public void Item_Tap(CheckBox selectedcb)
         {
