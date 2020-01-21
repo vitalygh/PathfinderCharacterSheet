@@ -108,7 +108,8 @@ namespace PathfinderCharacterSheet
         public void Init(ModifiersList items, Action<ModifiersList> reorder)
         {
             this.items = items;
-            initItems = items.Clone as ModifiersList;
+            initItems = new ModifiersList();
+            initItems.AddRange(items);
             this.reorder = reorder;
             pushedPage = null;
             Items.Children.Clear();

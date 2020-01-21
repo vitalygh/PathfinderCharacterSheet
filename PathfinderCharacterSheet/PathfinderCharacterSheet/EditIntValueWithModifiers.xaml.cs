@@ -68,9 +68,6 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            if (sheet == null)
-                return;
             var ri = new ReorderIntModifiers();
             pushedPage = ri;
             var items = new CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>();
@@ -81,7 +78,6 @@ namespace PathfinderCharacterSheet
                 modifiers.Clear();
                 foreach (var item in reordered)
                     modifiers.Add(item as CharacterSheet.IntModifier);
-                CharacterSheetStorage.Instance.SaveCharacter();
             });
             Navigation.PushAsync(pushedPage);
         }
