@@ -1169,9 +1169,8 @@ namespace PathfinderCharacterSheet
                 if (sheet == null)
                     return null;
                 var wab = attackBonus.GetTotal(sheet);
-                var ab = sheet.AttackBonus + wab;
                 var bonus = wab >= 0 ? "+" + wab : wab.ToString();
-                bonus += " (" + (ab >= 0 ? "+" + ab : ab.ToString()) + ")";
+                bonus += " (" + sheet.GetAttackBonus(wab) + ")";
                 return bonus;
             }
             public CriticalHit critical = new CriticalHit();
@@ -2063,6 +2062,27 @@ namespace PathfinderCharacterSheet
 
         public ValueWithIntModifiers attackSizeModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers attackBonusModifiers = new ValueWithIntModifiers();
+        public string GetAttackBonus(int weaponBonus = 0)
+        {
+            var total = attackBonusModifiers.GetTotal(this);
+            total += attackSizeModifier.GetTotal(this); ;
+            total += weaponBonus;
+            var count = baseAttackBonus.Count;
+            var values = string.Empty;
+            if (count <= 0)
+                values = weaponBonus >= 0 ? "+" + weaponBonus : weaponBonus.ToString();
+            else
+                for (var i = 0; i < count; i++)
+                {
+                    var bab = GetBaseAttackBonus(i);
+                    bab += total;
+                    if (values.Length > 0)
+                        values += ", ";
+                    var sbab = bab >= 0 ? "+" + bab : bab.ToString();
+                    values += ((count > 1) && (i == currentAttack)) ? "[" + sbab + "]" : sbab;
+                }
+            return values;
+        }
         public int AttackBonus { get { return GetBaseAttackBonus() + attackBonusModifiers.GetTotal(this) + attackSizeModifier.GetTotal(this); } }
         public ValueWithIntModifiers damageBonusModifiers = new ValueWithIntModifiers();
         public int DamageBonus { get { return damageBonusModifiers.GetTotal(this); } }

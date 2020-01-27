@@ -82,10 +82,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             if (attackBonus != null)
-            {
-                var ab = sheet.AttackBonus;
-                attackBonus.Text = ab >= 0 ? "+" + ab : ab.ToString();
-            }
+                attackBonus.Text = sheet.GetAttackBonus();
             if (damageBonus != null)
             {
                 var db = sheet.DamageBonus;
@@ -171,8 +168,8 @@ namespace PathfinderCharacterSheet
 #endif
             var attackBonusTitle = CreateLabel("Attack Bonus:");
             MainPage.AddTapHandler(attackBonusTitle, AttackBonus_DoubleTap, 2);
-            var ab = (sheet != null) ? sheet.AttackBonus : 0;
-            var attackBonusFrame = CreateFrame(ab >= 0 ? "+" + ab : ab.ToString());
+            var ab = (sheet != null) ? sheet.GetAttackBonus() : "+0";
+            var attackBonusFrame = CreateFrame(ab);
             MainPage.AddTapHandler(attackBonusFrame, AttackBonus_DoubleTap, 2);
             attackBonus = attackBonusFrame.Content as Label;
 

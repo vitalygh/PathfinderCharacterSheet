@@ -95,10 +95,23 @@ namespace PathfinderCharacterSheet
                 return;
             var total = 0;
             MainPage.StrToInt(Value.Text, ref attackBonus.baseValue);
-            total += sheet.GetBaseAttackBonus(currentAttack);
             total += sizeModifiers.GetTotal(sheet);
             total += attackBonus.GetTotal(sheet);
-            Total.Text = total.ToString();
+            var values = string.Empty;
+            var count = sheet.baseAttackBonus.Count;
+            if (count <= 0)
+                values = "+0";
+            else
+                for (var i = 0; i < count; i++)
+                {
+                    var bab = sheet.GetBaseAttackBonus(i);
+                    bab += total;
+                    if (values.Length > 0)
+                        values += ", ";
+                    var sbab = bab >= 0 ? "+" + bab : bab.ToString();
+                    values += ((count > 1) && (i == currentAttack)) ? "[" + sbab + "]" : sbab;
+                }
+            Total.Text = values;
         }
 
         private void UpdateModifiersSum()
