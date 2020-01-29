@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PathfinderCharacterSheet.EditIntMultiplier"
+             Title="Edit Multiplier">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="AdditionalBeforeTitle" Text="Add Before:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                    <Frame x:Name="AdditionalBeforeFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                        <Entry x:Name="AdditionalBefore" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric">
+                        </Entry>
+                    </Frame>
+                    <Label x:Name="MultiplierTitle" Text="Multiplier:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame x:Name="MultiplierFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Entry x:Name="Multiplier" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric">
+                        </Entry>
+                    </Frame>
+                    <Label x:Name="DividerTitle" Text="Divider:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2">
+                    </Label>
+                    <Frame x:Name="DividerFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                        <Entry x:Name="Divider" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric">
+                        </Entry>
+                    </Frame>
+                    <Label VerticalOptions="Center" x:Name="RoundingTitle" Text="Rounding:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="3"></Label>
+                    <Frame x:Name="RoundingFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Picker x:Name="Rounding" FontSize="Medium" TextColor="Black" ItemDisplayBinding="{Binding Name}"></Picker>
+                    </Frame>
+                    <Label x:Name="AdditionalAfterTitle" Text="Add After:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
+                    </Label>
+                    <Frame x:Name="AdditionalAfterFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4">
+                        <Entry x:Name="AdditionalAfter" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric">
+                        </Entry>
+                    </Frame>
+                    <Label x:Name="LimitTitle" Text="Limit:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"  VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="5"></Label>
+                    <Frame x:Name="LimitFrame" BorderColor="Black" Padding="5" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="Limit_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="Limit" TextDecorations="Underline" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+                        </Label>
+                    </Frame>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

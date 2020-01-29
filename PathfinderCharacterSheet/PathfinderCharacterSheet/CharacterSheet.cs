@@ -219,7 +219,7 @@ namespace PathfinderCharacterSheet
             return true;
         }
 
-        public class IntModifier: Modifier<int>
+        public class IntMultiplier
         {
             public enum RoundingTypes
             {
@@ -229,29 +229,216 @@ namespace PathfinderCharacterSheet
             };
             public const RoundingTypes DefaultRounding = RoundingTypes.Up;
 
-            public string sourceAbility = Ability.None.ToString();
-            public Ability SourceAbility
-            {
-                get { return GetEnumValue(sourceAbility, Ability.None); }
-                set { sourceAbility = value.ToString(); }
-            }
+            public int additionalBefore = 0;
             public int multiplier = 1;
             public int divider = 1;
-
-            public int sourceItemUID = InvalidUID;
-            public bool mustBeActive = true;
-
-            public bool multiplyToLevel = false;
-            public string className = null;
-
-            public bool autoNaming = true;
-
             public string roundingType = DefaultRounding.ToString();
             public RoundingTypes RoundingType
             {
                 get { return GetEnumValue(roundingType, DefaultRounding); }
                 set { roundingType = value.ToString(); }
             }
+
+            public int additionalAfter = 0;
+
+            public IntLimit limit = new IntLimit();
+
+            public int Apply(int value)
+            {
+                float fval = multiplier * (value + additionalBefore);
+                if (divider != 0)
+                    fval /= divider;
+                fval += additionalAfter;
+                switch (RoundingType)
+                {
+                    case RoundingTypes.ToNearest:
+                        value = (int)Math.Floor(fval + (fval < 0.0f ? -0.5f : 0.5f));
+                        break;
+                    case RoundingTypes.Down:
+                        value = (int)Math.Floor(fval);
+                        break;
+                    default:
+                        value = (int)Math.Ceiling(fval);
+                        break;
+                }
+                if (limit != null)
+                    value = limit.Apply(value);
+                return value;
+            }
+
+            public virtual object Clone
+            {
+                get
+                {
+                    var clone = new IntMultiplier();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
+
+            public virtual object Fill(IntMultiplier source)
+            {
+                if (source == null)
+                    return this;
+
+                additionalBefore = source.additionalBefore;
+                multiplier = source.multiplier;
+                divider = source.divider;
+                additionalAfter = source.additionalAfter;
+                RoundingType = source.RoundingType;
+                limit = source.limit.Clone as IntLimit;
+
+                return this;
+            }
+
+            public bool Equals(IntMultiplier other)
+            {
+                if (other == null)
+                    return false;
+                if (additionalBefore != other.additionalBefore)
+                    return false;
+                if (multiplier != other.multiplier)
+                    return false;
+                if (divider != other.divider)
+                    return false;
+                if (additionalAfter != other.additionalAfter)
+                    return false;
+                if (RoundingType != other.RoundingType)
+                    return false;
+                if (!limit.Equals(other.limit))
+                    return false;
+                return true;
+            }
+
+            public string AsString(string applyTo)
+            {
+                if (string.IsNullOrWhiteSpace(applyTo))
+                    applyTo = "x";
+                var source = applyTo;
+                if (additionalBefore != 0)
+                {
+                    if (additionalBefore > 0)
+                        applyTo += " + " + additionalBefore;
+                    else
+                        applyTo += " - " + Math.Abs(additionalBefore);
+                    applyTo = "(" + applyTo + ")";
+                }
+                var addBrackes = false;
+                if (multiplier != 1)
+                {
+                    applyTo = multiplier + " * " + applyTo;
+                    addBrackes = true;
+                }
+                if (divider != 1)
+                {
+                    applyTo += " / " + divider;
+                    addBrackes = true;
+                }
+                if (divider == 0)
+                    applyTo = "Infinity";
+                if (additionalAfter != 0)
+                {
+                    if (additionalAfter > 0)
+                        applyTo += " + " + additionalAfter;
+                    else
+                        applyTo += " - " + Math.Abs(additionalAfter);
+                    addBrackes = true;
+                }
+                if (addBrackes)
+                    applyTo = "(" + applyTo + ")";
+                applyTo += limit.AsString();
+                return applyTo;
+            }
+        }
+
+        public class IntLimit
+        {
+            public bool minLimit = false;
+            public int minValue = 0;
+            public bool maxLimit = false;
+            public int maxValue = 0;
+
+            public int Apply(int value)
+            {
+                if (minLimit)
+                    value = Math.Max(minValue, value);
+                if (maxLimit)
+                    value = Math.Min(maxValue, value);
+                return value;
+            }
+
+            public virtual object Clone
+            {
+                get
+                {
+                    var clone = new IntLimit();
+                    clone.Fill(this);
+                    return clone;
+                }
+            }
+
+            public virtual object Fill(IntLimit source)
+            {
+                if (source == null)
+                    return this;
+
+                minLimit = source.minLimit;
+                minValue = source.minValue;
+                maxLimit = source.maxLimit;
+                maxValue = source.maxValue;
+
+                return this;
+            }
+
+            public bool Equals(IntLimit other)
+            {
+                if (other == null)
+                    return false;
+                if (minLimit != other.minLimit)
+                    return false;
+                if (minValue != other.minValue)
+                    return false;
+                if (maxLimit != other.maxLimit)
+                    return false;
+                if (maxValue != other.maxValue)
+                    return false;
+                return true;
+            }
+
+            public string AsString()
+            {
+                if (!minLimit && !maxLimit)
+                    return string.Empty;
+                var limit = "[";
+                if (minLimit)
+                    limit += minValue;
+                limit += ";";
+                if (maxLimit)
+                    limit += maxValue;
+                limit += "]";
+                return limit;
+            }
+        }
+
+        public class IntModifier: Modifier<int>
+        {
+
+            public string sourceAbility = Ability.None.ToString();
+            public Ability SourceAbility
+            {
+                get { return GetEnumValue(sourceAbility, Ability.None); }
+                set { sourceAbility = value.ToString(); }
+            }
+            public IntMultiplier abilityMultiplier = new IntMultiplier();
+
+            public int sourceItemUID = InvalidUID;
+            public bool mustBeActive = true;
+
+            public bool multiplyToLevel = false;
+            public string className = null;
+            public IntMultiplier levelMultiplier = new IntMultiplier();
+
+            public bool autoNaming = true;
 
             public override int GetValue(CharacterSheet sheet)
             {
@@ -264,34 +451,27 @@ namespace PathfinderCharacterSheet
                         return 0;
                 }
                 var totalValue = value;
-                if (sheet != null)
+
+                if ((sheet != null) && (SourceAbility != Ability.None))
                 {
-                    if (SourceAbility != Ability.None)
-                    {
-                        float ability = multiplier * sheet.GetAbilityModifier(SourceAbility);
-                        if (divider != 0)
-                            ability /= divider;
-                        switch (RoundingType)
-                        {
-                            case RoundingTypes.ToNearest:
-                                totalValue += (int)Math.Floor(ability + (ability < 0.0f ? -0.5f : 0.5f));
-                                break;
-                            case RoundingTypes.Down:
-                                totalValue += (int)Math.Floor(ability);
-                                break;
-                            default:
-                                totalValue += (int)Math.Ceiling(ability);
-                                break;
-                        }
-                    }
+                    var ab = sheet.GetAbilityModifier(SourceAbility);
+                    if (abilityMultiplier != null)
+                        ab = abilityMultiplier.Apply(ab);
+                    totalValue += ab;
                 }
+
                 if (multiplyToLevel)
                 {
                     if (!string.IsNullOrWhiteSpace(className))
                     {
                         var level = sheet.GetLevelOfClass(className);
                         if (level != null)
-                            totalValue *= level.GetTotal(sheet);
+                        {
+                            var lv = level.GetTotal(sheet);
+                            if (levelMultiplier != null)
+                                lv = levelMultiplier.Apply(lv);
+                            totalValue *= lv;
+                        }
                     }
                     else
                         totalValue *= sheet.TotalLevel;
@@ -305,15 +485,25 @@ namespace PathfinderCharacterSheet
                     return Name;
                 var text = string.Empty;
                 if (SourceAbility != Ability.None)
-                    text += value + " + " + sourceAbility;
+                {
+                    var ab = sourceAbility;
+                    if (abilityMultiplier != null)
+                        ab = abilityMultiplier.AsString(ab);
+                    if (value != 0)
+                        ab = "(" + value + " + " + ab + ")";
+                    text += ab;
+                }
                 if (multiplyToLevel)
                 {
-                    if (string.IsNullOrWhiteSpace(text))
+                    if (string.IsNullOrWhiteSpace(text) && (value != 1))
                         text += value;
-                    else
-                        text = "(" + text + ")";
-                    text += string.IsNullOrWhiteSpace(className) ? " * Total Level" : " * Level Of "
+                    var lv = string.IsNullOrWhiteSpace(className) ? "Total Level" : "Level Of "
                         + (string.IsNullOrWhiteSpace(className) ? "Unnamed Class" : className);
+                    if (levelMultiplier != null)
+                        lv = levelMultiplier.AsString(lv);
+                    if (!string.IsNullOrWhiteSpace(text))
+                        text += " * ";
+                    text += lv;
                 }
                 if (!string.IsNullOrWhiteSpace(Name))
                     if (string.IsNullOrWhiteSpace(text))
@@ -365,16 +555,14 @@ namespace PathfinderCharacterSheet
                 base.Fill(source);
 
                 sourceAbility = source.sourceAbility;
-                multiplier = source.multiplier;
-                divider = source.divider;
+                abilityMultiplier = source.abilityMultiplier.Clone as IntMultiplier;
 
                 sourceItemUID = source.sourceItemUID;
                 mustBeActive = source.mustBeActive;
 
-                RoundingType = source.RoundingType;
-
                 multiplyToLevel = source.multiplyToLevel;
                 className = source.className;
+                levelMultiplier = source.levelMultiplier.Clone as IntMultiplier;
 
                 autoNaming = source.autoNaming;
 
@@ -389,17 +577,15 @@ namespace PathfinderCharacterSheet
                     return false;
                 if (other.sourceAbility != sourceAbility)
                     return false;
-                if (other.multiplier != multiplier)
-                    return false;
-                if (other.divider != divider)
+                if (!other.abilityMultiplier.Equals(abilityMultiplier))
                     return false;
                 if (other.sourceItemUID != sourceItemUID)
                     return false;
                 if (other.mustBeActive != mustBeActive)
                     return false;
-                if (other.RoundingType != RoundingType)
-                    return false;
                 if (other.multiplyToLevel != multiplyToLevel)
+                    return false;
+                if (!other.levelMultiplier.Equals(levelMultiplier))
                     return false;
                 if (other.className != className)
                     return false;

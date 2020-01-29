@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="PathfinderCharacterSheet.EditIntLimit"
+             Title="Edit Speed">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Label x:Name="MinLimitTitle" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="Limit Min Value:" Grid.Column="0" Grid.Row="0"></Label>
+                    <CheckBox x:Name="MinLimit" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="MinLimit_Changed" Grid.Column="1" Grid.Row="0"></CheckBox>
+
+                    <Label x:Name="MinValueTitle" Text="Min Value:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame x:Name="MinValueFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Entry x:Name="MinValue" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric">
+                        </Entry>
+                    </Frame>
+
+                    <Label x:Name="MaxLimitTitle" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="Limit Max Value:" Grid.Column="0" Grid.Row="2"></Label>
+                    <CheckBox x:Name="MaxLimit" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" CheckedChanged="MaxLimit_Changed" Grid.Column="1" Grid.Row="2"></CheckBox>
+
+                    <Label x:Name="MaxValueTitle" Text="Max Value:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
+                    </Label>
+                    <Frame x:Name="MaxValueFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
+                        <Entry x:Name="MaxValue" FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric">
+                        </Entry>
+                    </Frame>
+
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" Clicked="Cancel_Clicked" FontSize="Medium" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" Clicked="Save_Clicked" FontSize="Medium"  HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
