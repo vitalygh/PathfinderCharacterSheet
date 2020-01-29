@@ -14,6 +14,7 @@ namespace PathfinderCharacterSheet
 	public partial class ViewAbilities : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
+        private const int abilityColumns = 5;
 
         public ViewAbilities ()
 		{
@@ -23,11 +24,10 @@ namespace PathfinderCharacterSheet
 
         private void CreateControls()
         {
-            const int columns = 4;
             if (AbilityScores.Children.Count <= 0)
             {
                 for (var i = 0; i < (int)CharacterSheet.Ability.Total + 1; i++)
-                    for (var j = 0; j < columns; j++)
+                    for (var j = 0; j < abilityColumns; j++)
                     {
                         View child = null;
                         if ((i <= 0) || (j <= 0))
@@ -45,7 +45,7 @@ namespace PathfinderCharacterSheet
             //(AbilityScores.Children[abscindex++] as Label).Text = "Ability Name";
             (AbilityScores.Children[abscindex++] as Label).Text = "Ability Score";
             (AbilityScores.Children[abscindex++] as Label).Text = "Ability Modifier";
-            //(AbilityScores.Children[abscindex++] as Label).Text = "Temp Adjustment";
+            (AbilityScores.Children[abscindex++] as Label).Text = "Temp Score";
             (AbilityScores.Children[abscindex++] as Label).Text = "Temp Modifier";
 
             MainPage.AddTapHandler(AbilityScores, AbilityScores_DoubleTapped, 2);
@@ -72,7 +72,6 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
 
-            const int columns = 4;
             var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
             var abilitiesCount = sheet.abilityScores.Length;
             var hasChanges = false;
@@ -85,21 +84,33 @@ namespace PathfinderCharacterSheet
                     sheet.abilityScores[i] = ab;
                     hasChanges = true;
                 }
-                var abscindex = (i + 1) * columns;
+                var abscindex = (i + 1) * abilityColumns;
                 (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
-                ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
+                var score = ab.score.GetTotal(sheet);
+                ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = score.ToString();
                 var modValue = ab.GetModifier(sheet);
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = modValue.ToString();
-                //((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = ab.tempAdjustment.ToString();
-                var temp = ((AbilityScores.Children[abscindex++] as Frame).Content as Label);
-                var tempValue = ab.GetTempModifier(sheet);
-                temp.Text = tempValue.ToString();
-                if (tempValue > modValue)
-                    temp.TextColor = Color.Green;
-                else if (tempValue < modValue)
-                    temp.TextColor = Color.Red;
+                var tempAbValue = score + ab.tempAdjustment.GetTotal(sheet);
+                var tempAb = ((AbilityScores.Children[abscindex++] as Frame).Content as Label);
+                tempAb.Text = tempAbValue.ToString();
+                var tempMod = ((AbilityScores.Children[abscindex++] as Frame).Content as Label);
+                var tempModValue = ab.GetTempModifier(sheet);
+                tempMod.Text = tempModValue.ToString();
+                if (tempModValue > modValue)
+                {
+                    tempAb.TextColor = Color.Green;
+                    tempMod.TextColor = Color.Green;
+                }
+                else if (tempModValue < modValue)
+                {
+                    tempAb.TextColor = Color.Red;
+                    tempMod.TextColor = Color.Red;
+                }
                 else
-                    temp.TextColor = Color.Black;
+                {
+                    tempAb.TextColor = Color.Black;
+                    tempMod.TextColor = Color.Black;
+                }
             }
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
