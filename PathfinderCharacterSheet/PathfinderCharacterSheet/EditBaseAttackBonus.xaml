@@ -14,13 +14,24 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Label x:Name="AttacksCountTitle" Text="Attacks Count:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="0"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Entry x:Name="AttacksCount"  FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Keyboard="Numeric" TextChanged="AttacksCount_TextChanged" Unfocused="AttacksCount_Unfocused" Completed="AttacksCount_Completed"></Entry>
                     </Frame>
-                    <Label x:Name="CurrentAttackTitle" Text="Current Attack:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1"></Label>
-                    <Frame x:Name="CurrentAttackFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                    <Label x:Name="CurrentAttacksCountTitle" Text="Current Attacks Count:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
+                    </Label>
+                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="CurrentAttacksCount_Tapped">
+                            </TapGestureRecognizer>
+                        </Frame.GestureRecognizers>
+                        <Label x:Name="CurrentAttacksCount" TextDecorations="Underline" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
+                        </Label>
+                    </Frame>                    
+                    <Label x:Name="CurrentAttackTitle" Text="Current Attack:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2"></Label>
+                    <Frame x:Name="CurrentAttackFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
                         <Picker x:Name="CurrentAttack" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="CurrentAttack_SelectedIndexChanged">
                         </Picker>
                     </Frame>

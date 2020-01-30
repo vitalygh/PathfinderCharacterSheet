@@ -2195,6 +2195,19 @@ namespace PathfinderCharacterSheet
         public Initiative initiative = new Initiative();
         public int CurrentInitiative { get { return initiative.GetInitiative(this); } }
 
+
+        public ValueWithIntModifiers currentAttacksCount = new ValueWithIntModifiers();
+        public int attacksCount
+        {
+            get
+            {
+                var oac = Math.Min(baseAttackBonus.Count, currentAttacksCount.GetTotal(this));
+                if (oac <= 0)
+                    return baseAttackBonus.Count;
+                return oac;
+            }
+        }
+
         public List<ValueWithIntModifiers> baseAttackBonus = new List<ValueWithIntModifiers>();
         public int currentAttack = 0;
         public int GetBaseAttackBonus()
@@ -2253,7 +2266,7 @@ namespace PathfinderCharacterSheet
             var total = attackBonusModifiers.GetTotal(this);
             total += attackSizeModifier.GetTotal(this); ;
             total += weaponBonus;
-            var count = baseAttackBonus.Count;
+            var count = attacksCount;
             var values = string.Empty;
             if (count <= 0)
                 values = weaponBonus >= 0 ? "+" + weaponBonus : weaponBonus.ToString();

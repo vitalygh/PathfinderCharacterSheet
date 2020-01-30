@@ -56,7 +56,7 @@ namespace PathfinderCharacterSheet
             var babs = sheet.baseAttackBonus;
             if (babs == null)
                 return;
-            var count = babs.Count;
+            var count = sheet.attacksCount;
             if (count <= 0)
                 return;
             var items = new List<CharacterSheet.IntPickerItem>();
@@ -98,7 +98,7 @@ namespace PathfinderCharacterSheet
             total += sizeModifiers.GetTotal(sheet);
             total += attackBonus.GetTotal(sheet);
             var values = string.Empty;
-            var count = sheet.baseAttackBonus.Count;
+            var count = sheet.attacksCount;
             if (count <= 0)
                 values = "+0";
             else

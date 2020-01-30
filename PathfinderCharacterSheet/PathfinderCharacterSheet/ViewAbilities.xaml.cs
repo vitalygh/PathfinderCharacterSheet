@@ -136,7 +136,7 @@ namespace PathfinderCharacterSheet
             Reflex.Text = sheet.GetSavingThrowTotal(CharacterSheet.Save.Reflex).ToString();
             Will.Text = sheet.GetSavingThrowTotal(CharacterSheet.Save.Will).ToString();
 
-            var attacksCount = sheet.baseAttackBonus != null ? sheet.baseAttackBonus.Count : 0;
+            var attacksCount = sheet.baseAttackBonus != null ? sheet.attacksCount : 0;
             attacksCount = Math.Max(1, attacksCount);
             var colsCount = BaseAttackBonus.Children.Count;
             var update = Math.Min(colsCount, attacksCount);

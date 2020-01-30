@@ -23,6 +23,7 @@ namespace PathfinderCharacterSheet
         private List<CharacterSheet.ValueWithIntModifiers> baseAttackBonus = null;
         private int attacksCount = 0;
         private int currentAttack = 0;
+        private CharacterSheet.ValueWithIntModifiers currentAttacksCount = null;
         private List<AttackRow> rows = new List<AttackRow>();
         private List<AttackRow> rowsPool = new List<AttackRow>();
 
@@ -43,6 +44,7 @@ namespace PathfinderCharacterSheet
                 baseAttackBonus.Add(new CharacterSheet.ValueWithIntModifiers());
             attacksCount = baseAttackBonus.Count;
             currentAttack = sheet.currentAttack;
+            currentAttacksCount = sheet.currentAttacksCount.Clone as CharacterSheet.ValueWithIntModifiers;
             UpdateView();
         }
 
@@ -57,7 +59,11 @@ namespace PathfinderCharacterSheet
                 return;
             var items = new List<CharacterSheet.IntPickerItem>();
             var selectedIndex = -1;
-            for (var i = 0; i < attacksCount; i++)
+            var cac = currentAttacksCount.GetTotal(sheet);
+            var ac = Math.Min(attacksCount, cac);
+            if (ac <= 0)
+                ac = attacksCount;
+            for (var i = 0; i < ac; i++)
             {
                 if (i == currentAttack)
                     selectedIndex = i;
@@ -68,9 +74,10 @@ namespace PathfinderCharacterSheet
                 };
                 items.Add(item);
             }
+            CurrentAttacksCount.Text = cac > 0 ? ac.ToString() : "(equals to attacks count)";
             CurrentAttack.ItemsSource = items;
             CurrentAttack.SelectedIndex = selectedIndex;
-            var oneAttack = attacksCount < 2;
+            var oneAttack = ac < 2;
             CurrentAttack.InputTransparent = oneAttack;
             CurrentAttackFrame.BackgroundColor = oneAttack ? Color.LightGray : Color.White;
         }
@@ -107,7 +114,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var value = bab.GetTotal(sheet);
-            UpdateValue(row.value, value > 0 ? "+" + value : value.ToString());
+            UpdateValue(row.value, value >= 0 ? "+" + value : value.ToString());
             MainPage.SetTapHandler(row.frame, (s, e) => EditBonus(bab), 1);
         }
 
@@ -129,7 +136,7 @@ namespace PathfinderCharacterSheet
             }
             var title = CreateLabel("Attack " + (rows.Count + 1) + " Bonus:");
             var bonus = bab.GetTotal(sheet);
-            var frame = CreateFrame(bonus > 0 ? "+" + bonus : bonus.ToString());
+            var frame = CreateFrame(bonus >= 0 ? "+" + bonus : bonus.ToString());
             var value = frame.Content as Label;
             value.TextDecorations = TextDecorations.Underline;
             var newRow = new AttackRow()
@@ -192,12 +199,28 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var bab = baseAttackBonus.GetRange(0, attacksCount);
-            if ((currentAttack != sheet.currentAttack) || !CharacterSheet.IsEqual(bab, sheet.baseAttackBonus))
+            if ((currentAttack != sheet.currentAttack) ||
+                !CharacterSheet.IsEqual(bab, sheet.baseAttackBonus) ||
+                !currentAttacksCount.Equals(sheet.currentAttacksCount))
             {
                 sheet.baseAttackBonus = bab;
                 sheet.currentAttack = currentAttack;
+                sheet.currentAttacksCount.Fill(currentAttacksCount);
                 CharacterSheetStorage.Instance.SaveCharacter();
             }
+        }
+
+        private void CurrentAttacksCount_Tapped(object sender, EventArgs e)
+        {
+            if (pushedPage != null)
+                return;
+            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            if (sheet == null)
+                return;
+            var eivwm = new EditIntValueWithModifiers();
+            eivwm.Init(sheet, currentAttacksCount, "Edit Base Attack Bonus", "Attacks Count", false);
+            pushedPage = eivwm;
+            Navigation.PushAsync(eivwm);
         }
 
         private void AttacksCount_TextChanged(object sender, TextChangedEventArgs e)
