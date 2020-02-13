@@ -438,27 +438,23 @@ namespace PathfinderCharacterSheet
         {
             if (sheet == null)
                 return;
-            var ab = false;
-            var currentAbility = CharacterSheet.Ability.None;
             if (Ability != null)
             {
+                var currentAbility = CharacterSheet.Ability.None;
                 var item = (Ability.SelectedItem as CharacterSheet.AbilityPickerItem);
                 if (item != null)
-                {
                     currentAbility = item.Value;
-                    ab = currentAbility != CharacterSheet.Ability.None;
-                }
-            }
-            modifier.SourceAbility = currentAbility;
+                modifier.SourceAbility = currentAbility;
 
-            var sab = modifier.SourceAbility != CharacterSheet.Ability.None;
-            var ams = modifier.SourceAbility.ToString();
-            var am = modifier.abilityMultiplier.AsString(ams);
-            if (am == ams)
-                am = string.Empty;
-            AbilityMultiplier.Text = !sab ? string.Empty : am;
-            AbilityMultiplierFrame.BackgroundColor = sab ? Color.White : Color.LightGray;
-            AbilityMultiplierFrame.InputTransparent = !sab;
+                var sab = modifier.SourceAbility != CharacterSheet.Ability.None;
+                var ams = modifier.SourceAbility.ToString();
+                var am = modifier.abilityMultiplier.AsString(ams);
+                if (am == ams)
+                    am = string.Empty;
+                AbilityMultiplier.Text = !sab ? string.Empty : am;
+                AbilityMultiplierFrame.BackgroundColor = sab ? Color.White : Color.LightGray;
+                AbilityMultiplierFrame.InputTransparent = !sab;
+            }
 
             MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
             TotalValue.Text = modifier.GetValue(sheet).ToString();
