@@ -6,7 +6,7 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <Grid x:Name="Background" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
+                <Grid x:Name="CharacterBackground" ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
