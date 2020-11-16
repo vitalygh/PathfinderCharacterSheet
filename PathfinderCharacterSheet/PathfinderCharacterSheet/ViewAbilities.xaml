@@ -37,19 +37,19 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="MaxHPTitle" Text="Max HP:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" BackgroundColor="LightGray" Grid.Column="0" Grid.Row="0">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
+                    <Frame x:Name="MaxHPFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="0">
                         <Label x:Name="MaxHP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="HPTitle" Text="HP:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="1">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
+                    <Frame x:Name="HPFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
                         <Label x:Name="HP" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>
                     <Label x:Name="DamageResistTitle" Text="Damage Resist:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center"  Grid.Column="0" Grid.Row="2">
                     </Label>
-                    <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
+                    <Frame x:Name="DamageResistFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
                         <Label x:Name="DamageResist" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalTextAlignment="Center">
                         </Label>
                     </Frame>

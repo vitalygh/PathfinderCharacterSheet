@@ -50,11 +50,11 @@ namespace PathfinderCharacterSheet
 
             MainPage.AddTapHandler(AbilityScores, AbilityScores_DoubleTapped, 2);
             MainPage.AddTapHandler(MaxHPTitle, MaxHP_DoubleTapped, 2);
-            MainPage.AddTapHandler(MaxHP, MaxHP_DoubleTapped, 2);
+            MainPage.AddTapHandler(MaxHPFrame, MaxHP_DoubleTapped, 2);
             MainPage.AddTapHandler(HPTitle, HP_DoubleTapped, 2);
-            MainPage.AddTapHandler(HP, HP_DoubleTapped, 2);
+            MainPage.AddTapHandler(HPFrame, HP_DoubleTapped, 2);
             MainPage.AddTapHandler(DamageResistTitle, DamageResist_DoubleTapped, 2);
-            MainPage.AddTapHandler(DamageResist, DamageResist_DoubleTapped, 2);
+            MainPage.AddTapHandler(DamageResistFrame, DamageResist_DoubleTapped, 2);
             MainPage.AddTapHandler(InitiativeGrid, Initiative_DoubleTapped, 2);
             MainPage.AddTapHandler(ArmorClassGrid, ArmorClass_DoubleTapped, 2);
             MainPage.AddTapHandler(SavingThrowsGrid, SavingThrows_DoubleTapped, 2);
