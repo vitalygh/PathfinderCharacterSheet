@@ -474,7 +474,12 @@ namespace PathfinderCharacterSheet
                         }
                     }
                     else
-                        totalValue *= sheet.TotalLevel;
+                    {
+                        var lv = sheet.TotalLevel;
+                        if (levelMultiplier != null)
+                            lv = levelMultiplier.Apply(lv);
+                        totalValue *= lv;
+                    }
                 }
                 return totalValue;
             }
