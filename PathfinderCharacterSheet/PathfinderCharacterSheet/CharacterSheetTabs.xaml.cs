@@ -17,19 +17,31 @@ namespace PathfinderCharacterSheet
     public partial class CharacterSheetTabs : Xamarin.Forms.TabbedPage, ISheetView
     {
         private const int visibleTabsLimit = 5;
-        private static readonly List<Page> pages = new List<Page>()
+        private static Page[] availablePages = null;
+        private static Page[] pages
         {
-            new ViewBackground(),
-            new ViewAbilities(),
-            new ViewWeapon(),
-            new ViewArmor(),
-            new ViewInventory(),
-            new ViewSkills(),
-            new ViewFeats(),
-            new ViewSpecialAbilities(),
-            new ViewSpells(),
-            new ViewNotes(),
-        };
+            get
+            {
+                if (availablePages == null)
+                {
+                    var availablePagesList = new List<Page>()
+                    {
+                        new ViewBackground(),
+                        new ViewAbilities(),
+                        new ViewWeapon(),
+                        new ViewArmor(),
+                        new ViewInventory(),
+                        new ViewSkills(),
+                        new ViewFeats(),
+                        new ViewSpecialAbilities(),
+                        new ViewSpells(),
+                        new ViewNotes(),
+                    };
+                    availablePages = availablePagesList.ToArray();
+                }
+                return availablePages;
+            }
+        }
 
         private static bool NeedMoveTabs
         {
@@ -49,8 +61,8 @@ namespace PathfinderCharacterSheet
         public CharacterSheetTabs()
         {
             InitializeComponent();
-            On<Android>().SetOffscreenPageLimit(pages.Count);
-            var startTabsCount = NeedMoveTabs ? visibleTabsLimit : pages.Count;
+            On<Android>().SetOffscreenPageLimit(pages.Length);
+            var startTabsCount = NeedMoveTabs ? visibleTabsLimit : pages.Length;
             for (var i = 0; i < startTabsCount; i++)
                 Children.Add(pages[i]);
         }
@@ -65,10 +77,10 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        private List<Page> GetVisiblePages()
+        private Page[] GetVisiblePages()
         {
-            var index = pages.IndexOf(CurrentPage);
-            var count = pages.Count;
+            var index = Array.IndexOf(pages, CurrentPage);
+            var count = pages.Length;
             var center = Math.Min(count, visibleTabsLimit) / 2;
             var visiblePages = new List<Page>();
             var start = index - center;
@@ -78,7 +90,7 @@ namespace PathfinderCharacterSheet
             end = Math.Min(count, end);
             for (var i = start; i < end; i++)
                 visiblePages.Add(pages[i]);
-            return visiblePages;
+            return visiblePages.ToArray();
         }
 
         public void MoveTabs()
@@ -90,7 +102,7 @@ namespace PathfinderCharacterSheet
                 return;
             var cp = CurrentPage;
             Children.Clear();
-            for (var i = 0; i < vp.Count; i++)
+            for (var i = 0; i < vp.Length; i++)
                 Children.Add(vp[i]);
             CurrentPage = cp;
         }
