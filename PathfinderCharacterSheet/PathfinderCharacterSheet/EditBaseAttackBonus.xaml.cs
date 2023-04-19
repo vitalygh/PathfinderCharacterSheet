@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -20,10 +21,10 @@ namespace PathfinderCharacterSheet
         }
 
         private Page pushedPage = null;
-        private List<CharacterSheet.ValueWithIntModifiers> baseAttackBonus = null;
+        private List<ValueWithIntModifiers> baseAttackBonus = null;
         private int attacksCount = 0;
         private int currentAttack = 0;
-        private CharacterSheet.ValueWithIntModifiers currentAttacksCount = null;
+        private ValueWithIntModifiers currentAttacksCount = null;
         private List<AttackRow> rows = new List<AttackRow>();
         private List<AttackRow> rowsPool = new List<AttackRow>();
 
@@ -35,16 +36,16 @@ namespace PathfinderCharacterSheet
         public void InitEditor()
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            baseAttackBonus = new List<CharacterSheet.ValueWithIntModifiers>();
+            baseAttackBonus = new List<ValueWithIntModifiers>();
             if (sheet.baseAttackBonus != null)
                 foreach (var bab in sheet.baseAttackBonus)
                     if (bab != null)
-                        baseAttackBonus.Add(bab.Clone as CharacterSheet.ValueWithIntModifiers);
+                        baseAttackBonus.Add(bab.Clone as ValueWithIntModifiers);
             if (baseAttackBonus.Count <= 0)
-                baseAttackBonus.Add(new CharacterSheet.ValueWithIntModifiers());
+                baseAttackBonus.Add(new ValueWithIntModifiers());
             attacksCount = baseAttackBonus.Count;
             currentAttack = sheet.currentAttack;
-            currentAttacksCount = sheet.currentAttacksCount.Clone as CharacterSheet.ValueWithIntModifiers;
+            currentAttacksCount = sheet.currentAttacksCount.Clone as ValueWithIntModifiers;
             UpdateView();
         }
 
@@ -57,7 +58,7 @@ namespace PathfinderCharacterSheet
                 return;
             if (baseAttackBonus.Count <= 0)
                 return;
-            var items = new List<CharacterSheet.IntPickerItem>();
+            var items = new List<IntPickerItem>();
             var selectedIndex = -1;
             var cac = currentAttacksCount.GetTotal(sheet);
             var ac = Math.Min(attacksCount, cac);
@@ -67,7 +68,7 @@ namespace PathfinderCharacterSheet
             {
                 if (i == currentAttack)
                     selectedIndex = i;
-                var item = new CharacterSheet.IntPickerItem()
+                var item = new IntPickerItem()
                 {
                     Name = sheet.GetBaseAttackBonusForPicker(baseAttackBonus, i, true),
                     Value = i,
@@ -104,7 +105,7 @@ namespace PathfinderCharacterSheet
                 Attacks.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
         }
 
-        private void UpdateRow(AttackRow row, CharacterSheet.ValueWithIntModifiers bab)
+        private void UpdateRow(AttackRow row, ValueWithIntModifiers bab)
         {
             if (row == null)
                 return;
@@ -118,7 +119,7 @@ namespace PathfinderCharacterSheet
             MainPage.SetTapHandler(row.frame, (s, e) => EditBonus(bab), 1);
         }
 
-        private void CreateRow(CharacterSheet.ValueWithIntModifiers bab)
+        private void CreateRow(ValueWithIntModifiers bab)
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
@@ -162,7 +163,7 @@ namespace PathfinderCharacterSheet
             rowsPool.Add(row);
         }
 
-        private void EditBonus(CharacterSheet.ValueWithIntModifiers bab)
+        private void EditBonus(ValueWithIntModifiers bab)
         {
             if (pushedPage != null)
                 return;
@@ -254,7 +255,7 @@ namespace PathfinderCharacterSheet
                 var count = baseAttackBonus.Count;
                 var bab = baseAttackBonus[count - 1];
                 while (baseAttackBonus.Count < ac)
-                    baseAttackBonus.Add(bab.Clone as CharacterSheet.ValueWithIntModifiers);
+                    baseAttackBonus.Add(bab.Clone as ValueWithIntModifiers);
                 attacksCount = ac;
             }
             else if (ac < attacksCount)
@@ -266,7 +267,7 @@ namespace PathfinderCharacterSheet
 
         private void CurrentAttack_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedItem = (CurrentAttack.SelectedItem as CharacterSheet.IntPickerItem);
+            var selectedItem = (CurrentAttack.SelectedItem as IntPickerItem);
             if (selectedItem == null)
                 return;
             currentAttack = selectedItem.Value;

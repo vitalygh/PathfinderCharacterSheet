@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemType = PathfinderCharacterSheet.CharacterSheet.DiceRoll;
+using PathfinderCharacterSheet.CharacterSheets.V1;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.DiceRoll;
 using EditItemType = PathfinderCharacterSheet.EditDiceRoll;
 
 namespace PathfinderCharacterSheet

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -90,9 +91,9 @@ namespace PathfinderCharacterSheet
             }
             weaponReorderButton.IsVisible = sheet.weaponItems.Count > 1;
 #if EXPAND_SELECTED
-            var selectedWeaponItems = new List<KeyValuePair<CharacterSheet.WeaponItem, int>>();
+            var selectedWeaponItems = new List<KeyValuePair<WeaponItem, int>>();
 #endif
-            var weaponItems = new List<KeyValuePair<CharacterSheet.WeaponItem, int>>();
+            var weaponItems = new List<KeyValuePair<WeaponItem, int>>();
             var totalItemsCount = sheet.weaponItems.Count;
             for (var i = 0; i < totalItemsCount; i++)
             {
@@ -101,10 +102,10 @@ namespace PathfinderCharacterSheet
                     continue;
 #if EXPAND_SELECTED
                 if (wpn.selected)
-                    selectedWeaponItems.Add(new KeyValuePair<CharacterSheet.WeaponItem, int>(wpn, i));
+                    selectedWeaponItems.Add(new KeyValuePair<WeaponItem, int>(wpn, i));
                 else
 #endif
-                    weaponItems.Add(new KeyValuePair<CharacterSheet.WeaponItem, int>(wpn, i));
+                    weaponItems.Add(new KeyValuePair<WeaponItem, int>(wpn, i));
             }
 #if EXPAND_SELECTED
             var selectedItemsCount = selectedWeaponItems.Count;
@@ -294,12 +295,12 @@ namespace PathfinderCharacterSheet
             selectedWeaponGridsPool.Add(weaponGrid);
         }
 
-        private void UpdateWeaponGrid(SelectedWeaponGrid weaponGrid, KeyValuePair<CharacterSheet.WeaponItem, int> kvp)
+        private void UpdateWeaponGrid(SelectedWeaponGrid weaponGrid, KeyValuePair<WeaponItem, int> kvp)
         {
             UpdateWeaponGrid(weaponGrid, kvp.Key, kvp.Value);
         }
 
-        private void UpdateWeaponGrid(SelectedWeaponGrid weaponGrid, CharacterSheet.WeaponItem item, int itemIndex)
+        private void UpdateWeaponGrid(SelectedWeaponGrid weaponGrid, WeaponItem item, int itemIndex)
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
@@ -341,12 +342,12 @@ namespace PathfinderCharacterSheet
 #endif
         }
 
-        private void CreateSelectedWeaponGrid(KeyValuePair<CharacterSheet.WeaponItem, int> kvp)
+        private void CreateSelectedWeaponGrid(KeyValuePair<WeaponItem, int> kvp)
         {
             CreateSelectedWeaponGrid(kvp.Key, kvp.Value);
         }
 
-        private void CreateSelectedWeaponGrid(CharacterSheet.WeaponItem item, int itemIndex)
+        private void CreateSelectedWeaponGrid(WeaponItem item, int itemIndex)
         {
             if (item == null)
                 return;
@@ -539,12 +540,12 @@ namespace PathfinderCharacterSheet
             weaponGridsPool.Add(weaponGrid);
         }
 
-        private void UpdateWeaponGrid(WeaponGrid weaponGrid, KeyValuePair<CharacterSheet.WeaponItem, int> kvp)
+        private void UpdateWeaponGrid(WeaponGrid weaponGrid, KeyValuePair<WeaponItem, int> kvp)
         {
             UpdateWeaponGrid(weaponGrid, kvp.Key, kvp.Value);
         }
 
-        private void UpdateWeaponGrid(WeaponGrid weaponGrid, CharacterSheet.WeaponItem item, int itemIndex)
+        private void UpdateWeaponGrid(WeaponGrid weaponGrid, WeaponItem item, int itemIndex)
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
@@ -570,12 +571,12 @@ namespace PathfinderCharacterSheet
             UpdateValue(weaponGrid.name, item.AsString(sheet));
         }
 
-        private void CreateWeaponGrid(KeyValuePair<CharacterSheet.WeaponItem, int> kvp)
+        private void CreateWeaponGrid(KeyValuePair<WeaponItem, int> kvp)
         {
             CreateWeaponGrid(kvp.Key, kvp.Value);
         }
 
-        private void CreateWeaponGrid(CharacterSheet.WeaponItem item, int itemIndex)
+        private void CreateWeaponGrid(WeaponItem item, int itemIndex)
         {
             if (item == null)
                 return;
@@ -697,7 +698,7 @@ namespace PathfinderCharacterSheet
         }
 
 #if EXPAND_SELECTED
-        public void Weapon_CheckedChanged(CharacterSheet.WeaponItem weapon, bool value)
+        public void Weapon_CheckedChanged(WeaponItem weapon, bool value)
         {
             if (weapon == null)
                 return;
@@ -724,7 +725,7 @@ namespace PathfinderCharacterSheet
 #endif
 #endif
 
-        public void WeaponActive_CheckedChanged(CharacterSheet.WeaponItem item, bool value)
+        public void WeaponActive_CheckedChanged(WeaponItem item, bool value)
         {
             if (item == null)
                 return;
@@ -735,7 +736,7 @@ namespace PathfinderCharacterSheet
             UpdateView();
         }
 
-        public void Weapon_DoubleTap(CharacterSheet.WeaponItem item = null)
+        public void Weapon_DoubleTap(WeaponItem item = null)
         {
             if (pushedPage != null)
                 return;
@@ -757,14 +758,14 @@ namespace PathfinderCharacterSheet
                 return;
             var ri = new ReorderItemsWithDescription();
             pushedPage = ri;
-            var items = new List<CharacterSheet.ItemWithDescription>();
+            var items = new List<ItemWithDescription>();
             foreach (var item in sheet.weaponItems)
                 items.Add(item);
             ri.Init(items, (reordered) =>
             {
                 sheet.weaponItems.Clear();
                 foreach (var item in reordered)
-                    sheet.weaponItems.Add(item as CharacterSheet.WeaponItem);
+                    sheet.weaponItems.Add(item as WeaponItem);
                 CharacterSheetStorage.Instance.SaveCharacter();
             });
             Navigation.PushAsync(pushedPage);

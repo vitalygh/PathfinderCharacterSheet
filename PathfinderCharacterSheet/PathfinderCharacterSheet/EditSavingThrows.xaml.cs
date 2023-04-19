@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,7 +14,7 @@ namespace PathfinderCharacterSheet
     public partial class EditSavingThrows : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private List<CharacterSheet.SavingThrow> savingThrows = new List<CharacterSheet.SavingThrow>();
+        private List<SavingThrow> savingThrows = new List<SavingThrow>();
 
         public EditSavingThrows()
         {
@@ -30,7 +31,7 @@ namespace PathfinderCharacterSheet
             savingThrows.Clear();
             var count = sheet.savingThrows.Length;
             for (var i = 0; i < count; i++)
-                savingThrows.Add(sheet.GetSavingThrow((CharacterSheet.Save)i).Clone as CharacterSheet.SavingThrow);
+                savingThrows.Add(sheet.GetSavingThrow((Save)i).Clone as SavingThrow);
         }
 
         public void UpdateView()
@@ -39,29 +40,29 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            FortitudeTotal.Text = GetST(CharacterSheet.Save.Fortitude).GetTotal(sheet).ToString();
-            ReflexTotal.Text = GetST(CharacterSheet.Save.Reflex).GetTotal(sheet).ToString();
-            WillTotal.Text = GetST(CharacterSheet.Save.Will).GetTotal(sheet).ToString();
+            FortitudeTotal.Text = GetST(Save.Fortitude).GetTotal(sheet).ToString();
+            ReflexTotal.Text = GetST(Save.Reflex).GetTotal(sheet).ToString();
+            WillTotal.Text = GetST(Save.Will).GetTotal(sheet).ToString();
 
-            FortitudeBaseSave.Text = GetST(CharacterSheet.Save.Fortitude).baseSave.GetTotal(sheet).ToString();
-            ReflexBaseSave.Text = GetST(CharacterSheet.Save.Reflex).baseSave.GetTotal(sheet).ToString();
-            WillBaseSave.Text = GetST(CharacterSheet.Save.Will).baseSave.GetTotal(sheet).ToString();
+            FortitudeBaseSave.Text = GetST(Save.Fortitude).baseSave.GetTotal(sheet).ToString();
+            ReflexBaseSave.Text = GetST(Save.Reflex).baseSave.GetTotal(sheet).ToString();
+            WillBaseSave.Text = GetST(Save.Will).baseSave.GetTotal(sheet).ToString();
 
-            FortitudeAbilityModifier.Text = GetST(CharacterSheet.Save.Fortitude).GetAbilityModifier(sheet).ToString();
-            ReflexAbilityModifier.Text = GetST(CharacterSheet.Save.Reflex).GetAbilityModifier(sheet).ToString();
-            WillAbilityModifier.Text = GetST(CharacterSheet.Save.Will).GetAbilityModifier(sheet).ToString();
+            FortitudeAbilityModifier.Text = GetST(Save.Fortitude).GetAbilityModifier(sheet).ToString();
+            ReflexAbilityModifier.Text = GetST(Save.Reflex).GetAbilityModifier(sheet).ToString();
+            WillAbilityModifier.Text = GetST(Save.Will).GetAbilityModifier(sheet).ToString();
 
-            FortitudeMagicModifier.Text = GetST(CharacterSheet.Save.Fortitude).magicModifier.GetTotal(sheet).ToString();
-            ReflexMagicModifier.Text = GetST(CharacterSheet.Save.Reflex).magicModifier.GetTotal(sheet).ToString();
-            WillMagicModifier.Text = GetST(CharacterSheet.Save.Will).magicModifier.GetTotal(sheet).ToString();
+            FortitudeMagicModifier.Text = GetST(Save.Fortitude).magicModifier.GetTotal(sheet).ToString();
+            ReflexMagicModifier.Text = GetST(Save.Reflex).magicModifier.GetTotal(sheet).ToString();
+            WillMagicModifier.Text = GetST(Save.Will).magicModifier.GetTotal(sheet).ToString();
 
-            FortitudeMiscModifier.Text = GetST(CharacterSheet.Save.Fortitude).miscModifier.GetTotal(sheet).ToString();
-            ReflexMiscModifier.Text = GetST(CharacterSheet.Save.Reflex).miscModifier.GetTotal(sheet).ToString();
-            WillMiscModifier.Text = GetST(CharacterSheet.Save.Will).miscModifier.GetTotal(sheet).ToString();
+            FortitudeMiscModifier.Text = GetST(Save.Fortitude).miscModifier.GetTotal(sheet).ToString();
+            ReflexMiscModifier.Text = GetST(Save.Reflex).miscModifier.GetTotal(sheet).ToString();
+            WillMiscModifier.Text = GetST(Save.Will).miscModifier.GetTotal(sheet).ToString();
 
-            FortitudeTempModifier.Text = GetST(CharacterSheet.Save.Fortitude).tempModifier.GetTotal(sheet).ToString();
-            ReflexTempModifier.Text = GetST(CharacterSheet.Save.Reflex).tempModifier.GetTotal(sheet).ToString();
-            WillTempModifier.Text = GetST(CharacterSheet.Save.Will).tempModifier.GetTotal(sheet).ToString();
+            FortitudeTempModifier.Text = GetST(Save.Fortitude).tempModifier.GetTotal(sheet).ToString();
+            ReflexTempModifier.Text = GetST(Save.Reflex).tempModifier.GetTotal(sheet).ToString();
+            WillTempModifier.Text = GetST(Save.Will).tempModifier.GetTotal(sheet).ToString();
         }
 
         private void EditToView()
@@ -82,7 +83,7 @@ namespace PathfinderCharacterSheet
                 CharacterSheetStorage.Instance.SaveCharacter();
         }
 
-        private CharacterSheet.SavingThrow GetST(CharacterSheet.Save st)
+        private SavingThrow GetST(Save st)
         {
             if (savingThrows == null)
                 return null;
@@ -96,7 +97,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Fortitude);
+            var st = GetST(Save.Fortitude);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -112,7 +113,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Reflex);
+            var st = GetST(Save.Reflex);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -128,7 +129,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Will);
+            var st = GetST(Save.Will);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -144,7 +145,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Fortitude);
+            var st = GetST(Save.Fortitude);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -160,7 +161,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Reflex);
+            var st = GetST(Save.Reflex);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -176,7 +177,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Will);
+            var st = GetST(Save.Will);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -192,7 +193,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Fortitude);
+            var st = GetST(Save.Fortitude);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -208,7 +209,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Reflex);
+            var st = GetST(Save.Reflex);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -224,7 +225,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Will);
+            var st = GetST(Save.Will);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -240,7 +241,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Fortitude);
+            var st = GetST(Save.Fortitude);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -256,7 +257,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Reflex);
+            var st = GetST(Save.Reflex);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
@@ -272,7 +273,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var st = GetST(CharacterSheet.Save.Will);
+            var st = GetST(Save.Will);
             if (st == null)
                 return;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;

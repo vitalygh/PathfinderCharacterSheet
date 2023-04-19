@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,20 +14,20 @@ namespace PathfinderCharacterSheet
     public partial class EditIntLimit : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private CharacterSheet.IntLimit source = null;
-        private CharacterSheet.IntLimit limit = null;
+        private IntLimit source = null;
+        private IntLimit limit = null;
 
         public EditIntLimit()
         {
             InitializeComponent();
         }
 
-        public void Init(CharacterSheet.IntLimit limit)
+        public void Init(IntLimit limit)
         {
             if (limit == null)
                 return;
             source = limit;
-            this.limit = source.Clone as CharacterSheet.IntLimit;
+            this.limit = source.Clone as IntLimit;
             UpdateView();
         }
 

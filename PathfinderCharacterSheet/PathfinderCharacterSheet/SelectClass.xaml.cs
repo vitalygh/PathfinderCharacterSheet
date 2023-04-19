@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemType = PathfinderCharacterSheet.CharacterSheet.LevelOfClass;
+using PathfinderCharacterSheet.CharacterSheets.V1;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.LevelOfClass;
 
 namespace PathfinderCharacterSheet
 {
@@ -15,14 +16,14 @@ namespace PathfinderCharacterSheet
     {
         private Action<ItemType> onSelect = null;
         private List<Frame> framesPool = new List<Frame>();
-        private CharacterSheet.LevelOfClass selected = null;
+        private LevelOfClass selected = null;
 
         public SelectClass()
         {
             InitializeComponent();
         }
 
-        public void InitSelection(Action<ItemType> onSelect, CharacterSheet.LevelOfClass selected)
+        public void InitSelection(Action<ItemType> onSelect, LevelOfClass selected)
         {
             this.onSelect = onSelect;
             this.selected = selected;

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemType = PathfinderCharacterSheet.CharacterSheet.Note;
+using PathfinderCharacterSheet.CharacterSheets.V1;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.Note;
 using EditItemType = PathfinderCharacterSheet.EditNote;
 using ViewItemType = PathfinderCharacterSheet.ViewNote;
 
@@ -88,7 +89,7 @@ namespace PathfinderCharacterSheet
                 return;
             var ri = new ReorderItemsWithDescription();
             pushedPage = ri;
-            var items = new List<CharacterSheet.ItemWithDescription>();
+            var items = new List<ItemWithDescription>();
             foreach (var item in sheet.notes)
                 items.Add(item);
             ri.Init(items, (reordered) =>

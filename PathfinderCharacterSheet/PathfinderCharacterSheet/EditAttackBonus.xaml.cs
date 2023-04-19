@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,8 +14,8 @@ namespace PathfinderCharacterSheet
 	public partial class EditAttackBonus : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private CharacterSheet.ValueWithIntModifiers sizeModifiers = null;
-        private CharacterSheet.ValueWithIntModifiers attackBonus = null;
+        private ValueWithIntModifiers sizeModifiers = null;
+        private ValueWithIntModifiers attackBonus = null;
         private int currentAttack = 0;
 
         public EditAttackBonus ()
@@ -28,8 +29,8 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            sizeModifiers = sheet.attackSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
-            attackBonus = sheet.attackBonusModifiers.Clone as CharacterSheet.ValueWithIntModifiers;
+            sizeModifiers = sheet.attackSizeModifier.Clone as ValueWithIntModifiers;
+            attackBonus = sheet.attackBonusModifiers.Clone as ValueWithIntModifiers;
             currentAttack = sheet.currentAttack;
             UpdateCurrentAttackPicker();
             UpdateView();
@@ -59,13 +60,13 @@ namespace PathfinderCharacterSheet
             var count = sheet.attacksCount;
             if (count <= 0)
                 return;
-            var items = new List<CharacterSheet.IntPickerItem>();
+            var items = new List<IntPickerItem>();
             var selectedIndex = -1;
             for (var i = 0; i < count; i++)
             {
                 if (i == currentAttack)
                     selectedIndex = i;
-                var item = new CharacterSheet.IntPickerItem()
+                var item = new IntPickerItem()
                 {
                     Name = sheet.GetBaseAttackBonusForPicker(i),
                     Value = i,
@@ -81,7 +82,7 @@ namespace PathfinderCharacterSheet
 
         private void CurrentBaseAttackBonus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedItem = (CurrentBaseAttackBonus.SelectedItem as CharacterSheet.IntPickerItem);
+            var selectedItem = (CurrentBaseAttackBonus.SelectedItem as IntPickerItem);
             if (selectedItem == null)
                 return;
             currentAttack = selectedItem.Value;
@@ -123,30 +124,30 @@ namespace PathfinderCharacterSheet
             UpdateTotal();
         }
 
-        private void ReorderModifiers(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
+        private void ReorderModifiers(ModifiersList<IntModifier, int, IntSum> modifiers)
         {
             if (pushedPage != null)
                 return;
             var ri = new ReorderIntModifiers();
             pushedPage = ri;
-            var items = new CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>();
+            var items = new ModifiersList<IntModifier, int, IntSum>();
             foreach (var item in modifiers)
                 items.Add(item);
             ri.Init(items, (reordered) =>
             {
                 modifiers.Clear();
                 foreach (var item in reordered)
-                    modifiers.Add(item as CharacterSheet.IntModifier);
+                    modifiers.Add(item as IntModifier);
             });
             Navigation.PushAsync(pushedPage);
         }
 
-        private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
+        private void EditModifier(ModifiersList<IntModifier, int, IntSum> modifiers)
         {
             EditModifier(modifiers, null);
         }
 
-        private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, CharacterSheet.IntModifier modifier)
+        private void EditModifier(ModifiersList<IntModifier, int, IntSum> modifiers, IntModifier modifier)
         {
             if (pushedPage != null)
                 return;

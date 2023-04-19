@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemType = PathfinderCharacterSheet.CharacterSheet.Feat;
+using PathfinderCharacterSheet.CharacterSheets.V1;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.Feat;
 using EditItemType = PathfinderCharacterSheet.EditFeat;
 using ViewItemType = PathfinderCharacterSheet.ViewFeat;
 
@@ -88,7 +89,7 @@ namespace PathfinderCharacterSheet
                 return;
             var ri = new ReorderItemsWithDescription();
             pushedPage = ri;
-            var items = new List<CharacterSheet.ItemWithDescription>();
+            var items = new List<ItemWithDescription>();
             foreach (var item in sheet.feats)
                 items.Add(item);
             ri.Init(items, (reordered) =>

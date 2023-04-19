@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,13 +14,13 @@ namespace PathfinderCharacterSheet
     public partial class EditInitiative : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private CharacterSheet.ValueWithIntModifiers modifiers = null;
+        private ValueWithIntModifiers modifiers = null;
 
         public EditInitiative()
         {
             InitializeComponent();
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            modifiers = sheet.initiative.miscModifiers.Clone as CharacterSheet.ValueWithIntModifiers;
+            modifiers = sheet.initiative.miscModifiers.Clone as ValueWithIntModifiers;
             UpdateView();
         }
 
@@ -27,7 +28,7 @@ namespace PathfinderCharacterSheet
         {
             pushedPage = null;
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            var dexMod = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity);
+            var dexMod = sheet.GetAbilityModifier(Ability.Dexterity);
             DexModifier.Text = dexMod.ToString();
             var miscMod = modifiers.GetTotal(sheet);
             MiscModifiers.Text = miscMod.ToString();

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -347,12 +348,12 @@ namespace PathfinderCharacterSheet
             gearItemGridsPool.Add(gearItemGrid);
         }
 
-        private void UpdateGearItemGrid(GearItemGrid gearItemGrid, KeyValuePair<CharacterSheet.GearItem, int> kvp)
+        private void UpdateGearItemGrid(GearItemGrid gearItemGrid, KeyValuePair<GearItem, int> kvp)
         {
             UpdateGearItemGrid(gearItemGrid, kvp.Key, kvp.Value);
         }
 
-        private void UpdateGearItemGrid(GearItemGrid gearItemGrid, CharacterSheet.GearItem item, int itemIndex)
+        private void UpdateGearItemGrid(GearItemGrid gearItemGrid, GearItem item, int itemIndex)
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
@@ -376,12 +377,12 @@ namespace PathfinderCharacterSheet
             gearItemGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
         }
 
-        private void CreateGearItemGrid(KeyValuePair<CharacterSheet.GearItem, int> kvp)
+        private void CreateGearItemGrid(KeyValuePair<GearItem, int> kvp)
         {
             CreateGearItemGrid(kvp.Key, kvp.Value);
         }
 
-        private GearItemGrid CreateGearItemGrid(CharacterSheet.GearItem item, int itemIndex)
+        private GearItemGrid CreateGearItemGrid(GearItem item, int itemIndex)
         {
             if (item == null)
                 return null;
@@ -461,7 +462,7 @@ namespace PathfinderCharacterSheet
             return newGearItemGrid;
         }
 
-        public void GearItem_CheckedChanged(CharacterSheet.GearItem gearItem, bool value)
+        public void GearItem_CheckedChanged(GearItem gearItem, bool value)
         {
             if (gearItem == null)
                 return;
@@ -477,7 +478,7 @@ namespace PathfinderCharacterSheet
             selectedcb.IsChecked = !selectedcb.IsChecked;
         }
 
-        public void GearItemViewButton_Tap(CharacterSheet.GearItem gearItem = null)
+        public void GearItemViewButton_Tap(GearItem gearItem = null)
         {
             if (pushedPage != null)
                 return;
@@ -487,7 +488,7 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(pushedPage);
         }
 
-        public void GearItem_DoubleTap(CharacterSheet.GearItem gearItem = null)
+        public void GearItem_DoubleTap(GearItem gearItem = null)
         {
             if (pushedPage != null)
                 return;
@@ -575,14 +576,14 @@ namespace PathfinderCharacterSheet
                 return;
             var ri = new ReorderItemsWithDescription();
             pushedPage = ri;
-            var items = new List<CharacterSheet.ItemWithDescription>();
+            var items = new List<ItemWithDescription>();
             foreach (var item in sheet.gear)
                 items.Add(item);
             ri.Init(items, (reordered) =>
             {
                 sheet.gear.Clear();
                 foreach (var item in reordered)
-                    sheet.gear.Add(item as CharacterSheet.GearItem);
+                    sheet.gear.Add(item as GearItem);
                 CharacterSheetStorage.Instance.SaveCharacter();
             });
             Navigation.PushAsync(pushedPage);

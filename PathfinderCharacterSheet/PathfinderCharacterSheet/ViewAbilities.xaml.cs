@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Windows.Input;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -26,7 +27,7 @@ namespace PathfinderCharacterSheet
         {
             if (AbilityScores.Children.Count <= 0)
             {
-                for (var i = 0; i < (int)CharacterSheet.Ability.Total + 1; i++)
+                for (var i = 0; i < (int)Ability.Total + 1; i++)
                     for (var j = 0; j < abilityColumns; j++)
                     {
                         View child = null;
@@ -72,7 +73,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
 
-            var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
+            var abilities = Enum.GetNames(typeof(Ability));
             var abilitiesCount = sheet.abilityScores.Length;
             var hasChanges = false;
             for (var i = 0; i < abilitiesCount; i++)
@@ -80,7 +81,7 @@ namespace PathfinderCharacterSheet
                 var ab = sheet.abilityScores[i];
                 if (ab == null)
                 {
-                    ab = new CharacterSheet.AbilityScore();
+                    ab = new AbilityScore();
                     sheet.abilityScores[i] = ab;
                     hasChanges = true;
                 }
@@ -132,9 +133,9 @@ namespace PathfinderCharacterSheet
             TouchAC.Text = sheet.ACTouch.ToString();
             FlatFootedAC.Text = sheet.ACFlatFooted.ToString();
 
-            Fortitude.Text = sheet.GetSavingThrowTotal(CharacterSheet.Save.Fortitude).ToString();
-            Reflex.Text = sheet.GetSavingThrowTotal(CharacterSheet.Save.Reflex).ToString();
-            Will.Text = sheet.GetSavingThrowTotal(CharacterSheet.Save.Will).ToString();
+            Fortitude.Text = sheet.GetSavingThrowTotal(Save.Fortitude).ToString();
+            Reflex.Text = sheet.GetSavingThrowTotal(Save.Reflex).ToString();
+            Will.Text = sheet.GetSavingThrowTotal(Save.Will).ToString();
 
             var attacksCount = sheet.baseAttackBonus != null ? sheet.attacksCount : 0;
             attacksCount = Math.Max(1, attacksCount);
@@ -166,9 +167,9 @@ namespace PathfinderCharacterSheet
             CMD.Text = sheet.CMD.ToString();
 
             var baseSpeed = sheet.speed.baseSpeed.GetTotal(sheet);
-            BaseSpeed.Text = baseSpeed.ToString() + " ft (" + CharacterSheet.Speed.InSquares(baseSpeed) + " sq)";
+            BaseSpeed.Text = baseSpeed.ToString() + " ft (" + Speed.InSquares(baseSpeed) + " sq)";
             var speedWithArmor = sheet.speed.armorSpeed.GetTotal(sheet);
-            SpeedWithArmor.Text = speedWithArmor.ToString() + " ft (" + CharacterSheet.Speed.InSquares(speedWithArmor) + " sq)";
+            SpeedWithArmor.Text = speedWithArmor.ToString() + " ft (" + Speed.InSquares(speedWithArmor) + " sq)";
             FlySpeed.Text = sheet.speed.flySpeed.GetTotal(sheet).ToString() + " ft";
             Maneuverability.Text = sheet.speed.maneuverability.GetTotal(sheet).ToString();
             SwimSpeed.Text = sheet.speed.GetSwimSpeed(sheet).ToString() + " ft";

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemType = PathfinderCharacterSheet.CharacterSheet.SpecialAbility;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.SpecialAbility;
 
 namespace PathfinderCharacterSheet
 {

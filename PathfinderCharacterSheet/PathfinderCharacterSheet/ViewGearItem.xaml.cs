@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemsType = PathfinderCharacterSheet.CharacterSheet.GearItem;
+using ItemsType = PathfinderCharacterSheet.CharacterSheets.V1.GearItem;
 
 namespace PathfinderCharacterSheet
 {

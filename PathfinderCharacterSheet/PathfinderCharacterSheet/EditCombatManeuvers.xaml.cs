@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -14,8 +15,8 @@ namespace PathfinderCharacterSheet
 	public partial class EditCombatManeuvers : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private CharacterSheet.ValueWithIntModifiers cmdSizeModifier = null;
-        private CharacterSheet.ValueWithIntModifiers cmbSizeModifier = null;
+        private ValueWithIntModifiers cmdSizeModifier = null;
+        private ValueWithIntModifiers cmbSizeModifier = null;
 #if SELECT_CURRENT_ATTACK
         private int currentAttack = 0;
 #endif
@@ -32,16 +33,16 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            cmdSizeModifier = sheet.cmdSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
-            cmbSizeModifier = sheet.cmbSizeModifier.Clone as CharacterSheet.ValueWithIntModifiers;
+            cmdSizeModifier = sheet.cmdSizeModifier.Clone as ValueWithIntModifiers;
+            cmbSizeModifier = sheet.cmbSizeModifier.Clone as ValueWithIntModifiers;
 #if SELECT_CURRENT_ATTACK
             currentAttack = sheet.currentAttack;
             UpdateCurrentAttackPicker();
 #else
             BaseAttackBonus.Text = sheet.GetBaseAttackBonus(0).ToString();
 #endif
-            StrengthModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Strength).ToString();
-            CMDDexterityModifier.Text = sheet.GetAbilityModifier(CharacterSheet.Ability.Dexterity).ToString();
+            StrengthModifier.Text = sheet.GetAbilityModifier(Ability.Strength).ToString();
+            CMDDexterityModifier.Text = sheet.GetAbilityModifier(Ability.Dexterity).ToString();
         }
 
         public void UpdateView()

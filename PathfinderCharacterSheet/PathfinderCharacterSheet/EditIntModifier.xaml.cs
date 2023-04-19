@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -14,9 +15,9 @@ namespace PathfinderCharacterSheet
 	{
         private Page pushedPage = null;
         private CharacterSheet sheet = null;
-        private CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiersList = null;
-        private CharacterSheet.IntModifier source = null;
-        private CharacterSheet.IntModifier modifier = null;
+        private ModifiersList<IntModifier, int, IntSum> modifiersList = null;
+        private IntModifier source = null;
+        private IntModifier modifier = null;
 
         private Label TotalTitle = null;
         private Label TotalValue = null;
@@ -33,7 +34,7 @@ namespace PathfinderCharacterSheet
         private Entry ModifierName = null;
 
         private Label AbilityTitle = null;
-        private Picker Ability = null;
+        private Picker AbilityPicker = null;
 
         private Label AbilityMultiplierTitle = null;
         private Frame AbilityMultiplierFrame = null;
@@ -164,7 +165,7 @@ namespace PathfinderCharacterSheet
             if (allowUseAbilities)
             {
                 AbilityTitle = CreateLabel("Ability:");
-                Ability = new Picker()
+                AbilityPicker = new Picker()
                 {
                     TextColor = Color.Black,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Picker)),
@@ -172,32 +173,32 @@ namespace PathfinderCharacterSheet
                 };
                 var abilityFrame = new Frame()
                 {
-                    Content = Ability,
+                    Content = AbilityPicker,
                     BorderColor = Color.Black,
                     Padding = 5,
                 };
-                var abilities = new List<CharacterSheet.AbilityPickerItem>();
-                var values = Enum.GetValues(typeof(CharacterSheet.Ability));
+                var abilities = new List<AbilityPickerItem>();
+                var values = Enum.GetValues(typeof(Ability));
                 var index = -1;
                 var selectedIndex = -1;
-                var selectedValue = modifier != null ? modifier.SourceAbility : CharacterSheet.Ability.None;
+                var selectedValue = modifier != null ? modifier.SourceAbility : Ability.None;
                 foreach (var v in values)
                 {
-                    var value = (CharacterSheet.Ability)v;
-                    if (value == CharacterSheet.Ability.Total)
+                    var value = (Ability)v;
+                    if (value == Ability.Total)
                         continue;
                     index += 1;
                     if (selectedValue == value)
                         selectedIndex = index;
-                    abilities.Add(new CharacterSheet.AbilityPickerItem()
+                    abilities.Add(new AbilityPickerItem()
                     {
                         Name = v.ToString(),
                         Value = value,
                     });
                 }
-                Ability.ItemsSource = abilities;
-                Ability.SelectedIndex = selectedIndex;
-                Ability.SelectedIndexChanged += (s, e) =>
+                AbilityPicker.ItemsSource = abilities;
+                AbilityPicker.SelectedIndex = selectedIndex;
+                AbilityPicker.SelectedIndexChanged += (s, e) =>
                 {
                     UpdateValue();
                 };
@@ -316,15 +317,15 @@ namespace PathfinderCharacterSheet
             return MainPage.CreateFrame(text);
         }
 
-        public void Init(CharacterSheet sheet, CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiersList, CharacterSheet.IntModifier modifier, bool allowUseAbilities = true)
+        public void Init(CharacterSheet sheet, ModifiersList<IntModifier, int, IntSum> modifiersList, IntModifier modifier, bool allowUseAbilities = true)
         {
             this.sheet = sheet;
             this.modifiersList = modifiersList;
             source = modifier;
             if (modifier != null)
-                this.modifier = modifier.Clone as CharacterSheet.IntModifier;
+                this.modifier = modifier.Clone as IntModifier;
             else
-                this.modifier = new CharacterSheet.IntModifier();
+                this.modifier = new IntModifier();
             InitControls(allowUseAbilities);
             IsActive.IsChecked = this.modifier.IsActive;
             ItemMustBeActive.IsChecked = this.modifier.mustBeActive;
@@ -343,7 +344,7 @@ namespace PathfinderCharacterSheet
             if (modifier == null)
                 return;
 
-            CharacterSheet.GearItem item = null;
+            GearItem item = null;
             if (modifier.sourceItemUID == CharacterSheet.InvalidUID)
                 LinkedItem.Text = string.Empty;
             else
@@ -391,7 +392,7 @@ namespace PathfinderCharacterSheet
             AutoNaming.IsChecked = modifier.autoNaming;
         }
 
-        private void EditMultiplier(CharacterSheet.IntMultiplier multiplier)
+        private void EditMultiplier(IntMultiplier multiplier)
         {
             if (pushedPage != null)
                 return;
@@ -401,7 +402,7 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(pushedPage);
         }
 
-        private void SelectItem(CharacterSheet.GearItem item)
+        private void SelectItem(GearItem item)
         {
             if (pushedPage != null)
                 return;
@@ -419,7 +420,7 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             var sc = new SelectClass();
-            var level = modifier.multiplyToLevel ? new CharacterSheet.LevelOfClass() { className = className }: null;
+            var level = modifier.multiplyToLevel ? new LevelOfClass() { className = className }: null;
             sc.InitSelection((selected) =>
             {
                 if (selected == null)
@@ -438,15 +439,15 @@ namespace PathfinderCharacterSheet
         {
             if (sheet == null)
                 return;
-            if (Ability != null)
+            if (AbilityPicker != null)
             {
-                var currentAbility = CharacterSheet.Ability.None;
-                var item = (Ability.SelectedItem as CharacterSheet.AbilityPickerItem);
+                var currentAbility = Ability.None;
+                var item = (AbilityPicker.SelectedItem as AbilityPickerItem);
                 if (item != null)
                     currentAbility = item.Value;
                 modifier.SourceAbility = currentAbility;
 
-                var sab = modifier.SourceAbility != CharacterSheet.Ability.None;
+                var sab = modifier.SourceAbility != Ability.None;
                 var ams = modifier.SourceAbility.ToString();
                 var am = modifier.abilityMultiplier.AsString(ams);
                 if (am == ams)
@@ -467,9 +468,9 @@ namespace PathfinderCharacterSheet
             modifier.active = IsActive.IsChecked;
             MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
             modifier.name = ModifierName.Text;
-            if (Ability != null)
+            if (AbilityPicker != null)
             {
-                var selectedItem = Ability.SelectedItem as CharacterSheet.AbilityPickerItem;
+                var selectedItem = AbilityPicker.SelectedItem as AbilityPickerItem;
                 if (selectedItem != null)
                     modifier.SourceAbility = selectedItem.Value;
             }

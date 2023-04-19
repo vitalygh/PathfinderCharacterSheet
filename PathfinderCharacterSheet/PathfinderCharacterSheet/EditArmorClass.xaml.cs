@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -15,11 +16,11 @@ namespace PathfinderCharacterSheet
         public class DexterityModifierSourcePickerItem
         {
             public string Name { get; set; }
-            public CharacterSheet.ArmorClass.DexterityModifierSources Value { get; set; }
+            public ArmorClass.DexterityModifierSources Value { get; set; }
         }
 
         private Page pushedPage = null;
-        private CharacterSheet.ArmorClass ac = null;
+        private ArmorClass ac = null;
 
 		public EditArmorClass ()
 		{
@@ -33,15 +34,15 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            ac = sheet.armorClass.Clone as CharacterSheet.ArmorClass;
-            var values = Enum.GetValues(typeof(CharacterSheet.ArmorClass.DexterityModifierSources));
+            ac = sheet.armorClass.Clone as ArmorClass;
+            var values = Enum.GetValues(typeof(ArmorClass.DexterityModifierSources));
             var count = -1;
             var valueIndex = 0;
             var dexModSrcPickerItems = new List<DexterityModifierSourcePickerItem>();
             foreach (var v in values)
             {
                 count += 1;
-                var value = (CharacterSheet.ArmorClass.DexterityModifierSources)v;
+                var value = (ArmorClass.DexterityModifierSources)v;
                 if (value == ac.DexterityModifierSource)
                     valueIndex = count;
                 dexModSrcPickerItems.Add(new DexterityModifierSourcePickerItem()
@@ -118,7 +119,7 @@ namespace PathfinderCharacterSheet
 
         private void DexModifier_Tapped(object sender, EventArgs e)
         {
-            if (ac.DexterityModifierSource != CharacterSheet.ArmorClass.DexterityModifierSources.Custom)
+            if (ac.DexterityModifierSource != ArmorClass.DexterityModifierSources.Custom)
                 return;
             if (pushedPage != null)
                 return;
@@ -228,7 +229,7 @@ namespace PathfinderCharacterSheet
             if (pickerItem == null)
                 return;
             ac.DexterityModifierSource = pickerItem.Value;
-            var custom = pickerItem.Value == CharacterSheet.ArmorClass.DexterityModifierSources.Custom;
+            var custom = pickerItem.Value == ArmorClass.DexterityModifierSources.Custom;
             DexModifier.Text = ac.GetDexterityModifier(sheet).ToString();
             DexModifier.TextDecorations = custom ? TextDecorations.Underline : TextDecorations.None;
             DexModifierFrame.BackgroundColor = custom ? Color.White : Color.LightGray;

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,27 +14,27 @@ namespace PathfinderCharacterSheet
 	public partial class EditLevel : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private List<CharacterSheet.LevelOfClass> levelsOfClass = null;
-        private CharacterSheet.LevelOfClass source = null;
-        private CharacterSheet.LevelOfClass level = null;
+        private List<LevelOfClass> levelsOfClass = null;
+        private LevelOfClass source = null;
+        private LevelOfClass level = null;
 
         public EditLevel ()
 		{
 			InitializeComponent ();
 		}
 
-        public void Init(List<CharacterSheet.LevelOfClass> levelsOfClass, CharacterSheet.LevelOfClass level)
+        public void Init(List<LevelOfClass> levelsOfClass, LevelOfClass level)
         {
             this.levelsOfClass = levelsOfClass;
             source = level;
             if (source != null)
             {
-                this.level = source.Clone as CharacterSheet.LevelOfClass;
+                this.level = source.Clone as LevelOfClass;
                 ClassName.Text = source.ClassName.ToString();
             }
             else
             {
-                this.level = new CharacterSheet.LevelOfClass();
+                this.level = new LevelOfClass();
                 ClassName.Text = string.Empty;
             }
             Delete.IsEnabled = source != null;

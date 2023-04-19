@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,7 +14,7 @@ namespace PathfinderCharacterSheet
 	public partial class EditAbilityScores : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        CharacterSheet.AbilityScore[] abilityScores = null;
+        AbilityScore[] abilityScores = null;
 
         public EditAbilityScores()
 		{
@@ -25,9 +26,9 @@ namespace PathfinderCharacterSheet
 
         private void InitAbilityScores()
         {
-            var asList = new List<CharacterSheet.AbilityScore>();
+            var asList = new List<AbilityScore>();
             foreach (var absc in CharacterSheetStorage.Instance.selectedCharacter.abilityScores)
-                asList.Add(absc.Clone as CharacterSheet.AbilityScore);
+                asList.Add(absc.Clone as AbilityScore);
             abilityScores = asList.ToArray();
         }
 
@@ -38,8 +39,8 @@ namespace PathfinderCharacterSheet
                 return;
             if (AbilityScores.Children.Count > 0)
                 return;
-            var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
-            for (var i = 0; i < (int)CharacterSheet.Ability.Total + 1; i++)
+            var abilities = Enum.GetNames(typeof(Ability));
+            for (var i = 0; i < (int)Ability.Total + 1; i++)
                 for (var j = 0; j < 5; j++)
                 {
                     View child = null;
@@ -140,7 +141,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var abilities = Enum.GetNames(typeof(CharacterSheet.Ability));
+            var abilities = Enum.GetNames(typeof(Ability));
             var abilitiesCount = abilityScores.Length;
             for (var i = 0; i < abilitiesCount; i++)
             {

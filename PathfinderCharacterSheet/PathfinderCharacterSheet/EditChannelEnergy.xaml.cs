@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,7 +14,7 @@ namespace PathfinderCharacterSheet
 	public partial class EditChannelEnergy : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private CharacterSheet.ChannelEnergy channelEnergy = null;
+        private ChannelEnergy channelEnergy = null;
 
 		public EditChannelEnergy ()
 		{
@@ -25,7 +26,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            channelEnergy = sheet.channelEnergy.Clone as CharacterSheet.ChannelEnergy;
+            channelEnergy = sheet.channelEnergy.Clone as ChannelEnergy;
             UpdateView();
         }
 

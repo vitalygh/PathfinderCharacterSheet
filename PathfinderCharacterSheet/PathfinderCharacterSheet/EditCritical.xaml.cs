@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -14,8 +15,8 @@ namespace PathfinderCharacterSheet
     {
         private Page pushedPage = null;
         private CharacterSheet sheet = null;
-        private CharacterSheet.CriticalHit source = null;
-        private CharacterSheet.CriticalHit critical = null;
+        private CriticalHit source = null;
+        private CriticalHit critical = null;
 
         public EditCritical()
         {
@@ -41,7 +42,7 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public void Init(CharacterSheet sheet, CharacterSheet.CriticalHit critical)
+        public void Init(CharacterSheet sheet, CriticalHit critical)
         {
             if (sheet == null)
                 return;
@@ -49,7 +50,7 @@ namespace PathfinderCharacterSheet
                 return;
             this.sheet = sheet;
             source = critical;
-            this.critical = critical.Clone as CharacterSheet.CriticalHit;
+            this.critical = critical.Clone as CriticalHit;
             UpdateView();
         }
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,7 +14,7 @@ namespace PathfinderCharacterSheet
     public partial class EditSkillRanks : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private CharacterSheet.ValueWithIntModifiers skillRanks = null;
+        private ValueWithIntModifiers skillRanks = null;
 
         public EditSkillRanks()
         {
@@ -25,7 +26,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            skillRanks = sheet.skillRanks.Clone as CharacterSheet.ValueWithIntModifiers;
+            skillRanks = sheet.skillRanks.Clone as ValueWithIntModifiers;
             UpdateView();
         }
 

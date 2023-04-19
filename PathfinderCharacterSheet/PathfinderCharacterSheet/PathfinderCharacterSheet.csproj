@@ -193,4 +193,8 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="CharacterSheets\" />
+  </ItemGroup>
 </Project>

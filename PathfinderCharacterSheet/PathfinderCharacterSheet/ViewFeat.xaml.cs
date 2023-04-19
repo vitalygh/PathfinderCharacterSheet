@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemType = PathfinderCharacterSheet.CharacterSheet.Feat;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.Feat;
 using EditItemType = PathfinderCharacterSheet.EditFeat;
 
 namespace PathfinderCharacterSheet

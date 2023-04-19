@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,7 +14,7 @@ namespace PathfinderCharacterSheet
 	public partial class EditEncumbrance : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private CharacterSheet.Encumbrance encumbrance = null;
+        private Encumbrance encumbrance = null;
 
         public EditEncumbrance()
         {
@@ -27,7 +28,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            encumbrance = sheet.encumbrance.Clone as CharacterSheet.Encumbrance;
+            encumbrance = sheet.encumbrance.Clone as Encumbrance;
         }
 
         public void UpdateView()

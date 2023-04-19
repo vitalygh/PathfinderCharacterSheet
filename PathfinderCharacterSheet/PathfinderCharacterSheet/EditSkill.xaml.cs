@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemsType = PathfinderCharacterSheet.CharacterSheet.SkillRank;
+using PathfinderCharacterSheet.CharacterSheets.V1;
+using ItemsType = PathfinderCharacterSheet.CharacterSheets.V1.SkillRank;
 
 namespace PathfinderCharacterSheet
 {
@@ -25,7 +26,7 @@ namespace PathfinderCharacterSheet
             }
         }
         private ItemsType item = null;
-        private List<CharacterSheet.AbilityPickerItem> abilities = new List<CharacterSheet.AbilityPickerItem>();
+        private List<AbilityPickerItem> abilities = new List<AbilityPickerItem>();
         private Page pushedPage = null;
 
         public EditSkill()
@@ -37,13 +38,13 @@ namespace PathfinderCharacterSheet
         private void InitAbilityPicker()
         {
             abilities.Clear();
-            var values = Enum.GetValues(typeof(CharacterSheet.Ability));
+            var values = Enum.GetValues(typeof(Ability));
             foreach (var v in values)
             {
-                var value = (CharacterSheet.Ability)v;
-                if (value == CharacterSheet.Ability.Total)
+                var value = (Ability)v;
+                if (value == Ability.Total)
                     continue;
-                abilities.Add(new CharacterSheet.AbilityPickerItem()
+                abilities.Add(new AbilityPickerItem()
                 {
                     Name = v.ToString(),
                     Value = value,
@@ -52,7 +53,7 @@ namespace PathfinderCharacterSheet
             AbilityModifierSource.ItemsSource = abilities;
         }
 
-        private void SelectAbilityPickerValue(CharacterSheet.Ability ability)
+        private void SelectAbilityPickerValue(Ability ability)
         {
             var count = abilities.Count;
             for (var i = 0; i < count; i++)
@@ -67,15 +68,15 @@ namespace PathfinderCharacterSheet
                 return;
             if (item == null)
                 return;
-            var selectedItem = AbilityModifierSource.SelectedItem as CharacterSheet.AbilityPickerItem;
+            var selectedItem = AbilityModifierSource.SelectedItem as AbilityPickerItem;
             if (selectedItem != null)
             {
                 item.AbilityModifierSource = selectedItem.Value;
                 AbilityModifier.Text = item.GetAbilityModifier(sheet).ToString();
                 switch (item.AbilityModifierSource)
                 {
-                    case CharacterSheet.Ability.Strength:
-                    case CharacterSheet.Ability.Dexterity:
+                    case Ability.Strength:
+                    case Ability.Dexterity:
                         if (!item.armorPenalty)
                             HasArmorPenalty.IsChecked = true;
                         break;
@@ -92,7 +93,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
             {
-                this.item = new ItemsType(string.Empty, CharacterSheet.Ability.None, false, false, true);
+                this.item = new ItemsType(string.Empty, Ability.None, false, false, true);
                 index = -1;
                 SelectAbilityPickerValue(this.item.AbilityModifierSource);
             }

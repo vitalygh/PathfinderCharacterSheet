@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemType = PathfinderCharacterSheet.CharacterSheet.WeaponItem;
+using PathfinderCharacterSheet.CharacterSheets.V1;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.WeaponItem;
 
 namespace PathfinderCharacterSheet
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditWeapon : ContentPage, ISheetView
 	{
-        private CharacterSheet.WeaponItem source = null;
-        private CharacterSheet.WeaponItem item = null;
+        private WeaponItem source = null;
+        private WeaponItem item = null;
         private List<ItemType> items
         {
             get

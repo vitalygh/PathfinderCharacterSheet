@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Xamarin.Forms;
-using ItemType = PathfinderCharacterSheet.CharacterSheet.DiceRoll;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.DiceRoll;
 
 namespace PathfinderCharacterSheet
 {

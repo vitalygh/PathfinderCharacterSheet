@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -195,7 +196,7 @@ namespace PathfinderCharacterSheet
                 label.Text = text;
         }
 
-        public void Skill_DoubleTap(CharacterSheet.SkillRank skill = null, int index = -1)
+        public void Skill_DoubleTap(SkillRank skill = null, int index = -1)
         {
             if (pushedPage != null)
                 return;

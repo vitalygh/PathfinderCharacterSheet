@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -15,22 +16,22 @@ namespace PathfinderCharacterSheet
         public class RoundingTypesPickerItem
         {
             public string Name { set; get; }
-            public CharacterSheet.IntMultiplier.RoundingTypes Value { set; get; }
+            public IntMultiplier.RoundingTypes Value { set; get; }
         }
 
         private Page pushedPage = null;
-        private CharacterSheet.IntMultiplier source = null;
-        private CharacterSheet.IntMultiplier multiplier = null;
+        private IntMultiplier source = null;
+        private IntMultiplier multiplier = null;
 
         public EditIntMultiplier()
         {
             InitializeComponent();
         }
 
-        public void Init(CharacterSheet.IntMultiplier multiplier)
+        public void Init(IntMultiplier multiplier)
         {
             source = multiplier;
-            this.multiplier = source.Clone as CharacterSheet.IntMultiplier;
+            this.multiplier = source.Clone as IntMultiplier;
 
             AdditionalBefore.Text = multiplier.additionalBefore.ToString();
             Multiplier.Text =  multiplier.multiplier.ToString();
@@ -38,13 +39,13 @@ namespace PathfinderCharacterSheet
             AdditionalAfter.Text = multiplier.additionalAfter.ToString();
 
             var roundingTypes = new List<RoundingTypesPickerItem>();
-            var roundingValues = Enum.GetValues(typeof(CharacterSheet.IntMultiplier.RoundingTypes));
+            var roundingValues = Enum.GetValues(typeof(IntMultiplier.RoundingTypes));
             var roundingIndex = -1;
             var roundingSelectedIndex = -1;
-            var roundingSelectedValue = multiplier != null ? multiplier.RoundingType : CharacterSheet.IntMultiplier.DefaultRounding;
+            var roundingSelectedValue = multiplier != null ? multiplier.RoundingType : IntMultiplier.DefaultRounding;
             foreach (var v in roundingValues)
             {
-                var value = (CharacterSheet.IntMultiplier.RoundingTypes)v;
+                var value = (IntMultiplier.RoundingTypes)v;
                 roundingIndex += 1;
                 if (roundingSelectedValue == value)
                     roundingSelectedIndex = roundingIndex;
@@ -82,7 +83,7 @@ namespace PathfinderCharacterSheet
             MainPage.StrToInt(Multiplier.Text, ref multiplier.multiplier);
             MainPage.StrToInt(Divider.Text, ref multiplier.divider);
             MainPage.StrToInt(AdditionalAfter.Text, ref multiplier.additionalAfter);
-            var currentRoundingType = CharacterSheet.IntMultiplier.DefaultRounding;
+            var currentRoundingType = IntMultiplier.DefaultRounding;
             if (Rounding != null)
             {
                 var item = (Rounding.SelectedItem as RoundingTypesPickerItem);

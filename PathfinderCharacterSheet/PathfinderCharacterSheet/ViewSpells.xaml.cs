@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -303,7 +304,7 @@ namespace PathfinderCharacterSheet
                 var spells = sheet.spellLevel[i];
                 if (spells == null)
                 {
-                    spells = new CharacterSheet.SpellLevel();
+                    spells = new SpellLevel();
                     sheet.spellLevel[i] = spells;
                     hasChanges = true;
                 }

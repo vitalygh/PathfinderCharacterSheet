@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,7 +14,7 @@ namespace PathfinderCharacterSheet
 	public partial class EditSpeed : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private CharacterSheet.Speed speed = null;
+        private Speed speed = null;
 
 		public EditSpeed ()
 		{
@@ -27,7 +28,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            speed = sheet.speed.Clone as CharacterSheet.Speed;
+            speed = sheet.speed.Clone as Speed;
         }
 
         public void UpdateView()
@@ -37,9 +38,9 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var bs = speed.baseSpeed.GetTotal(sheet);
-            BaseSpeed.Text = bs + " ft (" + CharacterSheet.Speed.InSquares(bs) + " sq)";
+            BaseSpeed.Text = bs + " ft (" + Speed.InSquares(bs) + " sq)";
             var ars = speed.armorSpeed.GetTotal(sheet);
-            SpeedWithArmor.Text = ars + " ft (" + CharacterSheet.Speed.InSquares(ars) + " sq)";
+            SpeedWithArmor.Text = ars + " ft (" + Speed.InSquares(ars) + " sq)";
             FlySpeed.Text = speed.flySpeed.GetTotal(sheet) + " ft";
             Maneuverability.Text = speed.maneuverability.GetTotal(sheet).ToString();
             DefaultSwim.IsChecked = speed.defaultSwimSpeed;

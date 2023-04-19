@@ -11,7 +11,7 @@ using Xamarin.Forms;
 
 namespace PathfinderCharacterSheet
 {
-    public class ViewItemsWithDescription<ItemType> where ItemType: CharacterSheet.ItemWithDescription
+    public class ViewItemsWithDescription<ItemType> where ItemType: CharacterSheets.V1.ItemWithDescription
     {
 #if EXPAND_SELECTED
         public class SelectedItemGrid : ItemGrid

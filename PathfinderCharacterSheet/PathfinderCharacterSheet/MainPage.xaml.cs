@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -289,11 +290,11 @@ namespace PathfinderCharacterSheet
             LongPressedEffect.SetAction(view, handler);
         }
 
-        public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, string title,
-                                                Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>> addModifier,
-                                                Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>, CharacterSheet.IntModifier> editModifier,
-                                                Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>> reorderModifiers,
-                                                Action<CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>, CharacterSheet.IntModifier> activateModifier)
+        public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, ModifiersList<IntModifier, int, IntSum> modifiers, string title,
+                                                Action<ModifiersList<IntModifier, int, IntSum>> addModifier,
+                                                Action<ModifiersList<IntModifier, int, IntSum>, IntModifier> editModifier,
+                                                Action<ModifiersList<IntModifier, int, IntSum>> reorderModifiers,
+                                                Action<ModifiersList<IntModifier, int, IntSum>, IntModifier> activateModifier)
         {
             grid.Children.Clear();
             var stack = new StackLayout()

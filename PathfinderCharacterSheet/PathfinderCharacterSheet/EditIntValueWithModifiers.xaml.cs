@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -14,8 +15,8 @@ namespace PathfinderCharacterSheet
 	{
         private Page pushedPage = null;
         private CharacterSheet sheet = null;
-        private CharacterSheet.ValueWithIntModifiers source = null;
-        private CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers = null;
+        private ValueWithIntModifiers source = null;
+        private ModifiersList<IntModifier, int, IntSum> modifiers = null;
         private bool saveCharacter = false;
         private bool allowUseAbilities = true;
 
@@ -24,7 +25,7 @@ namespace PathfinderCharacterSheet
 			InitializeComponent ();
 		}
 
-        public void Init(CharacterSheet sheet, CharacterSheet.ValueWithIntModifiers source, string title, string valueName, bool saveCharacter, bool allowUseAbilities = true)
+        public void Init(CharacterSheet sheet, ValueWithIntModifiers source, string title, string valueName, bool saveCharacter, bool allowUseAbilities = true)
         {
             Title = title;
             ValueName.Text = valueName;
@@ -34,7 +35,7 @@ namespace PathfinderCharacterSheet
             this.sheet = sheet;
             this.source = source;
             this.saveCharacter = saveCharacter;
-            modifiers = source.modifiers.Clone as CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>;
+            modifiers = source.modifiers.Clone as ModifiersList<IntModifier, int, IntSum>;
             Value.Text = source.baseValue.ToString();
             UpdateView();
         }
@@ -64,30 +65,30 @@ namespace PathfinderCharacterSheet
             UpdateTotal();
         }
 
-        private void ReorderModifiers(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
+        private void ReorderModifiers(ModifiersList<IntModifier, int, IntSum> modifiers)
         {
             if (pushedPage != null)
                 return;
             var ri = new ReorderIntModifiers();
             pushedPage = ri;
-            var items = new CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum>();
+            var items = new ModifiersList<IntModifier, int, IntSum>();
             foreach (var item in modifiers)
                 items.Add(item);
             ri.Init(items, (reordered) =>
             {
                 modifiers.Clear();
                 foreach (var item in reordered)
-                    modifiers.Add(item as CharacterSheet.IntModifier);
+                    modifiers.Add(item as IntModifier);
             });
             Navigation.PushAsync(pushedPage);
         }
 
-        private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers)
+        private void EditModifier(ModifiersList<IntModifier, int, IntSum> modifiers)
         {
             EditModifier(modifiers, null);
         }
 
-        private void EditModifier(CharacterSheet.ModifiersList<CharacterSheet.IntModifier, int, CharacterSheet.IntSum> modifiers, CharacterSheet.IntModifier modifier)
+        private void EditModifier(ModifiersList<IntModifier, int, IntSum> modifiers, IntModifier modifier)
         {
             if (pushedPage != null)
                 return;

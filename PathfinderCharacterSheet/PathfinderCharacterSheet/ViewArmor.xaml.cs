@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -85,9 +86,9 @@ namespace PathfinderCharacterSheet
                 return;
             armorReorderButton.IsVisible = sheet.armorClassItems.Count > 1;
 #if EXPAND_SELECTED
-            var selectedArmorItems = new List<KeyValuePair<CharacterSheet.ArmorClassItem, int>>();
+            var selectedArmorItems = new List<KeyValuePair<ArmorClassItem, int>>();
 #endif
-            var armorItems = new List<KeyValuePair<CharacterSheet.ArmorClassItem, int>>();
+            var armorItems = new List<KeyValuePair<ArmorClassItem, int>>();
             var totalItemsCount = sheet.armorClassItems.Count;
             for (var i = 0; i < totalItemsCount; i++)
             {
@@ -96,10 +97,10 @@ namespace PathfinderCharacterSheet
                     continue;
 #if EXPAND_SELECTED
                 if (wpn.selected)
-                    selectedArmorItems.Add(new KeyValuePair<CharacterSheet.ArmorClassItem, int>(wpn, i));
+                    selectedArmorItems.Add(new KeyValuePair<ArmorClassItem, int>(wpn, i));
                 else
 #endif
-                    armorItems.Add(new KeyValuePair<CharacterSheet.ArmorClassItem, int>(wpn, i));
+                    armorItems.Add(new KeyValuePair<ArmorClassItem, int>(wpn, i));
             }
 #if EXPAND_SELECTED
             var selectedItemsCount = selectedArmorItems.Count;
@@ -227,12 +228,12 @@ namespace PathfinderCharacterSheet
             selectedArmorGridsPool.Add(armorGrid);
         }
 
-        private void UpdateArmorGrid(SelectedArmorGrid armorGrid, KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
+        private void UpdateArmorGrid(SelectedArmorGrid armorGrid, KeyValuePair<ArmorClassItem, int> kvp)
         {
             UpdateArmorGrid(armorGrid, kvp.Key, kvp.Value);
         }
 
-        private void UpdateArmorGrid(SelectedArmorGrid armorGrid, CharacterSheet.ArmorClassItem item, int itemIndex)
+        private void UpdateArmorGrid(SelectedArmorGrid armorGrid, ArmorClassItem item, int itemIndex)
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
@@ -274,12 +275,12 @@ namespace PathfinderCharacterSheet
 #endif
         }
 
-        private void CreateSelectedArmorGrid(KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
+        private void CreateSelectedArmorGrid(KeyValuePair<ArmorClassItem, int> kvp)
         {
             CreateSelectedArmorGrid(kvp.Key, kvp.Value);
         }
 
-        private void CreateSelectedArmorGrid(CharacterSheet.ArmorClassItem item, int itemIndex)
+        private void CreateSelectedArmorGrid(ArmorClassItem item, int itemIndex)
         {
             if (item == null)
                 return;
@@ -457,12 +458,12 @@ namespace PathfinderCharacterSheet
             armorGridsPool.Add(armorGrid);
         }
 
-        private void UpdateArmorGrid(ArmorGrid armorGrid, KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
+        private void UpdateArmorGrid(ArmorGrid armorGrid, KeyValuePair<ArmorClassItem, int> kvp)
         {
             UpdateArmorGrid(armorGrid, kvp.Key, kvp.Value);
         }
 
-        private void UpdateArmorGrid(ArmorGrid armorGrid, CharacterSheet.ArmorClassItem item, int itemIndex)
+        private void UpdateArmorGrid(ArmorGrid armorGrid, ArmorClassItem item, int itemIndex)
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
@@ -488,12 +489,12 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             armorGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
         }
 
-        private void CreateArmorGrid(KeyValuePair<CharacterSheet.ArmorClassItem, int> kvp)
+        private void CreateArmorGrid(KeyValuePair<ArmorClassItem, int> kvp)
         {
             CreateArmorGrid(kvp.Key, kvp.Value);
         }
 
-        private void CreateArmorGrid(CharacterSheet.ArmorClassItem item, int itemIndex)
+        private void CreateArmorGrid(ArmorClassItem item, int itemIndex)
         {
             if (item == null)
                 return;
@@ -593,7 +594,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
         }
 
 #if EXPAND_SELECTED
-        public void ArmorSelected_CheckedChanged(CharacterSheet.ArmorClassItem armor, bool value)
+        public void ArmorSelected_CheckedChanged(ArmorClassItem armor, bool value)
         {
             if (armor == null)
                 return;
@@ -609,7 +610,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             selectedcb.IsChecked = !selectedcb.IsChecked;
         }
 #else
-        public void Armor_Tap(CharacterSheet.ArmorClassItem armor)
+        public void Armor_Tap(ArmorClassItem armor)
         {
             if (armor == null)
                 return;
@@ -620,7 +621,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
 #endif
 #endif
 
-        public void ArmorActive_CheckedChanged(CharacterSheet.ArmorClassItem armor, bool value)
+        public void ArmorActive_CheckedChanged(ArmorClassItem armor, bool value)
         {
             if (armor == null)
                 return;
@@ -631,7 +632,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             UpdateView();
         }
 
-        public void Armor_DoubleTap(CharacterSheet.ArmorClassItem item = null)
+        public void Armor_DoubleTap(ArmorClassItem item = null)
         {
             if (pushedPage != null)
                 return;
@@ -653,14 +654,14 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
                 return;
             var ri = new ReorderItemsWithDescription();
             pushedPage = ri;
-            var items = new List<CharacterSheet.ItemWithDescription>();
+            var items = new List<ItemWithDescription>();
             foreach (var item in sheet.armorClassItems)
                 items.Add(item);
             ri.Init(items, (reordered) =>
             {
                 sheet.armorClassItems.Clear();
                 foreach (var item in reordered)
-                    sheet.armorClassItems.Add(item as CharacterSheet.ArmorClassItem);
+                    sheet.armorClassItems.Add(item as ArmorClassItem);
                 CharacterSheetStorage.Instance.SaveCharacter();
             });
             Navigation.PushAsync(pushedPage);

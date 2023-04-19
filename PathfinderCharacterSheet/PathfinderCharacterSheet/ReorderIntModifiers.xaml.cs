@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using Modifier = PathfinderCharacterSheet.CharacterSheet.IntModifier;
-using ModifiersList = PathfinderCharacterSheet.CharacterSheet.ModifiersList<PathfinderCharacterSheet.CharacterSheet.IntModifier, int, PathfinderCharacterSheet.CharacterSheet.IntSum>;
+using PathfinderCharacterSheet.CharacterSheets.V1;
+using Modifier = PathfinderCharacterSheet.CharacterSheets.V1.IntModifier;
+using ModifiersList = PathfinderCharacterSheet.CharacterSheets.V1.ModifiersList<PathfinderCharacterSheet.CharacterSheets.V1.IntModifier, int, PathfinderCharacterSheet.CharacterSheets.V1.IntSum>;
 
 namespace PathfinderCharacterSheet
 {

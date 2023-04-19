@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -13,14 +14,14 @@ namespace PathfinderCharacterSheet
 	public partial class EditBackground : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private List<CharacterSheet.LevelOfClass> levelOfClass = new List<CharacterSheet.LevelOfClass>();
-        private CharacterSheet.ValueWithIntModifiers experience = null;
-        private CharacterSheet.ValueWithIntModifiers nextLevelExperience = null;
+        private List<LevelOfClass> levelOfClass = new List<LevelOfClass>();
+        private ValueWithIntModifiers experience = null;
+        private ValueWithIntModifiers nextLevelExperience = null;
 
         public class AlignmentPickerItem
         {
             public string Name { set; get; }
-            public CharacterSheet.Alignments Value { set; get; }
+            public Alignments Value { set; get; }
         }
 
         public EditBackground()
@@ -35,9 +36,9 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            levelOfClass = CharacterSheet.LevelOfClass.CreateClone(sheet.levelOfClass);
+            levelOfClass = LevelOfClass.CreateClone(sheet.levelOfClass);
             var alignments = new List<AlignmentPickerItem>();
-            var values = Enum.GetValues(typeof(CharacterSheet.Alignments));
+            var values = Enum.GetValues(typeof(Alignments));
             var selectedIndex = -1;
             var index = -1;
             foreach (var v in values)
@@ -46,7 +47,7 @@ namespace PathfinderCharacterSheet
                 var alignment = new AlignmentPickerItem()
                 {
                     Name = v.ToString(),
-                    Value = (CharacterSheet.Alignments)v,
+                    Value = (Alignments)v,
                 };
                 alignments.Add(alignment);
                 if (sheet.Alignment == alignment.Value)
@@ -56,8 +57,8 @@ namespace PathfinderCharacterSheet
             Alignment.ItemDisplayBinding = new Binding("Name");
             Alignment.SelectedIndex = selectedIndex;
             CharacterName.Text = sheet.name;
-            experience = sheet.experience.Clone as CharacterSheet.ValueWithIntModifiers;
-            nextLevelExperience = sheet.nextLevelExperience.Clone as CharacterSheet.ValueWithIntModifiers;
+            experience = sheet.experience.Clone as ValueWithIntModifiers;
+            nextLevelExperience = sheet.nextLevelExperience.Clone as ValueWithIntModifiers;
             Deity.Text = sheet.deity;
             Homeland.Text = sheet.homeland;
             Race.Text = sheet.Race;
@@ -77,18 +78,18 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            Level.Text = CharacterSheet.LevelOfClass.AsString(sheet, levelOfClass);
+            Level.Text = LevelOfClass.AsString(sheet, levelOfClass);
             Experience.Text = experience.GetTotal(sheet).ToString();
             NextLevel.Text = nextLevelExperience.GetTotal(sheet).ToString();
         }
 
-        private bool StringToAlignment(string alignmentName, ref CharacterSheet.Alignments alignment)
+        private bool StringToAlignment(string alignmentName, ref Alignments alignment)
         {
-            var values = Enum.GetValues(typeof(CharacterSheet.Alignments));
+            var values = Enum.GetValues(typeof(Alignments));
             foreach (var v in values)
                 if (v.ToString() == alignmentName)
                 {
-                    alignment = (CharacterSheet.Alignments)v;
+                    alignment = (Alignments)v;
                     return true;
                 }
             return false;

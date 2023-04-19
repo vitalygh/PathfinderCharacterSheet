@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -20,9 +21,9 @@ namespace PathfinderCharacterSheet
         }
 
         private Page pushedPage = null;
-        private List<CharacterSheet.ItemWithDescription> initItems = null;
-        private List<CharacterSheet.ItemWithDescription> items = null;
-        private Action<List<CharacterSheet.ItemWithDescription>> reorder = null;
+        private List<ItemWithDescription> initItems = null;
+        private List<ItemWithDescription> items = null;
+        private Action<List<ItemWithDescription>> reorder = null;
         private List<Controls> controls = new List<Controls>();
 
         public ReorderItemsWithDescription()
@@ -30,7 +31,7 @@ namespace PathfinderCharacterSheet
             InitializeComponent();
         }
 
-        private void MoveItem(CharacterSheet.ItemWithDescription item, int dir, bool onePosition)
+        private void MoveItem(ItemWithDescription item, int dir, bool onePosition)
         {
             if (items == null)
                 return;
@@ -46,7 +47,7 @@ namespace PathfinderCharacterSheet
             UpdateLabels();
         }
 
-        private void UpdateItem(Controls controls, CharacterSheet.ItemWithDescription item)
+        private void UpdateItem(Controls controls, ItemWithDescription item)
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
@@ -67,7 +68,7 @@ namespace PathfinderCharacterSheet
             return sl;
         }
 
-        private void AddItem(CharacterSheet.ItemWithDescription item)
+        private void AddItem(ItemWithDescription item)
         {
             if (item == null)
                 return;
@@ -102,10 +103,10 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public void Init(List<CharacterSheet.ItemWithDescription> items, Action<List<CharacterSheet.ItemWithDescription>> reorder)
+        public void Init(List<ItemWithDescription> items, Action<List<ItemWithDescription>> reorder)
         {
             this.items = items;
-            initItems = new List<CharacterSheet.ItemWithDescription>(items);
+            initItems = new List<ItemWithDescription>(items);
             this.reorder = reorder;
             pushedPage = null;
             Items.Children.Clear();
