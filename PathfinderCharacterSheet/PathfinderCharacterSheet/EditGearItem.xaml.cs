@@ -53,10 +53,10 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            Amount.Text = item.amount.GetTotal(sheet).ToString();
-            Weight.Text = item.weight.GetTotal(sheet).ToString();
-            Left.Text = item.useLimit.GetTotal(sheet).ToString();
-            Total.Text = item.dailyUseLimit.GetTotal(sheet).ToString();
+            Amount.Text = item.amount.GetValue(sheet).ToString();
+            Weight.Text = item.weight.GetValue(sheet).ToString();
+            Left.Text = item.useLimit.GetValue(sheet).ToString();
+            Total.Text = item.dailyUseLimit.GetValue(sheet).ToString();
             UpdateHasUseLimit();
         }
 

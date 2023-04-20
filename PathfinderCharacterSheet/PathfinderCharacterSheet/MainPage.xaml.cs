@@ -290,11 +290,11 @@ namespace PathfinderCharacterSheet
             LongPressedEffect.SetAction(view, handler);
         }
 
-        public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, ModifiersList<IntModifier, int, IntSum> modifiers, string title,
-                                                Action<ModifiersList<IntModifier, int, IntSum>> addModifier,
-                                                Action<ModifiersList<IntModifier, int, IntSum>, IntModifier> editModifier,
-                                                Action<ModifiersList<IntModifier, int, IntSum>> reorderModifiers,
-                                                Action<ModifiersList<IntModifier, int, IntSum>, IntModifier> activateModifier)
+        public static void FillIntMLGrid(Grid grid, CharacterSheet sheet, IntModifiersList modifiers, string title,
+                                                Action<IntModifiersList> addModifier,
+                                                Action<IntModifiersList, IntModifier> editModifier,
+                                                Action<IntModifiersList> reorderModifiers,
+                                                Action<IntModifiersList, IntModifier> activateModifier)
         {
             grid.Children.Clear();
             var stack = new StackLayout()

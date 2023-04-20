@@ -44,25 +44,25 @@ namespace PathfinderCharacterSheet
             ReflexTotal.Text = GetST(Save.Reflex).GetTotal(sheet).ToString();
             WillTotal.Text = GetST(Save.Will).GetTotal(sheet).ToString();
 
-            FortitudeBaseSave.Text = GetST(Save.Fortitude).baseSave.GetTotal(sheet).ToString();
-            ReflexBaseSave.Text = GetST(Save.Reflex).baseSave.GetTotal(sheet).ToString();
-            WillBaseSave.Text = GetST(Save.Will).baseSave.GetTotal(sheet).ToString();
+            FortitudeBaseSave.Text = GetST(Save.Fortitude).baseSave.GetValue(sheet).ToString();
+            ReflexBaseSave.Text = GetST(Save.Reflex).baseSave.GetValue(sheet).ToString();
+            WillBaseSave.Text = GetST(Save.Will).baseSave.GetValue(sheet).ToString();
 
             FortitudeAbilityModifier.Text = GetST(Save.Fortitude).GetAbilityModifier(sheet).ToString();
             ReflexAbilityModifier.Text = GetST(Save.Reflex).GetAbilityModifier(sheet).ToString();
             WillAbilityModifier.Text = GetST(Save.Will).GetAbilityModifier(sheet).ToString();
 
-            FortitudeMagicModifier.Text = GetST(Save.Fortitude).magicModifier.GetTotal(sheet).ToString();
-            ReflexMagicModifier.Text = GetST(Save.Reflex).magicModifier.GetTotal(sheet).ToString();
-            WillMagicModifier.Text = GetST(Save.Will).magicModifier.GetTotal(sheet).ToString();
+            FortitudeMagicModifier.Text = GetST(Save.Fortitude).magicModifier.GetValue(sheet).ToString();
+            ReflexMagicModifier.Text = GetST(Save.Reflex).magicModifier.GetValue(sheet).ToString();
+            WillMagicModifier.Text = GetST(Save.Will).magicModifier.GetValue(sheet).ToString();
 
-            FortitudeMiscModifier.Text = GetST(Save.Fortitude).miscModifier.GetTotal(sheet).ToString();
-            ReflexMiscModifier.Text = GetST(Save.Reflex).miscModifier.GetTotal(sheet).ToString();
-            WillMiscModifier.Text = GetST(Save.Will).miscModifier.GetTotal(sheet).ToString();
+            FortitudeMiscModifier.Text = GetST(Save.Fortitude).miscModifier.GetValue(sheet).ToString();
+            ReflexMiscModifier.Text = GetST(Save.Reflex).miscModifier.GetValue(sheet).ToString();
+            WillMiscModifier.Text = GetST(Save.Will).miscModifier.GetValue(sheet).ToString();
 
-            FortitudeTempModifier.Text = GetST(Save.Fortitude).tempModifier.GetTotal(sheet).ToString();
-            ReflexTempModifier.Text = GetST(Save.Reflex).tempModifier.GetTotal(sheet).ToString();
-            WillTempModifier.Text = GetST(Save.Will).tempModifier.GetTotal(sheet).ToString();
+            FortitudeTempModifier.Text = GetST(Save.Fortitude).tempModifier.GetValue(sheet).ToString();
+            ReflexTempModifier.Text = GetST(Save.Reflex).tempModifier.GetValue(sheet).ToString();
+            WillTempModifier.Text = GetST(Save.Will).tempModifier.GetValue(sheet).ToString();
         }
 
         private void EditToView()

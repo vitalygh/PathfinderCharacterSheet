@@ -70,10 +70,10 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            UpdateValue(PP, sheet.money.platinumPoints.GetTotal(sheet).ToString());
-            UpdateValue(GP, sheet.money.goldenPoints.GetTotal(sheet).ToString());
-            UpdateValue(SP, sheet.money.silverPoints.GetTotal(sheet).ToString());
-            UpdateValue(CP, sheet.money.cuprumPoints.GetTotal(sheet).ToString());
+            UpdateValue(PP, sheet.money.platinumPoints.GetValue(sheet).ToString());
+            UpdateValue(GP, sheet.money.goldenPoints.GetValue(sheet).ToString());
+            UpdateValue(SP, sheet.money.silverPoints.GetValue(sheet).ToString());
+            UpdateValue(CP, sheet.money.cuprumPoints.GetValue(sheet).ToString());
             UpdateValue(LightLoad, sheet.encumbrance.LightLoad(sheet));
             UpdateValue(MediumLoad, sheet.encumbrance.MediumLoad(sheet));
             UpdateValue(HeavyLoad, sheet.encumbrance.HeavyLoad(sheet));
@@ -85,9 +85,9 @@ namespace PathfinderCharacterSheet
             foreach (var item in items)
                 if (item != null)
                     totalWeight += item.TotalWeight(sheet);
-            var heavy = sheet.encumbrance.heavyLoad.GetTotal(sheet);
-            var medium = sheet.encumbrance.mediumLoad.GetTotal(sheet);
-            var light = sheet.encumbrance.lightLoad.GetTotal(sheet);
+            var heavy = sheet.encumbrance.heavyLoad.GetValue(sheet);
+            var medium = sheet.encumbrance.mediumLoad.GetValue(sheet);
+            var light = sheet.encumbrance.lightLoad.GetValue(sheet);
             TotalWeight.TextColor = totalWeight >= heavy ? Color.Red : (totalWeight > medium ? Color.Orange : (totalWeight > light ? Color.Yellow : Color.Green));
             Reorder.IsVisible = sheet.gear.Count > 1;
             UpdateValue(TotalWeight, totalWeight + " lbs");

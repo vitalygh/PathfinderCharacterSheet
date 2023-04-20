@@ -60,7 +60,7 @@ namespace PathfinderCharacterSheet
                 return;
             var items = new List<IntPickerItem>();
             var selectedIndex = -1;
-            var cac = currentAttacksCount.GetTotal(sheet);
+            var cac = currentAttacksCount.GetValue(sheet);
             var ac = Math.Min(attacksCount, cac);
             if (ac <= 0)
                 ac = attacksCount;
@@ -114,7 +114,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var value = bab.GetTotal(sheet);
+            var value = bab.GetValue(sheet);
             UpdateValue(row.value, value >= 0 ? "+" + value : value.ToString());
             MainPage.SetTapHandler(row.frame, (s, e) => EditBonus(bab), 1);
         }
@@ -136,7 +136,7 @@ namespace PathfinderCharacterSheet
                 return;
             }
             var title = CreateLabel("Attack " + (rows.Count + 1) + " Bonus:");
-            var bonus = bab.GetTotal(sheet);
+            var bonus = bab.GetValue(sheet);
             var frame = CreateFrame(bonus >= 0 ? "+" + bonus : bonus.ToString());
             var value = frame.Content as Label;
             value.TextDecorations = TextDecorations.Underline;

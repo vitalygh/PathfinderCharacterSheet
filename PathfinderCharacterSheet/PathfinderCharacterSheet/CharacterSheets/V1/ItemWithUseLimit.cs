@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class ItemWithUseLimit : ItemWithDescription
+    public class ItemWithUseLimit : ItemWithDescription, IEquatable<ItemWithUseLimit>
     {
         public bool hasUseLimit = false;
         public ValueWithIntModifiers useLimit = new ValueWithIntModifiers();
@@ -18,9 +18,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             {
                 if (!string.IsNullOrWhiteSpace(text))
                     text += " ";
-                var ul = useLimit.GetTotal(sheet);
+                var ul = useLimit.GetValue(sheet);
                 text += "[" + ul;
-                var dul = dailyUseLimit.GetTotal(sheet);
+                var dul = dailyUseLimit.GetValue(sheet);
                 if (dul > 0)
                     text += " / " + dul;
                 text += "]";
@@ -29,7 +29,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return text;
         }
 
-        public override object Clone
+        public override ItemWithDescription Clone
         {
             get
             {
@@ -54,14 +54,49 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return true;
         }
 
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as ItemWithUseLimit);
+        }
+
+        public static bool operator ==(ItemWithUseLimit first, ItemWithUseLimit second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(ItemWithUseLimit first, ItemWithUseLimit second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + hasUseLimit.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, useLimit) ? useLimit.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, dailyUseLimit) ? dailyUseLimit.GetHashCode() : 0);
+            return hash;
+        }
+
         public ItemWithUseLimit Fill(ItemWithUseLimit source)
         {
             if (source == null)
                 return this;
             base.Fill(source);
             hasUseLimit = source.hasUseLimit;
-            useLimit = source.useLimit.Clone as ValueWithIntModifiers;
-            dailyUseLimit = source.dailyUseLimit.Clone as ValueWithIntModifiers;
+            useLimit = source.useLimit?.Clone;
+            dailyUseLimit = source.dailyUseLimit?.Clone;
             return this;
         }
     }

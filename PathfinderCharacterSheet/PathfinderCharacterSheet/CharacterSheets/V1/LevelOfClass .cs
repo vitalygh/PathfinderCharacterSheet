@@ -4,14 +4,14 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class LevelOfClass
+    public class LevelOfClass: IContextValue<int>, IPrototype<LevelOfClass>, IEquatable<LevelOfClass>
     {
         public ValueWithIntModifiers level = new ValueWithIntModifiers();
-        public int GetLevel(CharacterSheet sheet) { return level.GetTotal(sheet); }
+        public int GetValue(CharacterSheet sheet) { return level.GetValue(sheet); }
         public string className = null;
         public string ClassName { get { return className; } }
 
-        public virtual object Clone
+        public virtual LevelOfClass Clone
         {
             get
             {
@@ -21,93 +21,58 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
 
-        public virtual LevelOfClass Fill(LevelOfClass source)
-        {
-            if (source == null)
-                return this;
-            level = source.level.Clone as ValueWithIntModifiers;
-            className = source.className;
-            return this;
-        }
-
-        public static List<LevelOfClass> CreateClone(List<LevelOfClass> loc)
-        {
-            if (loc == null)
-                return null;
-            var list = new List<LevelOfClass>();
-            foreach (var l in loc)
-                if (l != null)
-                    list.Add(l.Clone as LevelOfClass);
-                else
-                    list.Add(l);
-            return list;
-        }
-
-        public static int Total(CharacterSheet sheet, List<LevelOfClass> levelOfClass)
-        {
-            var level = 0;
-            if (levelOfClass != null)
-                foreach (var loc in levelOfClass)
-                {
-                    if (loc == null)
-                        continue;
-                    level += loc.GetLevel(sheet);
-                }
-            return level;
-        }
-
-        public static string AsString(CharacterSheet sheet, List<LevelOfClass> levelOfClass)
-        {
-            var level = string.Empty;
-            var totalLevel = 0;
-            if (levelOfClass != null)
-                foreach (var loc in levelOfClass)
-                {
-                    if (loc == null)
-                        continue;
-                    if (level.Length > 0)
-                        level += ", ";
-                    var lvl = loc.GetLevel(sheet); ;
-                    level += loc.ClassName + " (" + lvl.ToString() + ")";
-                    totalLevel += lvl;
-                }
-            if (level.Length > 0)
-                level = totalLevel.ToString() + ": " + level;
-            return level;
-        }
-
         public bool Equals(LevelOfClass other)
         {
             if (other == null)
                 return false;
-            if (!other.level.Equals(level))
+            if (level != other.level)
                 return false;
-            if (other.ClassName != ClassName)
+            if (className != other.className)
                 return false;
             return true;
         }
 
-        public static bool Equal(List<LevelOfClass> a, List<LevelOfClass> b)
+        public override bool Equals(object other)
         {
-            if ((a == null) && (b == null))
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
                 return true;
-            if ((a == null) || (b == null))
+            if (other.GetType() != GetType())
                 return false;
-            var count = a.Count;
-            if (count != b.Count)
+            return Equals(other as LevelOfClass);
+        }
+
+        public static bool operator ==(LevelOfClass first, LevelOfClass second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
                 return false;
-            for (var i = 0; i < count; i++)
-            {
-                var ai = a[i];
-                var bi = b[i];
-                if ((ai == null) && (bi == null))
-                    continue;
-                if ((ai == null) || (bi == null))
-                    return false;
-                if (!ai.Equals(bi))
-                    return false;
-            }
-            return true;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(LevelOfClass first, LevelOfClass second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, level) ? level.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, className) ? className.GetHashCode() : 0);
+            return hash;
+        }
+
+        public virtual LevelOfClass Fill(LevelOfClass source)
+        {
+            if (source == null)
+                return this;
+            level = source.level?.Clone;
+            className = source.className;
+            return this;
         }
     }
 }

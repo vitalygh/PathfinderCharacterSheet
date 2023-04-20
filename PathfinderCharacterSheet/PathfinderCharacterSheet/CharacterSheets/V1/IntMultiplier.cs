@@ -4,14 +4,8 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class IntMultiplier
+    public class IntMultiplier: IApplicable<int>, IEquatable<IntMultiplier>, IPrototype<IntMultiplier>
     {
-        public enum RoundingTypes
-        {
-            Down,
-            Up,
-            ToNearest,
-        };
         public const RoundingTypes DefaultRounding = RoundingTypes.Up;
 
         public int additionalBefore = 0;
@@ -51,7 +45,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return value;
         }
 
-        public virtual object Clone
+        public virtual IntMultiplier Clone
         {
             get
             {
@@ -61,7 +55,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
 
-        public virtual object Fill(IntMultiplier source)
+        public virtual IntMultiplier Fill(IntMultiplier source)
         {
             if (source == null)
                 return this;
@@ -71,7 +65,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             divider = source.divider;
             additionalAfter = source.additionalAfter;
             RoundingType = source.RoundingType;
-            limit = source.limit.Clone as IntLimit;
+            if (source.limit != null)
+                limit = source.limit.Clone;
 
             return this;
         }
@@ -90,16 +85,58 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (RoundingType != other.RoundingType)
                 return false;
-            if (!limit.Equals(other.limit))
+            if (limit != null)
+            {
+                if (!limit.Equals(other.limit))
+                    return false;
+            }
+            else if ((other.limit != null) && !other.limit.Equals(limit))
                 return false;
             return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as IntMultiplier);
+        }
+
+        public static bool operator ==(IntMultiplier first, IntMultiplier second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(IntMultiplier first, IntMultiplier second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + additionalBefore.GetHashCode();
+            hash = (hash * 7) + multiplier.GetHashCode();
+            hash = (hash * 7) + divider.GetHashCode();
+            hash = (hash * 7) + additionalAfter.GetHashCode();
+            hash = (hash * 7) + RoundingType.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, limit) ? limit.GetHashCode() : 0);
+            return hash;
         }
 
         public string AsString(string applyTo)
         {
             if (string.IsNullOrWhiteSpace(applyTo))
                 applyTo = "x";
-            var source = applyTo;
             if (additionalBefore != 0)
             {
                 if (additionalBefore > 0)
@@ -108,16 +145,16 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     applyTo += " - " + Math.Abs(additionalBefore);
                 applyTo = "(" + applyTo + ")";
             }
-            var addBrackes = false;
+            var addBrackets = false;
             if (multiplier != 1)
             {
                 applyTo = multiplier + " * " + applyTo;
-                addBrackes = true;
+                addBrackets = true;
             }
             if (divider != 1)
             {
                 applyTo += " / " + divider;
-                addBrackes = true;
+                addBrackets = true;
             }
             if (divider == 0)
                 applyTo = "Infinity";
@@ -127,9 +164,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     applyTo += " + " + additionalAfter;
                 else
                     applyTo += " - " + Math.Abs(additionalAfter);
-                addBrackes = true;
+                addBrackets = true;
             }
-            if (addBrackes)
+            if (addBrackets)
                 applyTo = "(" + applyTo + ")";
             applyTo += limit.AsString();
             return applyTo;

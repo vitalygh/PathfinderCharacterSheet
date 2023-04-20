@@ -30,7 +30,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             var dexMod = sheet.GetAbilityModifier(Ability.Dexterity);
             DexModifier.Text = dexMod.ToString();
-            var miscMod = modifiers.GetTotal(sheet);
+            var miscMod = modifiers.GetValue(sheet);
             MiscModifiers.Text = miscMod.ToString();
             Total.Text = (dexMod + miscMod).ToString();
         }

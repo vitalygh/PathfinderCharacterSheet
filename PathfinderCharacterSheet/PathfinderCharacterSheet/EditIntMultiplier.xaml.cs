@@ -13,12 +13,6 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditIntMultiplier : ContentPage, ISheetView
     {
-        public class RoundingTypesPickerItem
-        {
-            public string Name { set; get; }
-            public IntMultiplier.RoundingTypes Value { set; get; }
-        }
-
         private Page pushedPage = null;
         private IntMultiplier source = null;
         private IntMultiplier multiplier = null;
@@ -39,13 +33,13 @@ namespace PathfinderCharacterSheet
             AdditionalAfter.Text = multiplier.additionalAfter.ToString();
 
             var roundingTypes = new List<RoundingTypesPickerItem>();
-            var roundingValues = Enum.GetValues(typeof(IntMultiplier.RoundingTypes));
+            var roundingValues = Enum.GetValues(typeof(RoundingTypes));
             var roundingIndex = -1;
             var roundingSelectedIndex = -1;
             var roundingSelectedValue = multiplier != null ? multiplier.RoundingType : IntMultiplier.DefaultRounding;
             foreach (var v in roundingValues)
             {
-                var value = (IntMultiplier.RoundingTypes)v;
+                var value = (RoundingTypes)v;
                 roundingIndex += 1;
                 if (roundingSelectedValue == value)
                     roundingSelectedIndex = roundingIndex;

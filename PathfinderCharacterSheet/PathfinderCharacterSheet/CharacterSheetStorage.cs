@@ -1,5 +1,6 @@
 ﻿#define SAVE_BACKUPS
 #define LOAD_FROM_BACKUPS
+//#define VALIDATE_XML
 using System;
 using System.IO;
 using System.Xml.Serialization;
@@ -91,6 +92,20 @@ namespace PathfinderCharacterSheet
                 var character = LoadCharacter(file);
                 if (character != null)
                 {
+#if VALIDATE_XML
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        var serializer = new XmlSerializer(typeof(CharacterSheet));
+                        serializer.Serialize(memoryStream, character);
+                        memoryStream.Position = 0;
+                        using (var streamReader = new StreamReader(memoryStream))
+                        {
+                            var fileText = File.ReadAllText(file);
+                            var streamText = streamReader.ReadToEnd();
+                            File.WriteAllText(file + ".validate", streamText);
+                        }
+                    }
+#endif
                     characters.Add(character, file);
                     continue;
                 }

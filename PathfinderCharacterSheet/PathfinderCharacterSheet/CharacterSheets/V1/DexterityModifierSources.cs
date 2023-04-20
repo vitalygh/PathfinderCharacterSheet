@@ -4,8 +4,10 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public interface ISummable<T>
+    public enum DexterityModifierSources
     {
-        T Add(T a, T b);
+        DependsOnACItems,
+        Full,
+        Custom,
     }
 }

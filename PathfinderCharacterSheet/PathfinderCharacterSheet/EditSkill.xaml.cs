@@ -117,9 +117,9 @@ namespace PathfinderCharacterSheet
                 return;
             HasSubject.IsChecked = item.hasSubject;
             ClassSkill.IsChecked = item.classSkill;
-            Rank.Text = item.rank.GetTotal(sheet).ToString();
+            Rank.Text = item.rank.GetValue(sheet).ToString();
             AbilityModifier.Text = item.GetAbilityModifier(sheet).ToString();
-            MiscModifiers.Text = item.miscModifiers.GetTotal(sheet).ToString();
+            MiscModifiers.Text = item.miscModifiers.GetValue(sheet).ToString();
             HasArmorPenalty.IsChecked = item.armorPenalty;
             HasSubject.IsEnabled = item.custom;
             TrainedOnly.IsChecked = item.trainedOnly;
@@ -165,7 +165,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            Total.Text = item.GetTotal(sheet).ToString();
+            Total.Text = item.GetValue(sheet).ToString();
         }
 
         private void EditToView()

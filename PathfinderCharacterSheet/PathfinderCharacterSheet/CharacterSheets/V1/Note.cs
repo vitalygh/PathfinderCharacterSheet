@@ -4,9 +4,9 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class Note : ItemWithDescription
+    public class Note: ItemWithDescription, IEquatable<Note>
     {
-        public override object Clone
+        public override ItemWithDescription Clone
         {
             get
             {
@@ -14,6 +14,15 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 clone.Fill(this);
                 return clone;
             }
+        }
+
+        public bool Equals(Note other)
+        {
+            if (other == null)
+                return false;
+            if (!base.Equals(other))
+                return false;
+            return true;
         }
     }
 }

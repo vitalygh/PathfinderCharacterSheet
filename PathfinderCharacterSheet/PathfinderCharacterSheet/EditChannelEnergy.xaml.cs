@@ -38,8 +38,8 @@ namespace PathfinderCharacterSheet
                 return;
             if (channelEnergy == null)
                 return;
-            UpdateText(ChannelsLeft, channelEnergy.left.GetTotal(sheet).ToString());
-            UpdateText(ChannelsTotal, channelEnergy.total.GetTotal(sheet).ToString());
+            UpdateText(ChannelsLeft, channelEnergy.left.GetValue(sheet).ToString());
+            UpdateText(ChannelsTotal, channelEnergy.total.GetValue(sheet).ToString());
             UpdateText(ChannelPoints, channelEnergy.points.AsString(sheet));
         }
 

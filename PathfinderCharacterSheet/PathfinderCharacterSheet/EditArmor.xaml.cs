@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.ArmorClassItem;
 
 namespace PathfinderCharacterSheet
@@ -13,12 +14,6 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditArmor : ContentPage, ISheetView
 	{
-        public class ArmorTypePickerItem
-        {
-            public string Name { get; set; }
-            public ItemType.ArmorTypes Value { get; set; }
-        }
-
         private Page pushedPage = null;
         private ItemType source = null;
         private ItemType item = null;
@@ -46,13 +41,13 @@ namespace PathfinderCharacterSheet
             else
                 this.item = item.Clone as ItemType;
             var armorTypeIndex = -1;
-            var armorTypeValues = Enum.GetValues(typeof(ItemType.ArmorTypes));
+            var armorTypeValues = Enum.GetValues(typeof(ArmorTypes));
             var pickerItems = new List<ArmorTypePickerItem>();
             var armorTypeCounter = -1;
             foreach (var atv in armorTypeValues)
             {
                 armorTypeCounter += 1;
-                var value = (ItemType.ArmorTypes)atv;
+                var value = (ArmorTypes)atv;
                 if (value == this.item.ArmorType)
                     armorTypeIndex = armorTypeCounter;
                 pickerItems.Add(new ArmorTypePickerItem()
@@ -82,10 +77,10 @@ namespace PathfinderCharacterSheet
             if (item == null)
                 return;
             ArmorBonus.Text = item.ArmorBonus(sheet);
-            MaxDexBonus.Text = item.maxDexBonus.GetTotal(sheet).ToString();
+            MaxDexBonus.Text = item.maxDexBonus.GetValue(sheet).ToString();
             CheckPenalty.Text = item.CheckPenalty(sheet);
             SpellFailure.Text = item.SpellFailure(sheet);
-            Weight.Text = item.weight.GetTotal(sheet).ToString();
+            Weight.Text = item.weight.GetValue(sheet).ToString();
         }
 
         private void EditToView()

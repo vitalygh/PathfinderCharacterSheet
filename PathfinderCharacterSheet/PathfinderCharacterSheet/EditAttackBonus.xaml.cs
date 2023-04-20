@@ -43,7 +43,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             //BaseAttackBonus.Text = sheet.GetBaseAttackBonus().ToString();
-            SizeModifier.Text = sizeModifiers.GetTotal(sheet).ToString();
+            SizeModifier.Text = sizeModifiers.GetValue(sheet).ToString();
             Value.Text = attackBonus.baseValue.ToString();
             UpdateModifiersSum();
             MainPage.FillIntMLGrid(Modifiers, sheet, attackBonus.modifiers, "Modifiers", EditModifier, EditModifier, ReorderModifiers, (modifiers, modifier) => UpdateModifiersSum());
@@ -96,8 +96,8 @@ namespace PathfinderCharacterSheet
                 return;
             var total = 0;
             MainPage.StrToInt(Value.Text, ref attackBonus.baseValue);
-            total += sizeModifiers.GetTotal(sheet);
-            total += attackBonus.GetTotal(sheet);
+            total += sizeModifiers.GetValue(sheet);
+            total += attackBonus.GetValue(sheet);
             var values = string.Empty;
             var count = sheet.attacksCount;
             if (count <= 0)
@@ -120,17 +120,17 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            ModifiersSum.Text = attackBonus.modifiers.GetTotal(sheet).ToString();
+            ModifiersSum.Text = attackBonus.modifiers.GetValue(sheet).ToString();
             UpdateTotal();
         }
 
-        private void ReorderModifiers(ModifiersList<IntModifier, int, IntSum> modifiers)
+        private void ReorderModifiers(IntModifiersList modifiers)
         {
             if (pushedPage != null)
                 return;
             var ri = new ReorderIntModifiers();
             pushedPage = ri;
-            var items = new ModifiersList<IntModifier, int, IntSum>();
+            var items = new IntModifiersList();
             foreach (var item in modifiers)
                 items.Add(item);
             ri.Init(items, (reordered) =>
@@ -142,12 +142,12 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(pushedPage);
         }
 
-        private void EditModifier(ModifiersList<IntModifier, int, IntSum> modifiers)
+        private void EditModifier(IntModifiersList modifiers)
         {
             EditModifier(modifiers, null);
         }
 
-        private void EditModifier(ModifiersList<IntModifier, int, IntSum> modifiers, IntModifier modifier)
+        private void EditModifier(IntModifiersList modifiers, IntModifier modifier)
         {
             if (pushedPage != null)
                 return;

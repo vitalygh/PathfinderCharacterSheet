@@ -28,8 +28,8 @@ namespace PathfinderCharacterSheet
                 return;
             UpdateValue(CharacterName, sheet.Name);
             UpdateValue(Alignment, sheet.Alignment.ToString());
-            UpdateValue(Experience, sheet.experience.GetTotal(sheet).ToString());
-            UpdateValue(NextLevel, sheet.nextLevelExperience.GetTotal(sheet).ToString());
+            UpdateValue(Experience, sheet.experience.GetValue(sheet).ToString());
+            UpdateValue(NextLevel, sheet.nextLevelExperience.GetValue(sheet).ToString());
             UpdateValue(Level, sheet.LevelAsString);
             UpdateValue(Deity, sheet.deity);
             UpdateValue(Homeland, sheet.homeland);

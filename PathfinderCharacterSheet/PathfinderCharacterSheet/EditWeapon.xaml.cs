@@ -60,9 +60,9 @@ namespace PathfinderCharacterSheet
             Critical.Text = item.critical.AsString(sheet);
             Damage.Text = item.Damage(sheet);
             DamageBonus.Text = item.DamageBonus(sheet).ToString();
-            Range.Text = item.range.GetTotal(sheet).ToString();
-            Ammunition.Text = item.ammunition.GetTotal(sheet).ToString();
-            Weight.Text = item.weight.GetTotal(sheet).ToString();
+            Range.Text = item.range.GetValue(sheet).ToString();
+            Ammunition.Text = item.ammunition.GetValue(sheet).ToString();
+            Weight.Text = item.weight.GetValue(sheet).ToString();
         }
 
         private void EditToView()

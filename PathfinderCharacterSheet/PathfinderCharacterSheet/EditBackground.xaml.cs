@@ -14,7 +14,7 @@ namespace PathfinderCharacterSheet
 	public partial class EditBackground : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private List<LevelOfClass> levelOfClass = new List<LevelOfClass>();
+        private LevelOfClassList levelOfClass = new LevelOfClassList();
         private ValueWithIntModifiers experience = null;
         private ValueWithIntModifiers nextLevelExperience = null;
 
@@ -36,7 +36,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            levelOfClass = LevelOfClass.CreateClone(sheet.levelOfClass);
+            levelOfClass = sheet.levelOfClass?.Clone;
             var alignments = new List<AlignmentPickerItem>();
             var values = Enum.GetValues(typeof(Alignments));
             var selectedIndex = -1;
@@ -78,9 +78,9 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            Level.Text = LevelOfClass.AsString(sheet, levelOfClass);
-            Experience.Text = experience.GetTotal(sheet).ToString();
-            NextLevel.Text = nextLevelExperience.GetTotal(sheet).ToString();
+            Level.Text = levelOfClass?.AsString(sheet);
+            Experience.Text = experience.GetValue(sheet).ToString();
+            NextLevel.Text = nextLevelExperience.GetValue(sheet).ToString();
         }
 
         private bool StringToAlignment(string alignmentName, ref Alignments alignment)

@@ -87,14 +87,14 @@ namespace PathfinderCharacterSheet
                 }
                 var abscindex = (i + 1) * abilityColumns;
                 (AbilityScores.Children[abscindex++] as Label).Text = abilities[i] + ":";
-                var score = ab.score.GetTotal(sheet);
+                var score = ab.score.GetValue(sheet);
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = score.ToString();
                 var modValue = ab.GetModifier(sheet);
                 ((AbilityScores.Children[abscindex++] as Frame).Content as Label).Text = modValue.ToString();
-                var tempAbValue = score + ab.tempAdjustment.GetTotal(sheet);
-                var tempAb = ((AbilityScores.Children[abscindex++] as Frame).Content as Label);
+                var tempAbValue = score + ab.tempAdjustment.GetValue(sheet);
+                var tempAb = (AbilityScores.Children[abscindex++] as Frame).Content as Label;
                 tempAb.Text = tempAbValue.ToString();
-                var tempMod = ((AbilityScores.Children[abscindex++] as Frame).Content as Label);
+                var tempMod = (AbilityScores.Children[abscindex++] as Frame).Content as Label;
                 var tempModValue = ab.GetTempModifier(sheet);
                 tempMod.Text = tempModValue.ToString();
                 if (tempModValue > modValue)
@@ -115,9 +115,9 @@ namespace PathfinderCharacterSheet
             }
             if (hasChanges)
                 CharacterSheetStorage.Instance.SaveCharacter();
-            var maxHP = sheet.hp.maxHP.GetTotal(sheet);
+            var maxHP = sheet.hp.maxHP.GetValue(sheet);
             MaxHP.Text = maxHP.ToString();
-            var hp = sheet.hp.hp.GetTotal(sheet);
+            var hp = sheet.hp.hp.GetValue(sheet);
             HP.Text = hp.ToString();
             if (hp > (2 * maxHP / 3))
                 HP.TextColor = Color.Green;
@@ -125,7 +125,7 @@ namespace PathfinderCharacterSheet
                 HP.TextColor = Color.Orange;
             else
                 HP.TextColor = Color.Red;
-            DamageResist.Text = sheet.hp.damageResist.GetTotal(sheet).ToString();
+            DamageResist.Text = sheet.hp.damageResist.GetValue(sheet).ToString();
 
             Initiative.Text = sheet.CurrentInitiative.ToString();
 
@@ -161,20 +161,20 @@ namespace PathfinderCharacterSheet
                     BaseAttackBonus.Children.RemoveAt(update);
             }
 
-            SpellResistance.Text = sheet.spellResistance.GetTotal(sheet).ToString();
+            SpellResistance.Text = sheet.spellResistance.GetValue(sheet).ToString();
 
             CMB.Text = sheet.CMB.ToString();
             CMD.Text = sheet.CMD.ToString();
 
-            var baseSpeed = sheet.speed.baseSpeed.GetTotal(sheet);
+            var baseSpeed = sheet.speed.baseSpeed.GetValue(sheet);
             BaseSpeed.Text = baseSpeed.ToString() + " ft (" + Speed.InSquares(baseSpeed) + " sq)";
-            var speedWithArmor = sheet.speed.armorSpeed.GetTotal(sheet);
+            var speedWithArmor = sheet.speed.armorSpeed.GetValue(sheet);
             SpeedWithArmor.Text = speedWithArmor.ToString() + " ft (" + Speed.InSquares(speedWithArmor) + " sq)";
-            FlySpeed.Text = sheet.speed.flySpeed.GetTotal(sheet).ToString() + " ft";
-            Maneuverability.Text = sheet.speed.maneuverability.GetTotal(sheet).ToString();
+            FlySpeed.Text = sheet.speed.flySpeed.GetValue(sheet).ToString() + " ft";
+            Maneuverability.Text = sheet.speed.maneuverability.GetValue(sheet).ToString();
             SwimSpeed.Text = sheet.speed.GetSwimSpeed(sheet).ToString() + " ft";
             ClimbSpeed.Text = sheet.speed.GetClimbSpeed(sheet).ToString() + " ft";
-            BurrowSpeed.Text = sheet.speed.burrowSpeed.GetTotal(sheet).ToString() + " ft";
+            BurrowSpeed.Text = sheet.speed.burrowSpeed.GetValue(sheet).ToString() + " ft";
         }
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)

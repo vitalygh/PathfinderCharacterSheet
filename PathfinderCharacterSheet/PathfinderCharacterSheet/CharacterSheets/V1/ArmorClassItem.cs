@@ -4,19 +4,12 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class ArmorClassItem : GearItem
+    public class ArmorClassItem : GearItem, IEquatable<GearItem>
     {
-        public enum ArmorTypes
-        {
-            Armor,
-            Shield,
-            Other,
-        }
-
         public ValueWithIntModifiers armorBonus = new ValueWithIntModifiers();
         public string ArmorBonus(CharacterSheet sheet)
         {
-            var ab = armorBonus.GetTotal(sheet);
+            var ab = armorBonus.GetValue(sheet);
             return ab >= 0 ? "+" + ab : ab.ToString();
         }
         public string armorType = ArmorTypes.Other.ToString();
@@ -31,18 +24,18 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (!limitMaxDexBonus)
                 return "-";
-            var mdb = maxDexBonus.GetTotal(sheet);
+            var mdb = maxDexBonus.GetValue(sheet);
             return mdb >= 0 ? "+" + mdb : mdb.ToString();
         }
         public ValueWithIntModifiers checkPenalty = new ValueWithIntModifiers();
         public string CheckPenalty(CharacterSheet sheet)
         {
-            return checkPenalty.GetTotal(sheet).ToString();
+            return checkPenalty.GetValue(sheet).ToString();
         }
         public ValueWithIntModifiers spellFailure = new ValueWithIntModifiers();
         public string SpellFailure(CharacterSheet sheet)
         {
-            return spellFailure.GetTotal(sheet) + "%";
+            return spellFailure.GetValue(sheet) + "%";
         }
         public string properties = null;
         public override string AsString(CharacterSheet sheet)
@@ -64,7 +57,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return armor;
         }
 
-        public override object Clone
+        public override ItemWithDescription Clone
         {
             get
             {
@@ -80,21 +73,61 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (!base.Equals(other))
                 return false;
-            if (!armorBonus.Equals(other.armorBonus))
+            if (armorBonus != other.armorBonus)
                 return false;
             if (armorType != other.armorType)
                 return false;
             if (limitMaxDexBonus != other.limitMaxDexBonus)
                 return false;
-            if (!maxDexBonus.Equals(other.maxDexBonus))
+            if (maxDexBonus != other.maxDexBonus)
                 return false;
-            if (!checkPenalty.Equals(other.checkPenalty))
+            if (checkPenalty != other.checkPenalty)
                 return false;
-            if (!spellFailure.Equals(other.spellFailure))
+            if (spellFailure != other.spellFailure)
                 return false;
             if (properties != other.properties)
                 return false;
             return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as ArmorClassItem);
+        }
+
+        public static bool operator ==(ArmorClassItem first, ArmorClassItem second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(ArmorClassItem first, ArmorClassItem second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + selected.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, armorBonus) ? armorBonus.GetHashCode() : 0);
+            hash = (hash * 7) + armorType.GetHashCode();
+            hash = (hash * 7) + limitMaxDexBonus.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, maxDexBonus) ? maxDexBonus.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, checkPenalty) ? checkPenalty.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, spellFailure) ? spellFailure.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, properties) ? properties.GetHashCode() : 0);
+            return hash;
         }
 
         public ArmorClassItem Fill(ArmorClassItem source)
@@ -103,12 +136,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return this;
             base.Fill(source);
             selected = source.selected;
-            armorBonus = source.armorBonus.Clone as ValueWithIntModifiers;
+            armorBonus = source.armorBonus?.Clone;
             armorType = source.armorType;
             limitMaxDexBonus = source.limitMaxDexBonus;
-            maxDexBonus = source.maxDexBonus.Clone as ValueWithIntModifiers;
-            checkPenalty = source.checkPenalty.Clone as ValueWithIntModifiers;
-            spellFailure = source.spellFailure.Clone as ValueWithIntModifiers;
+            maxDexBonus = source.maxDexBonus?.Clone;
+            checkPenalty = source.checkPenalty?.Clone;
+            spellFailure = source.spellFailure?.Clone;
             properties = source.properties;
             return this;
         }

@@ -14,7 +14,7 @@ namespace PathfinderCharacterSheet
 	public partial class EditLevel : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private List<LevelOfClass> levelsOfClass = null;
+        private LevelOfClassList levelsOfClass = null;
         private LevelOfClass source = null;
         private LevelOfClass level = null;
 
@@ -23,7 +23,7 @@ namespace PathfinderCharacterSheet
 			InitializeComponent ();
 		}
 
-        public void Init(List<LevelOfClass> levelsOfClass, LevelOfClass level)
+        public void Init(LevelOfClassList levelsOfClass, LevelOfClass level)
         {
             this.levelsOfClass = levelsOfClass;
             source = level;
@@ -49,7 +49,7 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            Level.Text = level.GetLevel(sheet).ToString();
+            Level.Text = level.GetValue(sheet).ToString();
         }
 
         private void EditToView()
@@ -88,7 +88,7 @@ namespace PathfinderCharacterSheet
                 if (!string.IsNullOrWhiteSpace(source.ClassName))
                     className = " of class \"" + level.ClassName + "\"";
                 var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-                if ((sheet != null) && (source.level.GetTotal(sheet) > 1))
+                if ((sheet != null) && (source.level.GetValue(sheet) > 1))
                     className = "s" + className;
             }
             bool allow = await DisplayAlert("Remove level" + className, "Are you sure?", "Yes", "No");

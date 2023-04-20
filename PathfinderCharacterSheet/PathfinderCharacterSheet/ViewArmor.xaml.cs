@@ -262,7 +262,7 @@ namespace PathfinderCharacterSheet
             UpdateValue(armorGrid.checkPenalty, item.CheckPenalty(sheet));
             UpdateValue(armorGrid.spellFailure, item.SpellFailure(sheet));
             UpdateValue(armorGrid.properties, item.properties);
-            UpdateValue(armorGrid.weight, item.weight.GetTotal(sheet).ToString());
+            UpdateValue(armorGrid.weight, item.weight.GetValue(sheet).ToString());
             UpdateValue(armorGrid.description, item.description);
 
             MainPage.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
@@ -392,7 +392,7 @@ namespace PathfinderCharacterSheet
             row += 1;
 
             var weightTitle = CreateLabel("Weight:");
-            var weightValue = CreateFrame(item.weight.GetTotal(sheet).ToString());
+            var weightValue = CreateFrame(item.weight.GetValue(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;

@@ -4,13 +4,13 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class ChannelEnergy
+    public class ChannelEnergy: IPrototype<ChannelEnergy>, IEquatable<ChannelEnergy>
     {
         public ValueWithIntModifiers left = new ValueWithIntModifiers();
         public ValueWithIntModifiers total = new ValueWithIntModifiers();
         public DiceRoll points = new DiceRoll();
 
-        public object Clone
+        public virtual ChannelEnergy Clone
         {
             get
             {
@@ -24,22 +24,57 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (other == null)
                 return false;
-            if (!left.Equals(other.left))
+            if (left != other.left)
                 return false;
-            if (!total.Equals(other.total))
+            if (total != other.total)
                 return false;
-            if (!points.Equals(other.points))
+            if (points != other.points)
                 return false;
             return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as ChannelEnergy);
+        }
+
+        public static bool operator ==(ChannelEnergy first, ChannelEnergy second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(ChannelEnergy first, ChannelEnergy second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, left) ? left.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, total) ? total.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, points) ? points.GetHashCode() : 0);
+            return hash;
         }
 
         public ChannelEnergy Fill(ChannelEnergy source)
         {
             if (source == null)
                 return this;
-            left = source.left.Clone as ValueWithIntModifiers;
-            total = source.total.Clone as ValueWithIntModifiers;
-            points = source.points.Clone as DiceRoll;
+            left = source.left?.Clone;
+            total = source.total?.Clone;
+            points = source.points?.Clone as DiceRoll;
             return this;
         }
     }

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class SavingThrow
+    public class SavingThrow: IPrototype<SavingThrow>, IEquatable<SavingThrow>
     {
         public string abilityModifierSource = Ability.None.ToString();
         public Ability AbilityModifierSource
@@ -19,7 +19,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public SavingThrow()
         {
-
+        
         }
 
         public SavingThrow(Ability abilityModifierSource)
@@ -34,21 +34,16 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public int GetTotal(CharacterSheet sheet)
         {
-            return baseSave.GetTotal(sheet) + GetAbilityModifier(sheet) + magicModifier.GetTotal(sheet) + miscModifier.GetTotal(sheet) + tempModifier.GetTotal(sheet);
+            return baseSave.GetValue(sheet) + GetAbilityModifier(sheet) + magicModifier.GetValue(sheet) + miscModifier.GetValue(sheet) + tempModifier.GetValue(sheet);
         }
 
-        public virtual object Clone
+        public virtual SavingThrow Clone
         {
             get
             {
-                return new SavingThrow()
-                {
-                    abilityModifierSource = abilityModifierSource,
-                    baseSave = baseSave.Clone as ValueWithIntModifiers,
-                    magicModifier = magicModifier.Clone as ValueWithIntModifiers,
-                    miscModifier = miscModifier.Clone as ValueWithIntModifiers,
-                    tempModifier = tempModifier.Clone as ValueWithIntModifiers,
-                };
+                var savingThrow = new SavingThrow();
+                savingThrow.Fill(this);
+                return savingThrow;
             }
         }
 
@@ -58,15 +53,64 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (abilityModifierSource != other.abilityModifierSource)
                 return false;
-            if (!baseSave.Equals(other.baseSave))
+            if (baseSave != other.baseSave)
                 return false;
-            if (!magicModifier.Equals(other.magicModifier))
+            if (magicModifier != other.magicModifier)
                 return false;
-            if (!miscModifier.Equals(other.miscModifier))
+            if (miscModifier != other.miscModifier)
                 return false;
-            if (!tempModifier.Equals(other.tempModifier))
+            if (tempModifier != other.tempModifier)
                 return false;
             return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as SavingThrow);
+        }
+
+        public static bool operator ==(SavingThrow first, SavingThrow second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(SavingThrow first, SavingThrow second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, abilityModifierSource) ? abilityModifierSource.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, baseSave) ? baseSave.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, magicModifier) ? magicModifier.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, miscModifier) ? miscModifier.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, tempModifier) ? tempModifier.GetHashCode() : 0);
+            return hash;
+        }
+
+        public virtual SavingThrow Fill(SavingThrow source)
+        {
+            if (source == null)
+                return this;
+            abilityModifierSource = source.abilityModifierSource;
+            baseSave = source.baseSave?.Clone;
+            magicModifier = source.magicModifier?.Clone;
+            miscModifier = source.miscModifier?.Clone;
+            tempModifier = source.tempModifier?.Clone;
+            return this;
         }
     }
 }

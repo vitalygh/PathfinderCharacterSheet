@@ -327,9 +327,9 @@ namespace PathfinderCharacterSheet
             UpdateValue(weaponGrid.damageBonus, item.DamageBonus(sheet));
             UpdateValue(weaponGrid.type, item.type);
             UpdateValue(weaponGrid.range, item.Range(sheet));
-            UpdateValue(weaponGrid.ammunition, item.ammunition.GetTotal(sheet).ToString());
+            UpdateValue(weaponGrid.ammunition, item.ammunition.GetValue(sheet).ToString());
             UpdateValue(weaponGrid.special, item.special);
-            UpdateValue(weaponGrid.weight, item.weight.GetTotal(sheet).ToString());
+            UpdateValue(weaponGrid.weight, item.weight.GetValue(sheet).ToString());
             UpdateValue(weaponGrid.description, item.description);
 
             MainPage.SetTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item), 2);
@@ -459,7 +459,7 @@ namespace PathfinderCharacterSheet
             row += 1;
 
             var ammunitionTitle = CreateLabel("Ammunition:");
-            var ammunitionValue = CreateFrame(item.ammunition.GetTotal(sheet).ToString());
+            var ammunitionValue = CreateFrame(item.ammunition.GetValue(sheet).ToString());
             grid.Children.Add(ammunitionTitle, 0, row);
             grid.Children.Add(ammunitionValue, 1, row);
             row += 1;
@@ -471,7 +471,7 @@ namespace PathfinderCharacterSheet
             row += 1;
 
             var weightTitle = CreateLabel("Weight:");
-            var weightValue = CreateFrame(item.weight.GetTotal(sheet).ToString());
+            var weightValue = CreateFrame(item.weight.GetValue(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;

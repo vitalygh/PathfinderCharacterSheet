@@ -15,7 +15,7 @@ namespace PathfinderCharacterSheet
 	{
         private Page pushedPage = null;
         private CharacterSheet sheet = null;
-        private ModifiersList<IntModifier, int, IntSum> modifiersList = null;
+        private IntModifiersList modifiersList = null;
         private IntModifier source = null;
         private IntModifier modifier = null;
 
@@ -317,7 +317,7 @@ namespace PathfinderCharacterSheet
             return MainPage.CreateFrame(text);
         }
 
-        public void Init(CharacterSheet sheet, ModifiersList<IntModifier, int, IntSum> modifiersList, IntModifier modifier, bool allowUseAbilities = true)
+        public void Init(CharacterSheet sheet, IntModifiersList modifiersList, IntModifier modifier, bool allowUseAbilities = true)
         {
             this.sheet = sheet;
             this.modifiersList = modifiersList;

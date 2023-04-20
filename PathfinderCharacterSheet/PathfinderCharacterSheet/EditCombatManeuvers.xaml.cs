@@ -51,8 +51,8 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            CMDSizeModifier.Text = cmdSizeModifier.GetTotal(sheet).ToString();
-            CMBSizeModifier.Text = cmbSizeModifier.GetTotal(sheet).ToString();
+            CMDSizeModifier.Text = cmdSizeModifier.GetValue(sheet).ToString();
+            CMBSizeModifier.Text = cmbSizeModifier.GetValue(sheet).ToString();
             UpdateTotal();
         }
 

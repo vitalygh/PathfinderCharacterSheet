@@ -36,8 +36,8 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             var ranksSpent = 0;
             foreach (var skill in sheet.skills)
-                ranksSpent += skill.rank.GetTotal(sheet);
-            var ranks = skillRanks.GetTotal(sheet);
+                ranksSpent += skill.rank.GetValue(sheet);
+            var ranks = skillRanks.GetValue(sheet);
             var ranksLeft = ranks - ranksSpent;
             Left.Text = ranksLeft.ToString();
             Ranks.Text = ranks.ToString();

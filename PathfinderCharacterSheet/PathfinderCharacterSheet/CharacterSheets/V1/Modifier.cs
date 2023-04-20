@@ -4,16 +4,16 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class Modifier<T>
+    public class Modifier<T>: IContextValue<T>, IEquatable<Modifier<T>>, IPrototype<Modifier<T>>
     {
         public bool active = true;
         public virtual bool IsActive { get { return active; } }
         public string name = null;
         public virtual string Name { get { return name; } }
         public T value = default(T);
-        public virtual T GetValue(CharacterSheet sheet) { return value; }
+        public virtual T GetValue(CharacterSheet context) { return value; }
 
-        public virtual object Clone
+        public virtual Modifier<T> Clone
         {
             get
             {
@@ -26,20 +26,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
 
-        public static List<Modifier<T>> CreateClone(List<Modifier<T>> mods)
-        {
-            if (mods == null)
-                return null;
-            var list = new List<Modifier<T>>();
-            foreach (var m in mods)
-                if (m != null)
-                    list.Add(m.Clone as Modifier<T>);
-                else
-                    list.Add(m);
-            return list;
-        }
-
-        public Modifier<T> Fill(Modifier<T> source)
+        public virtual Modifier<T> Fill(Modifier<T> source)
         {
             if (source == null)
                 return this;
@@ -51,8 +38,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(Modifier<T> other)
         {
-            if (other == null)
+            if (ReferenceEquals(null, other))
                 return false;
+            if (ReferenceEquals(this, other))
+                return true;
             if (other.IsActive != IsActive)
                 return false;
             if (other.Name != Name)
@@ -62,9 +51,39 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return true;
         }
 
-        public static T Sum<S>(CharacterSheet sheet, List<Modifier<T>> modifiers) where S : ISummable<T>, new()
+        public override bool Equals(object other)
         {
-            return CharacterSheet.Sum<Modifier<T>, T, S>(sheet, modifiers);
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as Modifier<T>);
+        }
+
+        public static bool operator ==(Modifier<T> first, Modifier<T> second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(Modifier<T> first, Modifier<T> second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + active.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, name) ? name.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, value) ? value.GetHashCode() : 0);
+            return hash;
         }
     }
 }

@@ -308,15 +308,15 @@ namespace PathfinderCharacterSheet
                     sheet.spellLevel[i] = spells;
                     hasChanges = true;
                 }
-                var spellsKnown = spells.spellsKnown.GetTotal(sheet).ToString();
+                var spellsKnown = spells.spellsKnown.GetValue(sheet).ToString();
                 UpdateText(level.spellsKnown, spellsKnown);
-                var spellSaveDC = spells.spellSaveDC.GetTotal(sheet).ToString();
+                var spellSaveDC = spells.spellSaveDC.GetValue(sheet).ToString();
                 UpdateText(level.spellSaveDC, spellSaveDC);
-                var spellsPerDay = spells.spellsPerDay.GetTotal(sheet).ToString();
+                var spellsPerDay = spells.spellsPerDay.GetValue(sheet).ToString();
                 UpdateText(level.spellsPerDay, spellsPerDay);
                 if (i > 0)
                 {
-                    var bonusSpells = spells.bonusSpells.GetTotal(sheet).ToString();
+                    var bonusSpells = spells.bonusSpells.GetValue(sheet).ToString();
                     UpdateText(level.bonusSpells, bonusSpells);
                 }
             }
@@ -328,8 +328,8 @@ namespace PathfinderCharacterSheet
                 channels += " " + points;
             channels += ":";
             UpdateText(ChannelsTitle, channels);
-            var left = sheet.channelEnergy.left.GetTotal(sheet);
-            var total = sheet.channelEnergy.total.GetTotal(sheet);
+            var left = sheet.channelEnergy.left.GetValue(sheet);
+            var total = sheet.channelEnergy.total.GetValue(sheet);
             UpdateText(Channels, left + " / " + total);
         }
 

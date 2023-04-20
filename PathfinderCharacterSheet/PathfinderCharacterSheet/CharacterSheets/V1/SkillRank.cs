@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class SkillRank
+    public class SkillRank: IContextValue<int>, IPrototype<SkillRank>, IEquatable<SkillRank>
     {
         public string name = Skills.None.ToString();
         public bool hasSubject = false;
@@ -64,7 +64,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
 
-        public virtual object Clone
+        public virtual SkillRank Clone
         {
             get
             {
@@ -72,23 +72,6 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 clone.Fill(this);
                 return clone;
             }
-        }
-
-        public SkillRank Fill(SkillRank source)
-        {
-            if (source == null)
-                return this;
-            name = source.name;
-            hasSubject = source.hasSubject;
-            subject = source.subject;
-            classSkill = source.classSkill;
-            abilityModifierSource = source.abilityModifierSource;
-            rank = source.rank.Clone as ValueWithIntModifiers;
-            miscModifiers = source.miscModifiers.Clone as ValueWithIntModifiers;
-            armorPenalty = source.armorPenalty;
-            trainedOnly = source.trainedOnly;
-            custom = source.custom;
-            return this;
         }
 
         public bool Equals(SkillRank other)
@@ -105,9 +88,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (abilityModifierSource != other.abilityModifierSource)
                 return false;
-            if (!rank.Equals(other.rank))
+            if (rank != other.rank)
                 return false;
-            if (!miscModifiers.Equals(other.miscModifiers))
+            if (miscModifiers != other.miscModifiers)
                 return false;
             if (armorPenalty != other.armorPenalty)
                 return false;
@@ -118,20 +101,79 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return true;
         }
 
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as SkillRank);
+        }
+
+        public static bool operator ==(SkillRank first, SkillRank second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(SkillRank first, SkillRank second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, name) ? name.GetHashCode() : 0);
+            hash = (hash * 7) + hasSubject.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, subject) ? subject.GetHashCode() : 0);
+            hash = (hash * 7) + classSkill.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, abilityModifierSource) ? abilityModifierSource.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, rank) ? rank.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, miscModifiers) ? miscModifiers.GetHashCode() : 0);
+            hash = (hash * 7) + armorPenalty.GetHashCode();
+            hash = (hash * 7) + trainedOnly.GetHashCode();
+            hash = (hash * 7) + custom.GetHashCode();
+            return hash;
+        }
+
+        public SkillRank Fill(SkillRank source)
+        {
+            if (source == null)
+                return this;
+            name = source.name;
+            hasSubject = source.hasSubject;
+            subject = source.subject;
+            classSkill = source.classSkill;
+            abilityModifierSource = source.abilityModifierSource;
+            rank = source.rank?.Clone;
+            miscModifiers = source.miscModifiers?.Clone;
+            armorPenalty = source.armorPenalty;
+            trainedOnly = source.trainedOnly;
+            custom = source.custom;
+            return this;
+        }
+
         public int GetAbilityModifier(CharacterSheet sheet)
         {
             return CharacterSheet.GetAbilityModifier(sheet, AbilityModifierSource);
         }
 
-        public int GetTotal(CharacterSheet sheet)
+        public int GetValue(CharacterSheet sheet)
         {
-            var total = rank.GetTotal(sheet);
+            var total = rank.GetValue(sheet);
             if (classSkill && (total > 0))
                 total += 3;
             if (armorPenalty)
                 total += sheet.CheckPenalty();
             total += GetAbilityModifier(sheet);
-            total += miscModifiers.GetTotal(sheet);
+            total += miscModifiers.GetValue(sheet);
             return total;
         }
     }

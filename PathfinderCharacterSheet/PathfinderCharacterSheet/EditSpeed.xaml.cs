@@ -37,17 +37,17 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            var bs = speed.baseSpeed.GetTotal(sheet);
+            var bs = speed.baseSpeed.GetValue(sheet);
             BaseSpeed.Text = bs + " ft (" + Speed.InSquares(bs) + " sq)";
-            var ars = speed.armorSpeed.GetTotal(sheet);
+            var ars = speed.armorSpeed.GetValue(sheet);
             SpeedWithArmor.Text = ars + " ft (" + Speed.InSquares(ars) + " sq)";
-            FlySpeed.Text = speed.flySpeed.GetTotal(sheet) + " ft";
-            Maneuverability.Text = speed.maneuverability.GetTotal(sheet).ToString();
+            FlySpeed.Text = speed.flySpeed.GetValue(sheet) + " ft";
+            Maneuverability.Text = speed.maneuverability.GetValue(sheet).ToString();
             DefaultSwim.IsChecked = speed.defaultSwimSpeed;
             UpdateSwimSpeed();
             DefaultClimb.IsChecked = speed.defaultClimbSpeed;
             UpdateClimbSpeed();
-            BurrowSpeed.Text = speed.burrowSpeed.GetTotal(sheet) + " ft";
+            BurrowSpeed.Text = speed.burrowSpeed.GetValue(sheet) + " ft";
        }
 
         private void EditToView()

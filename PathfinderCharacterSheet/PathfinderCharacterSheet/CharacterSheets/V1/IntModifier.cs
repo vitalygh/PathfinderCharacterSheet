@@ -4,9 +4,8 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class IntModifier : Modifier<int>
+    public class IntModifier : Modifier<int>, IEquatable<IntModifier>
     {
-
         public string sourceAbility = Ability.None.ToString();
         public Ability SourceAbility
         {
@@ -24,21 +23,24 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool autoNaming = true;
 
-        public override int GetValue(CharacterSheet sheet)
+        public override int GetValue(CharacterSheet context)
         {
-            if ((sourceItemUID != CharacterSheet.InvalidUID) && (sheet != null))
+            var totalValue = base.GetValue(context);
+            if (context == null)
+                return totalValue;
+
+            if (sourceItemUID != CharacterSheet.InvalidUID)
             {
-                var item = sheet.GetItemByUID(sourceItemUID);
+                var item = context.GetItemByUID(sourceItemUID);
                 if (item == null)
                     return 0;
                 if (!item.active && mustBeActive)
                     return 0;
             }
-            var totalValue = value;
 
-            if ((sheet != null) && (SourceAbility != Ability.None))
+            if ((SourceAbility != Ability.None))
             {
-                var ab = sheet.GetAbilityModifier(SourceAbility);
+                var ab = context.GetAbilityModifier(SourceAbility);
                 if (abilityMultiplier != null)
                     ab = abilityMultiplier.Apply(ab);
                 totalValue += ab;
@@ -48,10 +50,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             {
                 if (!string.IsNullOrWhiteSpace(className))
                 {
-                    var level = sheet.GetLevelOfClass(className);
+                    var level = context.GetLevelOfClass(className);
                     if (level != null)
                     {
-                        var lv = level.GetTotal(sheet);
+                        var lv = level.GetValue(context);
                         if (levelMultiplier != null)
                             lv = levelMultiplier.Apply(lv);
                         totalValue *= lv;
@@ -59,7 +61,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 }
                 else
                 {
-                    var lv = sheet.TotalLevel;
+                    var lv = context.TotalLevel;
                     if (levelMultiplier != null)
                         lv = levelMultiplier.Apply(lv);
                     totalValue *= lv;
@@ -114,7 +116,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return text;
         }
 
-        public override object Clone
+        public override Modifier<int> Clone
         {
             get
             {
@@ -124,19 +126,6 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
 
-        public static List<IntModifier> CreateClone(List<IntModifier> mods)
-        {
-            if (mods == null)
-                return null;
-            var list = new List<IntModifier>();
-            foreach (var m in mods)
-                if (m != null)
-                    list.Add(m.Clone as IntModifier);
-                else
-                    list.Add(m);
-            return list;
-        }
-
         public virtual object Fill(IntModifier source)
         {
             if (source == null)
@@ -144,14 +133,13 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             base.Fill(source);
 
             sourceAbility = source.sourceAbility;
-            abilityMultiplier = source.abilityMultiplier.Clone as IntMultiplier;
-
+            abilityMultiplier = source.abilityMultiplier?.Clone;
             sourceItemUID = source.sourceItemUID;
             mustBeActive = source.mustBeActive;
 
             multiplyToLevel = source.multiplyToLevel;
             className = source.className;
-            levelMultiplier = source.levelMultiplier.Clone as IntMultiplier;
+            levelMultiplier = source.levelMultiplier?.Clone;
 
             autoNaming = source.autoNaming;
 
@@ -164,23 +152,65 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (!base.Equals(other))
                 return false;
-            if (other.sourceAbility != sourceAbility)
+            if (sourceAbility != other.sourceAbility)
                 return false;
-            if (!other.abilityMultiplier.Equals(abilityMultiplier))
+            if (abilityMultiplier != other.abilityMultiplier)
                 return false;
-            if (other.sourceItemUID != sourceItemUID)
+            if (abilityMultiplier != other.abilityMultiplier)
                 return false;
-            if (other.mustBeActive != mustBeActive)
+            if (sourceItemUID != other.sourceItemUID)
                 return false;
-            if (other.multiplyToLevel != multiplyToLevel)
+            if (mustBeActive != other.mustBeActive)
                 return false;
-            if (!other.levelMultiplier.Equals(levelMultiplier))
+            if (multiplyToLevel != other.multiplyToLevel)
                 return false;
-            if (other.className != className)
+            if (levelMultiplier != other.levelMultiplier)
                 return false;
-            if (other.autoNaming != autoNaming)
+            if (className != other.className)
+                return false;
+            if (autoNaming != other.autoNaming)
                 return false;
             return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as IntModifier);
+        }
+
+        public static bool operator ==(IntModifier first, IntModifier second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(IntModifier first, IntModifier second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + sourceAbility.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, abilityMultiplier) ? abilityMultiplier.GetHashCode() : 0);
+            hash = (hash * 7) + sourceItemUID.GetHashCode();
+            hash = (hash * 7) + mustBeActive.GetHashCode();
+            hash = (hash * 7) + multiplyToLevel.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, className) ? className.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, levelMultiplier) ? levelMultiplier.GetHashCode() : 0);
+            hash = (hash * 7) + autoNaming.GetHashCode();
+            return hash;
         }
     }
 }

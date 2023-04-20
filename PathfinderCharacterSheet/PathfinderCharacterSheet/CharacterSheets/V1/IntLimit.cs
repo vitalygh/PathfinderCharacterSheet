@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class IntLimit
+    public class IntLimit: IApplicable<int>, IEquatable<IntLimit>, IPrototype<IntLimit>
     {
         public bool minLimit = false;
         public int minValue = 0;
@@ -20,7 +20,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return value;
         }
 
-        public virtual object Clone
+        public virtual IntLimit Clone
         {
             get
             {
@@ -56,6 +56,42 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (maxValue != other.maxValue)
                 return false;
             return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as IntLimit);
+        }
+
+        public static bool operator ==(IntLimit first, IntLimit second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(IntLimit first, IntLimit second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + minLimit.GetHashCode();
+            hash = (hash * 7) + minValue.GetHashCode();
+            hash = (hash * 7) + maxLimit.GetHashCode();
+            hash = (hash * 7) + maxValue.GetHashCode();
+            return hash;
         }
 
         public string AsString()

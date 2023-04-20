@@ -30,21 +30,6 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return true;
         }
 
-        public static T Sum<T, S>(T a, T b) where S : ISummable<T>, new()
-        {
-            return new S().Add(a, b);
-        }
-
-        public static T Sum<M, T, S>(CharacterSheet sheet, List<M> modifiers, bool activeOnly = true) where S : ISummable<T>, new() where M : Modifier<T>
-        {
-            T value = default(T);
-            if (modifiers != null)
-                foreach (var m in modifiers)
-                    if (m.IsActive || !activeOnly)
-                        value = Sum<T, S>(value, m.GetValue(sheet));
-            return value;
-        }
-
         public static T GetEnumValue<T>(string text, T defaultValue) where T : struct
         {
             T result = defaultValue;
@@ -127,8 +112,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         #endregion
 
         #region Level
-        public List<LevelOfClass> levelOfClass = new List<LevelOfClass>();
-        public int TotalLevel { get { return LevelOfClass.Total(this, levelOfClass); } }
+        public LevelOfClassList levelOfClass = new LevelOfClassList();
+        public int TotalLevel { get { return levelOfClass.GetValue(this); } }
         public ValueWithIntModifiers GetLevelOfClass(string className)
         {
             foreach (var loc in levelOfClass)
@@ -136,7 +121,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     return loc.level;
             return null;
         }
-        public string LevelAsString { get { return LevelOfClass.AsString(this, levelOfClass); } }
+        public string LevelAsString { get { return levelOfClass.AsString(this); } }
         public ValueWithIntModifiers experience = new ValueWithIntModifiers();
         public ValueWithIntModifiers nextLevelExperience = new ValueWithIntModifiers();
         #endregion
@@ -210,7 +195,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             get
             {
-                var oac = Math.Min(baseAttackBonus.Count, currentAttacksCount.GetTotal(this));
+                var oac = Math.Min(baseAttackBonus.Count, currentAttacksCount.GetValue(this));
                 if (oac <= 0)
                     return baseAttackBonus.Count;
                 return oac;
@@ -240,7 +225,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             else
                 bab = babs[attack];
             if (bab != null)
-                return bab.GetTotal(this);
+                return bab.GetValue(this);
             return 0;
         }
         public string GetBaseAttackBonusForPicker(int attack)
@@ -258,8 +243,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public ValueWithIntModifiers cmdSizeModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers cmbSizeModifier = new ValueWithIntModifiers();
-        public int GetCMD(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return 10 + GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.GetTotal(sheet); }
-        public int GetCMB(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + sizeModifier.GetTotal(sheet); }
+        public int GetCMD(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return 10 + GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.GetValue(sheet); }
+        public int GetCMB(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + sizeModifier.GetValue(sheet); }
 #if SELECT_CURRENT_ATTACK_FOR_COMBAT_MANEUVERS
 public int CMD { get { return GetCMD(this, cmdSizeModifier, currentAttack); } }
 public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
@@ -272,8 +257,8 @@ public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
         public ValueWithIntModifiers attackBonusModifiers = new ValueWithIntModifiers();
         public string GetAttackBonus(int weaponBonus = 0)
         {
-            var total = attackBonusModifiers.GetTotal(this);
-            total += attackSizeModifier.GetTotal(this); ;
+            var total = attackBonusModifiers.GetValue(this);
+            total += attackSizeModifier.GetValue(this); ;
             total += weaponBonus;
             var count = attacksCount;
             var values = string.Empty;
@@ -291,9 +276,9 @@ public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
                 }
             return values;
         }
-        public int AttackBonus { get { return GetBaseAttackBonus() + attackBonusModifiers.GetTotal(this) + attackSizeModifier.GetTotal(this); } }
+        public int AttackBonus { get { return GetBaseAttackBonus() + attackBonusModifiers.GetValue(this) + attackSizeModifier.GetValue(this); } }
         public ValueWithIntModifiers damageBonusModifiers = new ValueWithIntModifiers();
-        public int DamageBonus { get { return damageBonusModifiers.GetTotal(this); } }
+        public int DamageBonus { get { return damageBonusModifiers.GetValue(this); } }
         #endregion
 
         #region Weapons
@@ -307,7 +292,7 @@ public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
             var sum = 0;
             foreach (var aci in armorClassItems)
                 if (aci != null)
-                    sum += aci.checkPenalty.GetTotal(this);
+                    sum += aci.checkPenalty.GetValue(this);
             return sum;
         }
         #endregion

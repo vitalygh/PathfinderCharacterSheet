@@ -14,18 +14,18 @@ namespace PathfinderCharacterSheet
 	public partial class EditLevelOfClass : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private List<LevelOfClass> levelOfClass = null;
-        private List<LevelOfClass> currentLevelOfClass = null;
+        private LevelOfClassList levelOfClass = null;
+        private LevelOfClassList currentLevelOfClass = null;
 
         public EditLevelOfClass ()
 		{
 			InitializeComponent ();
 		}
 
-        public void Init(List<LevelOfClass> levelOfClass)
+        public void Init(LevelOfClassList levelOfClass)
         {
             this.levelOfClass = levelOfClass;
-            currentLevelOfClass = CharacterSheets.V1.LevelOfClass.CreateClone(levelOfClass);
+            currentLevelOfClass = levelOfClass?.Clone;
             UpdateView();
         }
 
@@ -68,7 +68,7 @@ namespace PathfinderCharacterSheet
             {
                 var index = i + 2;
                 var loc = currentLevelOfClass[i];
-                var value = CreateFrame(loc.GetLevel(sheet).ToString());
+                var value = CreateFrame(loc.GetValue(sheet).ToString());
                 var valueTapped = new TapGestureRecognizer();
                 valueTapped.Tapped += (s, e) => EditLevel(loc);
                 value.GestureRecognizers.Add(valueTapped);

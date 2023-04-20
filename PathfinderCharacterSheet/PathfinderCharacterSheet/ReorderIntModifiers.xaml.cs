@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PathfinderCharacterSheet.CharacterSheets.V1;
-using Modifier = PathfinderCharacterSheet.CharacterSheets.V1.IntModifier;
-using ModifiersList = PathfinderCharacterSheet.CharacterSheets.V1.ModifiersList<PathfinderCharacterSheet.CharacterSheets.V1.IntModifier, int, PathfinderCharacterSheet.CharacterSheets.V1.IntSum>;
 
 namespace PathfinderCharacterSheet
 {
@@ -23,9 +21,9 @@ namespace PathfinderCharacterSheet
         }
 
         private Page pushedPage = null;
-        private ModifiersList initItems = null;
-        private ModifiersList items = null;
-        private Action<ModifiersList> reorder = null;
+        private IntModifiersList initItems = null;
+        private IntModifiersList items = null;
+        private Action<IntModifiersList> reorder = null;
         private List<Controls> controls = new List<Controls>();
 
         public ReorderIntModifiers()
@@ -34,7 +32,7 @@ namespace PathfinderCharacterSheet
         }
 
 
-        private void MoveItem(Modifier item, int dir, bool onePosition)
+        private void MoveItem(IntModifier item, int dir, bool onePosition)
         {
             if (items == null)
                 return;
@@ -50,7 +48,7 @@ namespace PathfinderCharacterSheet
             UpdateLabels();
         }
 
-        private void UpdateItem(Controls controls, Modifier item)
+        private void UpdateItem(Controls controls, IntModifier item)
         {
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
@@ -71,7 +69,7 @@ namespace PathfinderCharacterSheet
             return sl;
         }
 
-        private void AddItem(Modifier item)
+        private void AddItem(IntModifier item)
         {
             if (item == null)
                 return;
@@ -106,10 +104,10 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public void Init(ModifiersList items, Action<ModifiersList> reorder)
+        public void Init(IntModifiersList items, Action<IntModifiersList> reorder)
         {
             this.items = items;
-            initItems = new ModifiersList();
+            initItems = new IntModifiersList();
             initItems.AddRange(items);
             this.reorder = reorder;
             pushedPage = null;

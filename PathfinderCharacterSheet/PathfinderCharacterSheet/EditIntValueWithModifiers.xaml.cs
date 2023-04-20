@@ -16,7 +16,7 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private CharacterSheet sheet = null;
         private ValueWithIntModifiers source = null;
-        private ModifiersList<IntModifier, int, IntSum> modifiers = null;
+        private IntModifiersList modifiers = null;
         private bool saveCharacter = false;
         private bool allowUseAbilities = true;
 
@@ -35,7 +35,7 @@ namespace PathfinderCharacterSheet
             this.sheet = sheet;
             this.source = source;
             this.saveCharacter = saveCharacter;
-            modifiers = source.modifiers.Clone as ModifiersList<IntModifier, int, IntSum>;
+            modifiers = (source.Clone as ValueWithIntModifiers).modifiers;
             Value.Text = source.baseValue.ToString();
             UpdateView();
         }
@@ -54,24 +54,24 @@ namespace PathfinderCharacterSheet
             var total = 0;
             MainPage.StrToInt(Value.Text, ref total);
             if (modifiers != null)
-                total += modifiers.GetTotal(sheet);
+                total +=modifiers.GetValue(sheet);
             Total.Text = total.ToString();
         }
 
         private void UpdateModifiersSum()
         {
             if (modifiers != null)
-                ModifiersSum.Text = modifiers.GetTotal(sheet).ToString();
+                ModifiersSum.Text = modifiers.GetValue(sheet).ToString();
             UpdateTotal();
         }
 
-        private void ReorderModifiers(ModifiersList<IntModifier, int, IntSum> modifiers)
+        private void ReorderModifiers(IntModifiersList modifiers)
         {
             if (pushedPage != null)
                 return;
             var ri = new ReorderIntModifiers();
             pushedPage = ri;
-            var items = new ModifiersList<IntModifier, int, IntSum>();
+            var items = new IntModifiersList();
             foreach (var item in modifiers)
                 items.Add(item);
             ri.Init(items, (reordered) =>
@@ -83,12 +83,12 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(pushedPage);
         }
 
-        private void EditModifier(ModifiersList<IntModifier, int, IntSum> modifiers)
+        private void EditModifier(IntModifiersList modifiers)
         {
             EditModifier(modifiers, null);
         }
 
-        private void EditModifier(ModifiersList<IntModifier, int, IntSum> modifiers, IntModifier modifier)
+        private void EditModifier(IntModifiersList modifiers, IntModifier modifier)
         {
             if (pushedPage != null)
                 return;

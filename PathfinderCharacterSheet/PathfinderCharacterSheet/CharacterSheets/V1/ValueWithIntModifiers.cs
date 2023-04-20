@@ -4,9 +4,20 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class ValueWithIntModifiers : ValueWithModifiers<IntModifier, int, IntSum>
+    public class ValueWithIntModifiers: IContextValue<int>, IEquatable<ValueWithIntModifiers>, IPrototype<ValueWithIntModifiers>
     {
-        public override object Clone
+        public int baseValue = 0;
+        public IntModifiersList modifiers = new IntModifiersList();
+
+        public virtual int GetValue(CharacterSheet context)
+        {
+            var value = baseValue;
+            if (modifiers != null)
+                value += modifiers.GetValue(context);
+            return value;
+        }
+
+        public virtual ValueWithIntModifiers Clone
         {
             get
             {
@@ -20,7 +31,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (source == null)
                 return this;
-            base.Fill(source);
+            baseValue = source.baseValue;
+            modifiers = source.modifiers?.Clone;
             return this;
         }
 
@@ -28,11 +40,45 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (other == null)
                 return false;
-            if (!other.baseValue.Equals(baseValue))
+            if (baseValue != other.baseValue)
                 return false;
-            if (!CharacterSheet.IsEqual(other.modifiers, modifiers))
+            if (modifiers != other.modifiers)
                 return false;
             return true;
+        }
+
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as ValueWithIntModifiers);
+        }
+
+        public static bool operator ==(ValueWithIntModifiers first, ValueWithIntModifiers second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(ValueWithIntModifiers first, ValueWithIntModifiers second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + baseValue.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, modifiers) ? modifiers.GetHashCode() : 0);
+            return hash;
         }
     }
 }

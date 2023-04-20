@@ -70,7 +70,7 @@ namespace PathfinderCharacterSheet
             if (sheet != null)
             {
                 AmountTitle = CreateLabel("Amount:");
-                var amountFrame = CreateFrame(item.amount.GetTotal(sheet).ToString());
+                var amountFrame = CreateFrame(item.amount.GetValue(sheet).ToString());
                 MainPage.AddTapHandler(amountFrame, Amount_DoubleTapped, 2);
 
                 GearItemGrid.Children.Add(AmountTitle, 0, row);
@@ -78,7 +78,7 @@ namespace PathfinderCharacterSheet
                 row += 1;
 
                 WeightTitle = CreateLabel("Weight:");
-                var weightFrame = CreateFrame(item.weight.GetTotal(sheet).ToString());
+                var weightFrame = CreateFrame(item.weight.GetValue(sheet).ToString());
                 MainPage.AddTapHandler(weightFrame, Weight_DoubleTapped, 2);
 
                 GearItemGrid.Children.Add(WeightTitle, 0, row);
@@ -87,7 +87,7 @@ namespace PathfinderCharacterSheet
 
                 if (item.hasUseLimit)
                 {
-                    var ul = item.useLimit.GetTotal(sheet);
+                    var ul = item.useLimit.GetValue(sheet);
                     LeftTitle = CreateLabel("Use Limit:");
                     var leftFrame = CreateFrame(ul.ToString());
 
@@ -97,7 +97,7 @@ namespace PathfinderCharacterSheet
 
                     MainPage.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
 
-                    var dul = item.dailyUseLimit.GetTotal(sheet);
+                    var dul = item.dailyUseLimit.GetValue(sheet);
                     if (dul > 0)
                     {
                         TotalTitle = CreateLabel("Daily Use Limit:");

@@ -28,9 +28,9 @@ namespace PathfinderCharacterSheet
             pushedPage = null;
             if (sheet == null)
                 return;
-            CriticalMin.Text = critical.min.GetTotal(sheet).ToString();
-            CriticalMax.Text = critical.max.GetTotal(sheet).ToString();
-            Multiplier.Text = critical.multiplier.GetTotal(sheet).ToString();
+            CriticalMin.Text = critical.min.GetValue(sheet).ToString();
+            CriticalMax.Text = critical.max.GetValue(sheet).ToString();
+            Multiplier.Text = critical.multiplier.GetValue(sheet).ToString();
         }
 
         private void EditToView()

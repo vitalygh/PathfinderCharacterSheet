@@ -31,9 +31,9 @@ namespace PathfinderCharacterSheet
             pushedPage = null;
             if (sheet == null)
                 return;
-            DiceCount.Text = roll.diceCount.GetTotal(sheet).ToString();
-            DiceSides.Text = roll.diceSides.GetTotal(sheet).ToString();
-            Additional.Text = roll.additional.GetTotal(sheet).ToString();
+            DiceCount.Text = roll.diceCount.GetValue(sheet).ToString();
+            DiceSides.Text = roll.diceSides.GetValue(sheet).ToString();
+            Additional.Text = roll.additional.GetValue(sheet).ToString();
             Description.Text = roll.description;
         }
 

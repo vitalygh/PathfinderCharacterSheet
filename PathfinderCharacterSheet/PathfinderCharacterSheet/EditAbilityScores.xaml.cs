@@ -148,9 +148,9 @@ namespace PathfinderCharacterSheet
                 var ab = abilityScores[i];
                 var index = (i + 1) * 5;
                 (AbilityScores.Children[index + 0] as Label).Text = abilities[i] + ":";
-                ((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.GetTotal(sheet).ToString();
+                ((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.GetValue(sheet).ToString();
                 ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.GetModifier(sheet).ToString();
-                ((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.GetTotal(sheet).ToString();
+                ((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.GetValue(sheet).ToString();
                 ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.GetTempModifier(sheet).ToString();
             }
         }

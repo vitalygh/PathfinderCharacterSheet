@@ -4,15 +4,8 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class ArmorClass
+    public class ArmorClass: IPrototype<ArmorClass>, IEquatable<ArmorClass>
     {
-        public enum DexterityModifierSources
-        {
-            DependsOnACItems,
-            Full,
-            Custom,
-        }
-
         public ValueWithIntModifiers armorBonus = new ValueWithIntModifiers();
         public bool itemsArmorBonus = true;
         public ValueWithIntModifiers shieldBonus = new ValueWithIntModifiers();
@@ -29,22 +22,22 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public ValueWithIntModifiers deflectionModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers miscModifiers = new ValueWithIntModifiers();
 
-        public virtual object Clone
+        public virtual ArmorClass Clone
         {
             get
             {
                 return new ArmorClass()
                 {
-                    armorBonus = armorBonus.Clone as ValueWithIntModifiers,
+                    armorBonus = armorBonus?.Clone,
                     itemsArmorBonus = itemsArmorBonus,
-                    shieldBonus = shieldBonus.Clone as ValueWithIntModifiers,
+                    shieldBonus = shieldBonus?.Clone,
                     itemsShieldBonus = itemsShieldBonus,
                     dexterityModifierSource = dexterityModifierSource,
-                    dexterityModifier = dexterityModifier.Clone as ValueWithIntModifiers,
-                    sizeModifier = sizeModifier.Clone as ValueWithIntModifiers,
-                    naturalArmor = naturalArmor.Clone as ValueWithIntModifiers,
-                    deflectionModifier = deflectionModifier.Clone as ValueWithIntModifiers,
-                    miscModifiers = miscModifiers.Clone as ValueWithIntModifiers,
+                    dexterityModifier = dexterityModifier?.Clone,
+                    sizeModifier = sizeModifier?.Clone,
+                    naturalArmor = naturalArmor?.Clone,
+                    deflectionModifier = deflectionModifier?.Clone,
+                    miscModifiers = miscModifiers?.Clone,
                 };
             }
         }
@@ -53,33 +46,74 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (itemsArmorBonus != other.itemsArmorBonus)
                 return false;
-            if (!armorBonus.Equals(other.armorBonus))
+            if (armorBonus != other.armorBonus)
                 return false;
             if (itemsShieldBonus != other.itemsShieldBonus)
                 return false;
-            if (!shieldBonus.Equals(other.shieldBonus))
+            if (shieldBonus != other.shieldBonus)
                 return false;
             if (dexterityModifierSource != other.dexterityModifierSource)
                 return false;
-            if (!dexterityModifier.Equals(other.dexterityModifier))
+            if (dexterityModifier != other.dexterityModifier)
                 return false;
-            if (!sizeModifier.Equals(other.sizeModifier))
+            if (sizeModifier != other.sizeModifier)
                 return false;
-            if (!naturalArmor.Equals(other.naturalArmor))
+            if (naturalArmor != other.naturalArmor)
                 return false;
-            if (!deflectionModifier.Equals(other.deflectionModifier))
+            if (deflectionModifier != other.deflectionModifier)
                 return false;
-            if (!miscModifiers.Equals(other.miscModifiers))
+            if (miscModifiers != other.miscModifiers)
                 return false;
             return true;
+        }
+        public override bool Equals(object other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            if (other.GetType() != GetType())
+                return false;
+            return Equals(other as ArmorClass);
+        }
+
+        public static bool operator ==(ArmorClass first, ArmorClass second)
+        {
+            if (ReferenceEquals(first, second))
+                return true;
+            if (ReferenceEquals(null, first))
+                return false;
+            return first.Equals(second);
+        }
+
+        public static bool operator !=(ArmorClass first, ArmorClass second)
+        {
+            return !(first == second);
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 13;
+            hash = (hash * 7) + base.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, armorBonus) ? armorBonus.GetHashCode() : 0);
+            hash = (hash * 7) + itemsArmorBonus.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, shieldBonus) ? shieldBonus.GetHashCode() : 0);
+            hash = (hash * 7) + itemsShieldBonus.GetHashCode();
+            hash = (hash * 7) + (!ReferenceEquals(null, dexterityModifierSource) ? dexterityModifierSource.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, dexterityModifier) ? dexterityModifier.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, sizeModifier) ? sizeModifier.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, naturalArmor) ? naturalArmor.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, deflectionModifier) ? deflectionModifier.GetHashCode() : 0);
+            hash = (hash * 7) + (!ReferenceEquals(null, miscModifiers) ? miscModifiers.GetHashCode() : 0);
+            return hash;
         }
 
         private int GetBaseArmorClass(CharacterSheet sheet)
         {
-            return 10 + sizeModifier.GetTotal(sheet) + deflectionModifier.GetTotal(sheet) + miscModifiers.GetTotal(sheet);
+            return 10 + sizeModifier.GetValue(sheet) + deflectionModifier.GetValue(sheet) + miscModifiers.GetValue(sheet);
         }
 
-        public int GetArmorBonus(CharacterSheet sheet, ArmorClassItem.ArmorTypes type)
+        public int GetArmorBonus(CharacterSheet sheet, ArmorTypes type)
         {
             var ac = 0;
             foreach (var item in sheet.armorClassItems)
@@ -90,7 +124,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     continue;
                 if (item.ArmorType != type)
                     continue;
-                ac += item.armorBonus.GetTotal(sheet);
+                ac += item.armorBonus.GetValue(sheet);
             }
             return ac;
         }
@@ -98,15 +132,15 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public int GetArmorBonus(CharacterSheet sheet)
         {
             if (!itemsArmorBonus)
-                return armorBonus.GetTotal(sheet);
-            return GetArmorBonus(sheet, ArmorClassItem.ArmorTypes.Armor);
+                return armorBonus.GetValue(sheet);
+            return GetArmorBonus(sheet, ArmorTypes.Armor);
         }
 
         public int GetShieldBonus(CharacterSheet sheet)
         {
             if (!itemsShieldBonus)
-                return armorBonus.GetTotal(sheet);
-            return GetArmorBonus(sheet, ArmorClassItem.ArmorTypes.Shield);
+                return armorBonus.GetValue(sheet);
+            return GetArmorBonus(sheet, ArmorTypes.Shield);
         }
 
         private ValueWithIntModifiers GetDexBonusLimit(CharacterSheet sheet)
@@ -121,7 +155,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     continue;
                 if (!item.limitMaxDexBonus)
                     continue;
-                var itemValue = item.maxDexBonus.GetTotal(sheet);
+                var itemValue = item.maxDexBonus.GetValue(sheet);
                 if ((minValue == null) || (value > itemValue))
                 {
                     minValue = item.maxDexBonus;
@@ -140,14 +174,14 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     var limit = GetDexBonusLimit(sheet);
                     if (limit == null)
                         return full;
-                    var maxValue = limit.GetTotal(sheet);
+                    var maxValue = limit.GetValue(sheet);
                     if (full < maxValue)
                         return full;
                     return maxValue;
                 case DexterityModifierSources.Full:
                     return full;
                 case DexterityModifierSources.Custom:
-                    return dexterityModifier.GetTotal(sheet);
+                    return dexterityModifier.GetValue(sheet);
                 default:
                     return full;
             }
@@ -155,7 +189,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public int GetTotal(CharacterSheet sheet)
         {
-            return GetBaseArmorClass(sheet) + GetDexterityModifier(sheet) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.GetTotal(sheet);
+            return GetBaseArmorClass(sheet) + GetDexterityModifier(sheet) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.GetValue(sheet);
         }
 
         public int GetTouch(CharacterSheet sheet)
@@ -165,7 +199,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public int GetFlatFooted(CharacterSheet sheet)
         {
-            return GetBaseArmorClass(sheet) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.GetTotal(sheet);
+            return GetBaseArmorClass(sheet) + GetArmorBonus(sheet) + GetShieldBonus(sheet) + naturalArmor.GetValue(sheet);
         }
     }
 }

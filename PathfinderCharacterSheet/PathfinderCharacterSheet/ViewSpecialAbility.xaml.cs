@@ -57,7 +57,7 @@ namespace PathfinderCharacterSheet
             {
                 if (item.hasUseLimit)
                 {
-                    var ul = item.useLimit.GetTotal(sheet);
+                    var ul = item.useLimit.GetValue(sheet);
                     LeftTitle = CreateLabel("Use Left:");
                     var leftFrame = CreateFrame(ul.ToString());
 
@@ -67,7 +67,7 @@ namespace PathfinderCharacterSheet
 
                     MainPage.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
 
-                    var dul = item.dailyUseLimit.GetTotal(sheet);
+                    var dul = item.dailyUseLimit.GetValue(sheet);
                     if (dul > 0)
                     {
                         TotalTitle = CreateLabel("Daily Use Limit:");

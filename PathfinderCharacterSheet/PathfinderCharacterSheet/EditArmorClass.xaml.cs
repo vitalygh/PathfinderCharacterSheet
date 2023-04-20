@@ -16,7 +16,7 @@ namespace PathfinderCharacterSheet
         public class DexterityModifierSourcePickerItem
         {
             public string Name { get; set; }
-            public ArmorClass.DexterityModifierSources Value { get; set; }
+            public DexterityModifierSources Value { get; set; }
         }
 
         private Page pushedPage = null;
@@ -34,15 +34,15 @@ namespace PathfinderCharacterSheet
             var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             if (sheet == null)
                 return;
-            ac = sheet.armorClass.Clone as ArmorClass;
-            var values = Enum.GetValues(typeof(ArmorClass.DexterityModifierSources));
+            ac = sheet.armorClass.Clone;
+            var values = Enum.GetValues(typeof(DexterityModifierSources));
             var count = -1;
             var valueIndex = 0;
             var dexModSrcPickerItems = new List<DexterityModifierSourcePickerItem>();
             foreach (var v in values)
             {
                 count += 1;
-                var value = (ArmorClass.DexterityModifierSources)v;
+                var value = (DexterityModifierSources)v;
                 if (value == ac.DexterityModifierSource)
                     valueIndex = count;
                 dexModSrcPickerItems.Add(new DexterityModifierSourcePickerItem()
@@ -69,10 +69,10 @@ namespace PathfinderCharacterSheet
             ShieldBonusFromItems.IsChecked = ac.itemsShieldBonus;
             UpdateShieldBonusFromItem();
             DexModifier.Text = ac.GetDexterityModifier(sheet).ToString();
-            SizeModifier.Text = ac.sizeModifier.GetTotal(sheet).ToString();
-            NaturalArmor.Text = ac.naturalArmor.GetTotal(sheet).ToString();
-            DeflectionModifier.Text = ac.deflectionModifier.GetTotal(sheet).ToString();
-            MiscModifiers.Text = ac.miscModifiers.GetTotal(sheet).ToString();
+            SizeModifier.Text = ac.sizeModifier.GetValue(sheet).ToString();
+            NaturalArmor.Text = ac.naturalArmor.GetValue(sheet).ToString();
+            DeflectionModifier.Text = ac.deflectionModifier.GetValue(sheet).ToString();
+            MiscModifiers.Text = ac.miscModifiers.GetValue(sheet).ToString();
         }
 
         private void EditToView()
@@ -119,7 +119,7 @@ namespace PathfinderCharacterSheet
 
         private void DexModifier_Tapped(object sender, EventArgs e)
         {
-            if (ac.DexterityModifierSource != ArmorClass.DexterityModifierSources.Custom)
+            if (ac.DexterityModifierSource != DexterityModifierSources.Custom)
                 return;
             if (pushedPage != null)
                 return;
@@ -229,7 +229,7 @@ namespace PathfinderCharacterSheet
             if (pickerItem == null)
                 return;
             ac.DexterityModifierSource = pickerItem.Value;
-            var custom = pickerItem.Value == ArmorClass.DexterityModifierSources.Custom;
+            var custom = pickerItem.Value == DexterityModifierSources.Custom;
             DexModifier.Text = ac.GetDexterityModifier(sheet).ToString();
             DexModifier.TextDecorations = custom ? TextDecorations.Underline : TextDecorations.None;
             DexModifierFrame.BackgroundColor = custom ? Color.White : Color.LightGray;

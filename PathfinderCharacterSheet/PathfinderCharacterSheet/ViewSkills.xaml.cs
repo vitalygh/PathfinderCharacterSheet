@@ -78,8 +78,8 @@ namespace PathfinderCharacterSheet
                 var skill = sheet.skills[i];
                 UpdateValue(row.classSkill, skill.classSkill);
                 UpdateValue(row.name, skill.Name);
-                row.name.TextColor = (skill.trainedOnly && (skill.rank.GetTotal(sheet) <= 0)) ? Color.Red : Color.Black;
-                UpdateValue(row.total, skill.GetTotal(sheet).ToString());
+                row.name.TextColor = (skill.trainedOnly && (skill.rank.GetValue(sheet) <= 0)) ? Color.Red : Color.Black;
+                UpdateValue(row.total, skill.GetValue(sheet).ToString());
                 EventHandler handler = (s, e) => Skill_DoubleTap(skill, skillIndex);
                 MainPage.SetTapHandler(row.nameFrame, handler, 2);
                 MainPage.SetTapHandler(row.totalFrame, handler, 2);
@@ -108,8 +108,8 @@ namespace PathfinderCharacterSheet
                     skillRow.nameFrame = CreateFrame(skill.Name);
                     skillRow.nameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
                     skillRow.name = skillRow.nameFrame.Content as Label;
-                    skillRow.name.TextColor = (skill.trainedOnly && (skill.rank.GetTotal(sheet) <= 0)) ? Color.Red : Color.Black;
-                    skillRow.totalFrame = CreateFrame(skill.GetTotal(sheet).ToString());
+                    skillRow.name.TextColor = (skill.trainedOnly && (skill.rank.GetValue(sheet) <= 0)) ? Color.Red : Color.Black;
+                    skillRow.totalFrame = CreateFrame(skill.GetValue(sheet).ToString());
                     skillRow.totalFrame.HorizontalOptions = LayoutOptions.End;
                     skillRow.totalFrame.WidthRequest = 40;
                     skillRow.total = skillRow.totalFrame.Content as Label;
@@ -158,8 +158,8 @@ namespace PathfinderCharacterSheet
 #endif
             var ranksSpent = 0;
             foreach (var skill in sheet.skills)
-                ranksSpent += skill.rank.GetTotal(sheet);
-            var ranksLeft = sheet.skillRanks.GetTotal(sheet) - ranksSpent;
+                ranksSpent += skill.rank.GetValue(sheet);
+            var ranksLeft = sheet.skillRanks.GetValue(sheet) - ranksSpent;
             SkillRanksLeft.Text = ranksLeft.ToString();
             if (ranksLeft < 0)
                 SkillRanksLeft.TextColor = Color.Red;
