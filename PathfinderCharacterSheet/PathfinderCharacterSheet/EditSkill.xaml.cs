@@ -15,18 +15,18 @@ namespace PathfinderCharacterSheet
 	public partial class EditSkill : ContentPage, ISheetView
 	{
         private int itemIndex = -1;
-        private List<ItemsType> items
+        private List<ItemsType> Items
         {
             get
             {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                var sheet = MainPage.GetSelectedCharacter?.Invoke();
                 if (sheet != null)
                     return sheet.skills;
                 return null;
             }
         }
         private ItemsType item = null;
-        private List<AbilityPickerItem> abilities = new List<AbilityPickerItem>();
+        private readonly List<AbilityPickerItem> abilities = new List<AbilityPickerItem>();
         private Page pushedPage = null;
 
         public EditSkill()
@@ -63,13 +63,12 @@ namespace PathfinderCharacterSheet
 
         private void UpdateItemSourceAbility()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (item == null)
                 return;
-            var selectedItem = AbilityModifierSource.SelectedItem as AbilityPickerItem;
-            if (selectedItem != null)
+            if (AbilityModifierSource.SelectedItem is AbilityPickerItem selectedItem)
             {
                 item.AbilityModifierSource = selectedItem.Value;
                 AbilityModifier.Text = item.GetAbilityModifier(sheet).ToString();
@@ -112,7 +111,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             HasSubject.IsChecked = item.hasSubject;
@@ -137,7 +136,7 @@ namespace PathfinderCharacterSheet
         private void UpdateArmorPenalty()
         {
             ArmorPenalty.Text = "-";
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if ((item != null) && item.armorPenalty)
@@ -162,7 +161,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateTotal()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             Total.Text = item.GetValue(sheet).ToString();
@@ -170,34 +169,34 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            if (items == null)
+            if (Items == null)
                 return;
             item.name = SkillName.Text;
             item.subject = Subject.Text;
             var hasChanges = false;
             if (itemIndex >= 0)
             {
-                var sourceItem = items[itemIndex];
+                var sourceItem = Items[itemIndex];
                 if (!item.Equals(sourceItem))
                 {
-                    items[itemIndex] = item;
+                    Items[itemIndex] = item;
                     hasChanges = true;
                 }
             }
             else
             {
-                items.Add(item);
+                Items.Add(item);
                 hasChanges = true;
             }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
         }
 
         private void Rank_Tapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -210,7 +209,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -238,21 +237,21 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            if (items == null)
+            if (Items == null)
                 return;
             if (itemIndex < 0)
                 return;
-            if (itemIndex >= items.Count)
+            if (itemIndex >= Items.Count)
                 return;
-            var item = items[itemIndex];
+            var item = Items[itemIndex];
             var itemName = string.Empty;
             if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
                 itemName = " \"" + item.name + "\"";
             bool allow = await DisplayAlert("Remove skill" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.RemoveAt(itemIndex);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                Items.RemoveAt(itemIndex);
+                MainPage.SaveSelectedCharacter?.Invoke();
                 await Navigation.PopAsync();
             }
         }

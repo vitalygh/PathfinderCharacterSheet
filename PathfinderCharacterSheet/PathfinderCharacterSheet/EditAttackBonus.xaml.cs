@@ -26,7 +26,7 @@ namespace PathfinderCharacterSheet
 
         private void Init()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             sizeModifiers = sheet.attackSizeModifier.Clone as ValueWithIntModifiers;
@@ -39,7 +39,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             //BaseAttackBonus.Text = sheet.GetBaseAttackBonus().ToString();
@@ -51,13 +51,13 @@ namespace PathfinderCharacterSheet
 
         private void UpdateCurrentAttackPicker()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var babs = sheet.baseAttackBonus;
             if (babs == null)
                 return;
-            var count = sheet.attacksCount;
+            var count = sheet.AttacksCount;
             if (count <= 0)
                 return;
             var items = new List<IntPickerItem>();
@@ -91,7 +91,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateTotal()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var total = 0;
@@ -99,7 +99,7 @@ namespace PathfinderCharacterSheet
             total += sizeModifiers.GetValue(sheet);
             total += attackBonus.GetValue(sheet);
             var values = string.Empty;
-            var count = sheet.attacksCount;
+            var count = sheet.AttacksCount;
             if (count <= 0)
                 values = "+0";
             else
@@ -117,7 +117,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateModifiersSum()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             ModifiersSum.Text = attackBonus.modifiers.GetValue(sheet).ToString();
@@ -151,7 +151,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var page = new EditIntModifier();
@@ -164,7 +164,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -197,7 +197,7 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             MainPage.StrToInt(Value.Text, ref attackBonus.baseValue);
@@ -206,7 +206,7 @@ namespace PathfinderCharacterSheet
                 sheet.currentAttack = currentAttack;
                 sheet.attackBonusModifiers = attackBonus;
                 sheet.attackSizeModifier = sizeModifiers;
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             }
         }
     }

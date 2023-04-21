@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using PathfinderCharacterSheet.CharacterSheets.V1;
 using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.Feat;
 
 namespace PathfinderCharacterSheet
@@ -13,11 +14,11 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditFeat : ContentPage
     {
-        private List<ItemType> items
+        private List<ItemType> Items
         {
             get
             {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                var sheet = MainPage.GetSelectedCharacter?.Invoke();
                 if (sheet != null)
                     return sheet.feats;
                 return null;
@@ -37,7 +38,10 @@ namespace PathfinderCharacterSheet
             pushedPage = null;
             source = item;
             if (item == null)
-                this.item = new ItemType();
+                this.item = new ItemType
+                {
+                    uid = MainPage.GetUID?.Invoke() ?? CharacterSheet.InvalidUID
+                };
             else
                 this.item = item.Clone as ItemType;
             ItemName.Text = this.item.name;
@@ -47,7 +51,7 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            if (items == null)
+            if (Items == null)
                 return;
             item.name = ItemName.Text;
             item.description = Description.Text;
@@ -62,11 +66,11 @@ namespace PathfinderCharacterSheet
             }
             else
             {
-                items.Add(item);
+                Items.Add(item);
                 hasChanges = true;
             }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)
@@ -88,7 +92,7 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            if (items == null)
+            if (Items == null)
                 return;
             if (source == null)
                 return;
@@ -98,8 +102,8 @@ namespace PathfinderCharacterSheet
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.Remove(source);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                Items.Remove(source);
+                MainPage.SaveSelectedCharacter?.Invoke();
                 await Navigation.PopAsync();
             }
         }

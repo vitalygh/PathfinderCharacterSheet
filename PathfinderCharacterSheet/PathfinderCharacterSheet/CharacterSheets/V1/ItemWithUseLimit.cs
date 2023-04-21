@@ -12,21 +12,23 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override string AsString(CharacterSheet sheet)
         {
-            var text = name;
+            var text = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(name))
+                text.Append(name);
 
             if (hasUseLimit)
             {
-                if (!string.IsNullOrWhiteSpace(text))
-                    text += " ";
+                if (!string.IsNullOrWhiteSpace(text.ToString()))
+                    text.Append(" ");
                 var ul = useLimit.GetValue(sheet);
-                text += "[" + ul;
+                text.Append("[").Append(ul);
                 var dul = dailyUseLimit.GetValue(sheet);
                 if (dul > 0)
-                    text += " / " + dul;
-                text += "]";
+                    text.Append(" / ").Append(dul);
+                text.Append("]");
             }
 
-            return text;
+            return text.ToString();
         }
 
         public override ItemWithDescription Clone
@@ -56,7 +58,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -69,7 +71,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -84,8 +86,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
             hash = (hash * 7) + hasUseLimit.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, useLimit) ? useLimit.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, dailyUseLimit) ? dailyUseLimit.GetHashCode() : 0);
+            hash = (hash * 7) + (useLimit is null ? 0 : useLimit.GetHashCode());
+            hash = (hash * 7) + (dailyUseLimit is null ? 0 : dailyUseLimit.GetHashCode());
             return hash;
         }
 

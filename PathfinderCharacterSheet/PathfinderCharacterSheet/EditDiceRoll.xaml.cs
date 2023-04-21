@@ -55,7 +55,7 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
             }
             if (hasChanges && saveCharacter)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
         }
 
         public void Init(CharacterSheet sheet, ItemType roll, List<ItemType> items, bool saveCharacter)
@@ -69,7 +69,7 @@ namespace PathfinderCharacterSheet
             if (roll == null)
                 this.roll = new ItemType();
             else
-                this.roll = roll.Clone as ItemType;
+                this.roll = roll.Clone;
             Delete.IsEnabled = items != null;
             UpdateView();
         }
@@ -143,7 +143,7 @@ namespace PathfinderCharacterSheet
             if (allow)
             {
                 items.Remove(source);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
                 await Navigation.PopAsync();
             }
         }

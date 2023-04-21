@@ -16,11 +16,11 @@ namespace PathfinderCharacterSheet
     public partial class EditDamage : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private ViewDiceRolls view = null;
+        private readonly ViewDiceRolls view = null;
         private CharacterSheet sheet = null;
-        private List<ItemType> source = null;
-        private List<ItemType> rolls = null;
-        private List<ItemType> GetItems()
+        private DiceRollList source = null;
+        private DiceRollList rolls = null;
+        private DiceRollList GetItems()
         {
             if (rolls == null)
                 return null;
@@ -38,7 +38,7 @@ namespace PathfinderCharacterSheet
             };
         }
 
-        public void Init(CharacterSheet sheet, List<ItemType> damageRolls)
+        public void Init(CharacterSheet sheet, DiceRollList damageRolls)
         {
             if (sheet == null)
                 return;
@@ -46,9 +46,7 @@ namespace PathfinderCharacterSheet
                 return;
             this.sheet = sheet;
             source = damageRolls;
-            rolls = new List<ItemType>();
-            foreach (var roll in damageRolls)
-                rolls.Add(roll.Clone as ItemType);
+            rolls = damageRolls.Clone;
             UpdateView();
         }
 
@@ -80,14 +78,10 @@ namespace PathfinderCharacterSheet
                 return;
             var rdr = new ReorderDiceRolls();
             pushedPage = rdr;
-            var items = new List<ItemType>();
-            foreach (var item in rolls)
-                items.Add(item);
-            rdr.Init(items, (reordered) =>
+            rdr.Init(rolls, (reordered) =>
             {
                 rolls.Clear();
-                foreach (var item in reordered)
-                    rolls.Add(item as ItemType);
+                rolls.AddRange(reordered);
             });
             Navigation.PushAsync(pushedPage);
         }
@@ -105,12 +99,8 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             pushedPage = this;
-            if (!CharacterSheet.IsEqual(source, rolls))
-            {
-                source.Clear();
-                foreach (var roll in rolls)
-                    source.Add(roll);
-            }
+            if (source != rolls)
+                source.Fill(rolls);
             Navigation.PopAsync();
         }
     }

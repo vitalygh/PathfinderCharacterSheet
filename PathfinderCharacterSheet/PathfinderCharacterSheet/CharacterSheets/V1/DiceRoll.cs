@@ -12,25 +12,26 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string description = null;
         public string AsString(CharacterSheet sheet)
         {
-            var roll = string.Empty;
+            var roll = new StringBuilder();
             var sides = diceSides.GetValue(sheet);
             var count = diceCount.GetValue(sheet);
             var add = additional.GetValue(sheet);
             if (((sides <= 0) || (count <= 0)) && (add == 0))
-                return roll;
+                return string.Empty;
             if ((sides > 0) && (count > 0))
             {
-                roll += count + "d" + sides;
+                roll.Append(count).Append("d").Append(sides);
                 if (add < 0)
-                    roll += " - " + Math.Abs(add);
+                    roll.Append(" - ").Append(Math.Abs(add));
                 else if (add > 0)
-                    roll += " + " + add;
+                    roll.Append(" + ").Append(add);
             }
             else
-                roll += add;
+                roll.Append(add);
             if (!string.IsNullOrWhiteSpace(description))
-                roll += " " + description;
-            return "(" + roll + ")";
+                roll.Append(" ").Append(description);
+            roll.Insert(0, "(").Append(")");
+            return roll.ToString();
         }
 
         public virtual DiceRoll Clone
@@ -45,6 +46,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(DiceRoll other)
         {
+            if (other == null)
+                return false;
             if (diceCount != other.diceCount)
                 return false;
             if (diceSides != other.diceSides)
@@ -58,7 +61,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -71,7 +74,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -85,10 +88,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, diceCount) ? diceCount.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, diceSides) ? diceSides.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, additional) ? additional.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, description) ? description.GetHashCode() : 0);
+            hash = (hash * 7) + (diceCount is null ? 0 : diceCount.GetHashCode());
+            hash = (hash * 7) + (diceSides is null ? 0 :diceSides.GetHashCode());
+            hash = (hash * 7) + (additional is null ? 0 : additional.GetHashCode());
+            hash = (hash * 7) + (description is null ? 0 : description.GetHashCode());
             return hash;
         }
 

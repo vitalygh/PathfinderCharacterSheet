@@ -15,11 +15,11 @@ namespace PathfinderCharacterSheet
 	public partial class ViewFeat : ContentPage, ISheetView
     {
         private ItemType item = null;
-        private List<ItemType> items
+        private List<ItemType> Items
         {
             get
             {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                var sheet = MainPage.GetSelectedCharacter?.Invoke();
                 if (sheet != null)
                     return sheet.feats;
                 return null;
@@ -44,7 +44,7 @@ namespace PathfinderCharacterSheet
             pushedPage = null;
             if (item == null)
                 return;
-            if ((items != null) && !items.Contains(item))
+            if ((Items != null) && !Items.Contains(item))
             {
                 Navigation.PopAsync();
                 return;
@@ -70,7 +70,7 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            if (items == null)
+            if (Items == null)
                 return;
             if (item == null)
                 return;
@@ -80,8 +80,8 @@ namespace PathfinderCharacterSheet
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.Remove(item);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                Items.Remove(item);
+                MainPage.SaveSelectedCharacter?.Invoke();
                 await Navigation.PopAsync();
             }
         }

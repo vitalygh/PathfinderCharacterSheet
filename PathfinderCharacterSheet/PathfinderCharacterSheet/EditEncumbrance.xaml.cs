@@ -25,7 +25,7 @@ namespace PathfinderCharacterSheet
 
         private void InitEditor()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             encumbrance = sheet.encumbrance.Clone as Encumbrance;
@@ -34,7 +34,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             LightLoad.Text = encumbrance.LightLoad(sheet);
@@ -50,19 +50,19 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (!encumbrance.Equals(sheet.encumbrance))
             {
                 sheet.encumbrance = encumbrance;
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             }
         }
 
         private void UpdateLiftOverHead()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var dloh = DefaultLiftOverHead.IsChecked;
@@ -74,7 +74,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateLiftOffGround()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var dlog = DefaultLiftOffGround.IsChecked;
@@ -86,7 +86,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateDragOrPush()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ddop = DefaultDragOrPush.IsChecked;
@@ -100,7 +100,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -113,7 +113,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -126,7 +126,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -141,7 +141,7 @@ namespace PathfinderCharacterSheet
                 return;
             if (encumbrance.defaultLiftOverHead)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -156,7 +156,7 @@ namespace PathfinderCharacterSheet
                 return;
             if (encumbrance.defaultLiftOffGround)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -171,7 +171,7 @@ namespace PathfinderCharacterSheet
                 return;
             if (encumbrance.defaultDragOrPush)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

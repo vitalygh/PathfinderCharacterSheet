@@ -34,7 +34,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -47,7 +47,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -61,8 +61,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, level) ? level.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, className) ? className.GetHashCode() : 0);
+            hash = (hash * 7) + (level is null ? 0 : level.GetHashCode());
+            hash = (hash * 7) + (className is null ? 0 : className.GetHashCode());
             return hash;
         }
 

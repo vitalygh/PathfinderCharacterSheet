@@ -23,6 +23,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(Money other)
         {
+            if (other == null)
+                return false;
             if (cuprumPoints != other.cuprumPoints)
                 return false;
             if (silverPoints != other.silverPoints)
@@ -36,7 +38,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -49,7 +51,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -63,10 +65,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, cuprumPoints) ? cuprumPoints.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, silverPoints) ? silverPoints.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, goldenPoints) ? goldenPoints.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, platinumPoints) ? platinumPoints.GetHashCode() : 0);
+            hash = (hash * 7) + (cuprumPoints is null ? 0 : cuprumPoints.GetHashCode());
+            hash = (hash * 7) + (silverPoints is null ? 0 : silverPoints.GetHashCode());
+            hash = (hash * 7) + (goldenPoints is null ? 0 : goldenPoints.GetHashCode());
+            hash = (hash * 7) + (platinumPoints is null ? 0 : platinumPoints.GetHashCode());
             return hash;
         }
 

@@ -17,10 +17,10 @@ namespace PathfinderCharacterSheet
     public partial class ViewSpecialAbilities : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private ViewItemsWithDescription<ItemType> view = null;
+        private readonly ViewItemsWithDescription<ItemType> view = null;
         private List<ItemType> GetItems()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             return sheet.specialAbilities;
@@ -42,7 +42,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             Reorder.IsVisible = sheet.specialAbilities.Count > 1;
@@ -53,7 +53,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eit = new EditItemType();
@@ -66,7 +66,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var vit = new ViewItemType();
@@ -84,7 +84,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ri = new ReorderItemsWithDescription();
@@ -97,7 +97,7 @@ namespace PathfinderCharacterSheet
                 sheet.specialAbilities.Clear();
                 foreach (var item in reordered)
                     sheet.specialAbilities.Add(item as ItemType);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

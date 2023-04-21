@@ -38,7 +38,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -51,7 +51,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -65,10 +65,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, spellsKnown) ? spellsKnown.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, spellSaveDC) ? spellSaveDC.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, spellsPerDay) ? spellsPerDay.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, bonusSpells) ? bonusSpells.GetHashCode() : 0);
+            hash = (hash * 7) + (spellsKnown is null ? 0 : spellsKnown.GetHashCode());
+            hash = (hash * 7) + (spellSaveDC is null ? 0 : spellSaveDC.GetHashCode());
+            hash = (hash * 7) + (spellsPerDay is null ? 0 : spellsPerDay.GetHashCode());
+            hash = (hash * 7) + (bonusSpells is null ? 0 : bonusSpells.GetHashCode());
             return hash;
         }
 

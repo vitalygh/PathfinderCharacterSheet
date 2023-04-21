@@ -27,14 +27,15 @@ namespace PathfinderCharacterSheet
         private void InitAbilityScores()
         {
             var asList = new List<AbilityScore>();
-            foreach (var absc in CharacterSheetStorage.Instance.selectedCharacter.abilityScores)
-                asList.Add(absc.Clone as AbilityScore);
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            foreach (var absc in sheet.abilityScores)
+                asList.Add(absc.Clone);
             abilityScores = asList.ToArray();
         }
 
         private void CreateControls()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (AbilityScores.Children.Count > 0)
@@ -120,25 +121,25 @@ namespace PathfinderCharacterSheet
             return MainPage.CreateFrame(text);
         }
 
-        private void UpdateModifier(int i)
+        /*private void UpdateModifier(int i)
         {
             var index = i * 5;
             if ((index + 5) > AbilityScores.Children.Count)
                 return;
             var ab = abilityScores[i - 1];
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             //var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
             //MainPage.StrToInt(entry.Text, ref ab.score);
             //((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.Total.ToString();
             ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.GetModifier(sheet).ToString();
             //((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.Total.ToString();
             ((AbilityScores.Children[index + 4] as Frame).Content as Label).Text = ab.GetTempModifier(sheet).ToString();
-        }
+        }*/
 
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var abilities = Enum.GetNames(typeof(Ability));
@@ -157,7 +158,7 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var anyChanged = false;
@@ -170,7 +171,8 @@ namespace PathfinderCharacterSheet
                 sheet.abilityScores[i].Fill(abilityScores[i]);
             }
             if (anyChanged)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.SaveSelectedCharacter?.Invoke();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

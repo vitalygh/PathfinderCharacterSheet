@@ -69,7 +69,7 @@ namespace PathfinderCharacterSheet
         {
             pushedPage = null;
 
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 
@@ -114,7 +114,7 @@ namespace PathfinderCharacterSheet
                 }
             }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             var maxHP = sheet.hp.maxHP.GetValue(sheet);
             MaxHP.Text = maxHP.ToString();
             var hp = sheet.hp.hp.GetValue(sheet);
@@ -137,7 +137,7 @@ namespace PathfinderCharacterSheet
             Reflex.Text = sheet.GetSavingThrowTotal(Save.Reflex).ToString();
             Will.Text = sheet.GetSavingThrowTotal(Save.Will).ToString();
 
-            var attacksCount = sheet.baseAttackBonus != null ? sheet.attacksCount : 0;
+            var attacksCount = sheet.baseAttackBonus != null ? sheet.AttacksCount : 0;
             attacksCount = Math.Max(1, attacksCount);
             var colsCount = BaseAttackBonus.Children.Count;
             var update = Math.Min(colsCount, attacksCount);
@@ -207,7 +207,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -220,7 +220,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -233,7 +233,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -280,7 +280,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

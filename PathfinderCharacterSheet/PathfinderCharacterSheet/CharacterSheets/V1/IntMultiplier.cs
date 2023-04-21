@@ -14,7 +14,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string roundingType = DefaultRounding.ToString();
         public RoundingTypes RoundingType
         {
-            get { return CharacterSheet.GetEnumValue(roundingType, DefaultRounding); }
+            get { return Helpers.GetEnumValue(roundingType, DefaultRounding); }
             set { roundingType = value.ToString(); }
         }
 
@@ -97,7 +97,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -110,7 +110,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -129,7 +129,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             hash = (hash * 7) + divider.GetHashCode();
             hash = (hash * 7) + additionalAfter.GetHashCode();
             hash = (hash * 7) + RoundingType.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, limit) ? limit.GetHashCode() : 0);
+            hash = (hash * 7) + (limit is null ? 0 : limit.GetHashCode());
             return hash;
         }
 
@@ -137,39 +137,40 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (string.IsNullOrWhiteSpace(applyTo))
                 applyTo = "x";
+            var text = new StringBuilder(applyTo);
             if (additionalBefore != 0)
             {
                 if (additionalBefore > 0)
-                    applyTo += " + " + additionalBefore;
+                    text.Append(" + ").Append(additionalBefore);
                 else
-                    applyTo += " - " + Math.Abs(additionalBefore);
-                applyTo = "(" + applyTo + ")";
+                    text.Append(" - ").Append(Math.Abs(additionalBefore));
+                text.Insert(0, "(").Append(")");
             }
             var addBrackets = false;
             if (multiplier != 1)
             {
-                applyTo = multiplier + " * " + applyTo;
+                text.Insert(0, " * ").Insert(0, multiplier.ToString());
                 addBrackets = true;
             }
             if (divider != 1)
             {
-                applyTo += " / " + divider;
+                text.Append(" / ").Append(divider);
                 addBrackets = true;
             }
             if (divider == 0)
-                applyTo = "Infinity";
+                text = new StringBuilder("Infinity");
             if (additionalAfter != 0)
             {
                 if (additionalAfter > 0)
-                    applyTo += " + " + additionalAfter;
+                    text.Append(" + ").Append(additionalAfter);
                 else
-                    applyTo += " - " + Math.Abs(additionalAfter);
+                    text.Append(" - ").Append(Math.Abs(additionalAfter));
                 addBrackets = true;
             }
             if (addBrackets)
-                applyTo = "(" + applyTo + ")";
-            applyTo += limit.AsString();
-            return applyTo;
+                text.Insert(0, "(").Append(")");
+            text.Append(limit.AsString());
+            return text.ToString();
         }
     }
 }

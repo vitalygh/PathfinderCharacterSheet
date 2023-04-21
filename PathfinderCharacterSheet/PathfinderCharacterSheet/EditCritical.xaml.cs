@@ -38,7 +38,7 @@ namespace PathfinderCharacterSheet
             if (!critical.Equals(source))
             {
                 source.Fill(critical);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             }
         }
 

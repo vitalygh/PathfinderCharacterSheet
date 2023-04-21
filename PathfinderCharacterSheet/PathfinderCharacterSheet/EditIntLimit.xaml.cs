@@ -51,7 +51,7 @@ namespace PathfinderCharacterSheet
             if (!source.Equals(limit))
             {
                 source.Fill(limit);
-                //CharacterSheetStorage.Instance.SaveCharacter();
+                //MainPage.SaveSelectedCharacter?.Invoke();
             }
         }
 

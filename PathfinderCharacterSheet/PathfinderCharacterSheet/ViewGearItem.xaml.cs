@@ -13,11 +13,11 @@ namespace PathfinderCharacterSheet
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ViewGearItem : ContentPage, ISheetView
     {
-        private List<ItemsType> items
+        private List<ItemsType> Items
         {
             get
             {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                var sheet = MainPage.GetSelectedCharacter?.Invoke();
                 if (sheet != null)
                     return sheet.gear;
                 return null;
@@ -66,7 +66,7 @@ namespace PathfinderCharacterSheet
             GearItemGrid.Children.Add(activecb, 1, row);
             row += 1;
 
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet != null)
             {
                 AmountTitle = CreateLabel("Amount:");
@@ -139,12 +139,12 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (item == null)
                 return;
-            if ((items != null) && !items.Contains(item))
+            if ((Items != null) && !Items.Contains(item))
             {
                 Navigation.PopAsync();
                 return;
@@ -166,7 +166,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -179,7 +179,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -192,7 +192,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -205,7 +205,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -231,7 +231,7 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            if (items == null)
+            if (Items == null)
                 return;
             var itemName = string.Empty;
             if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
@@ -239,8 +239,8 @@ namespace PathfinderCharacterSheet
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.Remove(item);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                Items.Remove(item);
+                MainPage.SaveSelectedCharacter?.Invoke();
                 await Navigation.PopAsync();
             }
         }

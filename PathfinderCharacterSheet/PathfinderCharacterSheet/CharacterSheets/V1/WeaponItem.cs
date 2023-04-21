@@ -46,23 +46,23 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         }
         public override string AsString(CharacterSheet sheet)
         {
-            var weapon = string.Empty;
+            var weapon = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(name))
-                weapon += name + ": ";
-            weapon += AttackBonus(sheet);
+                weapon.Append(name).Append(": ");
+            weapon.Append(AttackBonus(sheet));
             var c = critical.AsString(sheet);
             if (!string.IsNullOrWhiteSpace(c))
-                weapon += ", " + c;
-            var d = Damage(sheet) + " " + DamageBonus(sheet);
-            if (!string.IsNullOrWhiteSpace(d))
-                weapon += ", " + d;
+                weapon.Append(", ").Append(c);
+            var damage = new StringBuilder(Damage(sheet)).Append(" ").Append(DamageBonus(sheet));
+            if (!string.IsNullOrWhiteSpace(damage.ToString()))
+                weapon.Append(", ").Append(damage);
             var r = range.GetValue(sheet);
             if (r > 0)
             {
-                weapon += ", " + Range(sheet);
-                weapon += ", " + ammunition.GetValue(sheet).ToString();
+                weapon.Append(", ").Append(Range(sheet));
+                weapon.Append(", ").Append(ammunition.GetValue(sheet).ToString());
             }
-            return weapon;
+            return weapon.ToString();
         }
         public ValueWithIntModifiers damageBonus = new ValueWithIntModifiers();
         public string type = null;
@@ -111,7 +111,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -124,7 +124,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -138,14 +138,14 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, attackBonus) ? attackBonus.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, critical) ? critical.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, damageRolls) ? damageRolls.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, damageBonus) ? damageBonus.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, type) ? type.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, range) ? range.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, ammunition) ? ammunition.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, special) ? special.GetHashCode() : 0);
+            hash = (hash * 7) + (attackBonus is null ? 0 : attackBonus.GetHashCode());
+            hash = (hash * 7) + (critical is null ? 0 : critical.GetHashCode());
+            hash = (hash * 7) + (damageRolls is null ? 0 : damageRolls.GetHashCode());
+            hash = (hash * 7) + (damageBonus is null ? 0 : damageBonus.GetHashCode());
+            hash = (hash * 7) + (type is null ? 0 : type.GetHashCode());
+            hash = (hash * 7) + (range is null ? 0 : range.GetHashCode());
+            hash = (hash * 7) + (ammunition is null ? 0 : ammunition.GetHashCode());
+            hash = (hash * 7) + (special is null ? 0 : special.GetHashCode());
             return hash;
         }
 

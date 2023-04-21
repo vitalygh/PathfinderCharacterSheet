@@ -35,7 +35,7 @@ namespace PathfinderCharacterSheet
             this.sheet = sheet;
             this.source = source;
             this.saveCharacter = saveCharacter;
-            modifiers = (source.Clone as ValueWithIntModifiers).modifiers;
+            modifiers = source.Clone.modifiers;
             Value.Text = source.baseValue.ToString();
             UpdateView();
         }
@@ -131,7 +131,7 @@ namespace PathfinderCharacterSheet
                 source.modifiers = modifiers;
             }
             if (hasChanged && saveCharacter)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
         }
     }
 }

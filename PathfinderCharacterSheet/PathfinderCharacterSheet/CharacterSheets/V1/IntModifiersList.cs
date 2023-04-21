@@ -6,11 +6,29 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntModifiersList: List<IntModifier>, IContextValue<int>, IEquatable<IntModifiersList>, IPrototype<IntModifiersList>
     {
+
+        public IntModifiersList(): base()
+        {
+
+        }
+            
+        public IntModifiersList(IntModifiersList other): base()
+        {
+            if (other != null)
+                AddRange(other);
+        }
+
         public virtual int GetValue(CharacterSheet  context)
         {
             int value = 0;
             foreach (var modifier in this)
+            {
+                if (modifier is null)
+                    continue;
+                if (!modifier.active)
+                    continue;
                 value += modifier.GetValue(context);
+            }
             return value;
         }
 
@@ -36,7 +54,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(IntModifiersList other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -45,7 +63,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -58,7 +76,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }

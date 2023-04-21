@@ -24,7 +24,7 @@ namespace PathfinderCharacterSheet
         }
 
         private Page pushedPage = null;
-        private List<SpellLevelControls> levels = new List<SpellLevelControls>();
+        private readonly List<SpellLevelControls> levels = new List<SpellLevelControls>();
 
         public ViewSpells()
         {
@@ -211,7 +211,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (level < 0)
@@ -228,7 +228,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (level < 0)
@@ -245,7 +245,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (level < 0)
@@ -262,7 +262,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (level < 0)
@@ -294,7 +294,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             bool hasChanges = false;
@@ -321,7 +321,7 @@ namespace PathfinderCharacterSheet
                 }
             }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             var points = sheet.channelEnergy.points.AsString(sheet);
             var channels = "Channels";
             if (!string.IsNullOrWhiteSpace(points))
@@ -337,7 +337,6 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
             var ece = new EditChannelEnergy();
             ece.InitEditor();
             pushedPage = ece;

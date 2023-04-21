@@ -15,7 +15,7 @@ namespace PathfinderCharacterSheet
     public partial class SelectClass : ContentPage
     {
         private Action<ItemType> onSelect = null;
-        private List<Frame> framesPool = new List<Frame>();
+        private readonly List<Frame> framesPool = new List<Frame>();
         private LevelOfClass selected = null;
 
         public SelectClass()
@@ -32,11 +32,13 @@ namespace PathfinderCharacterSheet
 
         private void InitItems()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            var items = new List<ItemType>();
-            items.Add(new ItemType());
+            var items = new List<ItemType>
+            {
+                new ItemType()
+            };
             items.AddRange(sheet.levelOfClass);
             var itemsCount = items.Count;
             var framesCount = Items.Children.Count;
@@ -63,7 +65,7 @@ namespace PathfinderCharacterSheet
 
         private void CreateFrame(ItemType item)
         {
-            Frame frame = null;
+            Frame frame;
             if (framesPool.Count <= 0)
                 frame = MainPage.CreateFrame(string.Empty);
             else
@@ -77,19 +79,18 @@ namespace PathfinderCharacterSheet
 
         private void UpdateFrame(Frame frame, ItemType item)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var label = frame.Content as Label;
-            label.Text = item.ClassName == null ? "Total Level" : item.ClassName;
+            label.Text = item.ClassName ?? "Total Level";
             label.TextColor = ((selected != null) && (selected.ClassName == item.ClassName)) ? Color.Green : Color.Black;
             MainPage.SetTapHandler(frame, (s, e) => SelectItem(item));
         }
 
         private void SelectItem(ItemType item)
         {
-            if (onSelect != null)
-                onSelect(item);
+            onSelect?.Invoke(item);
             Navigation.PopAsync();
         }
 

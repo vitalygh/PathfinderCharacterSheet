@@ -14,20 +14,20 @@ namespace PathfinderCharacterSheet
     public partial class EditInitiative : ContentPage, ISheetView
     {
         private Page pushedPage = null;
-        private ValueWithIntModifiers modifiers = null;
+        private readonly ValueWithIntModifiers modifiers = null;
 
         public EditInitiative()
         {
             InitializeComponent();
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            modifiers = sheet.initiative.miscModifiers.Clone as ValueWithIntModifiers;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            modifiers = sheet.initiative.miscModifiers.Clone;
             UpdateView();
         }
 
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             var dexMod = sheet.GetAbilityModifier(Ability.Dexterity);
             DexModifier.Text = dexMod.ToString();
             var miscMod = modifiers.GetValue(sheet);
@@ -37,12 +37,12 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             var hasChanges = !sheet.initiative.miscModifiers.Equals(modifiers);
             if (hasChanges)
             {
                 sheet.initiative.miscModifiers.Fill(modifiers);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             }
         }
 
@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

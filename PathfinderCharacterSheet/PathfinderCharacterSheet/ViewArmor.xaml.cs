@@ -65,11 +65,11 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private Button armorReorderButton = null;
 #if EXPAND_SELECTED
-        List<SelectedArmorGrid> selectedArmorGrids = new List<SelectedArmorGrid>();
-        List<SelectedArmorGrid> selectedArmorGridsPool = new List<SelectedArmorGrid>();
+        readonly List<SelectedArmorGrid> selectedArmorGrids = new List<SelectedArmorGrid>();
+        readonly List<SelectedArmorGrid> selectedArmorGridsPool = new List<SelectedArmorGrid>();
 #endif
-        List<ArmorGrid> armorGrids = new List<ArmorGrid>();
-        List<ArmorGrid> armorGridsPool = new List<ArmorGrid>();
+        readonly List<ArmorGrid> armorGrids = new List<ArmorGrid>();
+        readonly List<ArmorGrid> armorGridsPool = new List<ArmorGrid>();
 
         public ViewArmor()
         {
@@ -81,7 +81,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             armorReorderButton.IsVisible = sheet.armorClassItems.Count > 1;
@@ -137,7 +137,7 @@ namespace PathfinderCharacterSheet
 
         private void CreateHeader()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
 #if USE_GRID
             var armor = new Grid()
             {
@@ -235,7 +235,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateArmorGrid(SelectedArmorGrid armorGrid, ArmorClassItem item, int itemIndex)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 
@@ -284,7 +284,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (selectedArmorGridsPool.Count > 0)
@@ -349,7 +349,7 @@ namespace PathfinderCharacterSheet
                 IsChecked = item.active,
                 IsEnabled = false,
             };
-            EventHandler<CheckedChangedEventArgs> activeHandler = (s, e) => ArmorActive_CheckedChanged(item, e.Value);
+            void activeHandler(object s, CheckedChangedEventArgs e) => ArmorActive_CheckedChanged(item, e.Value);
             activecb.CheckedChanged += activeHandler;
             grid.Children.Add(activeTitle, 0, row);
             grid.Children.Add(activecb, 1, row);
@@ -465,7 +465,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateArmorGrid(ArmorGrid armorGrid, ArmorClassItem item, int itemIndex)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             MainPage.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
@@ -498,7 +498,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
         {
             if (item == null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (armorGridsPool.Count > 0)
@@ -601,7 +601,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             if (armor.selected == value)
                 return;
             armor.selected = value;
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
             UpdateView();
         }
 #if EXPAND_CHECKBOX
@@ -615,7 +615,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             if (armor == null)
                 return;
             armor.selected = !armor.selected;
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
             UpdateView();
         }
 #endif
@@ -628,7 +628,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             if (armor.active == value)
                 return;
             armor.active = value;
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
             UpdateView();
         }
 
@@ -636,7 +636,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ew = new EditArmor();
@@ -649,7 +649,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ri = new ReorderItemsWithDescription();
@@ -662,7 +662,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
                 sheet.armorClassItems.Clear();
                 foreach (var item in reordered)
                     sheet.armorClassItems.Add(item as ArmorClassItem);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

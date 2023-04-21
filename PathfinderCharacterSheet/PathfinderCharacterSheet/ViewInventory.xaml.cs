@@ -45,8 +45,8 @@ namespace PathfinderCharacterSheet
 #if  EXPAND_SELECTED
         List<SelectedGearItemGrid> selectedGearItemGridsPool = new List<SelectedGearItemGrid>();
 #endif
-        List<GearItemGrid> gearItemGridsPool = new List<GearItemGrid>();
-        List<GearItemGrid> gearItemGrids = new List<GearItemGrid>();
+        readonly List<GearItemGrid> gearItemGridsPool = new List<GearItemGrid>();
+        readonly List<GearItemGrid> gearItemGrids = new List<GearItemGrid>();
 
         public ViewInventory()
         {
@@ -67,7 +67,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             UpdateValue(PP, sheet.money.platinumPoints.GetValue(sheet).ToString());
@@ -96,7 +96,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateGearView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var totalItemsCount = sheet.gear.Count;
@@ -156,17 +156,17 @@ namespace PathfinderCharacterSheet
                 label.Text = text;
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return MainPage.CreateLabel(text, horz);
-        }
-
         private Frame CreateFrame(string text)
         {
             return MainPage.CreateFrame(text);
         }
 
 #if EXPAND_SELECTED
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
+        {
+            return MainPage.CreateLabel(text, horz);
+        }
+
         private void RemoveGearItemGrid(SelectedGearItemGrid gearItemGrid)
         {
             if (gearItemGrid == null)
@@ -183,7 +183,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateGearItemGrid(SelectedGearItemGrid gearItemGrid, CharacterSheet.GearItem item, int itemIndex)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 
@@ -218,7 +218,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             if (selectedGearItemGridsPool.Count > 0)
@@ -348,14 +348,14 @@ namespace PathfinderCharacterSheet
             gearItemGridsPool.Add(gearItemGrid);
         }
 
-        private void UpdateGearItemGrid(GearItemGrid gearItemGrid, KeyValuePair<GearItem, int> kvp)
+        /*private void UpdateGearItemGrid(GearItemGrid gearItemGrid, KeyValuePair<GearItem, int> kvp)
         {
             UpdateGearItemGrid(gearItemGrid, kvp.Key, kvp.Value);
-        }
+        }*/
 
         private void UpdateGearItemGrid(GearItemGrid gearItemGrid, GearItem item, int itemIndex)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             MainPage.SetTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item), 2);
@@ -377,16 +377,16 @@ namespace PathfinderCharacterSheet
             gearItemGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
         }
 
-        private void CreateGearItemGrid(KeyValuePair<GearItem, int> kvp)
+        /*private void CreateGearItemGrid(KeyValuePair<GearItem, int> kvp)
         {
             CreateGearItemGrid(kvp.Key, kvp.Value);
-        }
+        }*/
 
         private GearItemGrid CreateGearItemGrid(GearItem item, int itemIndex)
         {
             if (item == null)
                 return null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             if (gearItemGridsPool.Count > 0)
@@ -439,7 +439,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
             };
-            EventHandler viewButtonHandler = (s, e) => GearItemViewButton_Tap(item);
+            void viewButtonHandler(object s, EventArgs e) => GearItemViewButton_Tap(item);
             viewButton.Clicked += viewButtonHandler;
             var column = 0;
 #if EXPAND_SELECTED
@@ -469,7 +469,7 @@ namespace PathfinderCharacterSheet
             if (gearItem.selected == value)
                 return;
             gearItem.selected = value;
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
             UpdateView();
         }
 
@@ -507,7 +507,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -520,7 +520,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -533,7 +533,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -546,7 +546,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -559,7 +559,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ee = new EditEncumbrance();
@@ -571,7 +571,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ri = new ReorderItemsWithDescription();
@@ -584,7 +584,7 @@ namespace PathfinderCharacterSheet
                 sheet.gear.Clear();
                 foreach (var item in reordered)
                     sheet.gear.Add(item as GearItem);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

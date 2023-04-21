@@ -20,11 +20,11 @@ namespace PathfinderCharacterSheet
         Label TotalTitle = null;
         Label DescriptionTitle = null;
 
-        private List<ItemType> items
+        private List<ItemType> Items
         {
             get
             {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                var sheet = MainPage.GetSelectedCharacter?.Invoke();
                 if (sheet != null)
                     return sheet.specialAbilities;
                 return null;
@@ -52,7 +52,7 @@ namespace PathfinderCharacterSheet
             SpecialAbilitiesGrid.Children.Add(nameFrame, 1, row);
             row += 1;
 
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet != null)
             {
                 if (item.hasUseLimit)
@@ -111,7 +111,7 @@ namespace PathfinderCharacterSheet
             pushedPage = null;
             if (item == null)
                 return;
-            if ((items != null) && !items.Contains(item))
+            if ((Items != null) && !Items.Contains(item))
             {
                 Navigation.PopAsync();
                 return;
@@ -133,7 +133,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -146,7 +146,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -172,22 +172,22 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            if (items == null)
+            if (Items == null)
                 return;
-            var itemIndex = items.IndexOf(this.item);
+            var itemIndex = Items.IndexOf(this.item);
             if (itemIndex < 0)
                 return;
-            if (itemIndex >= items.Count)
+            if (itemIndex >= Items.Count)
                 return;
-            var item = items[itemIndex];
+            var item = Items[itemIndex];
             var itemName = string.Empty;
             if ((item != null) && !string.IsNullOrWhiteSpace(item.name))
                 itemName = " \"" + item.name + "\"";
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.RemoveAt(itemIndex);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                Items.RemoveAt(itemIndex);
+                MainPage.SaveSelectedCharacter?.Invoke();
                 await Navigation.PopAsync();
             }
         }

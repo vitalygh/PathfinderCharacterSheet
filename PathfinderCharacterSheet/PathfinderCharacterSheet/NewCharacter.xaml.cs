@@ -42,7 +42,7 @@ namespace PathfinderCharacterSheet
             var character = new CharacterSheet();
             character.Init();
             character.name = CharacterName.Text;
-            CharacterSheetStorage.Instance.SaveCharacter(character);
+            MainPage.SaveCharacter?.Invoke(character);
             Navigation.PopAsync();
         }
     }

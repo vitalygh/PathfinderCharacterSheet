@@ -27,7 +27,7 @@ namespace PathfinderCharacterSheet
         }
 
         private Page pushedPage = null;
-        private List<SkillRow> skillRows = new List<SkillRow>();
+        private readonly List<SkillRow> skillRows = new List<SkillRow>();
 
         public ViewSkills()
         {
@@ -40,7 +40,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 #if USE_GRID
@@ -70,7 +70,7 @@ namespace PathfinderCharacterSheet
                     hasChanges = true;
                 }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             for (var i = 0; i < updateCount; i++)
             {
                 var skillIndex = i;
@@ -80,7 +80,7 @@ namespace PathfinderCharacterSheet
                 UpdateValue(row.name, skill.Name);
                 row.name.TextColor = (skill.trainedOnly && (skill.rank.GetValue(sheet) <= 0)) ? Color.Red : Color.Black;
                 UpdateValue(row.total, skill.GetValue(sheet).ToString());
-                EventHandler handler = (s, e) => Skill_DoubleTap(skill, skillIndex);
+                void handler(object s, EventArgs e) => Skill_DoubleTap(skill, skillIndex);
                 MainPage.SetTapHandler(row.nameFrame, handler, 2);
                 MainPage.SetTapHandler(row.totalFrame, handler, 2);
             }
@@ -91,21 +91,23 @@ namespace PathfinderCharacterSheet
                 {
                     var skillIndex = updateCount + i;
                     var skill = sheet.skills[skillIndex];
-                    var skillRow = new SkillRow();
-                    skillRow.classSkill = new CheckBox()
+                    var skillRow = new SkillRow
                     {
-                        IsChecked = skill.classSkill,
-                        IsEnabled = false,
-                        HorizontalOptions = LayoutOptions.Start,
-                        VerticalOptions = LayoutOptions.Center,
-                    };
+                        classSkill = new CheckBox()
+                        {
+                            IsChecked = skill.classSkill,
+                            IsEnabled = false,
+                            HorizontalOptions = LayoutOptions.Start,
+                            VerticalOptions = LayoutOptions.Center,
+                        },
 #if !USE_GRID
-                    skillRow.layout = new StackLayout()
-                    {
-                        Orientation = StackOrientation.Horizontal,
-                    };
+                        layout = new StackLayout()
+                        {
+                            Orientation = StackOrientation.Horizontal,
+                        },
 #endif
-                    skillRow.nameFrame = CreateFrame(skill.Name);
+                        nameFrame = CreateFrame(skill.Name)
+                    };
                     skillRow.nameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
                     skillRow.name = skillRow.nameFrame.Content as Label;
                     skillRow.name.TextColor = (skill.trainedOnly && (skill.rank.GetValue(sheet) <= 0)) ? Color.Red : Color.Black;
@@ -113,7 +115,7 @@ namespace PathfinderCharacterSheet
                     skillRow.totalFrame.HorizontalOptions = LayoutOptions.End;
                     skillRow.totalFrame.WidthRequest = 40;
                     skillRow.total = skillRow.totalFrame.Content as Label;
-                    EventHandler handler = (s, e) => Skill_DoubleTap(skill, skillIndex);
+                    void handler(object s, EventArgs e) => Skill_DoubleTap(skill, skillIndex);
                     MainPage.AddTapHandler(skillRow.nameFrame, handler, 2);
                     MainPage.AddTapHandler(skillRow.totalFrame, handler, 2);
                     skillRows.Add(skillRow);
@@ -170,11 +172,6 @@ namespace PathfinderCharacterSheet
             Languages.Text = sheet.Languages;
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return MainPage.CreateLabel(text, horz);
-        }
-
         private Frame CreateFrame(string text)
         {
             return MainPage.CreateFrame(text);
@@ -200,7 +197,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var es = new EditSkill();
@@ -218,7 +215,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var esr = new EditSkillRanks();
@@ -231,7 +228,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var el = new EditLanguages();

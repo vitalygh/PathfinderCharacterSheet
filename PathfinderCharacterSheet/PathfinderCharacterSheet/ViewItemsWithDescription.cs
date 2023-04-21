@@ -42,8 +42,8 @@ namespace PathfinderCharacterSheet
 #if EXPAND_SELECTED
         private List<SelectedItemGrid> selectedItemGridsPool = new List<SelectedItemGrid>();
 #endif
-        private List<ItemGrid> itemGridsPool = new List<ItemGrid>();
-        private List<ItemGrid> itemGrids = new List<ItemGrid>();
+        private readonly List<ItemGrid> itemGridsPool = new List<ItemGrid>();
+        private readonly List<ItemGrid> itemGrids = new List<ItemGrid>();
 
         public ViewItemsWithDescription()
         {
@@ -105,22 +105,9 @@ namespace PathfinderCharacterSheet
                 RemoveItemGrid(itemGrids[itemGrids.Count - 1]);
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return MainPage.CreateLabel(text, horz);
-        }
-
         private Frame CreateFrame(string text)
         {
             return MainPage.CreateFrame(text);
-        }
-
-        private void UpdateValue(CheckBox checkbox, bool value)
-        {
-            if (checkbox == null)
-                return;
-            if (checkbox.IsChecked != value)
-                checkbox.IsChecked = value;
         }
 
         private void UpdateValue(Label label, string text)
@@ -132,6 +119,19 @@ namespace PathfinderCharacterSheet
         }
 
 #if EXPAND_SELECTED
+        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
+        {
+            return MainPage.CreateLabel(text, horz);
+        }
+
+        private void UpdateValue(CheckBox checkbox, bool value)
+        {
+            if (checkbox == null)
+                return;
+            if (checkbox.IsChecked != value)
+                checkbox.IsChecked = value;
+        }
+
         private void RemoveItemGrid(SelectedItemGrid itemGrid)
         {
             if (itemGrid == null)
@@ -149,7 +149,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateItemGrid(SelectedItemGrid itemGrid, ItemType item, int itemIndex)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 
@@ -182,7 +182,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             if (selectedItemGridsPool.Count > 0)
@@ -317,14 +317,9 @@ namespace PathfinderCharacterSheet
             itemGridsPool.Add(itemGrid);
         }
 
-        private void UpdateItemGrid(ItemGrid itemGrid, KeyValuePair<ItemType, int> kvp)
-        {
-            UpdateItemGrid(itemGrid, kvp.Key, kvp.Value);
-        }
-
         private void UpdateItemGrid(ItemGrid itemGrid, ItemType item, int itemIndex)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             MainPage.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
@@ -346,16 +341,11 @@ namespace PathfinderCharacterSheet
             itemGrid.viewButton.Clicked += itemGrid.viewButtonHandler;
         }
 
-        private void CreateItemGrid(KeyValuePair<ItemType, int> kvp)
-        {
-            CreateItemGrid(kvp.Key, kvp.Value);
-        }
-
         private ItemGrid CreateItemGrid(ItemType item, int itemIndex)
         {
             if (item == null)
                 return null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             if (itemGridsPool.Count > 0)
@@ -384,7 +374,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.Center,
             };
-            EventHandler viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
+            void viewButtonHandler(object s, EventArgs e) => ItemViewButton_Tap(item);
             viewButton.Clicked += viewButtonHandler;
 #if USE_GRID
             var container = new Grid()
@@ -449,7 +439,7 @@ namespace PathfinderCharacterSheet
             if (item.selected == value)
                 return;
             item.selected = value;
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
             UpdateItemsView();
         }
 
@@ -460,14 +450,12 @@ namespace PathfinderCharacterSheet
 
         public void Item_DoubleTap(ItemType item = null)
         {
-            if (actEditItem != null)
-                actEditItem(item);
+            actEditItem?.Invoke(item);
         }
 
         public void ItemViewButton_Tap(ItemType item = null)
         {
-            if (actViewItem != null)
-                actViewItem(item);
+            actViewItem?.Invoke(item);
         }
     }
 }

@@ -22,10 +22,10 @@ namespace PathfinderCharacterSheet
         }
 
         private Page pushedPage = null;
-        private List<ItemType> initItems = null;
-        private List<ItemType> items = null;
-        private Action<List<ItemType>> reorder = null;
-        private List<Controls> controls = new List<Controls>();
+        private DiceRollList initItems = null;
+        private DiceRollList items = null;
+        private Action<DiceRollList> reorder = null;
+        private readonly List<Controls> controls = new List<Controls>();
 
         public ReorderDiceRolls()
         {
@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateItem(Controls controls, ItemType item)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             MainPage.SetTapHandler(controls.up, () => MoveItem(item, -1, true));
@@ -93,7 +93,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateLabels()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             for (var i = 0; i < items.Count; i++)
@@ -104,10 +104,10 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public void Init(List<ItemType> items, Action<List<ItemType>> reorder)
+        public void Init(DiceRollList items, Action<DiceRollList> reorder)
         {
-            this.items = items;
-            initItems = new List<ItemType>(items);
+            this.items = new DiceRollList(items);
+            initItems = items;
             this.reorder = reorder;
             pushedPage = null;
             Items.Children.Clear();
@@ -129,7 +129,7 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             pushedPage = this;
-            if (!CharacterSheet.IsEqual(initItems, items))
+            if (initItems != items)
                 reorder?.Invoke(items);
             Navigation.PopAsync();
         }

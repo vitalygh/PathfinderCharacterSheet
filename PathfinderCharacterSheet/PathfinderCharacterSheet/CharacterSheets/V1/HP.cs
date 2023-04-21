@@ -22,6 +22,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(HP other)
         {
+            if (other == null)
+                return false;
             if (maxHP != other.maxHP)
                 return false;
             if (hp != other.hp)
@@ -33,7 +35,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -46,7 +48,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -60,9 +62,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, maxHP) ? maxHP.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, hp) ? hp.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, damageResist) ? damageResist.GetHashCode() : 0);
+            hash = (hash * 7) + (maxHP is null ? 0 : maxHP.GetHashCode());
+            hash = (hash * 7) + (hp is null ? 0 : hp.GetHashCode());
+            hash = (hash * 7) + (damageResist is null ? 0 : damageResist.GetHashCode());
             return hash;
         }
 

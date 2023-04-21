@@ -9,7 +9,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public ValueWithIntModifiers miscModifiers = new ValueWithIntModifiers();
         public int GetInitiative(CharacterSheet sheet)
         {
-            return CharacterSheet.GetAbilityModifier(sheet, Ability.Dexterity) + miscModifiers.GetValue(sheet);
+            if (sheet == null)
+                return 0;
+            return sheet.GetAbilityModifier(Ability.Dexterity) + miscModifiers.GetValue(sheet);
         }
 
         public virtual Initiative Clone
@@ -24,6 +26,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(Initiative other)
         {
+            if (other == null)
+                return false;
             if (miscModifiers != other.miscModifiers)
                 return false;
             return true;
@@ -31,7 +35,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -44,7 +48,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -58,7 +62,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, miscModifiers) ? miscModifiers.GetHashCode() : 0);
+            hash = (hash * 7) + (miscModifiers is null ? 0 : miscModifiers.GetHashCode());
             return hash;
         }
 

@@ -17,11 +17,11 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private ItemType source = null;
         private ItemType item = null;
-        private List<ItemType> items
+        private List<ItemType> Items
         {
             get
             {
-                var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                var sheet = MainPage.GetSelectedCharacter?.Invoke();
                 if (sheet != null)
                     return sheet.armorClassItems;
                 return null;
@@ -37,7 +37,10 @@ namespace PathfinderCharacterSheet
         {
             source = item;
             if (item == null)
-                this.item = new ItemType();
+                this.item = new ItemType
+                {
+                    uid = MainPage.GetUID?.Invoke() ?? CharacterSheet.InvalidUID
+                };
             else
                 this.item = item.Clone as ItemType;
             var armorTypeIndex = -1;
@@ -71,7 +74,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (item == null)
@@ -85,15 +88,15 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (item == null)
                 return;
             item.active = ArmorActive.IsChecked;
             item.name = ArmorName.Text;
-            var selectedArmorType = ArmorType.SelectedItem as ArmorTypePickerItem;
-            if (selectedArmorType != null)
+            //var selectedArmorType = ArmorType.SelectedItem as ArmorTypePickerItem;
+            if (ArmorType.SelectedItem is ArmorTypePickerItem selectedArmorType)
                 item.ArmorType = selectedArmorType.Value;
             item.limitMaxDexBonus = LimitMaxDexBonus.IsChecked;
             item.properties = Properties.Text;
@@ -109,18 +112,18 @@ namespace PathfinderCharacterSheet
             }
             else
             {
-                items.Add(item);
+                Items.Add(item);
                 hasChanges = true;
             }
             if (hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
         }
 
         private void ArmorBonus_Tapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -135,7 +138,7 @@ namespace PathfinderCharacterSheet
                 return;
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -148,7 +151,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -161,7 +164,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -174,7 +177,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -202,7 +205,7 @@ namespace PathfinderCharacterSheet
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            if (items == null)
+            if (Items == null)
                 return;
             if (source == null)
                 return;
@@ -212,8 +215,8 @@ namespace PathfinderCharacterSheet
             bool allow = await DisplayAlert("Remove item" + itemName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                items.Remove(source);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                Items.Remove(source);
+                MainPage.SaveSelectedCharacter?.Invoke();
                 await Navigation.PopAsync();
             }
         }

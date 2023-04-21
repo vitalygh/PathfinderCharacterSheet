@@ -33,7 +33,7 @@ namespace PathfinderCharacterSheet
 
         private void InitControls()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             levelOfClass = sheet.levelOfClass?.Clone;
@@ -75,7 +75,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             Level.Text = levelOfClass?.AsString(sheet);
@@ -83,27 +83,14 @@ namespace PathfinderCharacterSheet
             NextLevel.Text = nextLevelExperience.GetValue(sheet).ToString();
         }
 
-        private bool StringToAlignment(string alignmentName, ref Alignments alignment)
-        {
-            var values = Enum.GetValues(typeof(Alignments));
-            foreach (var v in values)
-                if (v.ToString() == alignmentName)
-                {
-                    alignment = (Alignments)v;
-                    return true;
-                }
-            return false;
-        }
-
         private bool EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return false;
             var hasChanges = false;
             hasChanges |= CopyCheckEqual(CharacterName.Text, ref sheet.name);
-            var alignment = Alignment.SelectedItem as AlignmentPickerItem;
-            if ((alignment != null) && (sheet.Alignment != alignment.Value))
+            if ((Alignment.SelectedItem is AlignmentPickerItem alignment) && (sheet.Alignment != alignment.Value))
             {
                 hasChanges |= true;
                 sheet.Alignment = alignment.Value;
@@ -118,7 +105,7 @@ namespace PathfinderCharacterSheet
                 hasChanges |= true;
                 sheet.nextLevelExperience = nextLevelExperience;
             }
-            if (!CharacterSheet.IsEqual(sheet.levelOfClass, levelOfClass))
+            if (sheet.levelOfClass != levelOfClass)
             {
                 hasChanges = true;
                 sheet.levelOfClass = levelOfClass;
@@ -167,29 +154,29 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             pushedPage = this;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
-            var rename = (sheet.Name != CharacterName.Text);
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var rename = sheet.Name != CharacterName.Text;
             if (rename)
             {
-                CharacterSheetStorage.Instance.DeleteCharacter(sheet);
-                CharacterSheetStorage.Instance.selectedCharacter = sheet;
+                MainPage.DeleteCharacter?.Invoke(sheet);
+                MainPage.SetSelectedCharacter?.Invoke(sheet);
             }
             var hasChanges = EditToView();
             if (rename || hasChanges)
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             Navigation.PopAsync();
         }
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             var characterName = string.Empty;
             if ((sheet != null) && !string.IsNullOrWhiteSpace(sheet.name))
                 characterName = " \"" + sheet.name + "\"";
             bool allow = await DisplayAlert("Remove character" + characterName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                CharacterSheetStorage.Instance.DeleteCharacter(CharacterSheetStorage.Instance.selectedCharacter);
+                MainPage.DeleteCharacter?.Invoke(MainPage.GetSelectedCharacter?.Invoke());
                 await Navigation.PopToRootAsync();
             }
         }
@@ -198,7 +185,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -211,7 +198,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

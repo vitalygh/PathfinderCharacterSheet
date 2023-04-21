@@ -30,7 +30,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
 
-        public virtual object Fill(IntLimit source)
+        public virtual IntLimit Fill(IntLimit source)
         {
             if (source == null)
                 return this;
@@ -60,7 +60,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -73,7 +73,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -98,14 +98,14 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (!minLimit && !maxLimit)
                 return string.Empty;
-            var limit = "[";
+            var limit = new StringBuilder("[");
             if (minLimit)
-                limit += minValue;
-            limit += ";";
+                limit.Append(minValue);
+            limit.Append(";");
             if (maxLimit)
-                limit += maxValue;
-            limit += "]";
-            return limit;
+                limit.Append(maxValue);
+            limit.Append("]");
+            return limit.ToString();
         }
     }
 }

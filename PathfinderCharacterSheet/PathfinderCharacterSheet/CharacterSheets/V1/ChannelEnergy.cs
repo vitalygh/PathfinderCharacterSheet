@@ -35,7 +35,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -48,7 +48,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -62,9 +62,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, left) ? left.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, total) ? total.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, points) ? points.GetHashCode() : 0);
+            hash = (hash * 7) + (left is null ? 0 : left.GetHashCode());
+            hash = (hash * 7) + (total is null ?  0 : total.GetHashCode());
+            hash = (hash * 7) + (points is null ? 0 : points.GetHashCode());
             return hash;
         }
 
@@ -74,7 +74,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return this;
             left = source.left?.Clone;
             total = source.total?.Clone;
-            points = source.points?.Clone as DiceRoll;
+            points = source.points?.Clone;
             return this;
         }
     }

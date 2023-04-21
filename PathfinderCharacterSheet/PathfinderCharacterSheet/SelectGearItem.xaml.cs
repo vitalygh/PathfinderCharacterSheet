@@ -14,7 +14,7 @@ namespace PathfinderCharacterSheet
     public partial class SelectGearItem : ContentPage
     {
         private Action<ItemType> onSelect = null;
-        private List<Frame> framesPool = new List<Frame>();
+        private readonly List<Frame> framesPool = new List<Frame>();
         private ItemType selected = null;
 
         public SelectGearItem()
@@ -31,7 +31,7 @@ namespace PathfinderCharacterSheet
 
         private void InitItems()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var items = sheet.GetAllGearItems();
@@ -60,7 +60,7 @@ namespace PathfinderCharacterSheet
 
         private void CreateFrame(ItemType item)
         {
-            Frame frame = null;
+            Frame frame;
             if (framesPool.Count <= 0)
                 frame = MainPage.CreateFrame(string.Empty);
             else
@@ -74,7 +74,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateFrame(Frame frame, ItemType item)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var label = frame.Content as Label;
@@ -86,8 +86,7 @@ namespace PathfinderCharacterSheet
 
         private void SelectItem(ItemType item)
         {
-            if (onSelect != null)
-                onSelect(item);
+            onSelect?.Invoke(item);
             Navigation.PopAsync();
         }
 

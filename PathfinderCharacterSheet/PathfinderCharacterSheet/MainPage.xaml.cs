@@ -14,10 +14,17 @@ namespace PathfinderCharacterSheet
 {
     public partial class MainPage : ContentPage, ISheetView
     {
-        NewCharacter newCharacter = new NewCharacter();
-        CharacterSheetTabs tabs = new CharacterSheetTabs();
+        readonly NewCharacter newCharacter = new NewCharacter();
+        readonly CharacterSheetTabs tabs = new CharacterSheetTabs();
         public static readonly double DefaultLabelTextSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
         public static readonly double DefaultButtonTextSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
+
+        public static readonly Func<int> GetUID = () => CharacterSheetStorage.Instance.GetUID();
+        public static readonly Func<CharacterSheet> GetSelectedCharacter = () => CharacterSheetStorage.Instance.selectedCharacter;
+        public static readonly Action<CharacterSheet> SetSelectedCharacter = (sheet) => CharacterSheetStorage.Instance.selectedCharacter = sheet;
+        public static readonly Action SaveSelectedCharacter = CharacterSheetStorage.Instance.SaveCharacter;
+        public static readonly Action<CharacterSheet> SaveCharacter = (sheet) => CharacterSheetStorage.Instance.SaveCharacter(sheet);
+        public static readonly Action<CharacterSheet> DeleteCharacter = (sheet) => CharacterSheetStorage.Instance.DeleteCharacter(sheet);
 
         public MainPage()
         {
@@ -99,7 +106,7 @@ namespace PathfinderCharacterSheet
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     tabs.MoveTabs();
-                    var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+                    var sheet = GetSelectedCharacter?.Invoke();
                     if (sheet != null)
                     {
                         var title = sheet.Name;
@@ -194,8 +201,7 @@ namespace PathfinderCharacterSheet
 
         public static bool StrToInt(string from, ref int to)
         {
-            var i = 0;
-            if (int.TryParse(from, out i))
+            if (int.TryParse(from, out int i))
             {
                 var changed = to != i;
                 to = i;
@@ -233,11 +239,7 @@ namespace PathfinderCharacterSheet
 
         public static void SetTapHandler(View view, Action handler, int tapCount = 1)
         {
-            SetTapHandler(view, (s, e) =>
-            {
-                if (handler != null)
-                    handler();
-            }, tapCount);
+            SetTapHandler(view, (s, e) => handler?.Invoke(), tapCount);
         }
 
         public static void SetTapHandler(View view, EventHandler handler, int tapCount = 1)
@@ -251,11 +253,7 @@ namespace PathfinderCharacterSheet
 
         public static void AddTapHandler(View view, Action handler, int tapCount = 1)
         {
-            AddTapHandler(view, (s, e) =>
-            {
-                if (handler != null)
-                    handler();
-            }, tapCount);
+            AddTapHandler(view, (s, e) => handler?.Invoke(), tapCount);
         }
 
         public static void AddTapHandler(View view, EventHandler handler, int tapCount = 1)
@@ -345,7 +343,7 @@ namespace PathfinderCharacterSheet
                 var active = new CheckBox()
                 {
                     HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    IsChecked = t.IsActive,
+                    IsChecked = t.active,
                 };
                 active.CheckedChanged += (s, e) =>
                 {
@@ -389,8 +387,7 @@ namespace PathfinderCharacterSheet
             }
             else
             {
-                var sl = view.Parent as StackLayout;
-                if (sl != null)
+                if (view.Parent is StackLayout sl)
                 {
                     var index = sl.Children.IndexOf(view);
                     sl.Children.Remove(view);

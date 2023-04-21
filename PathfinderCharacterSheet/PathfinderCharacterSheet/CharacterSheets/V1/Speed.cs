@@ -60,7 +60,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -73,7 +73,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -87,15 +87,15 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, baseSpeed) ? baseSpeed.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, armorSpeed) ? armorSpeed.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, flySpeed) ? flySpeed.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, maneuverability) ? maneuverability.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, swimSpeed) ? swimSpeed.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, climbSpeed) ? climbSpeed.GetHashCode() : 0);
+            hash = (hash * 7) + (baseSpeed is null ? 0 : baseSpeed.GetHashCode());
+            hash = (hash * 7) + (armorSpeed is null ? 0 : armorSpeed.GetHashCode());
+            hash = (hash * 7) + (flySpeed is null ? 0 : flySpeed.GetHashCode());
+            hash = (hash * 7) + (maneuverability is null ? 0 : maneuverability.GetHashCode());
+            hash = (hash * 7) + (swimSpeed is null ? 0 : swimSpeed.GetHashCode());
+            hash = (hash * 7) + (climbSpeed is null ? 0 : climbSpeed.GetHashCode());
             hash = (hash * 7) + defaultClimbSpeed.GetHashCode();
             hash = (hash * 7) + defaultSwimSpeed.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, burrowSpeed) ? burrowSpeed.GetHashCode() : 0);
+            hash = (hash * 7) + (burrowSpeed is null ? 0 : burrowSpeed.GetHashCode());
             return hash;
         }
 

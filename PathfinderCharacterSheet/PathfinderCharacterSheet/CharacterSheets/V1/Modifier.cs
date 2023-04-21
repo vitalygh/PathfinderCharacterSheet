@@ -7,22 +7,20 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
     public class Modifier<T>: IContextValue<T>, IEquatable<Modifier<T>>, IPrototype<Modifier<T>>
     {
         public bool active = true;
-        public virtual bool IsActive { get { return active; } }
         public string name = null;
-        public virtual string Name { get { return name; } }
-        public T value = default(T);
-        public virtual T GetValue(CharacterSheet context) { return value; }
+        public T value = default;
+        public virtual T GetValue(CharacterSheet context)
+        {
+            return value;
+        }
 
         public virtual Modifier<T> Clone
         {
             get
             {
-                return new Modifier<T>()
-                {
-                    active = active,
-                    name = name,
-                    value = value,
-                };
+                var modifier = new Modifier<T>();
+                modifier.Fill(this);
+                return modifier;
             }
         }
 
@@ -30,30 +28,28 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (source == null)
                 return this;
-            active = source.IsActive;
-            name = source.Name;
+            active = source.active;
+            name = source.name;
             value = source.value;
             return this;
         }
 
         public bool Equals(Modifier<T> other)
         {
-            if (ReferenceEquals(null, other))
+            if (other == null)
                 return false;
-            if (ReferenceEquals(this, other))
-                return true;
-            if (other.IsActive != IsActive)
+            if (active != other.active)
                 return false;
-            if (other.Name != Name)
+            if (name != other.name)
                 return false;
-            if (!other.value.Equals(value))
+            if (!value.Equals(other.value))
                 return false;
             return true;
         }
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -66,7 +62,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -81,7 +77,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
             hash = (hash * 7) + active.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, name) ? name.GetHashCode() : 0);
+            hash = (hash * 7) + (name is null ? 0 : name.GetHashCode());
             hash = (hash * 7) + (!ReferenceEquals(null, value) ? value.GetHashCode() : 0);
             return hash;
         }

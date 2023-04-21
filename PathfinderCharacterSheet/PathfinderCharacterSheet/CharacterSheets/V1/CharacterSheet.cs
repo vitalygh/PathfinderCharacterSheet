@@ -7,48 +7,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class CharacterSheet
     {
-        public static bool IsEqual<T>(List<T> a, List<T> b)
-        {
-            if ((a == null) && (b == null))
-                return true;
-            if ((a == null) || (b == null))
-                return false;
-            var count = a.Count;
-            if (count != b.Count)
-                return false;
-            for (var i = 0; i < count; i++)
-            {
-                var ai = a[i];
-                var bi = b[i];
-                if ((ai == null) && (bi == null))
-                    continue;
-                if ((ai == null) || (bi == null))
-                    return false;
-                if (!ai.Equals(bi))
-                    return false;
-            }
-            return true;
-        }
-
-        public static T GetEnumValue<T>(string text, T defaultValue) where T : struct
-        {
-            T result = defaultValue;
-            if (Enum.TryParse<T>(text, out result))
-                return result;
-            return defaultValue;
-        }
-
-        public static int GetAbilityModifier(CharacterSheet sheet, Ability ability)
-        {
-            int ab = (int)ability;
-            if ((ab >= 0) && (ab < sheet.abilityScores.Length))
-                return sheet.abilityScores[ab].GetTempModifier(sheet);
-            return 0;
-        }
-
         public int GetAbilityModifier(Ability ability)
         {
-            return GetAbilityModifier(this, ability);
+            int ab = (int)ability;
+            if ((ab >= 0) && (ab < abilityScores.Length))
+                return abilityScores[ab].GetTempModifier(this);
+            return 0;
         }
 
         public const int spellLevelsCount = 10;
@@ -87,7 +51,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string alignment = Alignments.Neutral.ToString();
         public Alignments Alignment
         {
-            get { return GetEnumValue(alignment, Alignments.Neutral); }
+            get { return Helpers.GetEnumValue(alignment, Alignments.Neutral); }
             set { alignment = value.ToString(); }
         }
         public string deity = null;
@@ -191,7 +155,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
 
         public ValueWithIntModifiers currentAttacksCount = new ValueWithIntModifiers();
-        public int attacksCount
+        public int AttacksCount
         {
             get
             {
@@ -217,7 +181,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var count = babs.Count;
             if (count <= 0)
                 return 0;
-            ValueWithIntModifiers bab = null;
+            ValueWithIntModifiers bab;
             if (attack < 0)
                 bab = babs[0];
             else if (attack >= count)
@@ -237,14 +201,14 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var bab = GetBaseAttackBonus(babs, attack);
             var text = bab > 0 ? "+" + bab : bab.ToString();
             if (addAttackNumber && (babs != null) && (babs.Count > 1))
-                text = (attack + 1) + ": (" + text + ")";
+                text = attack + 1 + ": (" + text + ")";
             return text;
         }
 
         public ValueWithIntModifiers cmdSizeModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers cmbSizeModifier = new ValueWithIntModifiers();
-        public int GetCMD(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return 10 + GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + GetAbilityModifier(this, Ability.Dexterity) + sizeModifier.GetValue(sheet); }
-        public int GetCMB(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return GetBaseAttackBonus(attack) + GetAbilityModifier(this, Ability.Strength) + sizeModifier.GetValue(sheet); }
+        public int GetCMD(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return 10 + GetBaseAttackBonus(attack) + GetAbilityModifier(Ability.Strength) + GetAbilityModifier(Ability.Dexterity) + sizeModifier.GetValue(sheet); }
+        public int GetCMB(CharacterSheet sheet, ValueWithIntModifiers sizeModifier, int attack) { return GetBaseAttackBonus(attack) + GetAbilityModifier(Ability.Strength) + sizeModifier.GetValue(sheet); }
 #if SELECT_CURRENT_ATTACK_FOR_COMBAT_MANEUVERS
 public int CMD { get { return GetCMD(this, cmdSizeModifier, currentAttack); } }
 public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
@@ -260,7 +224,7 @@ public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
             var total = attackBonusModifiers.GetValue(this);
             total += attackSizeModifier.GetValue(this); ;
             total += weaponBonus;
-            var count = attacksCount;
+            var count = AttacksCount;
             var values = string.Empty;
             if (count <= 0)
                 values = weaponBonus >= 0 ? "+" + weaponBonus : weaponBonus.ToString();

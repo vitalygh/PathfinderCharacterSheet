@@ -6,6 +6,16 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class DiceRollList: List<DiceRoll>, IEquatable<DiceRollList>, IPrototype<DiceRollList>
     {
+        public DiceRollList() : base()
+        {
+        }
+        
+        public DiceRollList(DiceRollList other): base()
+        {
+            if (other != null)
+                AddRange(other);
+        }
+
         public virtual DiceRollList Clone
         {
             get
@@ -28,7 +38,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(DiceRollList other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -37,7 +47,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -50,7 +60,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }

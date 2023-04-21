@@ -24,7 +24,7 @@ namespace PathfinderCharacterSheet
         private IntModifiersList initItems = null;
         private IntModifiersList items = null;
         private Action<IntModifiersList> reorder = null;
-        private List<Controls> controls = new List<Controls>();
+        private readonly List<Controls> controls = new List<Controls>();
 
         public ReorderIntModifiers()
         {
@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateItem(Controls controls, IntModifier item)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             MainPage.SetTapHandler(controls.up, () => MoveItem(item, -1, true));
@@ -93,7 +93,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateLabels()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             for (var i = 0; i < items.Count; i++)
@@ -106,9 +106,8 @@ namespace PathfinderCharacterSheet
 
         public void Init(IntModifiersList items, Action<IntModifiersList> reorder)
         {
-            this.items = items;
-            initItems = new IntModifiersList();
-            initItems.AddRange(items);
+            this.items = new IntModifiersList(items);
+            initItems = items;
             this.reorder = reorder;
             pushedPage = null;
             Items.Children.Clear();
@@ -130,7 +129,7 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             pushedPage = this;
-            if (!CharacterSheet.IsEqual(initItems, items))
+            if (initItems != items)
                 reorder?.Invoke(items);
             Navigation.PopAsync();
         }

@@ -102,7 +102,8 @@ namespace PathfinderCharacterSheet
                         {
                             var fileText = File.ReadAllText(file);
                             var streamText = streamReader.ReadToEnd();
-                            File.WriteAllText(file + ".validate", streamText);
+                            if (fileText != streamText)
+                                File.WriteAllText(file + ".validate", streamText);
                         }
                     }
 #endif
@@ -135,8 +136,7 @@ namespace PathfinderCharacterSheet
         {
             if (sheet == null)
                 return null;
-            string path = null;
-            if ((characters != null) && characters.TryGetValue(sheet, out path))
+            if ((characters != null) && characters.TryGetValue(sheet, out string path))
                 return path;
             return null;
         }
@@ -282,13 +282,11 @@ namespace PathfinderCharacterSheet
             return false;
         }
 
-        public static int GetUID()
+        public int GetUID()
         {
-            if (Instance == null)
+            if (selectedCharacter == null)
                 return CharacterSheet.InvalidUID;
-            if (Instance.selectedCharacter == null)
-                return CharacterSheet.InvalidUID;
-            return Instance.selectedCharacter.GetUID();
+            return selectedCharacter.GetUID();
         }
 
         public void SaveCharacter()

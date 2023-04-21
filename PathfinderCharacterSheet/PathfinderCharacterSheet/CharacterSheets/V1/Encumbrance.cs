@@ -71,6 +71,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(Encumbrance other)
         {
+            if (other == null)
+                return false;
             if (lightLoad != other.lightLoad)
                 return false;
             if (mediumLoad != other.mediumLoad)
@@ -94,7 +96,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -107,7 +109,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -121,12 +123,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, lightLoad) ? lightLoad.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, mediumLoad) ? mediumLoad.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, heavyLoad) ? heavyLoad.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, liftOverHead) ? liftOverHead.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, liftOffGround) ? liftOffGround.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, dragOrPush) ? dragOrPush.GetHashCode() : 0);
+            hash = (hash * 7) + (lightLoad is null ? 0 : lightLoad.GetHashCode());
+            hash = (hash * 7) + (mediumLoad is null ? 0 : mediumLoad.GetHashCode());
+            hash = (hash * 7) + (heavyLoad is null ? 0 : heavyLoad.GetHashCode());
+            hash = (hash * 7) + (liftOverHead is null ? 0 : liftOverHead.GetHashCode());
+            hash = (hash * 7) + (liftOffGround is null ? 0 : liftOffGround.GetHashCode());
+            hash = (hash * 7) + (dragOrPush is null ? 0 : dragOrPush.GetHashCode());
             hash = (hash * 7) + defaultLiftOverHead.GetHashCode();
             hash = (hash * 7) + defaultLiftOffGround.GetHashCode();
             hash = (hash * 7) + defaultDragOrPush.GetHashCode();

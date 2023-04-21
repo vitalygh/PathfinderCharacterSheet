@@ -23,7 +23,7 @@ namespace PathfinderCharacterSheet
 
         public void InitEditor()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             channelEnergy = sheet.channelEnergy.Clone as ChannelEnergy;
@@ -33,7 +33,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (channelEnergy == null)
@@ -53,7 +53,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -66,7 +66,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -79,7 +79,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ed = new EditDiceRoll();
@@ -90,7 +90,7 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (channelEnergy == null)
@@ -98,7 +98,7 @@ namespace PathfinderCharacterSheet
             if (channelEnergy.Equals(sheet.channelEnergy))
                 return;
             sheet.channelEnergy.Fill(channelEnergy);
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

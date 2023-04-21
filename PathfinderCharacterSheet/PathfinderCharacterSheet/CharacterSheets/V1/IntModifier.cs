@@ -9,7 +9,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string sourceAbility = Ability.None.ToString();
         public Ability SourceAbility
         {
-            get { return CharacterSheet.GetEnumValue(sourceAbility, Ability.None); }
+            get { return Helpers.GetEnumValue(sourceAbility, Ability.None); }
             set { sourceAbility = value.ToString(); }
         }
         public IntMultiplier abilityMultiplier = new IntMultiplier();
@@ -38,7 +38,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     return 0;
             }
 
-            if ((SourceAbility != Ability.None))
+            if (SourceAbility != Ability.None)
             {
                 var ab = context.GetAbilityModifier(SourceAbility);
                 if (abilityMultiplier != null)
@@ -73,47 +73,47 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string AsString(CharacterSheet sheet)
         {
             if (!autoNaming)
-                return Name;
-            var text = string.Empty;
+                return name;
+            var text = new StringBuilder();
             if (SourceAbility != Ability.None)
             {
                 var ab = sourceAbility;
                 if (abilityMultiplier != null)
                     ab = abilityMultiplier.AsString(ab);
+                text.Append(ab);
                 if (value != 0)
-                    ab = "(" + value + " + " + ab + ")";
-                text += ab;
+                    text.Insert(0, " + ").Insert(0, value).Insert(0, "(").Append(")");
             }
             if (multiplyToLevel)
             {
-                if (string.IsNullOrWhiteSpace(text) && (value != 1))
-                    text += value;
+                if (string.IsNullOrWhiteSpace(text.ToString()) && (value != 1))
+                    text.Append(value);
                 var lv = string.IsNullOrWhiteSpace(className) ? "Total Level" : "Level Of "
                     + (string.IsNullOrWhiteSpace(className) ? "Unnamed Class" : className);
                 if (levelMultiplier != null)
                     lv = levelMultiplier.AsString(lv);
-                if (!string.IsNullOrWhiteSpace(text))
-                    text += " * ";
-                text += lv;
+                if (!string.IsNullOrWhiteSpace(text.ToString()))
+                    text.Append(" * ");
+                text.Append(lv);
             }
-            if (!string.IsNullOrWhiteSpace(Name))
-                if (string.IsNullOrWhiteSpace(text))
-                    text = Name;
+            if (!string.IsNullOrWhiteSpace(name))
+                if (string.IsNullOrWhiteSpace(text.ToString()))
+                    text.Append(name);
                 else
-                    text = Name + " (" + text + ")";
+                    text.Insert(0, " (").Insert(0, name).Append(")");
             if (sourceItemUID != CharacterSheet.InvalidUID)
             {
                 var item = sheet.GetItemByUID(sourceItemUID);
                 if (item == null)
-                    text = "[item missing] " + text;
+                    text.Insert(0, "[item missing] ");
                 else if (!mustBeActive)
-                    text = "[with " + item.name + "] " + text;
+                    text.Insert(0, "] ").Insert(0, item.name).Insert(0, "[with ");
                 else if (item.active)
-                    text = "[with active " + item.name + "] " + text;
+                    text.Insert(0, "] ").Insert(0, item.name).Insert(0, "[with active ");
                 else
-                    text = "[need active " + item.name + "] " + text;
+                    text.Insert(0, "] ").Insert(0, item.name).Insert(0, "[need active ");
             }
-            return text;
+            return text.ToString();
         }
 
         public override Modifier<int> Clone
@@ -126,7 +126,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
 
-        public virtual object Fill(IntModifier source)
+        public virtual IntModifier Fill(IntModifier source)
         {
             if (source == null)
                 return this;
@@ -175,7 +175,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -188,7 +188,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -203,12 +203,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
             hash = (hash * 7) + sourceAbility.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, abilityMultiplier) ? abilityMultiplier.GetHashCode() : 0);
+            hash = (hash * 7) + (abilityMultiplier is null ? 0 : abilityMultiplier.GetHashCode());
             hash = (hash * 7) + sourceItemUID.GetHashCode();
             hash = (hash * 7) + mustBeActive.GetHashCode();
             hash = (hash * 7) + multiplyToLevel.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, className) ? className.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, levelMultiplier) ? levelMultiplier.GetHashCode() : 0);
+            hash = (hash * 7) + (className is null ? 0 : className.GetHashCode());
+            hash = (hash * 7) + (levelMultiplier is null ? 0 : levelMultiplier.GetHashCode());
             hash = (hash * 7) + autoNaming.GetHashCode();
             return hash;
         }

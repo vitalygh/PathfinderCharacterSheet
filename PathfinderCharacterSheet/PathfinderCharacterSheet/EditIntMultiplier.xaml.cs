@@ -89,7 +89,7 @@ namespace PathfinderCharacterSheet
             if (!source.Equals(multiplier))
             {
                 source.Fill(multiplier);
-                //CharacterSheetStorage.Instance.SaveCharacter();
+                //MainPage.SaveSelectedCharacter?.Invoke();
             }
         }
 

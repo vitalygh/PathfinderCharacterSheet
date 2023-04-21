@@ -16,12 +16,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var mul = multiplier.GetValue(sheet);
             if (mul <= 0)
                 return string.Empty;
-            var crit = string.Empty;
+            var crit = new StringBuilder();
             if (mint < maxt)
-                crit += mint + "-";
-            crit += maxt;
-            crit += "/x" + mul;
-            return crit;
+                crit.Append(mint).Append("-");
+            crit.Append(maxt);
+            crit.Append("/x").Append(mul);
+            return crit.ToString();
         }
 
         public virtual CriticalHit Clone
@@ -49,7 +49,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -62,7 +62,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -76,9 +76,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, min) ? min.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, max) ? max.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, multiplier) ? multiplier.GetHashCode() : 0);
+            hash = (hash * 7) + (min is null ? 0 : min.GetHashCode());
+            hash = (hash * 7) + (max is null ? 0 : max.GetHashCode());
+            hash = (hash * 7) + (multiplier is null ? 0 :  multiplier.GetHashCode());
             return hash;
         }
 

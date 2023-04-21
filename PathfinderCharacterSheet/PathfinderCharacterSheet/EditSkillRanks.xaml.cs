@@ -23,7 +23,7 @@ namespace PathfinderCharacterSheet
 
         public void InitEditor()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             skillRanks = sheet.skillRanks.Clone as ValueWithIntModifiers;
@@ -33,7 +33,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             var ranksSpent = 0;
             foreach (var skill in sheet.skills)
                 ranksSpent += skill.rank.GetValue(sheet);
@@ -46,11 +46,11 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (!sheet.skillRanks.Equals(skillRanks))
             {
                 sheet.skillRanks.Fill(skillRanks);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             }
         }
 
@@ -58,7 +58,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

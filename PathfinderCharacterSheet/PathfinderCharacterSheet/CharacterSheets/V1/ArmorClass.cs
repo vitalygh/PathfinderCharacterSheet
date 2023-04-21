@@ -13,7 +13,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string dexterityModifierSource = DexterityModifierSources.DependsOnACItems.ToString();
         public DexterityModifierSources DexterityModifierSource
         {
-            get { return CharacterSheet.GetEnumValue(dexterityModifierSource, DexterityModifierSources.DependsOnACItems); }
+            get { return Helpers.GetEnumValue(dexterityModifierSource, DexterityModifierSources.DependsOnACItems); }
             set { dexterityModifierSource = value.ToString(); }
         }
         public ValueWithIntModifiers dexterityModifier = new ValueWithIntModifiers();
@@ -26,24 +26,33 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             get
             {
-                return new ArmorClass()
-                {
-                    armorBonus = armorBonus?.Clone,
-                    itemsArmorBonus = itemsArmorBonus,
-                    shieldBonus = shieldBonus?.Clone,
-                    itemsShieldBonus = itemsShieldBonus,
-                    dexterityModifierSource = dexterityModifierSource,
-                    dexterityModifier = dexterityModifier?.Clone,
-                    sizeModifier = sizeModifier?.Clone,
-                    naturalArmor = naturalArmor?.Clone,
-                    deflectionModifier = deflectionModifier?.Clone,
-                    miscModifiers = miscModifiers?.Clone,
-                };
+                var armorClass = new ArmorClass();
+                armorClass.Fill(this);
+                return armorClass;
             }
+        }
+
+        public virtual ArmorClass Fill(ArmorClass other)
+        {
+            if (other == null)
+                return this;
+            armorBonus = other.armorBonus?.Clone;
+            itemsArmorBonus = other.itemsArmorBonus;
+            shieldBonus = other.shieldBonus?.Clone;
+            itemsShieldBonus = other.itemsShieldBonus;
+            dexterityModifierSource = other.dexterityModifierSource;
+            dexterityModifier = other.dexterityModifier?.Clone;
+            sizeModifier = other.sizeModifier?.Clone;
+            naturalArmor = other.naturalArmor?.Clone;
+            deflectionModifier = other.deflectionModifier?.Clone;
+            miscModifiers = other.miscModifiers?.Clone;
+            return this;
         }
 
         public bool Equals(ArmorClass other)
         {
+            if (other == null)
+                return false;
             if (itemsArmorBonus != other.itemsArmorBonus)
                 return false;
             if (armorBonus != other.armorBonus)
@@ -68,7 +77,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         }
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -81,7 +90,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -95,16 +104,16 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, armorBonus) ? armorBonus.GetHashCode() : 0);
+            hash = (hash * 7) + (armorBonus is null ? 0 : armorBonus.GetHashCode());
             hash = (hash * 7) + itemsArmorBonus.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, shieldBonus) ? shieldBonus.GetHashCode() : 0);
+            hash = (hash * 7) + (shieldBonus is null ? 0 : shieldBonus.GetHashCode());
             hash = (hash * 7) + itemsShieldBonus.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, dexterityModifierSource) ? dexterityModifierSource.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, dexterityModifier) ? dexterityModifier.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, sizeModifier) ? sizeModifier.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, naturalArmor) ? naturalArmor.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, deflectionModifier) ? deflectionModifier.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, miscModifiers) ? miscModifiers.GetHashCode() : 0);
+            hash = (hash * 7) + (dexterityModifierSource is null ? 0 : dexterityModifierSource.GetHashCode());
+            hash = (hash * 7) + (dexterityModifier is null ? 0 : dexterityModifier.GetHashCode());
+            hash = (hash * 7) + (sizeModifier is null ? 0 : sizeModifier.GetHashCode());
+            hash = (hash * 7) + (naturalArmor is null ? 0 : naturalArmor.GetHashCode());
+            hash = (hash * 7) + (deflectionModifier is null ? 0 : deflectionModifier.GetHashCode());
+            hash = (hash * 7) + (miscModifiers is null ? 0 : miscModifiers.GetHashCode());
             return hash;
         }
 
@@ -167,7 +176,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public int GetDexterityModifier(CharacterSheet sheet)
         {
-            var full = CharacterSheet.GetAbilityModifier(sheet, Ability.Dexterity);
+            if (sheet == null)
+                return 0;
+            var full = sheet.GetAbilityModifier(Ability.Dexterity);
             switch (DexterityModifierSource)
             {
                 case DexterityModifierSources.DependsOnACItems:

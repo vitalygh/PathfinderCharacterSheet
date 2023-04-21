@@ -63,11 +63,11 @@ namespace PathfinderCharacterSheet
         private Label damageBonus = null;
         private Button weaponReorderButton = null;
 #if EXPAND_SELECTED
-        List<SelectedWeaponGrid> selectedWeaponGrids = new List<SelectedWeaponGrid>();
-        List<SelectedWeaponGrid> selectedWeaponGridsPool = new List<SelectedWeaponGrid>();
+        readonly List<SelectedWeaponGrid> selectedWeaponGrids = new List<SelectedWeaponGrid>();
+        readonly List<SelectedWeaponGrid> selectedWeaponGridsPool = new List<SelectedWeaponGrid>();
 #endif
-        List<WeaponGrid> weaponGrids = new List<WeaponGrid>();
-        List<WeaponGrid> weaponGridsPool = new List<WeaponGrid>();
+        readonly List<WeaponGrid> weaponGrids = new List<WeaponGrid>();
+        readonly List<WeaponGrid> weaponGridsPool = new List<WeaponGrid>();
 
         public ViewWeapon()
         {
@@ -79,7 +79,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (attackBonus != null)
@@ -142,7 +142,7 @@ namespace PathfinderCharacterSheet
 
         private void CreateHeader()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
 #if USE_GRID || USE_GRID_IN_HEADER
             var container = new Grid()
             {
@@ -302,7 +302,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateWeaponGrid(SelectedWeaponGrid weaponGrid, WeaponItem item, int itemIndex)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 #if EXPAND_CHECKBOX
@@ -351,7 +351,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (selectedWeaponGridsPool.Count > 0)
@@ -387,7 +387,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.Center,
                 IsChecked = item.selected,
             };
-            EventHandler<CheckedChangedEventArgs> handler = (s, e) => Weapon_CheckedChanged(item, e.Value);
+            void handler(object s, CheckedChangedEventArgs e) => Weapon_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += handler;
 #endif
             var nameTitle = CreateLabel("Name:");
@@ -416,7 +416,7 @@ namespace PathfinderCharacterSheet
                 IsChecked = item.active,
                 IsEnabled = false,
             };
-            EventHandler<CheckedChangedEventArgs> activeHandler = (s, e) => WeaponActive_CheckedChanged(item, e.Value);
+            void activeHandler(object s, CheckedChangedEventArgs e) => WeaponActive_CheckedChanged(item, e.Value);
             activecb.CheckedChanged += activeHandler;
             grid.Children.Add(activeTitle, 0, row);
             grid.Children.Add(activecb, 1, row);
@@ -547,7 +547,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateWeaponGrid(WeaponGrid weaponGrid, WeaponItem item, int itemIndex)
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             MainPage.SetTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item), 2);
@@ -580,7 +580,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (weaponGridsPool.Count > 0)
@@ -633,7 +633,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.Center,
                 IsChecked = item.selected,
             };
-            EventHandler<CheckedChangedEventArgs> handler = (s, e) => Weapon_CheckedChanged(item, e.Value);
+            void handler(object s, CheckedChangedEventArgs e) => Weapon_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += handler;
 #if EXPAND_WITH_TAP
             MainPage.AddTapHandler(container, (s, e) => Weapon_Tap(selectedcb), 1);
@@ -688,7 +688,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -705,7 +705,7 @@ namespace PathfinderCharacterSheet
             if (weapon.selected == value)
                 return;
             weapon.selected = value;
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
             UpdateView();
         }
 #if EXPAND_CHECKBOX
@@ -719,7 +719,7 @@ namespace PathfinderCharacterSheet
             if (weapon == null)
                 return;
             weapon.selected = !weapon.selected;
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
             UpdateView();
         }
 #endif
@@ -732,7 +732,7 @@ namespace PathfinderCharacterSheet
             if (item.active == value)
                 return;
             item.active = value;
-            CharacterSheetStorage.Instance.SaveCharacter();
+            MainPage.SaveSelectedCharacter?.Invoke();
             UpdateView();
         }
 
@@ -740,7 +740,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ew = new EditWeapon();
@@ -753,7 +753,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ri = new ReorderItemsWithDescription();
@@ -766,7 +766,7 @@ namespace PathfinderCharacterSheet
                 sheet.weaponItems.Clear();
                 foreach (var item in reordered)
                     sheet.weaponItems.Add(item as WeaponItem);
-                CharacterSheetStorage.Instance.SaveCharacter();
+                MainPage.SaveSelectedCharacter?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

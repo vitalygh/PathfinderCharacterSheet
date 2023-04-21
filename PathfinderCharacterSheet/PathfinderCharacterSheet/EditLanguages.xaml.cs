@@ -19,7 +19,7 @@ namespace PathfinderCharacterSheet
             public Label name = null;
         }
         private Page pushedPage = null;
-        private List<LanguageRow> languageRows = new List<LanguageRow>();
+        private readonly List<LanguageRow> languageRows = new List<LanguageRow>();
         private List<string> languages = null;
 
         public EditLanguages()
@@ -29,7 +29,7 @@ namespace PathfinderCharacterSheet
 
         public void InitEditor()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             languages = new List<string>();
@@ -42,7 +42,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var languagesCount = languages.Count;
@@ -54,8 +54,7 @@ namespace PathfinderCharacterSheet
                 var row = languageRows[i];
                 var language = languages[i];
                 row.name.Text = language;
-                EventHandler handler = (s, e) => Language_Tap(language, languageIndex);
-                MainPage.SetTapHandler(row.frame, handler, 1);
+                MainPage.SetTapHandler(row.frame, (s, e) => Language_Tap(language, languageIndex), 1);
             }
             var count = languagesCount - rowsCount;
             if (count > 0)
@@ -64,12 +63,14 @@ namespace PathfinderCharacterSheet
                 {
                     var languageIndex = updateCount + i;
                     var language = languages[languageIndex];
-                    var row = new LanguageRow();
+                    var row = new LanguageRow()
+                    {
+                        frame = CreateFrame(language),
+                    };
                     row.frame  = CreateFrame(language);
                     row.name = row.frame.Content as Label;
                     row.name.TextDecorations = TextDecorations.Underline;
-                    EventHandler handler = (s, e) => Language_Tap(language, languageIndex);
-                    MainPage.SetTapHandler(row.frame, handler, 1);
+                    MainPage.SetTapHandler(row.frame, (s, e) => Language_Tap(language, languageIndex), 1);
                     languageRows.Add(row);
                     var rowIndex = languageIndex;
                     Languages.Children.Add(row.frame, 0, rowIndex);
@@ -99,11 +100,6 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return MainPage.CreateLabel(text, horz);
-        }
-
         private Frame CreateFrame(string text)
         {
             return MainPage.CreateFrame(text);
@@ -111,22 +107,22 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            var hasChanges = !CharacterSheet.IsEqual(sheet.languages, languages);
-            if (hasChanges)
-            {
-                sheet.languages = languages;
-                CharacterSheetStorage.Instance.SaveCharacter();
-            }
+            if ((languages is null) && (sheet.languages is null))
+                return;
+            if (!(languages is null) && !(sheet.languages is null) && ReferenceEquals(sheet.languages, languages))
+                return;
+            sheet.languages = languages;
+            MainPage.SaveSelectedCharacter?.Invoke();
         }
 
         public void Language_Tap(string language = null, int index = -1)
         {
             if (pushedPage != null)
                 return;
-            var sheet = CharacterSheetStorage.Instance.selectedCharacter;
+            var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var el = new EditLanguage();

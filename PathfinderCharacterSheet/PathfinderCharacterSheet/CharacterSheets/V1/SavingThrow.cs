@@ -9,7 +9,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string abilityModifierSource = Ability.None.ToString();
         public Ability AbilityModifierSource
         {
-            get { return CharacterSheet.GetEnumValue(abilityModifierSource, Ability.None); }
+            get { return Helpers.GetEnumValue(abilityModifierSource, Ability.None); }
             set { abilityModifierSource = value.ToString(); }
         }
         public ValueWithIntModifiers baseSave = new ValueWithIntModifiers();
@@ -29,7 +29,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public int GetAbilityModifier(CharacterSheet sheet)
         {
-            return CharacterSheet.GetAbilityModifier(sheet, AbilityModifierSource);
+            if (sheet == null)
+                return 0;
+            return sheet.GetAbilityModifier(AbilityModifierSource);
         }
 
         public int GetTotal(CharacterSheet sheet)
@@ -66,7 +68,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -79,7 +81,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -93,11 +95,11 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, abilityModifierSource) ? abilityModifierSource.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, baseSave) ? baseSave.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, magicModifier) ? magicModifier.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, miscModifier) ? miscModifier.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, tempModifier) ? tempModifier.GetHashCode() : 0);
+            hash = (hash * 7) + (abilityModifierSource is null ? 0 : abilityModifierSource.GetHashCode());
+            hash = (hash * 7) + (baseSave is null ? 0 : baseSave.GetHashCode());
+            hash = (hash * 7) + (magicModifier is null ? 0 : magicModifier.GetHashCode());
+            hash = (hash * 7) + (miscModifier is null ? 0 : miscModifier.GetHashCode());
+            hash = (hash * 7) + (tempModifier is null ? 0 : tempModifier.GetHashCode());
             return hash;
         }
 

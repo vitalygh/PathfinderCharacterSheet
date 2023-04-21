@@ -36,7 +36,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public bool Equals(LevelOfClassList other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -45,7 +45,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -58,7 +58,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -75,21 +75,22 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public string AsString(CharacterSheet sheet)
         {
-            var level = string.Empty;
             var totalLevel = 0;
+            var level = new StringBuilder();
             foreach (var loc in this)
             {
                 if (loc == null)
                     continue;
                 if (level.Length > 0)
-                    level += ", ";
-                var lvl = loc.GetValue(sheet); ;
-                level += loc.ClassName + " (" + lvl.ToString() + ")";
+                    level.Append(", ");
+                var lvl = loc.GetValue(sheet);
+                level.Append(loc?.ClassName);
+                level.Append(" (").Append(lvl).Append(")");
                 totalLevel += lvl;
             }
             if (level.Length > 0)
-                level = totalLevel.ToString() + ": " + level;
-            return level;
+                level.Insert(0, ": ").Insert(0, totalLevel);
+            return level.ToString();
         }
     }
 }

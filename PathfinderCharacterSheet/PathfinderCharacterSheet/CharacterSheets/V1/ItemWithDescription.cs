@@ -6,15 +6,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class ItemWithDescription: IPrototype<ItemWithDescription>, IEquatable<ItemWithDescription>
     {
-        public int uid = -1;
+        public int uid = CharacterSheet.InvalidUID;
         public bool selected = false;
         public string name = null;
         public string description = null;
-
-        public ItemWithDescription()
-        {
-            uid = CharacterSheetStorage.GetUID();
-        }
 
         public virtual ItemWithDescription Clone
         {
@@ -43,7 +38,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -56,7 +51,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -72,8 +67,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             hash = (hash * 7) + base.GetHashCode();
             hash = (hash * 7) + uid.GetHashCode();
             hash = (hash * 7) + selected.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, name) ? name.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, description) ? description.GetHashCode() : 0);
+            hash = (hash * 7) + (name is null ? 0 : name.GetHashCode());
+            hash = (hash * 7) + (description is null ? 0 : description.GetHashCode());
             return hash;
         }
 

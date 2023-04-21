@@ -15,7 +15,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string armorType = ArmorTypes.Other.ToString();
         public ArmorTypes ArmorType
         {
-            get { return CharacterSheet.GetEnumValue(armorType, ArmorTypes.Other); }
+            get { return Helpers.GetEnumValue(armorType, ArmorTypes.Other); }
             set { armorType = value.ToString(); }
         }
         public bool limitMaxDexBonus = false;
@@ -40,21 +40,21 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string properties = null;
         public override string AsString(CharacterSheet sheet)
         {
-            var armor = string.Empty;
+            var armor = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(name))
-                armor += name + " ";
-            armor += "(" + armorType;
+                armor.Append(name).Append(" ");
+            armor.Append("(").Append(armorType);
             //if (active)
             //    armor += ", active";
-            armor += "): ";
-            armor += ArmorBonus(sheet);
+            armor.Append("): ");
+            armor.Append(ArmorBonus(sheet));
             if (limitMaxDexBonus)
-                armor += ", " + MaxDexBonus(sheet);
-            armor += ", " + CheckPenalty(sheet);
-            armor += ", " + SpellFailure(sheet);
+                armor.Append(", ").Append(MaxDexBonus(sheet));
+            armor.Append(", ").Append(CheckPenalty(sheet));
+            armor.Append(", ").Append( SpellFailure(sheet));
             if (!string.IsNullOrWhiteSpace(properties))
-                armor += ", " + properties;
-            return armor;
+                armor.Append(", ").Append(properties);
+            return armor.ToString();
         }
 
         public override ItemWithDescription Clone
@@ -92,7 +92,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public override bool Equals(object other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
                 return false;
             if (ReferenceEquals(this, other))
                 return true;
@@ -105,7 +105,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (ReferenceEquals(first, second))
                 return true;
-            if (ReferenceEquals(null, first))
+            if (first is null)
                 return false;
             return first.Equals(second);
         }
@@ -120,13 +120,13 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
             hash = (hash * 7) + selected.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, armorBonus) ? armorBonus.GetHashCode() : 0);
+            hash = (hash * 7) + (armorBonus is null ? 0 : armorBonus.GetHashCode());
             hash = (hash * 7) + armorType.GetHashCode();
             hash = (hash * 7) + limitMaxDexBonus.GetHashCode();
-            hash = (hash * 7) + (!ReferenceEquals(null, maxDexBonus) ? maxDexBonus.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, checkPenalty) ? checkPenalty.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, spellFailure) ? spellFailure.GetHashCode() : 0);
-            hash = (hash * 7) + (!ReferenceEquals(null, properties) ? properties.GetHashCode() : 0);
+            hash = (hash * 7) + (maxDexBonus is null ? 0 : maxDexBonus.GetHashCode());
+            hash = (hash * 7) + (checkPenalty is null ? 0 : checkPenalty.GetHashCode());
+            hash = (hash * 7) + (spellFailure is null ? 0 : spellFailure.GetHashCode());
+            hash = (hash * 7) + (properties is null ? 0 : properties.GetHashCode());
             return hash;
         }
 

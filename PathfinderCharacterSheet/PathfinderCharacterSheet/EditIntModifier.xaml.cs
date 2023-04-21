@@ -327,10 +327,10 @@ namespace PathfinderCharacterSheet
             else
                 this.modifier = new IntModifier();
             InitControls(allowUseAbilities);
-            IsActive.IsChecked = this.modifier.IsActive;
+            IsActive.IsChecked = this.modifier.active;
             ItemMustBeActive.IsChecked = this.modifier.mustBeActive;
             ModifierValue.Text = this.modifier.value.ToString();
-            ModifierName.Text = this.modifier.Name;
+            ModifierName.Text = this.modifier.name;
             Delete.IsEnabled = source != null;
             UpdateView();
         }
@@ -470,8 +470,7 @@ namespace PathfinderCharacterSheet
             modifier.name = ModifierName.Text;
             if (AbilityPicker != null)
             {
-                var selectedItem = AbilityPicker.SelectedItem as AbilityPickerItem;
-                if (selectedItem != null)
+                if (AbilityPicker.SelectedItem is AbilityPickerItem selectedItem)
                     modifier.SourceAbility = selectedItem.Value;
             }
             /*
@@ -511,8 +510,8 @@ namespace PathfinderCharacterSheet
         async void Delete_Clicked(object sender, EventArgs e)
         {
             var modifierName = string.Empty;
-            if ((modifier != null) && !string.IsNullOrWhiteSpace(modifier.Name))
-                modifierName = " \"" + modifier.Name + "\"";
+            if ((modifier != null) && !string.IsNullOrWhiteSpace(modifier.name))
+                modifierName = " \"" + modifier.name + "\"";
             bool allow = await DisplayAlert("Remove modifier" + modifierName, "Are you sure?", "Yes", "No");
             if (allow)
             {
