@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class LevelOfClass: IContextValue<int>, IPrototype<LevelOfClass>, IEquatable<LevelOfClass>
+    public class LevelOfClass: IContextValue<int, CharacterSheet>, IPrototype<LevelOfClass>, IEquatable<LevelOfClass>
     {
         public ValueWithIntModifiers level = new ValueWithIntModifiers();
         public int GetValue(CharacterSheet sheet) { return level.GetValue(sheet); }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define OPTIMIZE_MULTIPLIERS_AND_LIMITS
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,22 +7,51 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntModifier : Modifier<int>, IEquatable<IntModifier>
     {
-        public string sourceAbility = Ability.None.ToString();
-        public Ability SourceAbility
+        public const Ability DefaultSourceAbility = Ability.None;
+        public string sourceAbility = DefaultSourceAbility.ToString();
+        internal Ability SourceAbility
         {
-            get { return Helpers.GetEnumValue(sourceAbility, Ability.None); }
+            get { return Helpers.GetEnumValue(sourceAbility, DefaultSourceAbility); }
             set { sourceAbility = value.ToString(); }
         }
-        public IntMultiplier abilityMultiplier = new IntMultiplier();
+        public IntMultiplier abilityMultiplier = null;
 
         public int sourceItemUID = CharacterSheet.InvalidUID;
         public bool mustBeActive = true;
 
         public bool multiplyToLevel = false;
         public string className = null;
-        public IntMultiplier levelMultiplier = new IntMultiplier();
+        public IntMultiplier levelMultiplier = null;
 
         public bool autoNaming = true;
+
+#if OPTIMIZE_MULTIPLIERS_AND_LIMITS
+        private static readonly IntMultiplier emptyIntMultiplier = new IntMultiplier();
+        private static readonly IntLimit emptyIntLimit = new IntLimit();
+        private static readonly List<IntModifier> allModifiers = new List<IntModifier>();
+        public IntModifier(): base()
+        {
+            allModifiers.Add(this);
+        }
+
+        public static void Optimize()
+        {
+            foreach (var modifier in allModifiers)
+            {
+                if (modifier is null)
+                    continue;
+                if ((modifier.abilityMultiplier != null) && (modifier.abilityMultiplier.limit == emptyIntLimit))
+                    modifier.abilityMultiplier.limit = null;
+                if (modifier.abilityMultiplier == emptyIntMultiplier)
+                    modifier.abilityMultiplier = null;
+                if ((modifier.levelMultiplier != null) && (modifier.levelMultiplier.limit == emptyIntLimit))
+                    modifier.levelMultiplier.limit = null;
+                if (modifier.levelMultiplier == emptyIntMultiplier)
+                    modifier.levelMultiplier = null;
+            }
+            allModifiers.Clear();
+        }
+#endif
 
         public override int GetValue(CharacterSheet context)
         {

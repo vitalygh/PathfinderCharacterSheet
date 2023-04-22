@@ -7,6 +7,6 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
     public class ArmorTypePickerItem
     {
         public string Name { get; set; }
-        public ArmorTypes Value { get; set; }
+        public ArmorType Value { get; set; }
     }
 }

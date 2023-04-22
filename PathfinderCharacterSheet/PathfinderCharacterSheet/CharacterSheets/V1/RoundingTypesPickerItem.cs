@@ -7,6 +7,6 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
     public class RoundingTypesPickerItem
     {
         public string Name { set; get; }
-        public RoundingTypes Value { set; get; }
+        public RoundingType Value { set; get; }
     }
 }

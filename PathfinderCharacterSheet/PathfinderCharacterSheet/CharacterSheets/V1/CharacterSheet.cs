@@ -48,10 +48,11 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
         public string biography = null;
-        public string alignment = Alignments.Neutral.ToString();
-        public Alignments Alignment
+        public const Alignment DefaultAlignment = Alignment.Neutral;
+        public string alignment = DefaultAlignment.ToString();
+        internal Alignment Alignment
         {
-            get { return Helpers.GetEnumValue(alignment, Alignments.Neutral); }
+            get { return Helpers.GetEnumValue(alignment, DefaultAlignment); }
             set { alignment = value.ToString(); }
         }
         public string deity = null;
@@ -268,45 +269,45 @@ public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
         {
             skills = new List<SkillRank>()
             {
-                new SkillRank(Skills.Acrobatics, Ability.Dexterity),
-                new SkillRank(Skills.Appraise, Ability.Intelligence),
-                new SkillRank(Skills.Bluff, Ability.Charisma),
-                new SkillRank(Skills.Climb, Ability.Strength),
-                new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
-                new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
-                new SkillRank(Skills.Craft, Ability.Intelligence, false, true),
-                new SkillRank(Skills.Diplomacy, Ability.Charisma),
-                new SkillRank(Skills.DisableDevice, Ability.Dexterity, true),
-                new SkillRank(Skills.Disguise, Ability.Charisma),
-                new SkillRank(Skills.EscapeArtist, Ability.Dexterity),
-                new SkillRank(Skills.Fly, Ability.Dexterity),
-                new SkillRank(Skills.HandleAnimal, Ability.Charisma, true),
-                new SkillRank(Skills.Heal, Ability.Wisdom),
-                new SkillRank(Skills.Intimidate, Ability.Charisma),
-                new SkillRank(Skills.KnowledgeOfArcana, Ability.Intelligence),
-                new SkillRank(Skills.KnowledgeOfDungeoneering, Ability.Intelligence, true),
-                new SkillRank(Skills.KnowledgeOfEngineering, Ability.Intelligence, true),
-                new SkillRank(Skills.KnowledgeOfGeography, Ability.Intelligence, true),
-                new SkillRank(Skills.KnowledgeOfHistory, Ability.Intelligence, true),
-                new SkillRank(Skills.KnowledgeOfLocal, Ability.Intelligence, true),
-                new SkillRank(Skills.KnowledgeOfNature, Ability.Intelligence, true),
-                new SkillRank(Skills.KnowledgeOfNobility, Ability.Intelligence, true),
-                new SkillRank(Skills.KnowledgeOfPlanes, Ability.Intelligence, true),
-                new SkillRank(Skills.KnowledgeOfReligion, Ability.Intelligence, true),
-                new SkillRank(Skills.Linguistics, Ability.Intelligence, true),
-                new SkillRank(Skills.Perception, Ability.Wisdom),
-                new SkillRank(Skills.Perform, Ability.Charisma, false, true),
-                new SkillRank(Skills.Perform, Ability.Charisma, false, true),
-                new SkillRank(Skills.Profession, Ability.Wisdom, true, true),
-                new SkillRank(Skills.Profession, Ability.Wisdom, true, true),
-                new SkillRank(Skills.Ride, Ability.Dexterity),
-                new SkillRank(Skills.SenseMotive, Ability.Wisdom),
-                new SkillRank(Skills.SleightOfHand, Ability.Dexterity, true),
-                new SkillRank(Skills.Spellcraft, Ability.Intelligence, true),
-                new SkillRank(Skills.Stealth, Ability.Dexterity),
-                new SkillRank(Skills.Survival, Ability.Wisdom),
-                new SkillRank(Skills.Swim, Ability.Strength),
-                new SkillRank(Skills.UseMagicDevice, Ability.Charisma, true),
+                new SkillRank(Skill.Acrobatics, Ability.Dexterity),
+                new SkillRank(Skill.Appraise, Ability.Intelligence),
+                new SkillRank(Skill.Bluff, Ability.Charisma),
+                new SkillRank(Skill.Climb, Ability.Strength),
+                new SkillRank(Skill.Craft, Ability.Intelligence, false, true),
+                new SkillRank(Skill.Craft, Ability.Intelligence, false, true),
+                new SkillRank(Skill.Craft, Ability.Intelligence, false, true),
+                new SkillRank(Skill.Diplomacy, Ability.Charisma),
+                new SkillRank(Skill.DisableDevice, Ability.Dexterity, true),
+                new SkillRank(Skill.Disguise, Ability.Charisma),
+                new SkillRank(Skill.EscapeArtist, Ability.Dexterity),
+                new SkillRank(Skill.Fly, Ability.Dexterity),
+                new SkillRank(Skill.HandleAnimal, Ability.Charisma, true),
+                new SkillRank(Skill.Heal, Ability.Wisdom),
+                new SkillRank(Skill.Intimidate, Ability.Charisma),
+                new SkillRank(Skill.KnowledgeOfArcana, Ability.Intelligence),
+                new SkillRank(Skill.KnowledgeOfDungeoneering, Ability.Intelligence, true),
+                new SkillRank(Skill.KnowledgeOfEngineering, Ability.Intelligence, true),
+                new SkillRank(Skill.KnowledgeOfGeography, Ability.Intelligence, true),
+                new SkillRank(Skill.KnowledgeOfHistory, Ability.Intelligence, true),
+                new SkillRank(Skill.KnowledgeOfLocal, Ability.Intelligence, true),
+                new SkillRank(Skill.KnowledgeOfNature, Ability.Intelligence, true),
+                new SkillRank(Skill.KnowledgeOfNobility, Ability.Intelligence, true),
+                new SkillRank(Skill.KnowledgeOfPlanes, Ability.Intelligence, true),
+                new SkillRank(Skill.KnowledgeOfReligion, Ability.Intelligence, true),
+                new SkillRank(Skill.Linguistics, Ability.Intelligence, true),
+                new SkillRank(Skill.Perception, Ability.Wisdom),
+                new SkillRank(Skill.Perform, Ability.Charisma, false, true),
+                new SkillRank(Skill.Perform, Ability.Charisma, false, true),
+                new SkillRank(Skill.Profession, Ability.Wisdom, true, true),
+                new SkillRank(Skill.Profession, Ability.Wisdom, true, true),
+                new SkillRank(Skill.Ride, Ability.Dexterity),
+                new SkillRank(Skill.SenseMotive, Ability.Wisdom),
+                new SkillRank(Skill.SleightOfHand, Ability.Dexterity, true),
+                new SkillRank(Skill.Spellcraft, Ability.Intelligence, true),
+                new SkillRank(Skill.Stealth, Ability.Dexterity),
+                new SkillRank(Skill.Survival, Ability.Wisdom),
+                new SkillRank(Skill.Swim, Ability.Strength),
+                new SkillRank(Skill.UseMagicDevice, Ability.Charisma, true),
             };
         }
         public List<string> languages = new List<string>();

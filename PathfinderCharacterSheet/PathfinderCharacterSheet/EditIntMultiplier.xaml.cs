@@ -16,6 +16,7 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private IntMultiplier source = null;
         private IntMultiplier multiplier = null;
+        private static readonly IntLimit emptyLimit = new IntLimit();
 
         public EditIntMultiplier()
         {
@@ -25,7 +26,7 @@ namespace PathfinderCharacterSheet
         public void Init(IntMultiplier multiplier)
         {
             source = multiplier;
-            this.multiplier = source.Clone as IntMultiplier;
+            this.multiplier = source.Clone;
 
             AdditionalBefore.Text = multiplier.additionalBefore.ToString();
             Multiplier.Text =  multiplier.multiplier.ToString();
@@ -33,13 +34,13 @@ namespace PathfinderCharacterSheet
             AdditionalAfter.Text = multiplier.additionalAfter.ToString();
 
             var roundingTypes = new List<RoundingTypesPickerItem>();
-            var roundingValues = Enum.GetValues(typeof(RoundingTypes));
+            var roundingValues = Enum.GetValues(typeof(RoundingType));
             var roundingIndex = -1;
             var roundingSelectedIndex = -1;
-            var roundingSelectedValue = multiplier != null ? multiplier.RoundingType : IntMultiplier.DefaultRounding;
+            var roundingSelectedValue = multiplier.RoundingType;
             foreach (var v in roundingValues)
             {
-                var value = (RoundingTypes)v;
+                var value = (RoundingType)v;
                 roundingIndex += 1;
                 if (roundingSelectedValue == value)
                     roundingSelectedIndex = roundingIndex;
@@ -58,7 +59,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            Limit.Text = multiplier.limit.AsString();
+            Limit.Text = multiplier.limit?.AsString() ?? string.Empty;
         }
 
         private void Limit_Tapped(object sender, EventArgs e)
@@ -66,6 +67,8 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             var el = new EditIntLimit();
+            if (multiplier.limit == null)
+                multiplier.limit = emptyLimit.Clone;
             el.Init(multiplier.limit);
             pushedPage = el;
             Navigation.PushAsync(pushedPage);
@@ -85,6 +88,9 @@ namespace PathfinderCharacterSheet
                     currentRoundingType = item.Value;
             }
             multiplier.RoundingType = currentRoundingType;
+
+            if (multiplier.limit == emptyLimit)
+                multiplier.limit = null;
 
             if (!source.Equals(multiplier))
             {

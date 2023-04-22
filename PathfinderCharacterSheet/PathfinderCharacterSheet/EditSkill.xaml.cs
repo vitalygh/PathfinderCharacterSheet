@@ -99,7 +99,7 @@ namespace PathfinderCharacterSheet
             else
             {
                 SelectAbilityPickerValue(item.AbilityModifierSource);
-                this.item = item.Clone as ItemsType;
+                this.item = item.Clone;
             }
             itemIndex = index;
 

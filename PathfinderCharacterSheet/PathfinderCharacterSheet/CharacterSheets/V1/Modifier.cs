@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class Modifier<T>: IContextValue<T>, IEquatable<Modifier<T>>, IPrototype<Modifier<T>>
+    public class Modifier<T>: IContextValue<T, CharacterSheet>, IEquatable<Modifier<T>>, IPrototype<Modifier<T>>
     {
         public bool active = true;
         public string name = null;

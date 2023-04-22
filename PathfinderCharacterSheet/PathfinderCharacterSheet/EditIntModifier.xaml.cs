@@ -18,6 +18,7 @@ namespace PathfinderCharacterSheet
         private IntModifiersList modifiersList = null;
         private IntModifier source = null;
         private IntModifier modifier = null;
+        private static readonly IntMultiplier emptyMultiplier = new IntMultiplier();
 
         private Label TotalTitle = null;
         private Label TotalValue = null;
@@ -181,7 +182,7 @@ namespace PathfinderCharacterSheet
                 var values = Enum.GetValues(typeof(Ability));
                 var index = -1;
                 var selectedIndex = -1;
-                var selectedValue = modifier != null ? modifier.SourceAbility : Ability.None;
+                var selectedValue = modifier != null ? modifier.SourceAbility : IntModifier.DefaultSourceAbility;
                 foreach (var v in values)
                 {
                     var value = (Ability)v;
@@ -210,7 +211,12 @@ namespace PathfinderCharacterSheet
                 AbilityMultiplierTitle = CreateLabel("Ability Multiplier:");
                 AbilityMultiplierFrame = CreateFrame(string.Empty);
                 AbilityMultiplier = AbilityMultiplierFrame.Content as Label;
-                MainPage.SetTapHandler(AbilityMultiplierFrame, (s, e) => EditMultiplier(modifier.abilityMultiplier));
+                MainPage.SetTapHandler(AbilityMultiplierFrame, (s, e) =>
+                {
+                    if (modifier.abilityMultiplier == null)
+                        modifier.abilityMultiplier = emptyMultiplier.Clone;
+                    EditMultiplier(modifier.abilityMultiplier);
+                });
 
                 grid.Children.Add(AbilityMultiplierTitle, 0, row);
                 grid.Children.Add(AbilityMultiplierFrame, 1, row);
@@ -251,7 +257,12 @@ namespace PathfinderCharacterSheet
             LevelMultiplierTitle = CreateLabel("Level Multiplier:");
             LevelMultiplierFrame = CreateFrame(string.Empty);
             LevelMultiplier = LevelMultiplierFrame.Content as Label;
-            MainPage.SetTapHandler(LevelMultiplierFrame, (s, e) => EditMultiplier(modifier.levelMultiplier));
+            MainPage.SetTapHandler(LevelMultiplierFrame, (s, e) =>
+            {
+                if (modifier.levelMultiplier == null)
+                    modifier.levelMultiplier = emptyMultiplier.Clone;
+                EditMultiplier(modifier.levelMultiplier);
+            });
 
             grid.Children.Add(LevelMultiplierTitle, 0, row);
             grid.Children.Add(LevelMultiplierFrame, 1, row);
@@ -381,7 +392,7 @@ namespace PathfinderCharacterSheet
             }
 
             var lms = loc == null ? "Total Level" : "Level Of " + modifier.className;
-            var lm = modifier.levelMultiplier.AsString(lms);
+            var lm = modifier.levelMultiplier?.AsString(lms) ?? string.Empty;
             if (lm == lms)
                 lm = string.Empty;
             LevelMultiplier.Text = !modifier.multiplyToLevel ? string.Empty : lm;
@@ -447,9 +458,9 @@ namespace PathfinderCharacterSheet
                     currentAbility = item.Value;
                 modifier.SourceAbility = currentAbility;
 
-                var sab = modifier.SourceAbility != Ability.None;
-                var ams = modifier.SourceAbility.ToString();
-                var am = modifier.abilityMultiplier.AsString(ams);
+                var sab = modifier.SourceAbility != IntModifier.DefaultSourceAbility;
+                var ams = modifier.sourceAbility;
+                var am = modifier.abilityMultiplier?.AsString(ams) ?? string.Empty;
                 if (am == ams)
                     am = string.Empty;
                 AbilityMultiplier.Text = !sab ? string.Empty : am;
@@ -486,6 +497,12 @@ namespace PathfinderCharacterSheet
             }
             */
             modifier.autoNaming = AutoNaming.IsChecked;
+
+            if (modifier.abilityMultiplier == emptyMultiplier)
+                modifier.abilityMultiplier = null;
+            if (modifier.levelMultiplier == emptyMultiplier)
+                modifier.levelMultiplier = null;
+
             if ((source != null) && !source.Equals(modifier))
                 source.Fill(modifier);
         }

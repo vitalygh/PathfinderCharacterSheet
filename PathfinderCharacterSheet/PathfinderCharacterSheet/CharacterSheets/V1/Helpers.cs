@@ -6,7 +6,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class Helpers
     {
-        public static bool IsEqual<T>(IEnumerable<T> first, IEnumerable<T> second)
+        public static bool SequenceEqual<T>(IEnumerable<T> first, IEnumerable<T> second)
         {
             if ((first is null) && (second is null))
                 return true;

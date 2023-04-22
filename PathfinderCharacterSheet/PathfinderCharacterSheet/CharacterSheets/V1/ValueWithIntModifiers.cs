@@ -1,13 +1,39 @@
-﻿using System;
+﻿//#define OPTIMIZE_MODIFIERS
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class ValueWithIntModifiers: IContextValue<int>, IEquatable<ValueWithIntModifiers>, IPrototype<ValueWithIntModifiers>
+    public class ValueWithIntModifiers: IContextValue<int, CharacterSheet>, IEquatable<ValueWithIntModifiers>, IPrototype<ValueWithIntModifiers>
     {
         public int baseValue = 0;
-        public IntModifiersList modifiers = new IntModifiersList();
+        public IntModifiersList modifiers = null;
+
+
+#if OPTIMIZE_MODIFIERS
+        private static readonly List<ValueWithIntModifiers> allValuesWithIntModifiers = new List<ValueWithIntModifiers>();
+        public ValueWithIntModifiers() : base()
+        {
+            allValuesWithIntModifiers.Add(this);
+        }
+
+        public static void Optimize()
+        {
+            foreach (var valueWithIntModifiers in allValuesWithIntModifiers)
+            {
+                if (valueWithIntModifiers is null)
+                    continue;
+                if (valueWithIntModifiers.modifiers is null)
+                    continue;
+                if (valueWithIntModifiers.modifiers.Count > 0)
+                    continue;
+                valueWithIntModifiers.modifiers = null;
+            }
+            allValuesWithIntModifiers.Clear();
+        }
+#endif
+
 
         public virtual int GetValue(CharacterSheet context)
         {

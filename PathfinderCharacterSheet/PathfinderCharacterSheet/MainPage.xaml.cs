@@ -146,7 +146,7 @@ namespace PathfinderCharacterSheet
             addModifierButton.Clicked += (s, e) => AddCharacter();
             stack.Children.Add(addModifierButton);
             grid.Children.Add(stack, 0, 3, 0, 1);
-            var characters = new List<CharacterSheet>(CharacterSheetStorage.Instance.characters.Keys);
+            var characters = new List<CharacterSheet>(CharacterSheetStorage.Instance.Characters);
             characters.Sort((a, b) => a.Name.CompareTo(b.Name));
              var count = characters.Count;
             if (count <= 0)

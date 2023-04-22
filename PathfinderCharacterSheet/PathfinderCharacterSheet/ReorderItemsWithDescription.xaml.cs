@@ -128,7 +128,7 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             pushedPage = this;
-            if (!Helpers.IsEqual(initItems, items))
+            if (!Helpers.SequenceEqual(initItems, items))
                 reorder?.Invoke(items);
             Navigation.PopAsync();
         }

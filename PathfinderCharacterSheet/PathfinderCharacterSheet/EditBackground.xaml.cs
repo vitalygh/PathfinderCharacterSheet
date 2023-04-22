@@ -21,7 +21,7 @@ namespace PathfinderCharacterSheet
         public class AlignmentPickerItem
         {
             public string Name { set; get; }
-            public Alignments Value { set; get; }
+            public Alignment Value { set; get; }
         }
 
         public EditBackground()
@@ -38,7 +38,7 @@ namespace PathfinderCharacterSheet
                 return;
             levelOfClass = sheet.levelOfClass?.Clone;
             var alignments = new List<AlignmentPickerItem>();
-            var values = Enum.GetValues(typeof(Alignments));
+            var values = Enum.GetValues(typeof(Alignment));
             var selectedIndex = -1;
             var index = -1;
             foreach (var v in values)
@@ -47,7 +47,7 @@ namespace PathfinderCharacterSheet
                 var alignment = new AlignmentPickerItem()
                 {
                     Name = v.ToString(),
-                    Value = (Alignments)v,
+                    Value = (Alignment)v,
                 };
                 alignments.Add(alignment);
                 if (sheet.Alignment == alignment.Value)

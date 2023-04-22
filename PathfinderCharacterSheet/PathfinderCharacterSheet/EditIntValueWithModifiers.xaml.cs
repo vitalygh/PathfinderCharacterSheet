@@ -36,6 +36,8 @@ namespace PathfinderCharacterSheet
             this.source = source;
             this.saveCharacter = saveCharacter;
             modifiers = source.Clone.modifiers;
+            if (modifiers == null)
+                modifiers = new IntModifiersList();
             Value.Text = source.baseValue.ToString();
             UpdateView();
         }
@@ -54,7 +56,7 @@ namespace PathfinderCharacterSheet
             var total = 0;
             MainPage.StrToInt(Value.Text, ref total);
             if (modifiers != null)
-                total +=modifiers.GetValue(sheet);
+                total += modifiers.GetValue(sheet);
             Total.Text = total.ToString();
         }
 
@@ -78,7 +80,7 @@ namespace PathfinderCharacterSheet
             {
                 modifiers.Clear();
                 foreach (var item in reordered)
-                    modifiers.Add(item as IntModifier);
+                    modifiers.Add(item);
             });
             Navigation.PushAsync(pushedPage);
         }
@@ -125,7 +127,9 @@ namespace PathfinderCharacterSheet
             if (source == null)
                 return;
             var hasChanged = MainPage.StrToInt(Value.Text, ref source.baseValue);
-            if (!source.modifiers.Equals(modifiers))
+            if ((modifiers != null) && (modifiers.Count <= 0))
+                modifiers = null;
+            if (source.modifiers != modifiers)
             {
                 hasChanged = true;
                 source.modifiers = modifiers;

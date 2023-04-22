@@ -27,14 +27,15 @@ namespace PathfinderCharacterSheet
             }
         }
 
-
         public int MaxBackupsCount { get { return 5; } }
 
-        public Dictionary<CharacterSheet, string> characters = null;
+        private Dictionary<CharacterSheet, string> characters = null;
+        public IEnumerable<CharacterSheet> Characters => characters?.Keys;
+
         public CharacterSheet selectedCharacter = null;
+
         public Action<string, string, Exception> onCharacterSavingFailed = null;
         public Action<string, Exception> onCharacterLoadingFailed = null;
-
         public Action<string, string, Exception> onBackupSavingFailed = null;
         public Action<string, Exception> onBackupRemovingFailed = null;
         public Action<string, string> onCharacterLoadedFromBackup = null;
@@ -93,6 +94,8 @@ namespace PathfinderCharacterSheet
                 if (character != null)
                 {
 #if VALIDATE_XML
+                    //IntModifier.Optimize();
+                    //ValueWithIntModifiers.Optimize();
                     using (var memoryStream = new MemoryStream())
                     {
                         var serializer = new XmlSerializer(typeof(CharacterSheet));

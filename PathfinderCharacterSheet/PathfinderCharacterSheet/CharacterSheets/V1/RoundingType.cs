@@ -4,10 +4,10 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public enum DexterityModifierSources
+    public enum RoundingType
     {
-        DependsOnACItems,
-        Full,
-        Custom,
-    }
+        Down,
+        Up,
+        ToNearest,
+    };
 }

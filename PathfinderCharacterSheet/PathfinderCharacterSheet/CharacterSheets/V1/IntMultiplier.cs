@@ -6,13 +6,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntMultiplier: IApplicable<int>, IEquatable<IntMultiplier>, IPrototype<IntMultiplier>
     {
-        public const RoundingTypes DefaultRounding = RoundingTypes.Up;
-
         public int additionalBefore = 0;
         public int multiplier = 1;
         public int divider = 1;
+        public const RoundingType DefaultRounding = RoundingType.Up;
         public string roundingType = DefaultRounding.ToString();
-        public RoundingTypes RoundingType
+        internal RoundingType RoundingType
         {
             get { return Helpers.GetEnumValue(roundingType, DefaultRounding); }
             set { roundingType = value.ToString(); }
@@ -20,7 +19,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public int additionalAfter = 0;
 
-        public IntLimit limit = new IntLimit();
+        public IntLimit limit = null;
 
         public int Apply(int value)
         {
@@ -30,10 +29,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             fval += additionalAfter;
             switch (RoundingType)
             {
-                case RoundingTypes.ToNearest:
+                case RoundingType.ToNearest:
                     value = (int)Math.Floor(fval + (fval < 0.0f ? -0.5f : 0.5f));
                     break;
-                case RoundingTypes.Down:
+                case RoundingType.Down:
                     value = (int)Math.Floor(fval);
                     break;
                 default:
@@ -65,8 +64,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             divider = source.divider;
             additionalAfter = source.additionalAfter;
             RoundingType = source.RoundingType;
-            if (source.limit != null)
-                limit = source.limit.Clone;
+            limit = source.limit?.Clone;
 
             return this;
         }
@@ -85,12 +83,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (RoundingType != other.RoundingType)
                 return false;
-            if (limit != null)
-            {
-                if (!limit.Equals(other.limit))
-                    return false;
-            }
-            else if ((other.limit != null) && !other.limit.Equals(limit))
+            if (limit != other.limit)
                 return false;
             return true;
         }
@@ -169,7 +162,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
             if (addBrackets)
                 text.Insert(0, "(").Append(")");
-            text.Append(limit.AsString());
+            if (limit != null)
+                text.Append(limit.AsString());
             return text.ToString();
         }
     }

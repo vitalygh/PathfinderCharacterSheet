@@ -44,13 +44,13 @@ namespace PathfinderCharacterSheet
             else
                 this.item = item.Clone as ItemType;
             var armorTypeIndex = -1;
-            var armorTypeValues = Enum.GetValues(typeof(ArmorTypes));
+            var armorTypeValues = Enum.GetValues(typeof(ArmorType));
             var pickerItems = new List<ArmorTypePickerItem>();
             var armorTypeCounter = -1;
             foreach (var atv in armorTypeValues)
             {
                 armorTypeCounter += 1;
-                var value = (ArmorTypes)atv;
+                var value = (ArmorType)atv;
                 if (value == this.item.ArmorType)
                     armorTypeIndex = armorTypeCounter;
                 pickerItems.Add(new ArmorTypePickerItem()
@@ -95,7 +95,6 @@ namespace PathfinderCharacterSheet
                 return;
             item.active = ArmorActive.IsChecked;
             item.name = ArmorName.Text;
-            //var selectedArmorType = ArmorType.SelectedItem as ArmorTypePickerItem;
             if (ArmorType.SelectedItem is ArmorTypePickerItem selectedArmorType)
                 item.ArmorType = selectedArmorType.Value;
             item.limitMaxDexBonus = LimitMaxDexBonus.IsChecked;

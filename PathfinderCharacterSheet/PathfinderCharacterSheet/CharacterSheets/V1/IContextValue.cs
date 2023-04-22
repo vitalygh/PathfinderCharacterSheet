@@ -4,8 +4,8 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public interface IContextValue<T>
+    public interface IContextValue<T, Context>
     {
-        T GetValue(CharacterSheet context);
+        T GetValue(Context context);
     }
 }

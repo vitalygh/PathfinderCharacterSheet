@@ -12,10 +12,11 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var ab = armorBonus.GetValue(sheet);
             return ab >= 0 ? "+" + ab : ab.ToString();
         }
-        public string armorType = ArmorTypes.Other.ToString();
-        public ArmorTypes ArmorType
+        public const ArmorType DefaultArmorType = ArmorType.Other;
+        public string armorType = DefaultArmorType.ToString();
+        internal ArmorType ArmorType
         {
-            get { return Helpers.GetEnumValue(armorType, ArmorTypes.Other); }
+            get { return Helpers.GetEnumValue(armorType, DefaultArmorType); }
             set { armorType = value.ToString(); }
         }
         public bool limitMaxDexBonus = false;

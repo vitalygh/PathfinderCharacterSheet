@@ -16,7 +16,7 @@ namespace PathfinderCharacterSheet
         public class DexterityModifierSourcePickerItem
         {
             public string Name { get; set; }
-            public DexterityModifierSources Value { get; set; }
+            public DexterityModifierSource Value { get; set; }
         }
 
         private Page pushedPage = null;
@@ -35,14 +35,14 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             ac = sheet.armorClass.Clone;
-            var values = Enum.GetValues(typeof(DexterityModifierSources));
+            var values = Enum.GetValues(typeof(DexterityModifierSource));
             var count = -1;
             var valueIndex = 0;
             var dexModSrcPickerItems = new List<DexterityModifierSourcePickerItem>();
             foreach (var v in values)
             {
                 count += 1;
-                var value = (DexterityModifierSources)v;
+                var value = (DexterityModifierSource)v;
                 if (value == ac.DexterityModifierSource)
                     valueIndex = count;
                 dexModSrcPickerItems.Add(new DexterityModifierSourcePickerItem()
@@ -119,7 +119,7 @@ namespace PathfinderCharacterSheet
 
         private void DexModifier_Tapped(object sender, EventArgs e)
         {
-            if (ac.DexterityModifierSource != DexterityModifierSources.Custom)
+            if (ac.DexterityModifierSource != DexterityModifierSource.Custom)
                 return;
             if (pushedPage != null)
                 return;
@@ -228,7 +228,7 @@ namespace PathfinderCharacterSheet
             if (!(DexModifierSource.SelectedItem is DexterityModifierSourcePickerItem pickerItem))
                 return;
             ac.DexterityModifierSource = pickerItem.Value;
-            var custom = pickerItem.Value == DexterityModifierSources.Custom;
+            var custom = pickerItem.Value == DexterityModifierSource.Custom;
             DexModifier.Text = ac.GetDexterityModifier(sheet).ToString();
             DexModifier.TextDecorations = custom ? TextDecorations.Underline : TextDecorations.None;
             DexModifierFrame.BackgroundColor = custom ? Color.White : Color.LightGray;

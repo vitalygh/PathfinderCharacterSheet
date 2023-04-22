@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class IntModifiersList: List<IntModifier>, IContextValue<int>, IEquatable<IntModifiersList>, IPrototype<IntModifiersList>
+    public class IntModifiersList: List<IntModifier>, IContextValue<int, CharacterSheet>, IEquatable<IntModifiersList>, IPrototype<IntModifiersList>
     {
 
         public IntModifiersList(): base()

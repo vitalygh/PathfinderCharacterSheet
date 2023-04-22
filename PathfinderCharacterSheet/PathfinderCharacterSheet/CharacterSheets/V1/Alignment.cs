@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public enum Alignments
+    public enum Alignment
     {
         LawfulGood,
         NeutralGood,

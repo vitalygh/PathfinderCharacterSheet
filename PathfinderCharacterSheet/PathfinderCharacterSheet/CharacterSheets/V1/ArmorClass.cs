@@ -10,10 +10,11 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public bool itemsArmorBonus = true;
         public ValueWithIntModifiers shieldBonus = new ValueWithIntModifiers();
         public bool itemsShieldBonus = true;
-        public string dexterityModifierSource = DexterityModifierSources.DependsOnACItems.ToString();
-        public DexterityModifierSources DexterityModifierSource
+        public const DexterityModifierSource DefaultDexterityModifierSource = DexterityModifierSource.DependsOnACItems;
+        public string dexterityModifierSource = DefaultDexterityModifierSource.ToString();
+        internal DexterityModifierSource DexterityModifierSource
         {
-            get { return Helpers.GetEnumValue(dexterityModifierSource, DexterityModifierSources.DependsOnACItems); }
+            get { return Helpers.GetEnumValue(dexterityModifierSource, DefaultDexterityModifierSource); }
             set { dexterityModifierSource = value.ToString(); }
         }
         public ValueWithIntModifiers dexterityModifier = new ValueWithIntModifiers();
@@ -122,7 +123,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return 10 + sizeModifier.GetValue(sheet) + deflectionModifier.GetValue(sheet) + miscModifiers.GetValue(sheet);
         }
 
-        public int GetArmorBonus(CharacterSheet sheet, ArmorTypes type)
+        public int GetArmorBonus(CharacterSheet sheet, ArmorType type)
         {
             var ac = 0;
             foreach (var item in sheet.armorClassItems)
@@ -142,14 +143,14 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (!itemsArmorBonus)
                 return armorBonus.GetValue(sheet);
-            return GetArmorBonus(sheet, ArmorTypes.Armor);
+            return GetArmorBonus(sheet, ArmorType.Armor);
         }
 
         public int GetShieldBonus(CharacterSheet sheet)
         {
             if (!itemsShieldBonus)
                 return armorBonus.GetValue(sheet);
-            return GetArmorBonus(sheet, ArmorTypes.Shield);
+            return GetArmorBonus(sheet, ArmorType.Shield);
         }
 
         private ValueWithIntModifiers GetDexBonusLimit(CharacterSheet sheet)
@@ -181,7 +182,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var full = sheet.GetAbilityModifier(Ability.Dexterity);
             switch (DexterityModifierSource)
             {
-                case DexterityModifierSources.DependsOnACItems:
+                case DexterityModifierSource.DependsOnACItems:
                     var limit = GetDexBonusLimit(sheet);
                     if (limit == null)
                         return full;
@@ -189,9 +190,9 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     if (full < maxValue)
                         return full;
                     return maxValue;
-                case DexterityModifierSources.Full:
+                case DexterityModifierSource.Full:
                     return full;
-                case DexterityModifierSources.Custom:
+                case DexterityModifierSource.Custom:
                     return dexterityModifier.GetValue(sheet);
                 default:
                     return full;

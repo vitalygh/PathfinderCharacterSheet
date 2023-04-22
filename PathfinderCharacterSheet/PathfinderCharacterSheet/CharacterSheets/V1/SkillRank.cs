@@ -4,16 +4,17 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class SkillRank: IContextValue<int>, IPrototype<SkillRank>, IEquatable<SkillRank>
+    public class SkillRank: IContextValue<int, CharacterSheet>, IPrototype<SkillRank>, IEquatable<SkillRank>
     {
-        public string name = Skills.None.ToString();
+        public string name = Skill.None.ToString();
         public bool hasSubject = false;
         public string subject = null;
         public bool classSkill = false;
-        public string abilityModifierSource = Ability.None.ToString();
-        public Ability AbilityModifierSource
+        public const Ability DefaultAbilityModifierSource = Ability.None;
+        public string abilityModifierSource = DefaultAbilityModifierSource.ToString();
+        internal Ability AbilityModifierSource
         {
-            get { return Helpers.GetEnumValue(abilityModifierSource, Ability.None); }
+            get { return Helpers.GetEnumValue(abilityModifierSource, DefaultAbilityModifierSource); }
             set { abilityModifierSource = value.ToString(); }
         }
         public ValueWithIntModifiers rank = new ValueWithIntModifiers();
@@ -26,7 +27,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
         }
 
-        public SkillRank(Skills name, Ability abilityModifierSource, bool trainedOnly = false, bool hasSubject = false, bool custom = false) :
+        public SkillRank(Skill name, Ability abilityModifierSource, bool trainedOnly = false, bool hasSubject = false, bool custom = false) :
             this(name.ToString(), abilityModifierSource, trainedOnly, hasSubject, custom)
         {
         }
