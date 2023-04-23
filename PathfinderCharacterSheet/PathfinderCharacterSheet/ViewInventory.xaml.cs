@@ -469,7 +469,7 @@ namespace PathfinderCharacterSheet
             if (gearItem.selected == value)
                 return;
             gearItem.selected = value;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 
@@ -584,7 +584,7 @@ namespace PathfinderCharacterSheet
                 sheet.gear.Clear();
                 foreach (var item in reordered)
                     sheet.gear.Add(item as GearItem);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

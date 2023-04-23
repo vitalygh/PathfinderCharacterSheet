@@ -70,7 +70,7 @@ namespace PathfinderCharacterSheet
                     hasChanges = true;
                 }
             if (hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             for (var i = 0; i < updateCount; i++)
             {
                 var skillIndex = i;

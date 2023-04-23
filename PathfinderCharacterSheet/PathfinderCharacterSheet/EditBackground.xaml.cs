@@ -163,7 +163,7 @@ namespace PathfinderCharacterSheet
             }
             var hasChanges = EditToView();
             if (rename || hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             Navigation.PopAsync();
         }
 

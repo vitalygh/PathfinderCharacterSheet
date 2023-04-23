@@ -135,7 +135,7 @@ namespace PathfinderCharacterSheet
                 source.modifiers = modifiers;
             }
             if (hasChanged && saveCharacter)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
         }
     }
 }

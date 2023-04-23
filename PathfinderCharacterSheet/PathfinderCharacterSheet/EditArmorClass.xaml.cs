@@ -83,7 +83,7 @@ namespace PathfinderCharacterSheet
             if (!ac.Equals(sheet.armorClass))
             {
                 sheet.armorClass = ac;
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             }
         }
 

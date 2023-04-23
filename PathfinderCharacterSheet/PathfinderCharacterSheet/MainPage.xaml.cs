@@ -1,5 +1,6 @@
 ﻿#define SHOW_ERROR_MESSAGES
 #define SHOW_ERROR_DETAILS
+#define SAVE_SHEETS_ON_LOST_FOCUS
 //#define DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
 //#define LONG_TAP_INSTEAD_OF_DOUBLE_TAP
 using System;
@@ -20,9 +21,14 @@ namespace PathfinderCharacterSheet
         public static readonly double DefaultButtonTextSize = Device.GetNamedSize(NamedSize.Medium, typeof(Button));
 
         public static readonly Func<int> GetUID = () => CharacterSheetStorage.Instance.GetUID();
-        public static readonly Func<CharacterSheet> GetSelectedCharacter = () => CharacterSheetStorage.Instance.selectedCharacter;
-        public static readonly Action<CharacterSheet> SetSelectedCharacter = (sheet) => CharacterSheetStorage.Instance.selectedCharacter = sheet;
-        public static readonly Action SaveSelectedCharacter = CharacterSheetStorage.Instance.SaveCharacter;
+        public static readonly Func<CharacterSheet> GetSelectedCharacter = () => CharacterSheetStorage.Instance.SelectedCharacter;
+        public static readonly Action<CharacterSheet> SetSelectedCharacter = (sheet) => CharacterSheetStorage.Instance.SelectedCharacter = sheet;
+        public static readonly Action OnCharacterSheetChanged =
+#if SAVE_SHEETS_ON_LOST_FOCUS
+            CharacterSheetStorage.Instance.MarkSelectedCharacterAsChanged;
+#else
+            CharacterSheetStorage.Instance.SaveCharacter;
+#endif
         public static readonly Action<CharacterSheet> SaveCharacter = (sheet) => CharacterSheetStorage.Instance.SaveCharacter(sheet);
         public static readonly Action<CharacterSheet> DeleteCharacter = (sheet) => CharacterSheetStorage.Instance.DeleteCharacter(sheet);
 
@@ -190,7 +196,7 @@ namespace PathfinderCharacterSheet
         private void SelectCharacter(CharacterSheet sheet)
         {
             Characters.IsVisible = false;
-            CharacterSheetStorage.Instance.selectedCharacter = sheet;
+            SetSelectedCharacter?.Invoke(sheet);
             tabs.InitTabs();
             var title = sheet.Name;
             if (tabs.CurrentPage != null) 

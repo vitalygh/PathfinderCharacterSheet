@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
             }
             if (hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

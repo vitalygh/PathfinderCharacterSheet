@@ -97,7 +97,7 @@ namespace PathfinderCharacterSheet
                 sheet.notes.Clear();
                 foreach (var item in reordered)
                     sheet.notes.Add(item as ItemType);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

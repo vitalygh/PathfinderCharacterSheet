@@ -115,7 +115,7 @@ namespace PathfinderCharacterSheet
             if (!(languages is null) && !(sheet.languages is null) && ReferenceEquals(sheet.languages, languages))
                 return;
             sheet.languages = languages;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
         }
 
         public void Language_Tap(string language = null, int index = -1)

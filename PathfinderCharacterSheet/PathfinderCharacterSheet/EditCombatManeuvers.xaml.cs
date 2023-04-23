@@ -94,7 +94,7 @@ namespace PathfinderCharacterSheet
             }
 #endif
             if (hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
         }
 
 

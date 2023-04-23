@@ -14,7 +14,7 @@ namespace PathfinderCharacterSheet.Droid
 {
     public class PlatformProxy: IPlatformProxy
     {
-        Context activity = null;
+        readonly Context activity = null;
         public PlatformProxy(Context activity)
         {
             this.activity = activity;

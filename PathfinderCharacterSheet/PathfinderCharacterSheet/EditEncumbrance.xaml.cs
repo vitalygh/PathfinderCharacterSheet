@@ -56,7 +56,7 @@ namespace PathfinderCharacterSheet
             if (!encumbrance.Equals(sheet.encumbrance))
             {
                 sheet.encumbrance = encumbrance;
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             }
         }
 

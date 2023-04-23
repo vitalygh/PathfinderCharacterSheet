@@ -42,7 +42,7 @@ namespace PathfinderCharacterSheet
             if (hasChanges)
             {
                 sheet.initiative.miscModifiers.Fill(modifiers);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             }
         }
 

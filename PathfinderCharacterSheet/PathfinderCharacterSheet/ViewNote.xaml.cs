@@ -81,7 +81,7 @@ namespace PathfinderCharacterSheet
             if (allow)
             {
                 Items.Remove(item);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
                 await Navigation.PopAsync();
             }
         }

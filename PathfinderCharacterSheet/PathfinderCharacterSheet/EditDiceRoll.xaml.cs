@@ -55,7 +55,7 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
             }
             if (hasChanges && saveCharacter)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
         }
 
         public void Init(CharacterSheet sheet, ItemType roll, List<ItemType> items, bool saveCharacter)
@@ -143,7 +143,7 @@ namespace PathfinderCharacterSheet
             if (allow)
             {
                 items.Remove(source);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
                 await Navigation.PopAsync();
             }
         }

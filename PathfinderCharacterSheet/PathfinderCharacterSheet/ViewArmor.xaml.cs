@@ -601,7 +601,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             if (armor.selected == value)
                 return;
             armor.selected = value;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 #if EXPAND_CHECKBOX
@@ -615,7 +615,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             if (armor == null)
                 return;
             armor.selected = !armor.selected;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 #endif
@@ -628,7 +628,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             if (armor.active == value)
                 return;
             armor.active = value;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 
@@ -662,7 +662,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
                 sheet.armorClassItems.Clear();
                 foreach (var item in reordered)
                     sheet.armorClassItems.Add(item as ArmorClassItem);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

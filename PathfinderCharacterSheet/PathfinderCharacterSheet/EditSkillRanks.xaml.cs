@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
             if (!sheet.skillRanks.Equals(skillRanks))
             {
                 sheet.skillRanks.Fill(skillRanks);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             }
         }
 

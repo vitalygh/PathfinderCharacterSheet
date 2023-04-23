@@ -114,7 +114,7 @@ namespace PathfinderCharacterSheet
                 }
             }
             if (hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             var maxHP = sheet.hp.maxHP.GetValue(sheet);
             MaxHP.Text = maxHP.ToString();
             var hp = sheet.hp.hp.GetValue(sheet);

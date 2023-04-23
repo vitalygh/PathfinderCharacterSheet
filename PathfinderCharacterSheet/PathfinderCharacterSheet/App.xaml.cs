@@ -21,9 +21,8 @@ namespace PathfinderCharacterSheet
 
         void OnNavigationPopped(object s, NavigationEventArgs e)
         {
-            var view = (MainPage as NavigationPage).CurrentPage as ISheetView;
-            if (view != null)
-                view.UpdateView();
+            if ((MainPage is NavigationPage navigationPage) && (navigationPage.CurrentPage is ISheetView sheetView))
+                sheetView.UpdateView();
         }
 
         protected override void OnStart()
@@ -34,6 +33,7 @@ namespace PathfinderCharacterSheet
         protected override void OnSleep()
         {
             // Handle when your app sleeps
+            CharacterSheetStorage.Instance.SaveChangedCharacters();
         }
 
         protected override void OnResume()

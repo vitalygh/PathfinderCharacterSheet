@@ -58,7 +58,7 @@ namespace PathfinderCharacterSheet
             if (!speed.Equals(sheet.speed))
             {
                 sheet.speed = speed;
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             }
         }
 

@@ -321,7 +321,7 @@ namespace PathfinderCharacterSheet
                 }
             }
             if (hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             var points = sheet.channelEnergy.points.AsString(sheet);
             var channels = "Channels";
             if (!string.IsNullOrWhiteSpace(points))

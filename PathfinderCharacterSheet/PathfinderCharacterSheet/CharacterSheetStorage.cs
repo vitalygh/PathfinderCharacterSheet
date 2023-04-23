@@ -31,8 +31,14 @@ namespace PathfinderCharacterSheet
 
         private Dictionary<CharacterSheet, string> characters = null;
         public IEnumerable<CharacterSheet> Characters => characters?.Keys;
+        private readonly HashSet<CharacterSheet> markedAsChanged = new HashSet<CharacterSheet>();
 
-        public CharacterSheet selectedCharacter = null;
+        private CharacterSheet selectedCharacter = null;
+        public CharacterSheet SelectedCharacter
+        {
+            get => selectedCharacter;
+            set { selectedCharacter = value; }
+        }
 
         public Action<string, string, Exception> onCharacterSavingFailed = null;
         public Action<string, Exception> onCharacterLoadingFailed = null;
@@ -275,6 +281,7 @@ namespace PathfinderCharacterSheet
 #endif
                 }
                 Console.WriteLine("Serialization " + characterName + " to \"" + path + "\" complete");
+                markedAsChanged.Remove(sheet);
                 return true;
             }
             catch (Exception ex)
@@ -290,6 +297,20 @@ namespace PathfinderCharacterSheet
             if (selectedCharacter == null)
                 return CharacterSheet.InvalidUID;
             return selectedCharacter.GetUID();
+        }
+
+        public void MarkSelectedCharacterAsChanged()
+        {
+            if (selectedCharacter is null)
+                return;
+            markedAsChanged.Add(selectedCharacter);
+        }
+
+        public void SaveChangedCharacters()
+        {
+            var changedCharacterSheets = new List<CharacterSheet>(markedAsChanged);
+            foreach (var sheet in changedCharacterSheets)
+                SaveCharacter(sheet);
         }
 
         public void SaveCharacter()
@@ -333,6 +354,7 @@ namespace PathfinderCharacterSheet
             if (path == null)
                 return;
             File.Delete(path);
+            markedAsChanged.Remove(sheet);
             characters.Remove(sheet);
             if (selectedCharacter == sheet)
                 selectedCharacter = null;

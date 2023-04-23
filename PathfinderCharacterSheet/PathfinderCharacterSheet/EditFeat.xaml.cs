@@ -70,7 +70,7 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
             }
             if (hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace PathfinderCharacterSheet
             if (allow)
             {
                 Items.Remove(source);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
                 await Navigation.PopAsync();
             }
         }

@@ -705,7 +705,7 @@ namespace PathfinderCharacterSheet
             if (weapon.selected == value)
                 return;
             weapon.selected = value;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 #if EXPAND_CHECKBOX
@@ -719,7 +719,7 @@ namespace PathfinderCharacterSheet
             if (weapon == null)
                 return;
             weapon.selected = !weapon.selected;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 #endif
@@ -732,7 +732,7 @@ namespace PathfinderCharacterSheet
             if (item.active == value)
                 return;
             item.active = value;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 
@@ -766,7 +766,7 @@ namespace PathfinderCharacterSheet
                 sheet.weaponItems.Clear();
                 foreach (var item in reordered)
                     sheet.weaponItems.Add(item as WeaponItem);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

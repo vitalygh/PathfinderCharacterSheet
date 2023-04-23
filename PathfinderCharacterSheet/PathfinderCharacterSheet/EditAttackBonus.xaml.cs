@@ -206,7 +206,7 @@ namespace PathfinderCharacterSheet
                 sheet.currentAttack = currentAttack;
                 sheet.attackBonusModifiers = attackBonus;
                 sheet.attackSizeModifier = sizeModifiers;
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             }
         }
     }

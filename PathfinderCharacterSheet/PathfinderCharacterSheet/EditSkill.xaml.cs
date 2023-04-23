@@ -189,7 +189,7 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
             }
             if (hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
         }
 
         private void Rank_Tapped(object sender, EventArgs e)
@@ -251,7 +251,7 @@ namespace PathfinderCharacterSheet
             if (allow)
             {
                 Items.RemoveAt(itemIndex);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
                 await Navigation.PopAsync();
             }
         }

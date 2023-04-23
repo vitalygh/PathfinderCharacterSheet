@@ -439,7 +439,7 @@ namespace PathfinderCharacterSheet
             if (item.selected == value)
                 return;
             item.selected = value;
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
             UpdateItemsView();
         }
 

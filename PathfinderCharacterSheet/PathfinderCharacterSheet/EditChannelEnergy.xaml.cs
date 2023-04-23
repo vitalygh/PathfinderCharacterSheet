@@ -98,7 +98,7 @@ namespace PathfinderCharacterSheet
             if (channelEnergy.Equals(sheet.channelEnergy))
                 return;
             sheet.channelEnergy.Fill(channelEnergy);
-            MainPage.SaveSelectedCharacter?.Invoke();
+            MainPage.OnCharacterSheetChanged?.Invoke();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

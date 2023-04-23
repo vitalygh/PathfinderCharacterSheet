@@ -80,7 +80,7 @@ namespace PathfinderCharacterSheet
                     break;
                 }
             if (hasChanges)
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
         }
 
         private SavingThrow GetST(Save st)

@@ -18,7 +18,7 @@ namespace PathfinderCharacterSheet
     {
         private const int visibleTabsLimit = 5;
         private static Page[] availablePages = null;
-        private static Page[] pages
+        private static Page[] Pages
         {
             get
             {
@@ -61,26 +61,25 @@ namespace PathfinderCharacterSheet
         public CharacterSheetTabs()
         {
             InitializeComponent();
-            On<Android>().SetOffscreenPageLimit(pages.Length);
-            var startTabsCount = NeedMoveTabs ? visibleTabsLimit : pages.Length;
+            On<Android>().SetOffscreenPageLimit(Pages.Length);
+            var startTabsCount = NeedMoveTabs ? visibleTabsLimit : Pages.Length;
             for (var i = 0; i < startTabsCount; i++)
-                Children.Add(pages[i]);
+                Children.Add(Pages[i]);
         }
 
         public void InitTabs()
         {
-            foreach (var tab in pages)
+            foreach (var tab in Pages)
             {
-                var view = tab as ISheetView;
-                if (view != null)
-                    view.UpdateView();
+                if (tab is ISheetView sheetView)
+                    sheetView.UpdateView();
             }
         }
 
         private Page[] GetVisiblePages()
         {
-            var index = Array.IndexOf(pages, CurrentPage);
-            var count = pages.Length;
+            var index = Array.IndexOf(Pages, CurrentPage);
+            var count = Pages.Length;
             var center = Math.Min(count, visibleTabsLimit) / 2;
             var visiblePages = new List<Page>();
             var start = index - center;
@@ -89,7 +88,7 @@ namespace PathfinderCharacterSheet
             var end = start + visibleTabsLimit;
             end = Math.Min(count, end);
             for (var i = start; i < end; i++)
-                visiblePages.Add(pages[i]);
+                visiblePages.Add(Pages[i]);
             return visiblePages.ToArray();
         }
 
@@ -109,9 +108,8 @@ namespace PathfinderCharacterSheet
 
         public void UpdateView()
         {
-            var view = CurrentPage as ISheetView;
-            if (view != null)
-                view.UpdateView();
+            if (CurrentPage is ISheetView sheetView)
+                sheetView.UpdateView();
         }
 
     }

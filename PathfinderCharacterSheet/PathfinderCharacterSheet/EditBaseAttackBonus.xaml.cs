@@ -207,7 +207,7 @@ namespace PathfinderCharacterSheet
                 sheet.baseAttackBonus = bab;
                 sheet.currentAttack = currentAttack;
                 sheet.currentAttacksCount.Fill(currentAttacksCount);
-                MainPage.SaveSelectedCharacter?.Invoke();
+                MainPage.OnCharacterSheetChanged?.Invoke();
             }
         }
 
