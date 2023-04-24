@@ -99,9 +99,9 @@ namespace PathfinderCharacterSheet
                 var character = LoadCharacter(file);
                 if (character != null)
                 {
-#if VALIDATE_XML
                     //IntModifier.Optimize();
                     //ValueWithIntModifiers.Optimize();
+#if VALIDATE_XML
                     using (var memoryStream = new MemoryStream())
                     {
                         var serializer = new XmlSerializer(typeof(CharacterSheet));

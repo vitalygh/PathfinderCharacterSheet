@@ -44,7 +44,7 @@ namespace PathfinderCharacterSheet
                 return;
             //BaseAttackBonus.Text = sheet.GetBaseAttackBonus().ToString();
             SizeModifier.Text = sizeModifiers.GetValue(sheet).ToString();
-            Value.Text = attackBonus.baseValue.ToString();
+            Value.Text = attackBonus.BaseValue.ToString();
             UpdateModifiersSum();
             MainPage.FillIntMLGrid(Modifiers, sheet, attackBonus.modifiers, "Modifiers", EditModifier, EditModifier, ReorderModifiers, (modifiers, modifier) => UpdateModifiersSum());
         }
@@ -95,7 +95,9 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var total = 0;
-            MainPage.StrToInt(Value.Text, ref attackBonus.baseValue);
+            var baseValue = attackBonus.BaseValue;
+            MainPage.StrToInt(Value.Text, ref baseValue);
+            attackBonus.BaseValue = baseValue;
             total += sizeModifiers.GetValue(sheet);
             total += attackBonus.GetValue(sheet);
             var values = string.Empty;
@@ -200,7 +202,9 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            MainPage.StrToInt(Value.Text, ref attackBonus.baseValue);
+            var baseValue = attackBonus.BaseValue;
+            MainPage.StrToInt(Value.Text, ref baseValue);
+            attackBonus.BaseValue = baseValue;
             if (!sizeModifiers.Equals(sheet.attackSizeModifier) || !attackBonus.Equals(sheet.attackBonusModifiers) || (currentAttack != sheet.currentAttack))
             {
                 sheet.currentAttack = currentAttack;

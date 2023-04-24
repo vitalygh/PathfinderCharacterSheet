@@ -1,4 +1,4 @@
-﻿//#define OPTIMIZE_MULTIPLIERS_AND_LIMITS
+﻿//#define OPTIMIZE
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,24 +8,50 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
     public class IntModifier : Modifier<int>, IEquatable<IntModifier>
     {
         public const Ability DefaultSourceAbility = Ability.None;
-        public string sourceAbility = DefaultSourceAbility.ToString();
+        public string sourceAbility = null;
         internal Ability SourceAbility
         {
             get { return Helpers.GetEnumValue(sourceAbility, DefaultSourceAbility); }
-            set { sourceAbility = value.ToString(); }
+            set { sourceAbility = (DefaultSourceAbility == value) ? null : value.ToString(); }
         }
         public IntMultiplier abilityMultiplier = null;
 
-        public int sourceItemUID = CharacterSheet.InvalidUID;
-        public bool mustBeActive = true;
+        public const int DefaultSourceItemUID = CharacterSheet.InvalidUID;
+        public string sourceItemUID
+        {
+            get => DefaultSourceItemUID == SourceItemUID ? null : SourceItemUID.ToString();
+            set => SourceItemUID = int.TryParse(value, out int outValue) ? outValue : DefaultSourceItemUID;
+        }
+        internal int SourceItemUID { get; set; } = DefaultSourceItemUID;
 
-        public bool multiplyToLevel = false;
+        public const bool DefaultMustBeActive = true;
+        public string mustBeActive
+        {
+            get => DefaultMustBeActive == MustBeActive ? null : MustBeActive.ToString();
+            set => MustBeActive = bool.TryParse(value, out bool outValue) ? outValue : DefaultMustBeActive;
+        }
+        internal bool MustBeActive { get; set; } = DefaultMustBeActive;
+
+        public const bool DefaultMultiplyToLevel = false;
+        public string multiplyToLevel
+        {
+            get => DefaultMultiplyToLevel == MultiplyToLevel ? null : MultiplyToLevel.ToString();
+            set => MultiplyToLevel = bool.TryParse(value, out bool outValue) ? outValue : DefaultMultiplyToLevel;
+        }
+        internal bool MultiplyToLevel { get; set; } = DefaultMultiplyToLevel;
+
         public string className = null;
         public IntMultiplier levelMultiplier = null;
 
-        public bool autoNaming = true;
+        public const bool DefaultAutoNaming = true;
+        public string autoNaming
+        {
+            get => DefaultAutoNaming == AutoNaming ? null : AutoNaming.ToString();
+            set => AutoNaming = bool.TryParse(value, out bool boolValue) ? boolValue : DefaultAutoNaming;
+        }
+        internal bool AutoNaming { get; set; } = DefaultAutoNaming;
 
-#if OPTIMIZE_MULTIPLIERS_AND_LIMITS
+#if OPTIMIZE
         private static readonly IntMultiplier emptyIntMultiplier = new IntMultiplier();
         private static readonly IntLimit emptyIntLimit = new IntLimit();
         private static readonly List<IntModifier> allModifiers = new List<IntModifier>();
@@ -48,6 +74,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     modifier.levelMultiplier.limit = null;
                 if (modifier.levelMultiplier == emptyIntMultiplier)
                     modifier.levelMultiplier = null;
+                modifier.Fill(modifier);
             }
             allModifiers.Clear();
         }
@@ -59,12 +86,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (context == null)
                 return totalValue;
 
-            if (sourceItemUID != CharacterSheet.InvalidUID)
+            if (SourceItemUID != CharacterSheet.InvalidUID)
             {
-                var item = context.GetItemByUID(sourceItemUID);
+                var item = context.GetItemByUID(SourceItemUID);
                 if (item == null)
                     return 0;
-                if (!item.active && mustBeActive)
+                if (!item.active && (MustBeActive))
                     return 0;
             }
 
@@ -76,7 +103,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 totalValue += ab;
             }
 
-            if (multiplyToLevel)
+            if (MultiplyToLevel)
             {
                 if (!string.IsNullOrWhiteSpace(className))
                 {
@@ -102,7 +129,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public string AsString(CharacterSheet sheet)
         {
-            if (!autoNaming)
+            if (!AutoNaming)
                 return name;
             var text = new StringBuilder();
             if (SourceAbility != Ability.None)
@@ -114,7 +141,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 if (value != 0)
                     text.Insert(0, " + ").Insert(0, value).Insert(0, "(").Append(")");
             }
-            if (multiplyToLevel)
+            if (MultiplyToLevel)
             {
                 if (string.IsNullOrWhiteSpace(text.ToString()) && (value != 1))
                     text.Append(value);
@@ -131,12 +158,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     text.Append(name);
                 else
                     text.Insert(0, " (").Insert(0, name).Append(")");
-            if (sourceItemUID != CharacterSheet.InvalidUID)
+            if (SourceItemUID != CharacterSheet.InvalidUID)
             {
-                var item = sheet.GetItemByUID(sourceItemUID);
+                var item = sheet.GetItemByUID(SourceItemUID);
                 if (item == null)
                     text.Insert(0, "[item missing] ");
-                else if (!mustBeActive)
+                else if (!MustBeActive)
                     text.Insert(0, "] ").Insert(0, item.name).Insert(0, "[with ");
                 else if (item.active)
                     text.Insert(0, "] ").Insert(0, item.name).Insert(0, "[with active ");
@@ -162,16 +189,16 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return this;
             base.Fill(source);
 
-            sourceAbility = source.sourceAbility;
+            SourceAbility = source.SourceAbility;
             abilityMultiplier = source.abilityMultiplier?.Clone;
-            sourceItemUID = source.sourceItemUID;
-            mustBeActive = source.mustBeActive;
+            SourceItemUID = source.SourceItemUID;
+            MustBeActive = source.MustBeActive;
 
-            multiplyToLevel = source.multiplyToLevel;
+            MultiplyToLevel = source.MultiplyToLevel;
             className = source.className;
             levelMultiplier = source.levelMultiplier?.Clone;
 
-            autoNaming = source.autoNaming;
+            AutoNaming = source.AutoNaming;
 
             return this;
         }
@@ -182,23 +209,21 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (!base.Equals(other))
                 return false;
-            if (sourceAbility != other.sourceAbility)
+            if (SourceAbility != other.SourceAbility)
                 return false;
             if (abilityMultiplier != other.abilityMultiplier)
                 return false;
-            if (abilityMultiplier != other.abilityMultiplier)
+            if (SourceItemUID != other.SourceItemUID)
                 return false;
-            if (sourceItemUID != other.sourceItemUID)
+            if (MustBeActive != other.MustBeActive)
                 return false;
-            if (mustBeActive != other.mustBeActive)
-                return false;
-            if (multiplyToLevel != other.multiplyToLevel)
+            if (MultiplyToLevel != other.MultiplyToLevel)
                 return false;
             if (levelMultiplier != other.levelMultiplier)
                 return false;
             if (className != other.className)
                 return false;
-            if (autoNaming != other.autoNaming)
+            if (AutoNaming != other.AutoNaming)
                 return false;
             return true;
         }
@@ -232,14 +257,14 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + sourceAbility.GetHashCode();
+            hash = (hash * 7) + SourceAbility.GetHashCode();
             hash = (hash * 7) + (abilityMultiplier is null ? 0 : abilityMultiplier.GetHashCode());
-            hash = (hash * 7) + sourceItemUID.GetHashCode();
-            hash = (hash * 7) + mustBeActive.GetHashCode();
-            hash = (hash * 7) + multiplyToLevel.GetHashCode();
+            hash = (hash * 7) + SourceItemUID.GetHashCode();
+            hash = (hash * 7) + MustBeActive.GetHashCode();
+            hash = (hash * 7) + MultiplyToLevel.GetHashCode();
             hash = (hash * 7) + (className is null ? 0 : className.GetHashCode());
             hash = (hash * 7) + (levelMultiplier is null ? 0 : levelMultiplier.GetHashCode());
-            hash = (hash * 7) + autoNaming.GetHashCode();
+            hash = (hash * 7) + AutoNaming.GetHashCode();
             return hash;
         }
     }

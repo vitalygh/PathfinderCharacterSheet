@@ -1,4 +1,4 @@
-﻿//#define OPTIMIZE_MODIFIERS
+﻿//#define OPTIMIZE
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,11 +7,16 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class ValueWithIntModifiers: IContextValue<int, CharacterSheet>, IEquatable<ValueWithIntModifiers>, IPrototype<ValueWithIntModifiers>
     {
-        public int baseValue = 0;
+        public const int DefaultBaseValue = 0;
+        public string baseValue
+        {
+            get => DefaultBaseValue == BaseValue ? null : BaseValue.ToString();
+            set => BaseValue = int.TryParse(value, out int outValue) ? outValue : DefaultBaseValue;
+        }
+        internal int BaseValue { get; set; } = DefaultBaseValue;
         public IntModifiersList modifiers = null;
 
-
-#if OPTIMIZE_MODIFIERS
+#if OPTIMIZE
         private static readonly List<ValueWithIntModifiers> allValuesWithIntModifiers = new List<ValueWithIntModifiers>();
         public ValueWithIntModifiers() : base()
         {
@@ -24,6 +29,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             {
                 if (valueWithIntModifiers is null)
                     continue;
+                valueWithIntModifiers.Fill(valueWithIntModifiers);
                 if (valueWithIntModifiers.modifiers is null)
                     continue;
                 if (valueWithIntModifiers.modifiers.Count > 0)
@@ -37,7 +43,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public virtual int GetValue(CharacterSheet context)
         {
-            var value = baseValue;
+            var value = BaseValue;
             if (modifiers != null)
                 value += modifiers.GetValue(context);
             return value;
@@ -57,7 +63,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (source == null)
                 return this;
-            baseValue = source.baseValue;
+            BaseValue = source.BaseValue;
             modifiers = source.modifiers?.Clone;
             return this;
         }
@@ -66,7 +72,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (other == null)
                 return false;
-            if (baseValue != other.baseValue)
+            if (BaseValue != other.BaseValue)
                 return false;
             if (modifiers != other.modifiers)
                 return false;
@@ -102,7 +108,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + baseValue.GetHashCode();
+            hash = (hash * 7) + BaseValue.GetHashCode();
             hash = (hash * 7) + (modifiers is null ? 0 : modifiers.GetHashCode());
             return hash;
         }

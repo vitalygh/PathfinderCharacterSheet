@@ -7,7 +7,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
     public class GearItem: ItemWithUseLimit, IEquatable<GearItem>
     {
         public bool active = false;
-        public ValueWithIntModifiers amount = new ValueWithIntModifiers() { baseValue = 1, };
+        public ValueWithIntModifiers amount = new ValueWithIntModifiers() { BaseValue = 1, };
         public ValueWithIntModifiers weight = new ValueWithIntModifiers();
 
         public int TotalWeight(CharacterSheet sheet) { return amount.GetValue(sheet) * weight.GetValue(sheet); }

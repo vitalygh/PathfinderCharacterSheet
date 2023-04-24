@@ -238,7 +238,7 @@ namespace PathfinderCharacterSheet
             };
             ItemMustBeActive.CheckedChanged += (s, e) =>
             {
-                modifier.mustBeActive = e.Value;
+                modifier.MustBeActive = e.Value;
                 UpdateView();
             };
 
@@ -339,7 +339,7 @@ namespace PathfinderCharacterSheet
                 this.modifier = new IntModifier();
             InitControls(allowUseAbilities);
             IsActive.IsChecked = this.modifier.active;
-            ItemMustBeActive.IsChecked = this.modifier.mustBeActive;
+            ItemMustBeActive.IsChecked = this.modifier.MustBeActive;
             ModifierValue.Text = this.modifier.value.ToString();
             ModifierName.Text = this.modifier.name;
             Delete.IsEnabled = source != null;
@@ -356,16 +356,16 @@ namespace PathfinderCharacterSheet
                 return;
 
             GearItem item = null;
-            if (modifier.sourceItemUID == CharacterSheet.InvalidUID)
+            if (modifier.SourceItemUID == CharacterSheet.InvalidUID)
                 LinkedItem.Text = string.Empty;
             else
             {
-                item = sheet.GetItemByUID(modifier.sourceItemUID);
+                item = sheet.GetItemByUID(modifier.SourceItemUID);
                 if (item != null)
                 {
                     LinkedItem.Text = item.AsString(sheet);
                     LinkedItem.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
-                    LinkedItem.TextColor = (item.active || !modifier.mustBeActive) ? Color.Green : Color.Red;
+                    LinkedItem.TextColor = (item.active || !modifier.MustBeActive) ? Color.Green : Color.Red;
                 }
                 else
                 {
@@ -375,7 +375,7 @@ namespace PathfinderCharacterSheet
             }
             MainPage.SetTapHandler(LinkedItemFrame, (s, e) => SelectItem(item));
             var loc = sheet.GetLevelOfClass(modifier.className);
-            if (!modifier.multiplyToLevel)
+            if (!modifier.MultiplyToLevel)
                 ClassName.Text = string.Empty;
             else
             {
@@ -395,12 +395,12 @@ namespace PathfinderCharacterSheet
             var lm = modifier.levelMultiplier?.AsString(lms) ?? string.Empty;
             if (lm == lms)
                 lm = string.Empty;
-            LevelMultiplier.Text = !modifier.multiplyToLevel ? string.Empty : lm;
-            LevelMultiplierFrame.BackgroundColor = modifier.multiplyToLevel ? Color.White : Color.LightGray;
-            LevelMultiplierFrame.InputTransparent = !modifier.multiplyToLevel;
+            LevelMultiplier.Text = !modifier.MultiplyToLevel ? string.Empty : lm;
+            LevelMultiplierFrame.BackgroundColor = modifier.MultiplyToLevel ? Color.White : Color.LightGray;
+            LevelMultiplierFrame.InputTransparent = !modifier.MultiplyToLevel;
 
             MainPage.SetTapHandler(ClassNameFrame, (s, e) => SelectClass(modifier.className));
-            AutoNaming.IsChecked = modifier.autoNaming;
+            AutoNaming.IsChecked = modifier.AutoNaming;
         }
 
         private void EditMultiplier(IntMultiplier multiplier)
@@ -420,7 +420,7 @@ namespace PathfinderCharacterSheet
             var sgi = new SelectGearItem();
             sgi.InitSelection((selected) =>
             {
-                modifier.sourceItemUID = selected == null ? CharacterSheet.InvalidUID : selected.uid;
+                modifier.SourceItemUID = selected == null ? CharacterSheet.InvalidUID : selected.uid;
             }, item);
             pushedPage = sgi;
             Navigation.PushAsync(pushedPage);
@@ -431,14 +431,14 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             var sc = new SelectClass();
-            var level = modifier.multiplyToLevel ? new LevelOfClass() { className = className }: null;
+            var level = modifier.MultiplyToLevel ? new LevelOfClass() { className = className }: null;
             sc.InitSelection((selected) =>
             {
                 if (selected == null)
-                    modifier.multiplyToLevel = false;
+                    modifier.MultiplyToLevel = false;
                 else
                 {
-                    modifier.multiplyToLevel = true;
+                    modifier.MultiplyToLevel = true;
                     modifier.className = selected.ClassName;
                 }
             }, level);
@@ -496,7 +496,7 @@ namespace PathfinderCharacterSheet
                     modifier.RoundingType = selectedItem.Value;
             }
             */
-            modifier.autoNaming = AutoNaming.IsChecked;
+            modifier.AutoNaming = AutoNaming.IsChecked;
 
             if (modifier.abilityMultiplier == emptyMultiplier)
                 modifier.abilityMultiplier = null;
