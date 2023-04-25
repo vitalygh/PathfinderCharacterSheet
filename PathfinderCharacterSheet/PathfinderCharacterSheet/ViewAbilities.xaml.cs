@@ -15,7 +15,7 @@ namespace PathfinderCharacterSheet
 	public partial class ViewAbilities : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
-        private const int abilityColumns = 5;
+        private static readonly int abilityColumns = 5;
 
         public ViewAbilities ()
 		{

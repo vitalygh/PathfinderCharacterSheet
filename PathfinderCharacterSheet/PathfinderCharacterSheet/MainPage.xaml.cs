@@ -38,12 +38,21 @@ namespace PathfinderCharacterSheet
 #if SHOW_ERROR_MESSAGES
             var failedToLoad = new List<KeyValuePair<string, Exception>>();
             var loadedFromBackup = new List<KeyValuePair<string, string>>();
-            CharacterSheetStorage.Instance.onCharacterSavingFailed += (character, path, ex) =>
+            CharacterSheetStorage.Instance.onCharacterLoadingSuccess += (name, path) =>
             {
+                WriteToLog("Character \"" + name + "\" successful loaded from path \"" + path + "\"");
+            };
+            CharacterSheetStorage.Instance.onCharacterSavingSuccess += (name, path) =>
+            {
+                WriteToLog("Character \"" + name + "\" successful saved to path \"" + path + "\"");
+            };
+            CharacterSheetStorage.Instance.onCharacterSavingFailed += (name, path, ex) =>
+            {
+                WriteToLog("Character \"" + name +" saving to file \"" + path + "\" failed: " + ex.ToString());
                 var message = "Character saving failed!";
 #if SHOW_ERROR_DETAILS
-                if (character != null)
-                    message += "\n\nCharacter: " + character;
+                if (name != null)
+                    message += "\n\nCharacter: " + name;
                 if (path != null)
                     message += "\n\nPath: " + path;
                 if (ex != null)
@@ -53,14 +62,17 @@ namespace PathfinderCharacterSheet
             };
             CharacterSheetStorage.Instance.onCharacterLoadingFailed += (path, ex) =>
             {
+                WriteToLog("Character file \"" + path + "\" loading failed: " + ex.ToString());
                 failedToLoad.Add(new KeyValuePair<string, Exception>(path, ex));
             };
-            CharacterSheetStorage.Instance.onCharacterLoadedFromBackup += (path, backup) =>
+            CharacterSheetStorage.Instance.onCharacterLoadedFromBackup += (name, path, backup) =>
             {
+                WriteToLog("Character \"" + name + "\" from path \"" + path + "\" loaded from backup \"" + backup + "\"");
                 loadedFromBackup.Add(new KeyValuePair<string, string>(path, backup));
             };
             CharacterSheetStorage.Instance.onBackupSavingFailed += (from, to, ex) =>
             {
+                WriteToLog("Backup \"" + to + "\" of \"" + from + "\" saving failed: " + ex.ToString());
                 var message = "Backup saving failed!";
 #if SHOW_ERROR_DETAILS
                 if (from != null)
@@ -74,6 +86,7 @@ namespace PathfinderCharacterSheet
             };
             CharacterSheetStorage.Instance.onBackupRemovingFailed += (file, ex) =>
             {
+                WriteToLog("Backup \"" + file + "\" removing failed: " + ex.ToString());
                 var message = "Old backup removing failed!";
 #if SHOW_ERROR_DETAILS
                 if (file != null)
@@ -126,6 +139,11 @@ namespace PathfinderCharacterSheet
                 });
             };
 #endif
+        }
+
+        private void WriteToLog(string message)
+        {
+            Console.WriteLine(message);
         }
 
         public void UpdateView()

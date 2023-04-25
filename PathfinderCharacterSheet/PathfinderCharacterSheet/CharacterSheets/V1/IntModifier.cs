@@ -7,7 +7,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntModifier : Modifier<int>, IEquatable<IntModifier>
     {
-        public const Ability DefaultSourceAbility = Ability.None;
+        public static readonly Ability DefaultSourceAbility = Ability.None;
         public string sourceAbility = null;
         internal Ability SourceAbility
         {
@@ -16,7 +16,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         }
         public IntMultiplier abilityMultiplier = null;
 
-        public const int DefaultSourceItemUID = CharacterSheet.InvalidUID;
+        public static readonly int DefaultSourceItemUID = CharacterSheet.InvalidUID;
         public string sourceItemUID
         {
             get => DefaultSourceItemUID == SourceItemUID ? null : SourceItemUID.ToString();
@@ -24,7 +24,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         }
         internal int SourceItemUID { get; set; } = DefaultSourceItemUID;
 
-        public const bool DefaultMustBeActive = true;
+        public static readonly bool DefaultMustBeActive = true;
         public string mustBeActive
         {
             get => DefaultMustBeActive == MustBeActive ? null : MustBeActive.ToString();
@@ -32,7 +32,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         }
         internal bool MustBeActive { get; set; } = DefaultMustBeActive;
 
-        public const bool DefaultMultiplyToLevel = false;
+        public static readonly bool DefaultMultiplyToLevel = false;
         public string multiplyToLevel
         {
             get => DefaultMultiplyToLevel == MultiplyToLevel ? null : MultiplyToLevel.ToString();
@@ -43,7 +43,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string className = null;
         public IntMultiplier levelMultiplier = null;
 
-        public const bool DefaultAutoNaming = true;
+        public static readonly bool DefaultAutoNaming = true;
         public string autoNaming
         {
             get => DefaultAutoNaming == AutoNaming ? null : AutoNaming.ToString();

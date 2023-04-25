@@ -9,7 +9,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public int additionalBefore = 0;
         public int multiplier = 1;
         public int divider = 1;
-        public const RoundingType DefaultRounding = RoundingType.Up;
+        public static readonly RoundingType DefaultRounding = RoundingType.Up;
         public string roundingType = DefaultRounding.ToString();
         internal RoundingType RoundingType
         {

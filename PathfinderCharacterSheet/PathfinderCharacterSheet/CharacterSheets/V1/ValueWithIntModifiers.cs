@@ -7,14 +7,20 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class ValueWithIntModifiers: IContextValue<int, CharacterSheet>, IEquatable<ValueWithIntModifiers>, IPrototype<ValueWithIntModifiers>
     {
-        public const int DefaultBaseValue = 0;
+        public static readonly int DefaultBaseValue = 0;
         public string baseValue
         {
             get => DefaultBaseValue == BaseValue ? null : BaseValue.ToString();
             set => BaseValue = int.TryParse(value, out int outValue) ? outValue : DefaultBaseValue;
         }
         internal int BaseValue { get; set; } = DefaultBaseValue;
-        public IntModifiersList modifiers = null;
+        public IntModifiersList modifiers
+        {
+            get => Modifiers?.Count <= 0 ? null : Modifiers;
+            set => Modifiers = value;
+        }
+        internal IntModifiersList Modifiers { get; set; } = new IntModifiersList();
+
 
 #if OPTIMIZE
         private static readonly List<ValueWithIntModifiers> allValuesWithIntModifiers = new List<ValueWithIntModifiers>();
@@ -30,11 +36,6 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 if (valueWithIntModifiers is null)
                     continue;
                 valueWithIntModifiers.Fill(valueWithIntModifiers);
-                if (valueWithIntModifiers.modifiers is null)
-                    continue;
-                if (valueWithIntModifiers.modifiers.Count > 0)
-                    continue;
-                valueWithIntModifiers.modifiers = null;
             }
             allValuesWithIntModifiers.Clear();
         }
@@ -44,8 +45,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public virtual int GetValue(CharacterSheet context)
         {
             var value = BaseValue;
-            if (modifiers != null)
-                value += modifiers.GetValue(context);
+            if (Modifiers != null)
+                value += Modifiers.GetValue(context);
             return value;
         }
 
@@ -64,7 +65,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (source == null)
                 return this;
             BaseValue = source.BaseValue;
-            modifiers = source.modifiers?.Clone;
+            Modifiers = source.Modifiers?.Clone;
             return this;
         }
 
@@ -74,7 +75,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (BaseValue != other.BaseValue)
                 return false;
-            if (modifiers != other.modifiers)
+            if (Modifiers != other.Modifiers)
                 return false;
             return true;
         }
@@ -109,7 +110,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
             hash = (hash * 7) + BaseValue.GetHashCode();
-            hash = (hash * 7) + (modifiers is null ? 0 : modifiers.GetHashCode());
+            hash = (hash * 7) + (Modifiers is null ? 0 : Modifiers.GetHashCode());
             return hash;
         }
     }

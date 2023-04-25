@@ -39,9 +39,7 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             pushedPage = this;
-            var character = new CharacterSheet();
-            character.Init();
-            character.name = CharacterName.Text;
+            var character = CharacterSheet.Create(CharacterName.Text);
             MainPage.SaveCharacter?.Invoke(character);
             Navigation.PopAsync();
         }

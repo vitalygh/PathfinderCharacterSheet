@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class Helpers
+    public static class Helpers
     {
         public static bool SequenceEqual<T>(IEnumerable<T> first, IEnumerable<T> second)
         {
@@ -20,6 +20,20 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (Enum.TryParse(text, out T result))
                 return result;
             return defaultValue;
+        }
+
+        public static T[] Populate<T>(this T[] array) where T: new()
+        {
+            return Populate(array, () => new T());
+        }
+
+        public static T[] Populate<T>(this T[] array, Func<T> provider)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = provider == null ? default(T) : provider();
+            }
+            return array;
         }
     }
 }

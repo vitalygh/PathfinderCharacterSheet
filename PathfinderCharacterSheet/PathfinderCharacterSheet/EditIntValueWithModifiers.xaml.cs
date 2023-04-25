@@ -35,7 +35,7 @@ namespace PathfinderCharacterSheet
             this.sheet = sheet;
             this.source = source;
             this.saveCharacter = saveCharacter;
-            modifiers = source.Clone.modifiers;
+            modifiers = source.Clone.Modifiers;
             if (modifiers == null)
                 modifiers = new IntModifiersList();
             Value.Text = source.BaseValue.ToString();
@@ -129,12 +129,10 @@ namespace PathfinderCharacterSheet
             var baseValue = source.BaseValue;
             var hasChanged = MainPage.StrToInt(Value.Text, ref baseValue);
             source.BaseValue = baseValue;
-            if ((modifiers != null) && (modifiers.Count <= 0))
-                modifiers = null;
-            if (source.modifiers != modifiers)
+            if (source.Modifiers != modifiers)
             {
                 hasChanged = true;
-                source.modifiers = modifiers;
+                source.Modifiers = modifiers;
             }
             if (hasChanged && saveCharacter)
                 MainPage.OnCharacterSheetChanged?.Invoke();

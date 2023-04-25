@@ -10,7 +10,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public bool hasSubject = false;
         public string subject = null;
         public bool classSkill = false;
-        public const Ability DefaultAbilityModifierSource = Ability.None;
+        public static readonly Ability DefaultAbilityModifierSource = Ability.None;
         public string abilityModifierSource = DefaultAbilityModifierSource.ToString();
         internal Ability AbilityModifierSource
         {

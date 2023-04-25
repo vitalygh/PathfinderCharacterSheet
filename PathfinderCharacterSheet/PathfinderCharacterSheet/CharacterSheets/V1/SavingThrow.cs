@@ -6,7 +6,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class SavingThrow: IPrototype<SavingThrow>, IEquatable<SavingThrow>
     {
-        public const Ability DefaultAbilityModifierSource = Ability.None;
+        public static readonly Ability DefaultAbilityModifierSource = Ability.None;
         public string abilityModifierSource = DefaultAbilityModifierSource.ToString();
         internal Ability AbilityModifierSource
         {

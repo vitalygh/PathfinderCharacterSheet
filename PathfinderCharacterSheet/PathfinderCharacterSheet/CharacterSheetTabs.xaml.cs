@@ -16,7 +16,7 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CharacterSheetTabs : Xamarin.Forms.TabbedPage, ISheetView
     {
-        private const int visibleTabsLimit = 5;
+        private static readonly int visibleTabsLimit = 5;
         private static Page[] availablePages = null;
         private static Page[] Pages
         {

@@ -15,24 +15,25 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return 0;
         }
 
-        public const int spellLevelsCount = 10;
-
         public CharacterSheet()
         {
 
         }
 
-        public void Init()
+        public static CharacterSheet Create(string name)
         {
-            InitAbilityScrores();
-            InitSkills();
+            var characterSheet = new CharacterSheet();
+            characterSheet.InitSkills();
+            characterSheet.name = name;
+            characterSheet.CreationTime = DateTime.Now;
+            return characterSheet;
         }
 
         #region Technical info
         public DateTime CreationTime = DateTime.Now;
         public DateTime ModificationTime = DateTime.Now;
         public int currentUID = 0;
-        public const int InvalidUID = -1;
+        public static readonly int InvalidUID = -1;
         public int GetUID() { return currentUID++; }
         #endregion
 
@@ -48,7 +49,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
         public string biography = null;
-        public const Alignment DefaultAlignment = Alignment.Neutral;
+        public static readonly Alignment DefaultAlignment = Alignment.Neutral;
         public string alignment = DefaultAlignment.ToString();
         internal Alignment Alignment
         {
@@ -92,19 +93,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         #endregion
 
         #region Ability Score
-        public AbilityScore[] abilityScores = null;
-        private void InitAbilityScrores()
-        {
-            abilityScores = new AbilityScore[(int)Ability.Total]
-            {
-                new AbilityScore(),
-                new AbilityScore(),
-                new AbilityScore(),
-                new AbilityScore(),
-                new AbilityScore(),
-                new AbilityScore(),
-            };
-        }
+        public AbilityScore[] abilityScores = new AbilityScore[(int)Ability.Total].Populate();
         #endregion
 
         #region Hit Points
@@ -264,7 +253,7 @@ public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
 
         #region Skills
         public ValueWithIntModifiers skillRanks = new ValueWithIntModifiers();
-        public List<SkillRank> skills = new List<SkillRank>();
+        public List<SkillRank> skills = null;
         private void InitSkills()
         {
             skills = new List<SkillRank>()
@@ -390,19 +379,8 @@ public int CMB { get { return GetCMB(this, cmbSizeModifier, currentAttack); } }
 
         #region Spells
         public ChannelEnergy channelEnergy = new ChannelEnergy();
-        public SpellLevel[] spellLevel = new SpellLevel[spellLevelsCount]
-        {
-            new SpellLevel(),
-            new SpellLevel(),
-            new SpellLevel(),
-            new SpellLevel(),
-            new SpellLevel(),
-            new SpellLevel(),
-            new SpellLevel(),
-            new SpellLevel(),
-            new SpellLevel(),
-            new SpellLevel(),
-        };
+        public const int spellLevelsCount = 10;
+        public SpellLevel[] spellLevel = new SpellLevel[spellLevelsCount].Populate();
         #endregion
 
         #region Notes

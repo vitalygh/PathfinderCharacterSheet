@@ -10,7 +10,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public bool itemsArmorBonus = true;
         public ValueWithIntModifiers shieldBonus = new ValueWithIntModifiers();
         public bool itemsShieldBonus = true;
-        public const DexterityModifierSource DefaultDexterityModifierSource = DexterityModifierSource.DependsOnACItems;
+        public static readonly DexterityModifierSource DefaultDexterityModifierSource = DexterityModifierSource.DependsOnACItems;
         public string dexterityModifierSource = DefaultDexterityModifierSource.ToString();
         internal DexterityModifierSource DexterityModifierSource
         {

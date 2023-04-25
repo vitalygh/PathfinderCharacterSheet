@@ -12,7 +12,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var ab = armorBonus.GetValue(sheet);
             return ab >= 0 ? "+" + ab : ab.ToString();
         }
-        public const ArmorType DefaultArmorType = ArmorType.Other;
+        public static readonly ArmorType DefaultArmorType = ArmorType.Other;
         public string armorType = DefaultArmorType.ToString();
         internal ArmorType ArmorType
         {
