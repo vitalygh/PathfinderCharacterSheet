@@ -26,7 +26,7 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            skillRanks = sheet.skillRanks.Clone as ValueWithIntModifiers;
+            skillRanks = sheet.skillRanks.Clone;
             UpdateView();
         }
 

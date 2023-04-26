@@ -29,7 +29,7 @@ namespace PathfinderCharacterSheet
             source = level;
             if (source != null)
             {
-                this.level = source.Clone as LevelOfClass;
+                this.level = source.Clone;
                 ClassName.Text = source.ClassName.ToString();
             }
             else

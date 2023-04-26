@@ -62,7 +62,7 @@ namespace PathfinderCharacterSheet
         {
             Frame frame;
             if (framesPool.Count <= 0)
-                frame = MainPage.CreateFrame(string.Empty);
+                frame = UIHelpers.CreateFrame(string.Empty);
             else
             {
                 frame = framesPool[0];
@@ -81,7 +81,7 @@ namespace PathfinderCharacterSheet
             label.Text = item.AsString(sheet);
             label.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
             label.TextColor = selected == item ? Color.Green : Color.Black;
-            MainPage.SetTapHandler(frame, (s, e) => SelectItem(item));
+            UIHelpers.SetTapHandler(frame, (s, e) => SelectItem(item));
         }
 
         private void SelectItem(ItemType item)

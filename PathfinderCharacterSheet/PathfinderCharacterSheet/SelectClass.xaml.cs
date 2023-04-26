@@ -67,7 +67,7 @@ namespace PathfinderCharacterSheet
         {
             Frame frame;
             if (framesPool.Count <= 0)
-                frame = MainPage.CreateFrame(string.Empty);
+                frame = UIHelpers.CreateFrame(string.Empty);
             else
             {
                 frame = framesPool[0];
@@ -85,7 +85,7 @@ namespace PathfinderCharacterSheet
             var label = frame.Content as Label;
             label.Text = item.ClassName ?? "Total Level";
             label.TextColor = ((selected != null) && (selected.ClassName == item.ClassName)) ? Color.Green : Color.Black;
-            MainPage.SetTapHandler(frame, (s, e) => SelectItem(item));
+            UIHelpers.SetTapHandler(frame, (s, e) => SelectItem(item));
         }
 
         private void SelectItem(ItemType item)

@@ -33,8 +33,8 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            cmdSizeModifier = sheet.cmdSizeModifier.Clone as ValueWithIntModifiers;
-            cmbSizeModifier = sheet.cmbSizeModifier.Clone as ValueWithIntModifiers;
+            cmdSizeModifier = sheet.cmdSizeModifier.Clone;
+            cmbSizeModifier = sheet.cmbSizeModifier.Clone;
 #if SELECT_CURRENT_ATTACK
             currentAttack = sheet.currentAttack;
             UpdateCurrentAttackPicker();

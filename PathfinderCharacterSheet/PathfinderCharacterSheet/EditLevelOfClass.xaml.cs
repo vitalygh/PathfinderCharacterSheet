@@ -83,12 +83,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void EditToView()

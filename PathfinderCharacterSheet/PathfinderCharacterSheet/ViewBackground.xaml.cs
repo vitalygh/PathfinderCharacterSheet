@@ -17,7 +17,7 @@ namespace PathfinderCharacterSheet
 		public ViewBackground ()
 		{
 			InitializeComponent ();
-            MainPage.AddTapHandler(CharacterBackground, Background_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(CharacterBackground, Background_DoubleTapped, 2);
        }
 
         public void UpdateView()

@@ -211,7 +211,7 @@ namespace PathfinderCharacterSheet
                 AbilityMultiplierTitle = CreateLabel("Ability Multiplier:");
                 AbilityMultiplierFrame = CreateFrame(string.Empty);
                 AbilityMultiplier = AbilityMultiplierFrame.Content as Label;
-                MainPage.SetTapHandler(AbilityMultiplierFrame, (s, e) =>
+                UIHelpers.SetTapHandler(AbilityMultiplierFrame, (s, e) =>
                 {
                     if (modifier.abilityMultiplier == null)
                         modifier.abilityMultiplier = emptyMultiplier.Clone;
@@ -257,7 +257,7 @@ namespace PathfinderCharacterSheet
             LevelMultiplierTitle = CreateLabel("Level Multiplier:");
             LevelMultiplierFrame = CreateFrame(string.Empty);
             LevelMultiplier = LevelMultiplierFrame.Content as Label;
-            MainPage.SetTapHandler(LevelMultiplierFrame, (s, e) =>
+            UIHelpers.SetTapHandler(LevelMultiplierFrame, (s, e) =>
             {
                 if (modifier.levelMultiplier == null)
                     modifier.levelMultiplier = emptyMultiplier.Clone;
@@ -320,12 +320,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         public void Init(CharacterSheet sheet, IntModifiersList modifiersList, IntModifier modifier, bool allowUseAbilities = true)
@@ -373,7 +373,7 @@ namespace PathfinderCharacterSheet
                     LinkedItem.TextColor = Color.Red;
                 }
             }
-            MainPage.SetTapHandler(LinkedItemFrame, (s, e) => SelectItem(item));
+            UIHelpers.SetTapHandler(LinkedItemFrame, (s, e) => SelectItem(item));
             var loc = sheet.GetLevelOfClass(modifier.className);
             if (!modifier.MultiplyToLevel)
                 ClassName.Text = string.Empty;
@@ -399,7 +399,7 @@ namespace PathfinderCharacterSheet
             LevelMultiplierFrame.BackgroundColor = modifier.MultiplyToLevel ? Color.White : Color.LightGray;
             LevelMultiplierFrame.InputTransparent = !modifier.MultiplyToLevel;
 
-            MainPage.SetTapHandler(ClassNameFrame, (s, e) => SelectClass(modifier.className));
+            UIHelpers.SetTapHandler(ClassNameFrame, (s, e) => SelectClass(modifier.className));
             AutoNaming.IsChecked = modifier.AutoNaming;
         }
 
@@ -468,7 +468,7 @@ namespace PathfinderCharacterSheet
                 AbilityMultiplierFrame.InputTransparent = !sab;
             }
 
-            MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
+            UIHelpers.StrToInt(ModifierValue.Text, ref modifier.value);
             TotalValue.Text = modifier.GetValue(sheet).ToString();
         }
 
@@ -477,7 +477,7 @@ namespace PathfinderCharacterSheet
             if (source == null)
                 modifiersList.Add(modifier);
             modifier.active = IsActive.IsChecked;
-            MainPage.StrToInt(ModifierValue.Text, ref modifier.value);
+            UIHelpers.StrToInt(ModifierValue.Text, ref modifier.value);
             modifier.name = ModifierName.Text;
             if (AbilityPicker != null)
             {
@@ -486,9 +486,9 @@ namespace PathfinderCharacterSheet
             }
             /*
             if (Multiplier != null)
-                MainPage.StrToInt(Multiplier.Text, ref modifier.multiplier);
+                UIHelpers.StrToInt(Multiplier.Text, ref modifier.multiplier);
             if (Divider != null)
-                MainPage.StrToInt(Divider.Text, ref modifier.divider);
+                UIHelpers.StrToInt(Divider.Text, ref modifier.divider);
             if (Rounding != null)
             {
                 var selectedItem = Rounding.SelectedItem as RoundingTypesPickerItem;

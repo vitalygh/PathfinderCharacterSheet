@@ -28,7 +28,7 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            encumbrance = sheet.encumbrance.Clone as Encumbrance;
+            encumbrance = sheet.encumbrance.Clone;
         }
 
         public void UpdateView()

@@ -76,10 +76,10 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            MainPage.StrToInt(AdditionalBefore.Text, ref multiplier.additionalBefore);
-            MainPage.StrToInt(Multiplier.Text, ref multiplier.multiplier);
-            MainPage.StrToInt(Divider.Text, ref multiplier.divider);
-            MainPage.StrToInt(AdditionalAfter.Text, ref multiplier.additionalAfter);
+            UIHelpers.StrToInt(AdditionalBefore.Text, ref multiplier.additionalBefore);
+            UIHelpers.StrToInt(Multiplier.Text, ref multiplier.multiplier);
+            UIHelpers.StrToInt(Divider.Text, ref multiplier.divider);
+            UIHelpers.StrToInt(AdditionalAfter.Text, ref multiplier.additionalAfter);
             var currentRoundingType = IntMultiplier.DefaultRounding;
             if (Rounding != null)
             {

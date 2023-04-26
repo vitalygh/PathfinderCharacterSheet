@@ -30,8 +30,8 @@ namespace PathfinderCharacterSheet
         {
             InitializeComponent();
             CreateControls();
-            MainPage.AddTapHandler(ChannelsTitle, Channels_DoubleTapped, 2);
-            MainPage.AddTapHandler(ChannelsFrame, Channels_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(ChannelsTitle, Channels_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(ChannelsFrame, Channels_DoubleTapped, 2);
             UpdateView();
         }
 
@@ -147,7 +147,7 @@ namespace PathfinderCharacterSheet
 #else
                 horzLayout.Children.Add(frame);
 #endif
-                MainPage.AddTapHandler(frame, (s, e) => SpellsKnown_DoubleTap(level), 2);
+                UIHelpers.AddTapHandler(frame, (s, e) => SpellsKnown_DoubleTap(level), 2);
 
                 frame = CreateFrame(string.Empty);
                 controls.spellSaveDC = frame.Content as Label;
@@ -157,7 +157,7 @@ namespace PathfinderCharacterSheet
 #else
                 horzLayout.Children.Add(frame);
 #endif
-                MainPage.AddTapHandler(frame, (s, e) => SpellSaveDC_DoubleTap(level), 2);
+                UIHelpers.AddTapHandler(frame, (s, e) => SpellSaveDC_DoubleTap(level), 2);
 
                 frame = CreateFrame(level.ToString());
                 frame.BackgroundColor = Color.LightGray;
@@ -177,7 +177,7 @@ namespace PathfinderCharacterSheet
 #else
                 horzLayout.Children.Add(frame);
 #endif
-                MainPage.AddTapHandler(frame, (s, e) => SpellsPerDay_DoubleTap(level), 2);
+                UIHelpers.AddTapHandler(frame, (s, e) => SpellsPerDay_DoubleTap(level), 2);
 
                 frame = CreateFrame(string.Empty);
                 controls.bonusSpells = frame.Content as Label;
@@ -187,7 +187,7 @@ namespace PathfinderCharacterSheet
                     controls.bonusSpells.Text = "-";
                 }
                 else
-                    MainPage.AddTapHandler(frame, (s, e) => BonusSpells_DoubleTap(level), 2);
+                    UIHelpers.AddTapHandler(frame, (s, e) => BonusSpells_DoubleTap(level), 2);
 #if USE_GRID
                 grid.Children.Add(frame, column++, row);
 #else
@@ -277,12 +277,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void UpdateText(Label label, string text)

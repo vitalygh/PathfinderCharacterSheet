@@ -31,7 +31,7 @@ namespace PathfinderCharacterSheet
             savingThrows.Clear();
             var count = sheet.savingThrows.Length;
             for (var i = 0; i < count; i++)
-                savingThrows.Add(sheet.GetSavingThrow((Save)i).Clone as SavingThrow);
+                savingThrows.Add(sheet.GetSavingThrow((Save)i).Clone);
         }
 
         public void UpdateView()

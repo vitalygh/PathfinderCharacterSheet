@@ -65,7 +65,7 @@ namespace PathfinderCharacterSheet
                     SpecialAbilitiesGrid.Children.Add(leftFrame, 1, row);
                     row += 1;
 
-                    MainPage.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
+                    UIHelpers.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
 
                     var dul = item.dailyUseLimit.GetValue(sheet);
                     if (dul > 0)
@@ -77,7 +77,7 @@ namespace PathfinderCharacterSheet
                         SpecialAbilitiesGrid.Children.Add(totalFrame, 1, row);
                         row += 1;
 
-                        MainPage.AddTapHandler(totalFrame, Total_DoubleTapped, 2);
+                        UIHelpers.AddTapHandler(totalFrame, Total_DoubleTapped, 2);
                     }
                 }
             }
@@ -97,7 +97,7 @@ namespace PathfinderCharacterSheet
             for (var i = 0; i < row; i++)
                 SpecialAbilitiesGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
-            MainPage.AddTapHandler(SpecialAbilitiesGrid, Edit_Clicked, 2);
+            UIHelpers.AddTapHandler(SpecialAbilitiesGrid, Edit_Clicked, 2);
         }
 
         public void InitView(ItemType item)
@@ -121,12 +121,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void Left_DoubleTapped(object sender, EventArgs e)

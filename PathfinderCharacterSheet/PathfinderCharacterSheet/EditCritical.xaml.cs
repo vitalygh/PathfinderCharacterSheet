@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
                 return;
             this.sheet = sheet;
             source = critical;
-            this.critical = critical.Clone as CriticalHit;
+            this.critical = critical.Clone;
             UpdateView();
         }
 

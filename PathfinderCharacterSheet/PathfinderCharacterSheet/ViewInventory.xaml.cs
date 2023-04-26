@@ -51,15 +51,15 @@ namespace PathfinderCharacterSheet
         public ViewInventory()
         {
             InitializeComponent();
-            MainPage.AddTapHandler(PPTitle, PP_DoubleTapped, 2);
-            MainPage.AddTapHandler(PPFrame, PP_DoubleTapped, 2);
-            MainPage.AddTapHandler(GPTitle, GP_DoubleTapped, 2);
-            MainPage.AddTapHandler(GPFrame, GP_DoubleTapped, 2);
-            MainPage.AddTapHandler(SPTitle, SP_DoubleTapped, 2);
-            MainPage.AddTapHandler(SPFrame, SP_DoubleTapped, 2);
-            MainPage.AddTapHandler(CPTitle, CP_DoubleTapped, 2);
-            MainPage.AddTapHandler(CPFrame, CP_DoubleTapped, 2); 
-            MainPage.AddTapHandler(EncumbranceGrid, Encumbrance_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(PPTitle, PP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(PPFrame, PP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(GPTitle, GP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(GPFrame, GP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(SPTitle, SP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(SPFrame, SP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(CPTitle, CP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(CPFrame, CP_DoubleTapped, 2); 
+            UIHelpers.AddTapHandler(EncumbranceGrid, Encumbrance_DoubleTapped, 2);
 
             UpdateView();
         }
@@ -158,13 +158,13 @@ namespace PathfinderCharacterSheet
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
 #if EXPAND_SELECTED
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private void RemoveGearItemGrid(SelectedGearItemGrid gearItemGrid)
@@ -203,9 +203,9 @@ namespace PathfinderCharacterSheet
             gearItemGrid.viewButtonHandler = (s, e) => GearItemViewButton_Tap(item, itemIndex);
             gearItemGrid.viewButton.Clicked += gearItemGrid.viewButtonHandler;
 
-            MainPage.SetTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
+            UIHelpers.SetTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
+            UIHelpers.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
 #endif
         }
 
@@ -307,9 +307,9 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
-            MainPage.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
+            UIHelpers.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item, itemIndex), 2);
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
+            UIHelpers.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
 #endif
             var newGearItemGrid = new SelectedGearItemGrid()
             {
@@ -358,7 +358,7 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            MainPage.SetTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item), 2);
+            UIHelpers.SetTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item), 2);
 #if EXPAND_SELECTED
             if (gearItemGrid.selectedHandler != null)
                 gearItemGrid.selected.CheckedChanged -= gearItemGrid.selectedHandler;
@@ -366,7 +366,7 @@ namespace PathfinderCharacterSheet
             gearItemGrid.selected.IsChecked = item.selected;
             gearItemGrid.selected.CheckedChanged += gearItemGrid.selectedHandler;
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
+            UIHelpers.AddTapHandler(gearItemGrid.grid, (s, e) => GearItem_Tap(gearItemGrid.selected), 1);
 #endif
 #endif
             gearItemGrid.name.Text = item.AsString(sheet);
@@ -414,7 +414,7 @@ namespace PathfinderCharacterSheet
             {
                 new RowDefinition() { Height = GridLength.Auto },
             };
-            MainPage.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item), 2);
+            UIHelpers.AddTapHandler(grid, (s, e) => GearItem_DoubleTap(item), 2);
 #if EXPAND_SELECTED
             var selectedcb = new CheckBox()
             {
@@ -425,7 +425,7 @@ namespace PathfinderCharacterSheet
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
+            UIHelpers.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
 #endif
 #endif
             var gearItemNameFrame = CreateFrame(item.AsString(sheet));

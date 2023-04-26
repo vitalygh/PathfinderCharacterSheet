@@ -36,6 +36,10 @@ namespace PathfinderCharacterSheet
         {
             serializer = new XmlFileSerializer<CharacterSheet>("characters")
             {
+                SaveBackups = true,
+                LoadFromBackups = true,
+                CheckPathNotExist = true,
+
                 OnLoadingSuccess = (data, file) => onCharacterLoadingSuccess?.Invoke(data?.Name, file),
                 OnLoadingFailed = (path, exception) => onCharacterLoadingFailed?.Invoke(path, exception),
                 OnLoadingFromBackup = (data, path, backup) => onCharacterLoadedFromBackup?.Invoke(data?.Name, path, backup),

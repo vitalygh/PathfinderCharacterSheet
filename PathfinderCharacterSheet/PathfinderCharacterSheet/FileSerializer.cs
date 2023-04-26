@@ -34,26 +34,12 @@ namespace PathfinderCharacterSheet
         }
 
         protected abstract string Extension { get; }
-
-        private T Load(string path)
-        {
-            try
-            {
-                using (var stream = new StreamReader(path))
-                {
-                    return Deserialize(stream);
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                OnLoadingFailed?.Invoke(path, ex);
-            }
-            return null;
-        }
-
         protected abstract T Deserialize(StreamReader stream);
         protected abstract void Serialize(T data, MemoryStream stream);
+
+        public bool SaveBackups { get; set; } = false;
+        public bool LoadFromBackups { get; set; } = false;
+        public bool CheckPathNotExist { get; set; } = false;
 
         public Action<T, string> OnLoadingSuccess { get; set; }
         public Action<string, Exception> OnLoadingFailed { get; set; }
@@ -74,7 +60,7 @@ namespace PathfinderCharacterSheet
             {
                 if (file.EndsWith("_backup." + Extension))
                     continue;
-                var data = Load(file);
+                var data = LoadFromPath(file);
                 if (data != null)
                 {
                     //CharacterSheets.V1.IntModifier.Optimize();
@@ -93,10 +79,11 @@ namespace PathfinderCharacterSheet
                     }
 #endif
                     loaded.Add(data, file);
-                    OnLoadingSuccess?.Invoke(data, file);
                     continue;
                 }
 #if LOAD_FROM_BACKUPS
+                if (!LoadFromBackups)
+                    continue;
                 var backups = GetBackupsList(file);
                 if (backups == null)
                     continue;
@@ -106,7 +93,7 @@ namespace PathfinderCharacterSheet
                 while (--index >= 0)
                 {
                     var backup = sorted[index];
-                    var loadedFromBackup = Load(backup);
+                    var loadedFromBackup = LoadFromPath(backup);
                     if (loadedFromBackup != null)
                     {
                         loaded.Add(loadedFromBackup, file);
@@ -117,6 +104,37 @@ namespace PathfinderCharacterSheet
 #endif
             }
             return loaded;
+        }
+
+
+        private T LoadFromPath(string path)
+        {
+            try
+            {
+                if (!File.Exists(path))
+                {
+                    OnLoadingFailed?.Invoke(path, new Exception("File doesn't exist!"));
+                    return null;
+                }
+                using (var stream = new StreamReader(path))
+                {
+                    var data = Deserialize(stream);
+                    OnLoadingSuccess?.Invoke(data, path);
+                    return data;
+                }
+            }
+            catch (Exception ex)
+            {
+                OnLoadingFailed?.Invoke(path, ex);
+            }
+            return null;
+        }
+
+        public T Load(string name)
+        {
+            var index = 0;
+            var path = GenerateFreePath(name, ref index);
+            return LoadFromPath(path);
         }
 
         private string GenerateFreePath(string name, ref int index)
@@ -133,10 +151,11 @@ namespace PathfinderCharacterSheet
                 if (index > 0)
                     path += "_" + index;
 #if SAVE_BACKUPS
-                path += "_pcs";
+                if (SaveBackups)
+                    path += "_pcs";
 #endif
                 path = Path.Combine(RootPath, path + "." + Extension);
-                if (!File.Exists(path))
+                if (!CheckPathNotExist || !File.Exists(path))
                     return path;
                 index += 1;
             }
@@ -186,6 +205,8 @@ namespace PathfinderCharacterSheet
 
         private void SaveBackup(string path)
         {
+            if (!SaveBackups)
+                return;
             if (string.IsNullOrWhiteSpace(path))
                 return;
             if (!File.Exists(path))
@@ -260,7 +281,7 @@ namespace PathfinderCharacterSheet
                         catch
                         {
                             index += 1;
-                            path = GenerateFreePath(name, ref index);
+                            path = CheckPathNotExist ? GenerateFreePath(name, ref index) : null;
                             if (path == null)
                                 throw;
                         }

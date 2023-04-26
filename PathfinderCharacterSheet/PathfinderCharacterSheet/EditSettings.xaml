@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PathfinderCharacterSheet.EditSettings"
+             Title="Edit Settings">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Grid ColumnSpacing="5" RowSpacing="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="SaveChangesImmediatelyTitle" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Text="Save Changes Immediately:" Grid.Column="0" Grid.Row="0"></Label>
+                    <CheckBox x:Name="SaveChangesImmediately" IsChecked="True" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1" Grid.Row="0"></CheckBox>
+                </Grid>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="Cancel" x:Name="Cancel" FontSize="Medium" TextColor="Black"  Clicked="Cancel_Clicked" HorizontalOptions="FillAndExpand"></Button>
+                    <Button Text="Save" x:Name="Save" FontSize="Medium" TextColor="Black"  Clicked="Save_Clicked" HorizontalOptions="FillAndExpand"></Button>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label x:Name="Version" Text="" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" HorizontalOptions="CenterAndExpand" HorizontalTextAlignment="Center" Grid.Column="0" Grid.Row="0">
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

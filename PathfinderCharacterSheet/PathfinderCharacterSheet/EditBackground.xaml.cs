@@ -57,8 +57,8 @@ namespace PathfinderCharacterSheet
             Alignment.ItemDisplayBinding = new Binding("Name");
             Alignment.SelectedIndex = selectedIndex;
             CharacterName.Text = sheet.name;
-            experience = sheet.experience.Clone as ValueWithIntModifiers;
-            nextLevelExperience = sheet.nextLevelExperience.Clone as ValueWithIntModifiers;
+            experience = sheet.experience.Clone;
+            nextLevelExperience = sheet.nextLevelExperience.Clone;
             Deity.Text = sheet.deity;
             Homeland.Text = sheet.homeland;
             Race.Text = sheet.Race;

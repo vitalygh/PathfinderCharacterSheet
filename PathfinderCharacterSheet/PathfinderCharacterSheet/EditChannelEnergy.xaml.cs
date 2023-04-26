@@ -26,7 +26,7 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            channelEnergy = sheet.channelEnergy.Clone as ChannelEnergy;
+            channelEnergy = sheet.channelEnergy.Clone;
             UpdateView();
         }
 

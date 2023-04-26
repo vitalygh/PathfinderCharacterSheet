@@ -27,7 +27,7 @@ namespace PathfinderCharacterSheet
             if (limit == null)
                 return;
             source = limit;
-            this.limit = source.Clone as IntLimit;
+            this.limit = source.Clone;
             UpdateView();
         }
 
@@ -46,8 +46,8 @@ namespace PathfinderCharacterSheet
         {
             if (limit == null)
                 return;
-            MainPage.StrToInt(MinValue.Text, ref limit.minValue);
-            MainPage.StrToInt(MaxValue.Text, ref limit.maxValue);
+            UIHelpers.StrToInt(MinValue.Text, ref limit.minValue);
+            UIHelpers.StrToInt(MaxValue.Text, ref limit.maxValue);
             if (!source.Equals(limit))
             {
                 source.Fill(limit);

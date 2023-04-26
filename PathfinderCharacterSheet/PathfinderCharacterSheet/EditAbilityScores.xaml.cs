@@ -61,7 +61,7 @@ namespace PathfinderCharacterSheet
                             {
                                 var index = i - 1;
                                 var adj = j == 3;
-                                MainPage.AddTapHandler(child, (s, e) =>
+                                UIHelpers.AddTapHandler(child, (s, e) =>
                                 {
                                     if (pushedPage != null)
                                         return;
@@ -113,12 +113,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         /*private void UpdateModifier(int i)
@@ -129,7 +129,7 @@ namespace PathfinderCharacterSheet
             var ab = abilityScores[i - 1];
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             //var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
-            //MainPage.StrToInt(entry.Text, ref ab.score);
+            //UIHelpers.StrToInt(entry.Text, ref ab.score);
             //((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.Total.ToString();
             ((AbilityScores.Children[index + 2] as Frame).Content as Label).Text = ab.GetModifier(sheet).ToString();
             //((AbilityScores.Children[index + 3] as Frame).Content as Label).Text = ab.tempAdjustment.Total.ToString();

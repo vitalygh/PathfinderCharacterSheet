@@ -71,7 +71,7 @@ namespace PathfinderCharacterSheet
             {
                 AmountTitle = CreateLabel("Amount:");
                 var amountFrame = CreateFrame(item.amount.GetValue(sheet).ToString());
-                MainPage.AddTapHandler(amountFrame, Amount_DoubleTapped, 2);
+                UIHelpers.AddTapHandler(amountFrame, Amount_DoubleTapped, 2);
 
                 GearItemGrid.Children.Add(AmountTitle, 0, row);
                 GearItemGrid.Children.Add(amountFrame, 1, row);
@@ -79,7 +79,7 @@ namespace PathfinderCharacterSheet
 
                 WeightTitle = CreateLabel("Weight:");
                 var weightFrame = CreateFrame(item.weight.GetValue(sheet).ToString());
-                MainPage.AddTapHandler(weightFrame, Weight_DoubleTapped, 2);
+                UIHelpers.AddTapHandler(weightFrame, Weight_DoubleTapped, 2);
 
                 GearItemGrid.Children.Add(WeightTitle, 0, row);
                 GearItemGrid.Children.Add(weightFrame, 1, row);
@@ -95,7 +95,7 @@ namespace PathfinderCharacterSheet
                     GearItemGrid.Children.Add(leftFrame, 1, row);
                     row += 1;
 
-                    MainPage.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
+                    UIHelpers.AddTapHandler(leftFrame, Left_DoubleTapped, 2);
 
                     var dul = item.dailyUseLimit.GetValue(sheet);
                     if (dul > 0)
@@ -107,7 +107,7 @@ namespace PathfinderCharacterSheet
                         GearItemGrid.Children.Add(totalFrame, 1, row);
                         row += 1;
 
-                        MainPage.AddTapHandler(totalFrame, Total_DoubleTapped, 2);
+                        UIHelpers.AddTapHandler(totalFrame, Total_DoubleTapped, 2);
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace PathfinderCharacterSheet
             for (var i = 0; i < row; i++)
                 GearItemGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
-            MainPage.AddTapHandler(GearItemGrid, Edit_Clicked, 2);
+            UIHelpers.AddTapHandler(GearItemGrid, Edit_Clicked, 2);
         }
 
         public void InitView(ItemsType gearItem)
@@ -154,12 +154,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void Amount_DoubleTapped(object sender, EventArgs e)

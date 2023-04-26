@@ -28,7 +28,7 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            speed = sheet.speed.Clone as Speed;
+            speed = sheet.speed.Clone;
         }
 
         public void UpdateView()

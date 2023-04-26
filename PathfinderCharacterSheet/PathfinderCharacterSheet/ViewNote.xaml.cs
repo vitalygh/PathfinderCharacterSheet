@@ -30,7 +30,7 @@ namespace PathfinderCharacterSheet
         public ViewNote()
         {
             InitializeComponent();
-            MainPage.AddTapHandler(NoteGrid, Edit_Clicked, 2);
+            UIHelpers.AddTapHandler(NoteGrid, Edit_Clicked, 2);
         }
 
         public void InitView(ItemType item)

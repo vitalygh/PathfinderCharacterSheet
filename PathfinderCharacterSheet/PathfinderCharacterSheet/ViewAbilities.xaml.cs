@@ -49,20 +49,20 @@ namespace PathfinderCharacterSheet
             (AbilityScores.Children[abscindex++] as Label).Text = "Temp Score";
             (AbilityScores.Children[abscindex++] as Label).Text = "Temp Modifier";
 
-            MainPage.AddTapHandler(AbilityScores, AbilityScores_DoubleTapped, 2);
-            MainPage.AddTapHandler(MaxHPTitle, MaxHP_DoubleTapped, 2);
-            MainPage.AddTapHandler(MaxHPFrame, MaxHP_DoubleTapped, 2);
-            MainPage.AddTapHandler(HPTitle, HP_DoubleTapped, 2);
-            MainPage.AddTapHandler(HPFrame, HP_DoubleTapped, 2);
-            MainPage.AddTapHandler(DamageResistTitle, DamageResist_DoubleTapped, 2);
-            MainPage.AddTapHandler(DamageResistFrame, DamageResist_DoubleTapped, 2);
-            MainPage.AddTapHandler(InitiativeGrid, Initiative_DoubleTapped, 2);
-            MainPage.AddTapHandler(ArmorClassGrid, ArmorClass_DoubleTapped, 2);
-            MainPage.AddTapHandler(SavingThrowsGrid, SavingThrows_DoubleTapped, 2);
-            MainPage.AddTapHandler(BaseAttackBonusGrid, BaseAttackBonus_DoubleTapped, 2);
-            MainPage.AddTapHandler(SpellResistanceGrid, SpellResistance_DoubleTapped, 2);
-            MainPage.AddTapHandler(CombatManeuverGrid, CombatManeuver_DoubleTapped, 2);
-            MainPage.AddTapHandler(SpeedGrid, Speed_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(AbilityScores, AbilityScores_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(MaxHPTitle, MaxHP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(MaxHPFrame, MaxHP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(HPTitle, HP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(HPFrame, HP_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(DamageResistTitle, DamageResist_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(DamageResistFrame, DamageResist_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(InitiativeGrid, Initiative_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(ArmorClassGrid, ArmorClass_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(SavingThrowsGrid, SavingThrows_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(BaseAttackBonusGrid, BaseAttackBonus_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(SpellResistanceGrid, SpellResistance_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(CombatManeuverGrid, CombatManeuver_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(SpeedGrid, Speed_DoubleTapped, 2);
         }
 
         public void UpdateView()
@@ -179,12 +179,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void UpdateValue(Label label, string text)

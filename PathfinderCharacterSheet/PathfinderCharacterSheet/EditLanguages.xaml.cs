@@ -54,7 +54,7 @@ namespace PathfinderCharacterSheet
                 var row = languageRows[i];
                 var language = languages[i];
                 row.name.Text = language;
-                MainPage.SetTapHandler(row.frame, (s, e) => Language_Tap(language, languageIndex), 1);
+                UIHelpers.SetTapHandler(row.frame, (s, e) => Language_Tap(language, languageIndex), 1);
             }
             var count = languagesCount - rowsCount;
             if (count > 0)
@@ -70,7 +70,7 @@ namespace PathfinderCharacterSheet
                     row.frame  = CreateFrame(language);
                     row.name = row.frame.Content as Label;
                     row.name.TextDecorations = TextDecorations.Underline;
-                    MainPage.SetTapHandler(row.frame, (s, e) => Language_Tap(language, languageIndex), 1);
+                    UIHelpers.SetTapHandler(row.frame, (s, e) => Language_Tap(language, languageIndex), 1);
                     languageRows.Add(row);
                     var rowIndex = languageIndex;
                     Languages.Children.Add(row.frame, 0, rowIndex);
@@ -102,7 +102,7 @@ namespace PathfinderCharacterSheet
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void EditToView()

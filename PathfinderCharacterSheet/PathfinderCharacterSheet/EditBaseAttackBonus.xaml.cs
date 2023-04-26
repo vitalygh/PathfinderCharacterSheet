@@ -40,12 +40,12 @@ namespace PathfinderCharacterSheet
             if (sheet.baseAttackBonus != null)
                 foreach (var bab in sheet.baseAttackBonus)
                     if (bab != null)
-                        baseAttackBonus.Add(bab.Clone as ValueWithIntModifiers);
+                        baseAttackBonus.Add(bab.Clone);
             if (baseAttackBonus.Count <= 0)
                 baseAttackBonus.Add(new ValueWithIntModifiers());
             attacksCount = baseAttackBonus.Count;
             currentAttack = sheet.currentAttack;
-            currentAttacksCount = sheet.currentAttacksCount.Clone as ValueWithIntModifiers;
+            currentAttacksCount = sheet.currentAttacksCount.Clone;
             UpdateView();
         }
 
@@ -116,7 +116,7 @@ namespace PathfinderCharacterSheet
                 return;
             var value = bab.GetValue(sheet);
             UpdateValue(row.value, value >= 0 ? "+" + value : value.ToString());
-            MainPage.SetTapHandler(row.frame, (s, e) => EditBonus(bab), 1);
+            UIHelpers.SetTapHandler(row.frame, (s, e) => EditBonus(bab), 1);
         }
 
         private void CreateRow(ValueWithIntModifiers bab)
@@ -148,7 +148,7 @@ namespace PathfinderCharacterSheet
             };
             var newRowIndex = rows.Count;
             rows.Add(newRow);
-            MainPage.SetTapHandler(frame, (s, e) => EditBonus(bab), 1);
+            UIHelpers.SetTapHandler(frame, (s, e) => EditBonus(bab), 1);
             Attacks.Children.Add(newRow.title, 0, newRowIndex);
             Attacks.Children.Add(newRow.frame, 1, newRowIndex);
         }
@@ -178,12 +178,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void UpdateValue(Label label, string text)
@@ -246,7 +246,7 @@ namespace PathfinderCharacterSheet
             if (baseAttackBonus.Count <= 0)
                 return;
             var ac = attacksCount;
-            if (!MainPage.StrToInt(AttacksCount.Text, ref ac))
+            if (!UIHelpers.StrToInt(AttacksCount.Text, ref ac))
                 return;
             var maxEnlarge = 10;
             ac = Math.Min(Math.Max(1, ac), attacksCount + maxEnlarge);
@@ -255,7 +255,7 @@ namespace PathfinderCharacterSheet
                 var count = baseAttackBonus.Count;
                 var bab = baseAttackBonus[count - 1];
                 while (baseAttackBonus.Count < ac)
-                    baseAttackBonus.Add(bab.Clone as ValueWithIntModifiers);
+                    baseAttackBonus.Add(bab.Clone);
                 attacksCount = ac;
             }
             else if (ac < attacksCount)

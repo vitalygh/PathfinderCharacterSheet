@@ -192,14 +192,14 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            var label = MainPage.CreateLabel(text, horz);
+            var label = UIHelpers.CreateLabel(text, horz);
             label.HorizontalOptions = LayoutOptions.FillAndExpand;
             return label;
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void UpdateValue(CheckBox checkbox, bool value)
@@ -265,12 +265,12 @@ namespace PathfinderCharacterSheet
             UpdateValue(armorGrid.weight, item.weight.GetValue(sheet).ToString());
             UpdateValue(armorGrid.description, item.description);
 
-            MainPage.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
+            UIHelpers.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
 #if EXPAND_WITH_TAP
 #if EXPAND_CHECKBOX
-            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
+            UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
 #else
-            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(item), 1);
+            UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(item), 1);
 #endif
 #endif
         }
@@ -405,12 +405,12 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
-            MainPage.AddTapHandler(grid, (s, e) => Armor_DoubleTap(item), 2);
+            UIHelpers.AddTapHandler(grid, (s, e) => Armor_DoubleTap(item), 2);
 #if EXPAND_WITH_TAP
 #if EXPAND_CHECKBOX
-            MainPage.AddTapHandler(grid, (s, e) => Armor_Tap(selectedcb), 1);
+            UIHelpers.AddTapHandler(grid, (s, e) => Armor_Tap(selectedcb), 1);
 #else
-            MainPage.AddTapHandler(grid, (s, e) => Armor_Tap(item), 1);
+            UIHelpers.AddTapHandler(grid, (s, e) => Armor_Tap(item), 1);
 #endif
 #endif
 
@@ -468,7 +468,7 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            MainPage.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
+            UIHelpers.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
 #if EXPAND_SELECTED
 #if EXPAND_CHECKBOX
             if (armorGrid.selectedHandler != null)
@@ -477,11 +477,11 @@ namespace PathfinderCharacterSheet
             UpdateValue(armorGrid.selected, item.selected);
             armorGrid.selected.CheckedChanged += armorGrid.selectedHandler;
 #if EXPAND_WITH_TAP
-MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
+UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
 #endif
 #else
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(item), 1);
+            UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(item), 1);
 #endif
 #endif
 #endif
@@ -542,7 +542,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             armorNameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
             var armorName = armorNameFrame.Content as Label;
             armorName.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
-            MainPage.AddTapHandler(container, (s, e) => Armor_DoubleTap(item), 2);
+            UIHelpers.AddTapHandler(container, (s, e) => Armor_DoubleTap(item), 2);
 #if EXPAND_SELECTED
 #if EXPAND_CHECKBOX
             var selectedcb = new CheckBox()
@@ -554,7 +554,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(container, (s, e) => Armor_Tap(selectedcb), 1);
+            UIHelpers.AddTapHandler(container, (s, e) => Armor_Tap(selectedcb), 1);
 #endif
 #if USE_GRID
             container.Children.Add(selectedcb, 0, 0);
@@ -563,7 +563,7 @@ MainPage.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.select
 #endif
 #else
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(container, (s, e) => Armor_Tap(item), 1);
+            UIHelpers.AddTapHandler(container, (s, e) => Armor_Tap(item), 1);
 #endif
 #endif
 #endif

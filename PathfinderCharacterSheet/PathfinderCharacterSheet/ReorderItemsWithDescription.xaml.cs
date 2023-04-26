@@ -52,16 +52,16 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            MainPage.SetTapHandler(controls.up, () => MoveItem(item, -1, true));
-            MainPage.AddTapHandler(controls.up, () => MoveItem(item, -1, false), 2);
+            UIHelpers.SetTapHandler(controls.up, () => MoveItem(item, -1, true));
+            UIHelpers.AddTapHandler(controls.up, () => MoveItem(item, -1, false), 2);
             controls.text.Text = item.AsString(sheet);
-            MainPage.SetTapHandler(controls.down, () => MoveItem(item, 1, true));
-            MainPage.AddTapHandler(controls.down, () => MoveItem(item, 1, false), 2);
+            UIHelpers.SetTapHandler(controls.down, () => MoveItem(item, 1, true));
+            UIHelpers.AddTapHandler(controls.down, () => MoveItem(item, 1, false), 2);
         }
 
         private View AddButton(string text)
         {
-            var label = MainPage.CreateLabel(text);
+            var label = UIHelpers.CreateLabel(text);
             var sl = new StackLayout();
             sl.Children.Add(label);
             sl.BackgroundColor = Color.LightGray;
@@ -75,7 +75,7 @@ namespace PathfinderCharacterSheet
             var sl = new StackLayout() { Orientation = StackOrientation.Horizontal, };
             var up = AddButton("Up");
             var down = AddButton("Down");
-            var frame = MainPage.CreateFrame(string.Empty);
+            var frame = UIHelpers.CreateFrame(string.Empty);
             sl.Children.Add(up);
             sl.Children.Add(frame);
             sl.Children.Add(down);

@@ -32,8 +32,8 @@ namespace PathfinderCharacterSheet
         public ViewSkills()
         {
             InitializeComponent();
-            MainPage.AddTapHandler(SkillRanksLayout, SkillRanks_DoubleTapped, 2);
-            MainPage.AddTapHandler(LanguagesLayout, Languages_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(SkillRanksLayout, SkillRanks_DoubleTapped, 2);
+            UIHelpers.AddTapHandler(LanguagesLayout, Languages_DoubleTapped, 2);
             UpdateView();
         }
 
@@ -81,8 +81,8 @@ namespace PathfinderCharacterSheet
                 row.name.TextColor = (skill.trainedOnly && (skill.rank.GetValue(sheet) <= 0)) ? Color.Red : Color.Black;
                 UpdateValue(row.total, skill.GetValue(sheet).ToString());
                 void handler(object s, EventArgs e) => Skill_DoubleTap(skill, skillIndex);
-                MainPage.SetTapHandler(row.nameFrame, handler, 2);
-                MainPage.SetTapHandler(row.totalFrame, handler, 2);
+                UIHelpers.SetTapHandler(row.nameFrame, handler, 2);
+                UIHelpers.SetTapHandler(row.totalFrame, handler, 2);
             }
             var count = skillsCount - rowsCount;
             if (count > 0)
@@ -116,8 +116,8 @@ namespace PathfinderCharacterSheet
                     skillRow.totalFrame.WidthRequest = 40;
                     skillRow.total = skillRow.totalFrame.Content as Label;
                     void handler(object s, EventArgs e) => Skill_DoubleTap(skill, skillIndex);
-                    MainPage.AddTapHandler(skillRow.nameFrame, handler, 2);
-                    MainPage.AddTapHandler(skillRow.totalFrame, handler, 2);
+                    UIHelpers.AddTapHandler(skillRow.nameFrame, handler, 2);
+                    UIHelpers.AddTapHandler(skillRow.totalFrame, handler, 2);
                     skillRows.Add(skillRow);
 #if USE_GRID
                     var row = skillIndex + 1;
@@ -174,7 +174,7 @@ namespace PathfinderCharacterSheet
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void UpdateValue(CheckBox checkbox, bool value)

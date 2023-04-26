@@ -168,17 +168,17 @@ namespace PathfinderCharacterSheet
             };
 #endif
             var attackBonusTitle = CreateLabel("Attack Bonus:");
-            MainPage.AddTapHandler(attackBonusTitle, AttackBonus_DoubleTap, 2);
+            UIHelpers.AddTapHandler(attackBonusTitle, AttackBonus_DoubleTap, 2);
             var ab = (sheet != null) ? sheet.GetAttackBonus() : "+0";
             var attackBonusFrame = CreateFrame(ab);
-            MainPage.AddTapHandler(attackBonusFrame, AttackBonus_DoubleTap, 2);
+            UIHelpers.AddTapHandler(attackBonusFrame, AttackBonus_DoubleTap, 2);
             attackBonus = attackBonusFrame.Content as Label;
 
             var damageBonusTitle = CreateLabel("Damage Bonus:");
-            MainPage.AddTapHandler(damageBonusTitle, DamageBonus_DoubleTap, 2);
+            UIHelpers.AddTapHandler(damageBonusTitle, DamageBonus_DoubleTap, 2);
             var db = (sheet != null) ? sheet.DamageBonus : 0;
             var damageBonusFrame = CreateFrame(db >= 0 ? "+" + db : db.ToString());
-            MainPage.AddTapHandler(damageBonusFrame, DamageBonus_DoubleTap, 2);
+            UIHelpers.AddTapHandler(damageBonusFrame, DamageBonus_DoubleTap, 2);
             damageBonus = damageBonusFrame.Content as Label;
 
 #if USE_GRID || USE_GRID_IN_HEADER
@@ -261,12 +261,12 @@ namespace PathfinderCharacterSheet
 
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void UpdateValue(CheckBox checkbox, bool value)
@@ -332,12 +332,12 @@ namespace PathfinderCharacterSheet
             UpdateValue(weaponGrid.weight, item.weight.GetValue(sheet).ToString());
             UpdateValue(weaponGrid.description, item.description);
 
-            MainPage.SetTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item), 2);
+            UIHelpers.SetTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item), 2);
 #if EXPAND_WITH_TAP
 #if EXPAND_CHECKBOX
-            MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
+            UIHelpers.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
 #else
-            MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(item), 1);
+            UIHelpers.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(item), 1);
 #endif
 #endif
         }
@@ -484,11 +484,11 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
-            MainPage.AddTapHandler(grid, (s, e) => Weapon_DoubleTap(item), 2);
+            UIHelpers.AddTapHandler(grid, (s, e) => Weapon_DoubleTap(item), 2);
 #if EXPAND_CHECKBOX
-            MainPage.AddTapHandler(grid, (s, e) => Weapon_Tap(selectedcb), 1);
+            UIHelpers.AddTapHandler(grid, (s, e) => Weapon_Tap(selectedcb), 1);
 #else
-            MainPage.AddTapHandler(grid, (s, e) => Weapon_Tap(item), 1);
+            UIHelpers.AddTapHandler(grid, (s, e) => Weapon_Tap(item), 1);
 #endif
 
             var newWeaponGrid = new SelectedWeaponGrid()
@@ -550,7 +550,7 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            MainPage.SetTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item), 2);
+            UIHelpers.SetTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item), 2);
 #if EXPAND_SELECTED
 #if EXPAND_CHECKBOX
             if (weaponGrid.selectedHandler != null)
@@ -559,11 +559,11 @@ namespace PathfinderCharacterSheet
             UpdateValue(weaponGrid.selected, item.selected);
             weaponGrid.selected.CheckedChanged += weaponGrid.selectedHandler;
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
+            UIHelpers.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
 #endif
 #else
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(item), 1);
+            UIHelpers.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(item), 1);
 #endif
 #endif
 #endif
@@ -624,7 +624,7 @@ namespace PathfinderCharacterSheet
             weaponNameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
             var weaponName = weaponNameFrame.Content as Label;
             weaponName.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
-            MainPage.AddTapHandler(container, (s, e) => Weapon_DoubleTap(item), 2);
+            UIHelpers.AddTapHandler(container, (s, e) => Weapon_DoubleTap(item), 2);
 #if EXPAND_SELECTED
 #if EXPAND_CHECKBOX
             var selectedcb = new CheckBox()
@@ -636,7 +636,7 @@ namespace PathfinderCharacterSheet
             void handler(object s, CheckedChangedEventArgs e) => Weapon_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += handler;
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(container, (s, e) => Weapon_Tap(selectedcb), 1);
+            UIHelpers.AddTapHandler(container, (s, e) => Weapon_Tap(selectedcb), 1);
 #endif
 #if USE_GRID
             container.Children.Add(selectedcb, 0, 0);
@@ -645,7 +645,7 @@ namespace PathfinderCharacterSheet
 #endif
 #else
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(container, (s, e) => Weapon_Tap(item), 1);
+            UIHelpers.AddTapHandler(container, (s, e) => Weapon_Tap(item), 1);
 #endif
 #endif
 #endif

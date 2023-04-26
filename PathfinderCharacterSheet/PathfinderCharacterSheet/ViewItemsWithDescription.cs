@@ -107,7 +107,7 @@ namespace PathfinderCharacterSheet
 
         private Frame CreateFrame(string text)
         {
-            return MainPage.CreateFrame(text);
+            return UIHelpers.CreateFrame(text);
         }
 
         private void UpdateValue(Label label, string text)
@@ -121,7 +121,7 @@ namespace PathfinderCharacterSheet
 #if EXPAND_SELECTED
         private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
         {
-            return MainPage.CreateLabel(text, horz);
+            return UIHelpers.CreateLabel(text, horz);
         }
 
         private void UpdateValue(CheckBox checkbox, bool value)
@@ -167,9 +167,9 @@ namespace PathfinderCharacterSheet
             itemGrid.viewButtonHandler = (s, e) => ItemViewButton_Tap(item);
             itemGrid.viewButton.Clicked += itemGrid.viewButtonHandler;
 
-            MainPage.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
+            UIHelpers.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
+            UIHelpers.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
 #endif
         }
 
@@ -278,9 +278,9 @@ namespace PathfinderCharacterSheet
             container.Children.Add(descriptionValue);
 #endif
 
-            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
+            UIHelpers.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
+            UIHelpers.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
 #endif
 
             var newItemGrid = new SelectedItemGrid()
@@ -322,7 +322,7 @@ namespace PathfinderCharacterSheet
             var sheet = MainPage.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            MainPage.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
+            UIHelpers.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 2);
 #if EXPAND_SELECTED
             if (itemGrid.selectedHandler != null)
                 itemGrid.selected.CheckedChanged -= itemGrid.selectedHandler;
@@ -330,7 +330,7 @@ namespace PathfinderCharacterSheet
             UpdateValue(itemGrid.selected, item.selected);
             itemGrid.selected.CheckedChanged += itemGrid.selectedHandler;
 #if EXPAND_WITH_TAP
-            MainPage.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
+            UIHelpers.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
 #endif
 #endif
             var name = item.AsString(sheet);
@@ -413,9 +413,9 @@ namespace PathfinderCharacterSheet
             container.Children.Add(itemNameFrame);
             container.Children.Add(viewButton);
 #endif
-            MainPage.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
+            UIHelpers.AddTapHandler(container, (s, e) => Item_DoubleTap(item), 2);
 #if EXPAND_SELECTED
-            MainPage.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
+            UIHelpers.AddTapHandler(container, (s, e) => Item_Tap(selectedcb), 1);
 #endif
             var newItemGrid = new ItemGrid()
             {

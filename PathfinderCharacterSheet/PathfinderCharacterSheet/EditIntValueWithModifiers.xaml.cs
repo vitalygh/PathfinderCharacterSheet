@@ -48,13 +48,13 @@ namespace PathfinderCharacterSheet
             UpdateModifiersSum();
             if (modifiers == null)
                 return;
-            MainPage.FillIntMLGrid(Modifiers, sheet, modifiers, "Modifiers", EditModifier, EditModifier, ReorderModifiers, (modifiers, modifier) => UpdateModifiersSum());
+            UIHelpers.FillIntMLGrid(Modifiers, sheet, modifiers, "Modifiers", EditModifier, EditModifier, ReorderModifiers, (modifiers, modifier) => UpdateModifiersSum());
         }
 
         private void UpdateTotal()
         {
             var total = 0;
-            MainPage.StrToInt(Value.Text, ref total);
+            UIHelpers.StrToInt(Value.Text, ref total);
             if (modifiers != null)
                 total += modifiers.GetValue(sheet);
             Total.Text = total.ToString();
@@ -127,7 +127,7 @@ namespace PathfinderCharacterSheet
             if (source == null)
                 return;
             var baseValue = source.BaseValue;
-            var hasChanged = MainPage.StrToInt(Value.Text, ref baseValue);
+            var hasChanged = UIHelpers.StrToInt(Value.Text, ref baseValue);
             source.BaseValue = baseValue;
             if (source.Modifiers != modifiers)
             {
