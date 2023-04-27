@@ -151,7 +151,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateItemGrid(SelectedItemGrid itemGrid, ItemType item, int itemIndex)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 
@@ -184,7 +184,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             if (selectedItemGridsPool.Count > 0)
@@ -321,7 +321,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateItemGrid(ItemGrid itemGrid, ItemType item, int itemIndex)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             UIHelpers.SetTapHandler(itemGrid.container, (s, e) => Item_DoubleTap(item), 1);
@@ -349,7 +349,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             if (itemGridsPool.Count > 0)
@@ -452,7 +452,7 @@ namespace PathfinderCharacterSheet
             if (item.selected == value)
                 return;
             item.selected = value;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
             UpdateItemsView();
         }
 #endif

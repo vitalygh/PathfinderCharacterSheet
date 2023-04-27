@@ -19,7 +19,7 @@ namespace PathfinderCharacterSheet
         public EditInitiative()
         {
             InitializeComponent();
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             modifiers = sheet.initiative.miscModifiers.Clone;
             UpdateView();
         }
@@ -27,7 +27,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             var dexMod = sheet.GetAbilityModifier(Ability.Dexterity);
             DexModifier.Text = dexMod.ToString();
             var miscMod = modifiers.GetValue(sheet);
@@ -37,12 +37,12 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             var hasChanges = !sheet.initiative.miscModifiers.Equals(modifiers);
             if (hasChanges)
             {
                 sheet.initiative.miscModifiers.Fill(modifiers);
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
             }
         }
 
@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

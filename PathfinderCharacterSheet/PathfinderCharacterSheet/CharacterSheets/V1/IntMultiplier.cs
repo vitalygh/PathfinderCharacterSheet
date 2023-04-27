@@ -6,6 +6,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntMultiplier: IApplicable<int>, IEquatable<IntMultiplier>, IPrototype<IntMultiplier>
     {
+        public static readonly IntMultiplier Empty = new IntMultiplier();
+
         public int additionalBefore = 0;
         public int multiplier = 1;
         public int divider = 1;
@@ -19,7 +21,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public int additionalAfter = 0;
 
-        public IntLimit limit = null;
+        public IntLimit limit
+        {
+            get => Limit == IntLimit.Empty ? null : Limit;
+            set => Limit = value;
+        }
+        internal IntLimit Limit { get; set; } = null;
 
         public int Apply(int value)
         {
@@ -39,8 +46,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     value = (int)Math.Ceiling(fval);
                     break;
             }
-            if (limit != null)
-                value = limit.Apply(value);
+            if (Limit != null)
+                value = Limit.Apply(value);
             return value;
         }
 
@@ -64,7 +71,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             divider = source.divider;
             additionalAfter = source.additionalAfter;
             RoundingType = source.RoundingType;
-            limit = source.limit?.Clone;
+            Limit = source.Limit?.Clone;
 
             return this;
         }
@@ -83,7 +90,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (RoundingType != other.RoundingType)
                 return false;
-            if (limit != other.limit)
+            if (Limit != other.Limit)
                 return false;
             return true;
         }
@@ -122,7 +129,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             hash = (hash * 7) + divider.GetHashCode();
             hash = (hash * 7) + additionalAfter.GetHashCode();
             hash = (hash * 7) + RoundingType.GetHashCode();
-            hash = (hash * 7) + (limit is null ? 0 : limit.GetHashCode());
+            hash = (hash * 7) + (Limit is null ? 0 : Limit.GetHashCode());
             return hash;
         }
 
@@ -162,8 +169,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
             if (addBrackets)
                 text.Insert(0, "(").Append(")");
-            if (limit != null)
-                text.Append(limit.AsString());
+            if (Limit != null)
+                text.Append(Limit.AsString());
             return text.ToString();
         }
     }

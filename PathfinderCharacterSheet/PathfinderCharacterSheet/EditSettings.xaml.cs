@@ -18,13 +18,13 @@ namespace PathfinderCharacterSheet
         public EditSettings()
         {
             InitializeComponent();
-            Version.Text = App.PlatformProxy?.GetVersionNumber + " (" + App.PlatformProxy?.GetBuildNumber + ") " + MainPage.GetBuildDateTime()?.ToString("yyyy.MM.dd HH:mm:ss");
+            Version.Text = UIHelpers.GetBuildVersion();
         }
 
         public void UpdateView()
         {
             pushedPage = null;
-            settings = MainPage.GetSettings?.Invoke()?.Clone;
+            settings = UIMediator.GetSettings?.Invoke()?.Clone;
             SaveChangesImmediately.IsChecked = settings.SaveChangesImmediately;
         }
 
@@ -34,7 +34,7 @@ namespace PathfinderCharacterSheet
                 return;
             pushedPage = this;
             settings.SaveChangesImmediately = SaveChangesImmediately.IsChecked;
-            MainPage.SetSettings?.Invoke(settings);
+            UIMediator.SetSettings?.Invoke(settings);
             Navigation.PopAsync();
         }
 

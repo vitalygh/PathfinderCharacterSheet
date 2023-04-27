@@ -35,7 +35,7 @@ namespace PathfinderCharacterSheet
 
         public void InitEditor()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             baseAttackBonus = new List<ValueWithIntModifiers>();
             if (sheet.baseAttackBonus != null)
                 foreach (var bab in sheet.baseAttackBonus)
@@ -51,7 +51,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateCurrentAttackPicker()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (baseAttackBonus == null)
@@ -111,7 +111,7 @@ namespace PathfinderCharacterSheet
                 return;
             if (bab == null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var value = bab.GetValue(sheet);
@@ -121,7 +121,7 @@ namespace PathfinderCharacterSheet
 
         private void CreateRow(ValueWithIntModifiers bab)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (rowsPool.Count > 0)
@@ -167,7 +167,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -196,18 +196,18 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var bab = baseAttackBonus.GetRange(0, attacksCount);
             if ((currentAttack != sheet.currentAttack) ||
-                (bab != sheet.baseAttackBonus) ||
+                (!bab.Equals(sheet.baseAttackBonus)) ||
                 !currentAttacksCount.Equals(sheet.currentAttacksCount))
             {
                 sheet.baseAttackBonus = bab;
                 sheet.currentAttack = currentAttack;
                 sheet.currentAttacksCount.Fill(currentAttacksCount);
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
             }
         }
 
@@ -215,7 +215,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

@@ -19,7 +19,7 @@ namespace PathfinderCharacterSheet
         {
             get
             {
-                var sheet = MainPage.GetSelectedCharacter?.Invoke();
+                var sheet = UIMediator.GetSelectedCharacter?.Invoke();
                 if (sheet != null)
                     return sheet.notes;
                 return null;
@@ -81,7 +81,7 @@ namespace PathfinderCharacterSheet
             if (allow)
             {
                 Items.Remove(item);
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
                 await Navigation.PopAsync();
             }
         }

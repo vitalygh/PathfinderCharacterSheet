@@ -18,7 +18,7 @@ namespace PathfinderCharacterSheet
         {
             get
             {
-                var sheet = MainPage.GetSelectedCharacter?.Invoke();
+                var sheet = UIMediator.GetSelectedCharacter?.Invoke();
                 if (sheet != null)
                     return sheet.gear;
                 return null;
@@ -40,7 +40,7 @@ namespace PathfinderCharacterSheet
             {
                 this.item = new ItemType
                 {
-                    uid = MainPage.GetUID?.Invoke() ?? CharacterSheet.InvalidUID
+                    uid = UIMediator.GetUID?.Invoke() ?? CharacterSheet.InvalidUID
                 };
             }
             else
@@ -56,7 +56,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             Amount.Text = item.amount.GetValue(sheet).ToString();
@@ -88,14 +88,14 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
             }
             if (hasChanges)
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
         }
 
         private void Amount_Tapped(object sender, EventArgs e)
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -108,7 +108,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -121,7 +121,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (item == null)
@@ -138,7 +138,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (item == null)
@@ -197,7 +197,7 @@ namespace PathfinderCharacterSheet
             if (allow)
             {
                 Items.Remove(source);
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
                 await Navigation.PopAsync();
             }
         }

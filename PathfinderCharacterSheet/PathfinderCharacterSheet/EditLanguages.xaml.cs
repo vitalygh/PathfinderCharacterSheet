@@ -29,7 +29,7 @@ namespace PathfinderCharacterSheet
 
         public void InitEditor()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             languages = new List<string>();
@@ -42,7 +42,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var languagesCount = languages.Count;
@@ -107,7 +107,7 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if ((languages is null) && (sheet.languages is null))
@@ -115,14 +115,14 @@ namespace PathfinderCharacterSheet
             if (!(languages is null) && !(sheet.languages is null) && ReferenceEquals(sheet.languages, languages))
                 return;
             sheet.languages = languages;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
         }
 
         public void Language_Tap(string language = null, int index = -1)
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var el = new EditLanguage();

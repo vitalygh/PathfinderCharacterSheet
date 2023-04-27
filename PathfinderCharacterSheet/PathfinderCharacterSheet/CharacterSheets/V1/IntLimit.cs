@@ -6,6 +6,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntLimit: IApplicable<int>, IEquatable<IntLimit>, IPrototype<IntLimit>
     {
+        public static readonly IntLimit Empty = new IntLimit();
+
         public bool minLimit = false;
         public int minValue = 0;
         public bool maxLimit = false;

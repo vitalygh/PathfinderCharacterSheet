@@ -46,7 +46,7 @@ namespace PathfinderCharacterSheet
             pushedPage = null;
             if (level == null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             Level.Text = level.GetValue(sheet).ToString();
@@ -87,7 +87,7 @@ namespace PathfinderCharacterSheet
             {
                 if (!string.IsNullOrWhiteSpace(source.ClassName))
                     className = " of class \"" + level.ClassName + "\"";
-                var sheet = MainPage.GetSelectedCharacter?.Invoke();
+                var sheet = UIMediator.GetSelectedCharacter?.Invoke();
                 if ((sheet != null) && (source.level.GetValue(sheet) > 1))
                     className = "s" + className;
             }
@@ -103,7 +103,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

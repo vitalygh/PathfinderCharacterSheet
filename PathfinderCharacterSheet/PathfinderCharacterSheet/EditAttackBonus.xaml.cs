@@ -26,7 +26,7 @@ namespace PathfinderCharacterSheet
 
         private void Init()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             sizeModifiers = sheet.attackSizeModifier.Clone;
@@ -39,7 +39,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             //BaseAttackBonus.Text = sheet.GetBaseAttackBonus().ToString();
@@ -51,7 +51,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateCurrentAttackPicker()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var babs = sheet.baseAttackBonus;
@@ -91,7 +91,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateTotal()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var total = 0;
@@ -119,7 +119,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateModifiersSum()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             ModifiersSum.Text = attackBonus.Modifiers?.GetValue(sheet).ToString();
@@ -153,7 +153,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var page = new EditIntModifier();
@@ -166,7 +166,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -199,7 +199,7 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var baseValue = attackBonus.BaseValue;
@@ -210,7 +210,7 @@ namespace PathfinderCharacterSheet
                 sheet.currentAttack = currentAttack;
                 sheet.attackBonusModifiers = attackBonus;
                 sheet.attackSizeModifier = sizeModifiers;
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
             }
         }
     }

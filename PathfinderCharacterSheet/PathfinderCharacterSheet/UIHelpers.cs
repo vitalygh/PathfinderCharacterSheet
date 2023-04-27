@@ -3,12 +3,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using System.Reflection;
 using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
     public static class UIHelpers
     {
+        public static string GetBuildVersion()
+        {
+            return App.PlatformProxy?.GetVersionNumber + " (" + App.PlatformProxy?.GetBuildNumber + ") " + GetBuildDateTime()?.ToString("yyyy.MM.dd HH:mm:ss");
+        }
+
+        public static DateTime? GetBuildDateTime()
+        {
+            return GetBuildDateTime(Assembly.GetExecutingAssembly());
+        }
+
+        private static DateTime? GetBuildDateTime(Assembly assembly)
+        {
+            var attribute = assembly?.GetCustomAttribute<BuildDateAttribute>();
+            return attribute?.DateTime;
+        }
+
         public static bool StrToInt(string from, ref int to)
         {
             if (int.TryParse(from, out int i))

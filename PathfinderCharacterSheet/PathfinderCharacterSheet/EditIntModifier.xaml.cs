@@ -18,7 +18,6 @@ namespace PathfinderCharacterSheet
         private IntModifiersList modifiersList = null;
         private IntModifier source = null;
         private IntModifier modifier = null;
-        private static readonly IntMultiplier emptyMultiplier = new IntMultiplier();
 
         private Label TotalTitle = null;
         private Label TotalValue = null;
@@ -213,9 +212,9 @@ namespace PathfinderCharacterSheet
                 AbilityMultiplier = AbilityMultiplierFrame.Content as Label;
                 UIHelpers.SetTapHandler(AbilityMultiplierFrame, (s, e) =>
                 {
-                    if (modifier.abilityMultiplier == null)
-                        modifier.abilityMultiplier = emptyMultiplier.Clone;
-                    EditMultiplier(modifier.abilityMultiplier);
+                    if (modifier.AbilityMultiplier == null)
+                        modifier.AbilityMultiplier = IntMultiplier.Empty;
+                    EditMultiplier(modifier.AbilityMultiplier);
                 });
 
                 grid.Children.Add(AbilityMultiplierTitle, 0, row);
@@ -259,9 +258,9 @@ namespace PathfinderCharacterSheet
             LevelMultiplier = LevelMultiplierFrame.Content as Label;
             UIHelpers.SetTapHandler(LevelMultiplierFrame, (s, e) =>
             {
-                if (modifier.levelMultiplier == null)
-                    modifier.levelMultiplier = emptyMultiplier.Clone;
-                EditMultiplier(modifier.levelMultiplier);
+                if (modifier.LevelMultiplier == null)
+                    modifier.LevelMultiplier = IntMultiplier.Empty.Clone;
+                EditMultiplier(modifier.LevelMultiplier);
             });
 
             grid.Children.Add(LevelMultiplierTitle, 0, row);
@@ -392,7 +391,7 @@ namespace PathfinderCharacterSheet
             }
 
             var lms = loc == null ? "Total Level" : "Level Of " + modifier.className;
-            var lm = modifier.levelMultiplier?.AsString(lms) ?? string.Empty;
+            var lm = modifier.LevelMultiplier?.AsString(lms) ?? string.Empty;
             if (lm == lms)
                 lm = string.Empty;
             LevelMultiplier.Text = !modifier.MultiplyToLevel ? string.Empty : lm;
@@ -460,7 +459,7 @@ namespace PathfinderCharacterSheet
 
                 var sab = modifier.SourceAbility != IntModifier.DefaultSourceAbility;
                 var ams = modifier.sourceAbility;
-                var am = modifier.abilityMultiplier?.AsString(ams) ?? string.Empty;
+                var am = modifier.AbilityMultiplier?.AsString(ams) ?? string.Empty;
                 if (am == ams)
                     am = string.Empty;
                 AbilityMultiplier.Text = !sab ? string.Empty : am;
@@ -498,10 +497,10 @@ namespace PathfinderCharacterSheet
             */
             modifier.AutoNaming = AutoNaming.IsChecked;
 
-            if (modifier.abilityMultiplier == emptyMultiplier)
-                modifier.abilityMultiplier = null;
-            if (modifier.levelMultiplier == emptyMultiplier)
-                modifier.levelMultiplier = null;
+            if (modifier.AbilityMultiplier.Equals(IntMultiplier.Empty))
+                modifier.AbilityMultiplier = null;
+            if (modifier.LevelMultiplier.Equals(IntMultiplier.Empty))
+                modifier.LevelMultiplier = null;
 
             if ((source != null) && !source.Equals(modifier))
                 source.Fill(modifier);

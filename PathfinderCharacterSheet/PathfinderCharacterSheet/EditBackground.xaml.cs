@@ -33,7 +33,7 @@ namespace PathfinderCharacterSheet
 
         private void InitControls()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             levelOfClass = sheet.levelOfClass?.Clone;
@@ -75,7 +75,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             Level.Text = levelOfClass?.AsString(sheet);
@@ -85,7 +85,7 @@ namespace PathfinderCharacterSheet
 
         private bool EditToView()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return false;
             var hasChanges = false;
@@ -154,29 +154,29 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             pushedPage = this;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             var rename = sheet.Name != CharacterName.Text;
             if (rename)
             {
-                MainPage.DeleteCharacter?.Invoke(sheet);
-                MainPage.SetSelectedCharacter?.Invoke(sheet);
+                UIMediator.DeleteCharacter?.Invoke(sheet);
+                UIMediator.SetSelectedCharacter?.Invoke(sheet);
             }
             var hasChanges = EditToView();
             if (rename || hasChanges)
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
             Navigation.PopAsync();
         }
 
         async void Delete_Clicked(object sender, EventArgs e)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             var characterName = string.Empty;
             if ((sheet != null) && !string.IsNullOrWhiteSpace(sheet.name))
                 characterName = " \"" + sheet.name + "\"";
             bool allow = await DisplayAlert("Remove character" + characterName, "Are you sure?", "Yes", "No");
             if (allow)
             {
-                MainPage.DeleteCharacter?.Invoke(MainPage.GetSelectedCharacter?.Invoke());
+                UIMediator.DeleteCharacter?.Invoke(UIMediator.GetSelectedCharacter?.Invoke());
                 await Navigation.PopToRootAsync();
             }
         }
@@ -185,7 +185,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -198,7 +198,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();

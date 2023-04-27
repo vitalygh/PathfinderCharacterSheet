@@ -81,7 +81,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             armorReorderButton.IsVisible = sheet.armorClassItems.Count > 1;
@@ -137,7 +137,7 @@ namespace PathfinderCharacterSheet
 
         private void CreateHeader()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
 #if USE_GRID
             var armor = new Grid()
             {
@@ -235,7 +235,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateArmorGrid(SelectedArmorGrid armorGrid, ArmorClassItem item, int itemIndex)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 
@@ -284,7 +284,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (selectedArmorGridsPool.Count > 0)
@@ -465,7 +465,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateArmorGrid(ArmorGrid armorGrid, ArmorClassItem item, int itemIndex)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             UIHelpers.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
@@ -498,7 +498,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
         {
             if (item == null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (armorGridsPool.Count > 0)
@@ -601,7 +601,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
             if (armor.selected == value)
                 return;
             armor.selected = value;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 #if EXPAND_CHECKBOX
@@ -615,7 +615,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
             if (armor == null)
                 return;
             armor.selected = !armor.selected;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 #endif
@@ -628,7 +628,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
             if (armor.active == value)
                 return;
             armor.active = value;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 
@@ -636,7 +636,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ew = new EditArmor();
@@ -649,7 +649,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ri = new ReorderItemsWithDescription();
@@ -662,7 +662,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
                 sheet.armorClassItems.Clear();
                 foreach (var item in reordered)
                     sheet.armorClassItems.Add(item as ArmorClassItem);
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

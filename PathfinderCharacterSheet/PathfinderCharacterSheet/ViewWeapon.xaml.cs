@@ -79,7 +79,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (attackBonus != null)
@@ -142,7 +142,7 @@ namespace PathfinderCharacterSheet
 
         private void CreateHeader()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
 #if USE_GRID || USE_GRID_IN_HEADER
             var container = new Grid()
             {
@@ -302,7 +302,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateWeaponGrid(SelectedWeaponGrid weaponGrid, WeaponItem item, int itemIndex)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 #if EXPAND_CHECKBOX
@@ -351,7 +351,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (selectedWeaponGridsPool.Count > 0)
@@ -547,7 +547,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateWeaponGrid(WeaponGrid weaponGrid, WeaponItem item, int itemIndex)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             UIHelpers.SetTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item), 2);
@@ -580,7 +580,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (weaponGridsPool.Count > 0)
@@ -688,7 +688,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -705,7 +705,7 @@ namespace PathfinderCharacterSheet
             if (weapon.selected == value)
                 return;
             weapon.selected = value;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 #if EXPAND_CHECKBOX
@@ -719,7 +719,7 @@ namespace PathfinderCharacterSheet
             if (weapon == null)
                 return;
             weapon.selected = !weapon.selected;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 #endif
@@ -732,7 +732,7 @@ namespace PathfinderCharacterSheet
             if (item.active == value)
                 return;
             item.active = value;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 
@@ -740,7 +740,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ew = new EditWeapon();
@@ -753,7 +753,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ri = new ReorderItemsWithDescription();
@@ -766,7 +766,7 @@ namespace PathfinderCharacterSheet
                 sheet.weaponItems.Clear();
                 foreach (var item in reordered)
                     sheet.weaponItems.Add(item as WeaponItem);
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

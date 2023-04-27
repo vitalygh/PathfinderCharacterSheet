@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
                 hasChanges = true;
             }
             if (hasChanges)
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

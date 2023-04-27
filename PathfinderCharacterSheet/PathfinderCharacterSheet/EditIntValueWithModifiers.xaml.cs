@@ -129,13 +129,13 @@ namespace PathfinderCharacterSheet
             var baseValue = source.BaseValue;
             var hasChanged = UIHelpers.StrToInt(Value.Text, ref baseValue);
             source.BaseValue = baseValue;
-            if (source.Modifiers != modifiers)
+            if (!source.Modifiers.Equals(modifiers))
             {
                 hasChanged = true;
                 source.Modifiers = modifiers;
             }
             if (hasChanged && saveCharacter)
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
         }
     }
 }

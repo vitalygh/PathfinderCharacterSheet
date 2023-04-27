@@ -16,7 +16,6 @@ namespace PathfinderCharacterSheet
         private Page pushedPage = null;
         private IntMultiplier source = null;
         private IntMultiplier multiplier = null;
-        private static readonly IntLimit emptyLimit = new IntLimit();
 
         public EditIntMultiplier()
         {
@@ -59,7 +58,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            Limit.Text = multiplier.limit?.AsString() ?? string.Empty;
+            Limit.Text = multiplier.Limit?.AsString() ?? string.Empty;
         }
 
         private void Limit_Tapped(object sender, EventArgs e)
@@ -67,9 +66,9 @@ namespace PathfinderCharacterSheet
             if (pushedPage != null)
                 return;
             var el = new EditIntLimit();
-            if (multiplier.limit == null)
-                multiplier.limit = emptyLimit.Clone;
-            el.Init(multiplier.limit);
+            if (multiplier.Limit == null)
+                multiplier.Limit = IntLimit.Empty.Clone;
+            el.Init(multiplier.Limit);
             pushedPage = el;
             Navigation.PushAsync(pushedPage);
         }
@@ -83,19 +82,19 @@ namespace PathfinderCharacterSheet
             var currentRoundingType = IntMultiplier.DefaultRounding;
             if (Rounding != null)
             {
-                var item = (Rounding.SelectedItem as RoundingTypesPickerItem);
+                var item = Rounding.SelectedItem as RoundingTypesPickerItem;
                 if (item != null)
                     currentRoundingType = item.Value;
             }
             multiplier.RoundingType = currentRoundingType;
 
-            if (multiplier.limit == emptyLimit)
-                multiplier.limit = null;
+            if (multiplier.Limit.Equals(IntLimit.Empty))
+                multiplier.Limit = null;
 
             if (!source.Equals(multiplier))
             {
                 source.Fill(multiplier);
-                //MainPage.OnCharacterSheetChanged?.Invoke();
+                //UIMediator.OnCharacterSheetChanged?.Invoke();
             }
         }
 

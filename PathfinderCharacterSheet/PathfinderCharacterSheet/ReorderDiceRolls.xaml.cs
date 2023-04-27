@@ -50,7 +50,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateItem(Controls controls, ItemType item)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             UIHelpers.SetTapHandler(controls.up, () => MoveItem(item, -1, true));
@@ -93,7 +93,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateLabels()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             for (var i = 0; i < items.Count; i++)

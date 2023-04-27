@@ -33,7 +33,7 @@ namespace PathfinderCharacterSheet
         protected override void OnSleep()
         {
             // Handle when your app sleeps
-            PathfinderCharacterSheet.MainPage.OnAppLostFocus?.Invoke();
+            UIMediator.OnAppLostFocus?.Invoke();
         }
 
         protected override void OnResume()

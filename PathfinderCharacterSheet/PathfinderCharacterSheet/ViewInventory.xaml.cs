@@ -67,7 +67,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             UpdateValue(PP, sheet.money.platinumPoints.GetValue(sheet).ToString());
@@ -96,7 +96,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateGearView()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var totalItemsCount = sheet.gear.Count;
@@ -183,7 +183,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateGearItemGrid(SelectedGearItemGrid gearItemGrid, CharacterSheet.GearItem item, int itemIndex)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
 
@@ -218,7 +218,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             if (selectedGearItemGridsPool.Count > 0)
@@ -355,7 +355,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateGearItemGrid(GearItemGrid gearItemGrid, GearItem item, int itemIndex)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             UIHelpers.SetTapHandler(gearItemGrid.grid, (s, e) => GearItem_DoubleTap(item), 2);
@@ -386,7 +386,7 @@ namespace PathfinderCharacterSheet
         {
             if (item == null)
                 return null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return null;
             if (gearItemGridsPool.Count > 0)
@@ -469,7 +469,7 @@ namespace PathfinderCharacterSheet
             if (gearItem.selected == value)
                 return;
             gearItem.selected = value;
-            MainPage.OnCharacterSheetChanged?.Invoke();
+            UIMediator.OnCharacterSheetChanged?.Invoke();
             UpdateView();
         }
 
@@ -507,7 +507,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -520,7 +520,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -533,7 +533,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -546,7 +546,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var eivwm = new EditIntValueWithModifiers();
@@ -559,7 +559,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ee = new EditEncumbrance();
@@ -571,7 +571,7 @@ namespace PathfinderCharacterSheet
         {
             if (pushedPage != null)
                 return;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var ri = new ReorderItemsWithDescription();
@@ -584,7 +584,7 @@ namespace PathfinderCharacterSheet
                 sheet.gear.Clear();
                 foreach (var item in reordered)
                     sheet.gear.Add(item as GearItem);
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
             });
             Navigation.PushAsync(pushedPage);
         }

@@ -40,7 +40,7 @@ namespace PathfinderCharacterSheet
                 return;
             pushedPage = this;
             var character = CharacterSheet.Create(CharacterName.Text);
-            MainPage.SaveCharacter?.Invoke(character);
+            UIMediator.SaveCharacter?.Invoke(character);
             Navigation.PopAsync();
         }
     }

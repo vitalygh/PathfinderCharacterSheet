@@ -113,7 +113,7 @@ namespace PathfinderCharacterSheet
             {
                 if (!File.Exists(path))
                 {
-                    OnLoadingFailed?.Invoke(path, new Exception("File doesn't exist!"));
+                    OnLoadingFailed?.Invoke(path, new FileNotFoundException("File \"" + path + "\" doesn't exist!"));
                     return null;
                 }
                 using (var stream = new StreamReader(path))

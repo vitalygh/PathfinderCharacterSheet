@@ -27,7 +27,7 @@ namespace PathfinderCharacterSheet
         private void InitAbilityScores()
         {
             var asList = new List<AbilityScore>();
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             foreach (var absc in sheet.abilityScores)
                 asList.Add(absc.Clone);
             abilityScores = asList.ToArray();
@@ -35,7 +35,7 @@ namespace PathfinderCharacterSheet
 
         private void CreateControls()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             if (AbilityScores.Children.Count > 0)
@@ -127,7 +127,7 @@ namespace PathfinderCharacterSheet
             if ((index + 5) > AbilityScores.Children.Count)
                 return;
             var ab = abilityScores[i - 1];
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             //var entry= ((AbilityScores.Children[index + 1] as Frame).Content as Entry);
             //UIHelpers.StrToInt(entry.Text, ref ab.score);
             //((AbilityScores.Children[index + 1] as Frame).Content as Label).Text = ab.score.Total.ToString();
@@ -139,7 +139,7 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var abilities = Enum.GetNames(typeof(Ability));
@@ -158,7 +158,7 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var anyChanged = false;
@@ -171,7 +171,7 @@ namespace PathfinderCharacterSheet
                 sheet.abilityScores[i].Fill(abilityScores[i]);
             }
             if (anyChanged)
-                MainPage.OnCharacterSheetChanged?.Invoke();
+                UIMediator.OnCharacterSheetChanged?.Invoke();
         }
 
         private void Cancel_Clicked(object sender, EventArgs e)

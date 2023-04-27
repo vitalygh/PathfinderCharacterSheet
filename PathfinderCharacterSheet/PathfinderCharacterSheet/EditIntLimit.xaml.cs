@@ -51,7 +51,7 @@ namespace PathfinderCharacterSheet
             if (!source.Equals(limit))
             {
                 source.Fill(limit);
-                //MainPage.OnCharacterSheetChanged?.Invoke();
+                //UIMediator.OnCharacterSheetChanged?.Invoke();
             }
         }
 

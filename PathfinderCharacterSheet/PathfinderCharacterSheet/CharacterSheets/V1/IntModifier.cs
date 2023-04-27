@@ -14,7 +14,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             get { return Helpers.GetEnumValue(sourceAbility, DefaultSourceAbility); }
             set { sourceAbility = (DefaultSourceAbility == value) ? null : value.ToString(); }
         }
-        public IntMultiplier abilityMultiplier = null;
+        public IntMultiplier abilityMultiplier
+        {
+            get => AbilityMultiplier == IntMultiplier.Empty ? null : AbilityMultiplier;
+            set => AbilityMultiplier = value;
+        }
+        internal IntMultiplier AbilityMultiplier { get; set; } = null;
 
         public static readonly int DefaultSourceItemUID = CharacterSheet.InvalidUID;
         public string sourceItemUID
@@ -41,7 +46,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         internal bool MultiplyToLevel { get; set; } = DefaultMultiplyToLevel;
 
         public string className = null;
-        public IntMultiplier levelMultiplier = null;
+        public IntMultiplier levelMultiplier
+        {
+            get => LevelMultiplier == IntMultiplier.Empty ? null : LevelMultiplier;
+            set => LevelMultiplier = value;
+        }
+        internal IntMultiplier LevelMultiplier { get; set; } = null;
 
         public static readonly bool DefaultAutoNaming = true;
         public string autoNaming
@@ -98,8 +108,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (SourceAbility != Ability.None)
             {
                 var ab = context.GetAbilityModifier(SourceAbility);
-                if (abilityMultiplier != null)
-                    ab = abilityMultiplier.Apply(ab);
+                if (AbilityMultiplier != null)
+                    ab = AbilityMultiplier.Apply(ab);
                 totalValue += ab;
             }
 
@@ -111,16 +121,16 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     if (level != null)
                     {
                         var lv = level.GetValue(context);
-                        if (levelMultiplier != null)
-                            lv = levelMultiplier.Apply(lv);
+                        if (LevelMultiplier != null)
+                            lv = LevelMultiplier.Apply(lv);
                         totalValue *= lv;
                     }
                 }
                 else
                 {
                     var lv = context.TotalLevel;
-                    if (levelMultiplier != null)
-                        lv = levelMultiplier.Apply(lv);
+                    if (LevelMultiplier != null)
+                        lv = LevelMultiplier.Apply(lv);
                     totalValue *= lv;
                 }
             }
@@ -135,8 +145,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (SourceAbility != Ability.None)
             {
                 var ab = sourceAbility;
-                if (abilityMultiplier != null)
-                    ab = abilityMultiplier.AsString(ab);
+                if (AbilityMultiplier != null)
+                    ab = AbilityMultiplier.AsString(ab);
                 text.Append(ab);
                 if (value != 0)
                     text.Insert(0, " + ").Insert(0, value).Insert(0, "(").Append(")");
@@ -147,8 +157,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     text.Append(value);
                 var lv = string.IsNullOrWhiteSpace(className) ? "Total Level" : "Level Of "
                     + (string.IsNullOrWhiteSpace(className) ? "Unnamed Class" : className);
-                if (levelMultiplier != null)
-                    lv = levelMultiplier.AsString(lv);
+                if (LevelMultiplier != null)
+                    lv = LevelMultiplier.AsString(lv);
                 if (!string.IsNullOrWhiteSpace(text.ToString()))
                     text.Append(" * ");
                 text.Append(lv);
@@ -190,13 +200,13 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             base.Fill(source);
 
             SourceAbility = source.SourceAbility;
-            abilityMultiplier = source.abilityMultiplier?.Clone;
+            AbilityMultiplier = source.AbilityMultiplier?.Clone;
             SourceItemUID = source.SourceItemUID;
             MustBeActive = source.MustBeActive;
 
             MultiplyToLevel = source.MultiplyToLevel;
             className = source.className;
-            levelMultiplier = source.levelMultiplier?.Clone;
+            LevelMultiplier = source.LevelMultiplier?.Clone;
 
             AutoNaming = source.AutoNaming;
 
@@ -211,7 +221,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (SourceAbility != other.SourceAbility)
                 return false;
-            if (abilityMultiplier != other.abilityMultiplier)
+            if (AbilityMultiplier != other.AbilityMultiplier)
                 return false;
             if (SourceItemUID != other.SourceItemUID)
                 return false;
@@ -219,7 +229,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (MultiplyToLevel != other.MultiplyToLevel)
                 return false;
-            if (levelMultiplier != other.levelMultiplier)
+            if (LevelMultiplier != other.LevelMultiplier)
                 return false;
             if (className != other.className)
                 return false;
@@ -258,12 +268,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
             hash = (hash * 7) + SourceAbility.GetHashCode();
-            hash = (hash * 7) + (abilityMultiplier is null ? 0 : abilityMultiplier.GetHashCode());
+            hash = (hash * 7) + (AbilityMultiplier is null ? 0 : AbilityMultiplier.GetHashCode());
             hash = (hash * 7) + SourceItemUID.GetHashCode();
             hash = (hash * 7) + MustBeActive.GetHashCode();
             hash = (hash * 7) + MultiplyToLevel.GetHashCode();
             hash = (hash * 7) + (className is null ? 0 : className.GetHashCode());
-            hash = (hash * 7) + (levelMultiplier is null ? 0 : levelMultiplier.GetHashCode());
+            hash = (hash * 7) + (LevelMultiplier is null ? 0 : LevelMultiplier.GetHashCode());
             hash = (hash * 7) + AutoNaming.GetHashCode();
             return hash;
         }

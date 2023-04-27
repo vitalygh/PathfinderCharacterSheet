@@ -31,7 +31,7 @@ namespace PathfinderCharacterSheet
 
         private void InitItems()
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var items = sheet.GetAllGearItems();
@@ -74,7 +74,7 @@ namespace PathfinderCharacterSheet
 
         private void UpdateFrame(Frame frame, ItemType item)
         {
-            var sheet = MainPage.GetSelectedCharacter?.Invoke();
+            var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
             var label = frame.Content as Label;
