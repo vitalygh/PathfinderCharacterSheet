@@ -1,4 +1,5 @@
 ﻿//#define SELECT_CURRENT_ATTACK_FOR_COMBAT_MANEUVERS
+#define SAVE_DELTA
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -33,7 +34,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public DateTime CreationTime = DateTime.Now;
         public DateTime ModificationTime = DateTime.Now;
         public int currentUID = 0;
-        public static readonly int InvalidUID = -1;
+        public const int InvalidUID = -1;
         public int GetUID() { return currentUID++; }
         #endregion
 
@@ -49,13 +50,17 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             }
         }
         public string biography = null;
-        public static readonly Alignment DefaultAlignment = Alignment.Neutral;
-        public string alignment = DefaultAlignment.ToString();
-        internal Alignment Alignment
+        public const Alignment DefaultAlignment = Alignment.Neutral; // DO NOT CHANGE
+        public string alignment
         {
-            get { return Helpers.GetEnumValue(alignment, DefaultAlignment); }
-            set { alignment = value.ToString(); }
+            get =>
+#if SAVE_DELTA
+                DefaultAlignment == Alignment ? null :
+#endif
+                Alignment.ToString();
+            set => Alignment = Helpers.GetEnumValue(value, DefaultAlignment);
         }
+        internal Alignment Alignment { get; set; } = DefaultAlignment;
         public string deity = null;
         public string homeland = null;
         public string race = null;

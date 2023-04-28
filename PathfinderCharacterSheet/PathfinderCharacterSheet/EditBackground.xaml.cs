@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PathfinderCharacterSheet.CharacterSheets.V1;
+using AlignmentPickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.Alignment>;
 
 namespace PathfinderCharacterSheet
 {
@@ -17,12 +18,6 @@ namespace PathfinderCharacterSheet
         private LevelOfClassList levelOfClass = new LevelOfClassList();
         private ValueWithIntModifiers experience = null;
         private ValueWithIntModifiers nextLevelExperience = null;
-
-        public class AlignmentPickerItem
-        {
-            public string Name { set; get; }
-            public Alignment Value { set; get; }
-        }
 
         public EditBackground()
 		{
@@ -44,17 +39,12 @@ namespace PathfinderCharacterSheet
             foreach (var v in values)
             {
                 index += 1;
-                var alignment = new AlignmentPickerItem()
-                {
-                    Name = v.ToString(),
-                    Value = (Alignment)v,
-                };
-                alignments.Add(alignment);
-                if (sheet.Alignment == alignment.Value)
+                var alignment = (Alignment)v;
+                alignments.Add(new AlignmentPickerItem(v.ToString(), alignment));
+                if (sheet.Alignment == alignment)
                     selectedIndex = index;
             }
             Alignment.ItemsSource = alignments;
-            Alignment.ItemDisplayBinding = new Binding("Name");
             Alignment.SelectedIndex = selectedIndex;
             CharacterName.Text = sheet.name;
             experience = sheet.experience.Clone;
@@ -90,10 +80,10 @@ namespace PathfinderCharacterSheet
                 return false;
             var hasChanges = false;
             hasChanges |= CopyCheckEqual(CharacterName.Text, ref sheet.name);
-            if ((Alignment.SelectedItem is AlignmentPickerItem alignment) && (sheet.Alignment != alignment.Value))
+            if ((Alignment.SelectedItem is AlignmentPickerItem alignment) && (sheet.Alignment != alignment.Item2))
             {
                 hasChanges |= true;
-                sheet.Alignment = alignment.Value;
+                sheet.Alignment = alignment.Item2;
             }
             if (!sheet.experience.Equals(experience))
             {

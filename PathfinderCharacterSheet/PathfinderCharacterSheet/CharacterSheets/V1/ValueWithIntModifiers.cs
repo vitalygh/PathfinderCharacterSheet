@@ -1,4 +1,5 @@
-﻿//#define OPTIMIZE
+﻿#define OPTIMIZE
+#define SAVE_DELTA
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,16 +8,24 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class ValueWithIntModifiers: IContextValue<int, CharacterSheet>, IEquatable<ValueWithIntModifiers>, IPrototype<ValueWithIntModifiers>
     {
-        public static readonly int DefaultBaseValue = 0;
+        public const int DefaultBaseValue = 0;
         public string baseValue
         {
-            get => DefaultBaseValue == BaseValue ? null : BaseValue.ToString();
+            get =>
+#if SAVE_DELTA
+                DefaultBaseValue == BaseValue ? null :
+#endif
+                BaseValue.ToString();
             set => BaseValue = int.TryParse(value, out int outValue) ? outValue : DefaultBaseValue;
         }
         internal int BaseValue { get; set; } = DefaultBaseValue;
         public IntModifiersList modifiers
         {
-            get => Modifiers?.Count <= 0 ? null : Modifiers;
+            get =>
+#if SAVE_DELTA
+                Modifiers?.Count <= 0 ? null :
+#endif
+                Modifiers;
             set => Modifiers = value;
         }
         internal IntModifiersList Modifiers { get; set; } = new IntModifiersList();

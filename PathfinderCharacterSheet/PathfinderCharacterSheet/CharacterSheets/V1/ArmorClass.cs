@@ -1,6 +1,8 @@
-﻿using System;
+﻿#define SAVE_DELTA
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics.Contracts;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
@@ -10,13 +12,18 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public bool itemsArmorBonus = true;
         public ValueWithIntModifiers shieldBonus = new ValueWithIntModifiers();
         public bool itemsShieldBonus = true;
-        public static readonly DexterityModifierSource DefaultDexterityModifierSource = DexterityModifierSource.DependsOnACItems;
-        public string dexterityModifierSource = DefaultDexterityModifierSource.ToString();
-        internal DexterityModifierSource DexterityModifierSource
+        public const DexterityModifierSource DefaultDexterityModifierSource = DexterityModifierSource.DependsOnACItems;
+        public string dexterityModifierSource
         {
-            get { return Helpers.GetEnumValue(dexterityModifierSource, DefaultDexterityModifierSource); }
-            set { dexterityModifierSource = value.ToString(); }
+            get =>
+#if SAVE_DELTA
+                DefaultDexterityModifierSource == DexterityModifierSource ? null :
+#endif
+                DexterityModifierSource.ToString();
+            set => DexterityModifierSource = Helpers.GetEnumValue(value, DefaultDexterityModifierSource);
         }
+
+        internal DexterityModifierSource DexterityModifierSource { get; set; } = DefaultDexterityModifierSource;
         public ValueWithIntModifiers dexterityModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers sizeModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers naturalArmor = new ValueWithIntModifiers();
@@ -41,7 +48,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             itemsArmorBonus = other.itemsArmorBonus;
             shieldBonus = other.shieldBonus?.Clone;
             itemsShieldBonus = other.itemsShieldBonus;
-            dexterityModifierSource = other.dexterityModifierSource;
+            DexterityModifierSource = other.DexterityModifierSource;
             dexterityModifier = other.dexterityModifier?.Clone;
             sizeModifier = other.sizeModifier?.Clone;
             naturalArmor = other.naturalArmor?.Clone;
@@ -62,7 +69,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (shieldBonus != other.shieldBonus)
                 return false;
-            if (dexterityModifierSource != other.dexterityModifierSource)
+            if (DexterityModifierSource != other.DexterityModifierSource)
                 return false;
             if (dexterityModifier != other.dexterityModifier)
                 return false;
@@ -109,7 +116,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             hash = (hash * 7) + itemsArmorBonus.GetHashCode();
             hash = (hash * 7) + (shieldBonus is null ? 0 : shieldBonus.GetHashCode());
             hash = (hash * 7) + itemsShieldBonus.GetHashCode();
-            hash = (hash * 7) + (dexterityModifierSource is null ? 0 : dexterityModifierSource.GetHashCode());
+            hash = (hash * 7) + DexterityModifierSource.GetHashCode();
             hash = (hash * 7) + (dexterityModifier is null ? 0 : dexterityModifier.GetHashCode());
             hash = (hash * 7) + (sizeModifier is null ? 0 : sizeModifier.GetHashCode());
             hash = (hash * 7) + (naturalArmor is null ? 0 : naturalArmor.GetHashCode());

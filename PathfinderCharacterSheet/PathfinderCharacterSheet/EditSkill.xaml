@@ -44,7 +44,7 @@
                     <CheckBox x:Name="ClassSkill" VerticalOptions="Center" HorizontalOptions="Center" Grid.Column="1" Grid.Row="3" CheckedChanged="ClassSkill_CheckedChanged"></CheckBox>
                     <Label x:Name="AbilityModifierSourceTitle" Text="Ability:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="4" HorizontalOptions="FillAndExpand" >
-                        <Picker x:Name="AbilityModifierSource" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="AbilityModifierSource_SelectedIndexChanged"></Picker>
+                        <Picker x:Name="AbilityModifierSource" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Item1}" SelectedIndexChanged="AbilityModifierSource_SelectedIndexChanged"></Picker>
                     </Frame>
                     <Label x:Name="TotalTitle" Text="Total:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="FillAndExpand" Grid.Column="0" Grid.Row="5"></Label>
                     <Frame BorderColor="Black" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" Grid.Column="1" Grid.Row="5">

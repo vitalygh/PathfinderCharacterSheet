@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define SAVE_DELTA
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,19 +7,60 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntLimit: IApplicable<int>, IEquatable<IntLimit>, IPrototype<IntLimit>
     {
-        public static readonly IntLimit Empty = new IntLimit();
+        public const bool DefaultMinLimit = false;
+        public string minLimit
+        {
+            get =>
+#if SAVE_DELTA
+                DefaultMinLimit == MinLimit ? null :
+#endif
+                MinLimit.ToString();
+            set => MinLimit = bool.TryParse(value, out bool outValue) ? outValue : DefaultMinLimit;
+        }
+        internal bool MinLimit { get; set; } = DefaultMinLimit;
 
-        public bool minLimit = false;
-        public int minValue = 0;
-        public bool maxLimit = false;
-        public int maxValue = 0;
+        public const int DefaultMinValue = 0;
+        public string minValue
+        {
+            get =>
+#if SAVE_DELTA
+                DefaultMinValue == MinValue ? null :
+#endif
+                MinValue.ToString();
+            set => MinValue = int.TryParse(value, out int outValue) ? outValue : DefaultMinValue;
+        }
+        internal int MinValue { get; set; } = DefaultMinValue;
+
+        public const bool DefaultMaxLimit = false;
+        public string maxLimit
+        {
+            get =>
+#if SAVE_DELTA
+                DefaultMaxLimit == MaxLimit ? null :
+#endif
+                MaxLimit.ToString();
+            set => MaxLimit = bool.TryParse(value, out bool outValue) ? outValue : DefaultMaxLimit;
+        }
+        internal bool MaxLimit { get; set; } = DefaultMaxLimit;
+
+        public const int DefaultMaxValue = 0;
+        public string maxValue
+        {
+            get =>
+#if SAVE_DELTA
+                DefaultMaxValue == MaxValue ? null :
+#endif
+                MaxValue.ToString();
+            set => MaxValue = int.TryParse(value, out int outValue) ? outValue : DefaultMaxValue;
+        }
+        internal int MaxValue { get; set; } = DefaultMaxValue;
 
         public int Apply(int value)
         {
-            if (minLimit)
-                value = Math.Max(minValue, value);
-            if (maxLimit)
-                value = Math.Min(maxValue, value);
+            if (MinLimit)
+                value = Math.Max(MinValue, value);
+            if (MaxLimit)
+                value = Math.Min(MaxValue, value);
             return value;
         }
 
@@ -37,10 +79,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (source == null)
                 return this;
 
-            minLimit = source.minLimit;
-            minValue = source.minValue;
-            maxLimit = source.maxLimit;
-            maxValue = source.maxValue;
+            MinLimit = source.MinLimit;
+            MinValue = source.MinValue;
+            MaxLimit = source.MaxLimit;
+            MaxValue = source.MaxValue;
 
             return this;
         }
@@ -49,13 +91,13 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (other == null)
                 return false;
-            if (minLimit != other.minLimit)
+            if (MinLimit != other.MinLimit)
                 return false;
-            if (minValue != other.minValue)
+            if (MinValue != other.MinValue)
                 return false;
-            if (maxLimit != other.maxLimit)
+            if (MaxLimit != other.MaxLimit)
                 return false;
-            if (maxValue != other.maxValue)
+            if (MaxValue != other.MaxValue)
                 return false;
             return true;
         }
@@ -89,23 +131,23 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + minLimit.GetHashCode();
-            hash = (hash * 7) + minValue.GetHashCode();
-            hash = (hash * 7) + maxLimit.GetHashCode();
-            hash = (hash * 7) + maxValue.GetHashCode();
+            hash = (hash * 7) + MinLimit.GetHashCode();
+            hash = (hash * 7) + MinValue.GetHashCode();
+            hash = (hash * 7) + MaxLimit.GetHashCode();
+            hash = (hash * 7) + MaxValue.GetHashCode();
             return hash;
         }
 
         public string AsString()
         {
-            if (!minLimit && !maxLimit)
+            if (!MinLimit && !MaxLimit)
                 return string.Empty;
             var limit = new StringBuilder("[");
-            if (minLimit)
-                limit.Append(minValue);
+            if (MinLimit)
+                limit.Append(MinValue);
             limit.Append(";");
-            if (maxLimit)
-                limit.Append(maxValue);
+            if (MaxLimit)
+                limit.Append(MaxValue);
             limit.Append("]");
             return limit.ToString();
         }

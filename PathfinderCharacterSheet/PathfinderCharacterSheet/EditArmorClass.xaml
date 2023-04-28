@@ -76,7 +76,7 @@
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="DexModifierSourceTitle" Text="Dex Modifier Source:" Margin="5, 0, 5, 0" Grid.Column="0" Grid.Row="12"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="12" HorizontalOptions="FillAndExpand" >
-                        <Picker x:Name="DexModifierSource" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="DexModifierSource_SelectedIndexChanged">
+                        <Picker x:Name="DexModifierSource" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Item1}" SelectedIndexChanged="DexModifierSource_SelectedIndexChanged">
                         </Picker>
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="1" Grid.Row="13"></Label>

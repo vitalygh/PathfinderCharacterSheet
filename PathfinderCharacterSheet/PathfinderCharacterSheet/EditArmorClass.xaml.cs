@@ -7,18 +7,13 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PathfinderCharacterSheet.CharacterSheets.V1;
+using DexterityModifierSourcePickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.DexterityModifierSource>;
 
 namespace PathfinderCharacterSheet
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditArmorClass : ContentPage, ISheetView
 	{
-        public class DexterityModifierSourcePickerItem
-        {
-            public string Name { get; set; }
-            public DexterityModifierSource Value { get; set; }
-        }
-
         private Page pushedPage = null;
         private ArmorClass ac = null;
 
@@ -45,11 +40,7 @@ namespace PathfinderCharacterSheet
                 var value = (DexterityModifierSource)v;
                 if (value == ac.DexterityModifierSource)
                     valueIndex = count;
-                dexModSrcPickerItems.Add(new DexterityModifierSourcePickerItem()
-                {
-                    Name = v.ToString(),
-                    Value = value,
-                });
+                dexModSrcPickerItems.Add(new DexterityModifierSourcePickerItem(v.ToString(), value));
             }
             DexModifierSource.ItemsSource = dexModSrcPickerItems;
             DexModifierSource.SelectedIndex = valueIndex;
@@ -227,8 +218,8 @@ namespace PathfinderCharacterSheet
                 return;
             if (!(DexModifierSource.SelectedItem is DexterityModifierSourcePickerItem pickerItem))
                 return;
-            ac.DexterityModifierSource = pickerItem.Value;
-            var custom = pickerItem.Value == DexterityModifierSource.Custom;
+            ac.DexterityModifierSource = pickerItem.Item2;
+            var custom = pickerItem.Item2 == DexterityModifierSource.Custom;
             DexModifier.Text = ac.GetDexterityModifier(sheet).ToString();
             DexModifier.TextDecorations = custom ? TextDecorations.Underline : TextDecorations.None;
             DexModifierFrame.BackgroundColor = custom ? Color.White : Color.LightGray;

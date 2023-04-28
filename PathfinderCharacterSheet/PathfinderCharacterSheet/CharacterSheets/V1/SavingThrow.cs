@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define SAVE_DELTA
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,13 +7,18 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class SavingThrow: IPrototype<SavingThrow>, IEquatable<SavingThrow>
     {
-        public static readonly Ability DefaultAbilityModifierSource = Ability.None;
-        public string abilityModifierSource = DefaultAbilityModifierSource.ToString();
-        internal Ability AbilityModifierSource
+        public const Ability DefaultAbilityModifierSource = Ability.None;
+        public string abilityModifierSource
         {
-            get { return Helpers.GetEnumValue(abilityModifierSource, DefaultAbilityModifierSource); }
-            set { abilityModifierSource = value.ToString(); }
+            get =>
+#if SAVE_DELTA
+                DefaultAbilityModifierSource == AbilityModifierSource ? null :
+#endif
+                AbilityModifierSource.ToString();
+            set => AbilityModifierSource = Helpers.GetEnumValue(value, DefaultAbilityModifierSource);
         }
+        internal Ability AbilityModifierSource { get; set; } = DefaultAbilityModifierSource;
+
         public ValueWithIntModifiers baseSave = new ValueWithIntModifiers();
         public ValueWithIntModifiers magicModifier = new ValueWithIntModifiers();
         public ValueWithIntModifiers miscModifier = new ValueWithIntModifiers();
@@ -25,7 +31,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 
         public SavingThrow(Ability abilityModifierSource)
         {
-            this.abilityModifierSource = abilityModifierSource.ToString();
+            AbilityModifierSource = abilityModifierSource;
         }
 
         public int GetAbilityModifier(CharacterSheet sheet)
@@ -54,7 +60,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (other == null)
                 return false;
-            if (abilityModifierSource != other.abilityModifierSource)
+            if (AbilityModifierSource != other.AbilityModifierSource)
                 return false;
             if (baseSave != other.baseSave)
                 return false;
@@ -96,7 +102,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + (abilityModifierSource is null ? 0 : abilityModifierSource.GetHashCode());
+            hash = (hash * 7) + AbilityModifierSource.GetHashCode();
             hash = (hash * 7) + (baseSave is null ? 0 : baseSave.GetHashCode());
             hash = (hash * 7) + (magicModifier is null ? 0 : magicModifier.GetHashCode());
             hash = (hash * 7) + (miscModifier is null ? 0 : miscModifier.GetHashCode());
@@ -108,7 +114,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (source == null)
                 return this;
-            abilityModifierSource = source.abilityModifierSource;
+            AbilityModifierSource = source.AbilityModifierSource;
             baseSave = source.baseSave?.Clone;
             magicModifier = source.magicModifier?.Clone;
             miscModifier = source.miscModifier?.Clone;

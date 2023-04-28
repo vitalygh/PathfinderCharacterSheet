@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define SAVE_DELTA
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,13 +13,17 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var ab = armorBonus.GetValue(sheet);
             return ab >= 0 ? "+" + ab : ab.ToString();
         }
-        public static readonly ArmorType DefaultArmorType = ArmorType.Other;
-        public string armorType = DefaultArmorType.ToString();
-        internal ArmorType ArmorType
+        public const ArmorType DefaultArmorType = ArmorType.Other;
+        public string armorType
         {
-            get { return Helpers.GetEnumValue(armorType, DefaultArmorType); }
-            set { armorType = value.ToString(); }
+            get =>
+#if SAVE_DELTA
+                DefaultArmorType == ArmorType ? null :
+#endif
+                ArmorType.ToString();
+            set => ArmorType = Helpers.GetEnumValue(value, DefaultArmorType);
         }
+        internal ArmorType ArmorType { get; set; } = DefaultArmorType;
         public bool limitMaxDexBonus = false;
         public ValueWithIntModifiers maxDexBonus = new ValueWithIntModifiers();
         public string MaxDexBonus(CharacterSheet sheet)
@@ -44,7 +49,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var armor = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(name))
                 armor.Append(name).Append(" ");
-            armor.Append("(").Append(armorType);
+            armor.Append("(").Append(ArmorType);
             //if (active)
             //    armor += ", active";
             armor.Append("): ");
@@ -76,7 +81,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (armorBonus != other.armorBonus)
                 return false;
-            if (armorType != other.armorType)
+            if (ArmorType != other.ArmorType)
                 return false;
             if (limitMaxDexBonus != other.limitMaxDexBonus)
                 return false;
@@ -122,7 +127,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             hash = (hash * 7) + base.GetHashCode();
             hash = (hash * 7) + selected.GetHashCode();
             hash = (hash * 7) + (armorBonus is null ? 0 : armorBonus.GetHashCode());
-            hash = (hash * 7) + armorType.GetHashCode();
+            hash = (hash * 7) + ArmorType.GetHashCode();
             hash = (hash * 7) + limitMaxDexBonus.GetHashCode();
             hash = (hash * 7) + (maxDexBonus is null ? 0 : maxDexBonus.GetHashCode());
             hash = (hash * 7) + (checkPenalty is null ? 0 : checkPenalty.GetHashCode());
@@ -138,7 +143,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             base.Fill(source);
             selected = source.selected;
             armorBonus = source.armorBonus?.Clone;
-            armorType = source.armorType;
+            ArmorType = source.ArmorType;
             limitMaxDexBonus = source.limitMaxDexBonus;
             maxDexBonus = source.maxDexBonus?.Clone;
             checkPenalty = source.checkPenalty?.Clone;

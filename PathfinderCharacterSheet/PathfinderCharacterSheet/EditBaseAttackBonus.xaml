@@ -32,7 +32,7 @@
                     </Frame>                    
                     <Label x:Name="CurrentAttackTitle" Text="Current Attack:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="2"></Label>
                     <Frame x:Name="CurrentAttackFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="2">
-                        <Picker x:Name="CurrentAttack" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="CurrentAttack_SelectedIndexChanged">
+                        <Picker x:Name="CurrentAttack" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Item1}" SelectedIndexChanged="CurrentAttack_SelectedIndexChanged">
                         </Picker>
                     </Frame>
                 </Grid>

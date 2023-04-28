@@ -34,10 +34,10 @@ namespace PathfinderCharacterSheet
         public void UpdateView()
         {
             pushedPage = null;
-            MinLimit.IsChecked = limit.minLimit;
-            MinValue.Text = limit.minValue.ToString();
-            MaxLimit.IsChecked = limit.maxLimit;
-            MaxValue.Text = limit.maxValue.ToString();
+            MinLimit.IsChecked = limit.MinLimit;
+            MinValue.Text = limit.MinValue.ToString();
+            MaxLimit.IsChecked = limit.MaxLimit;
+            MaxValue.Text = limit.MaxValue.ToString();
             UpdateMinValue();
             UpdateMaxValue();
         }
@@ -46,8 +46,12 @@ namespace PathfinderCharacterSheet
         {
             if (limit == null)
                 return;
-            UIHelpers.StrToInt(MinValue.Text, ref limit.minValue);
-            UIHelpers.StrToInt(MaxValue.Text, ref limit.maxValue);
+            var minValue = limit.MinValue;
+            UIHelpers.StrToInt(MinValue.Text, ref minValue);
+            limit.MinValue = minValue;
+            var maxValue = limit.MaxValue;
+            UIHelpers.StrToInt(MaxValue.Text, ref maxValue);
+            limit.MaxValue = maxValue;
             if (!source.Equals(limit))
             {
                 source.Fill(limit);
@@ -58,7 +62,7 @@ namespace PathfinderCharacterSheet
         private void UpdateMinValue()
         {
             var min = MinLimit.IsChecked;
-            limit.minLimit = min;
+            limit.MinLimit = min;
             MinValue.IsEnabled = min;
         }
 
@@ -70,7 +74,7 @@ namespace PathfinderCharacterSheet
         private void UpdateMaxValue()
         {
             var max = MaxLimit.IsChecked;
-            limit.maxLimit = max;
+            limit.MaxLimit = max;
             MaxValue.IsEnabled = max;
         }
 

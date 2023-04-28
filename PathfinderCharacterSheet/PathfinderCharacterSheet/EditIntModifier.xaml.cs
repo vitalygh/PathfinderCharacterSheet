@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PathfinderCharacterSheet.CharacterSheets.V1;
+using AbilityPickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.Ability>;
 
 namespace PathfinderCharacterSheet
 {
@@ -169,7 +170,7 @@ namespace PathfinderCharacterSheet
                 {
                     TextColor = Color.Black,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Picker)),
-                    ItemDisplayBinding = new Binding("Name"),
+                    ItemDisplayBinding = new Binding("Item1"),
                 };
                 var abilityFrame = new Frame()
                 {
@@ -190,11 +191,7 @@ namespace PathfinderCharacterSheet
                     index += 1;
                     if (selectedValue == value)
                         selectedIndex = index;
-                    abilities.Add(new AbilityPickerItem()
-                    {
-                        Name = v.ToString(),
-                        Value = value,
-                    });
+                    abilities.Add(new AbilityPickerItem(v.ToString(), value));
                 }
                 AbilityPicker.ItemsSource = abilities;
                 AbilityPicker.SelectedIndex = selectedIndex;
@@ -213,7 +210,7 @@ namespace PathfinderCharacterSheet
                 UIHelpers.SetTapHandler(AbilityMultiplierFrame, (s, e) =>
                 {
                     if (modifier.AbilityMultiplier == null)
-                        modifier.AbilityMultiplier = IntMultiplier.Empty;
+                        modifier.AbilityMultiplier = new IntMultiplier();
                     EditMultiplier(modifier.AbilityMultiplier);
                 });
 
@@ -259,7 +256,7 @@ namespace PathfinderCharacterSheet
             UIHelpers.SetTapHandler(LevelMultiplierFrame, (s, e) =>
             {
                 if (modifier.LevelMultiplier == null)
-                    modifier.LevelMultiplier = IntMultiplier.Empty.Clone;
+                    modifier.LevelMultiplier = new IntMultiplier();
                 EditMultiplier(modifier.LevelMultiplier);
             });
 
@@ -452,9 +449,8 @@ namespace PathfinderCharacterSheet
             if (AbilityPicker != null)
             {
                 var currentAbility = Ability.None;
-                var item = (AbilityPicker.SelectedItem as AbilityPickerItem);
-                if (item != null)
-                    currentAbility = item.Value;
+                if (AbilityPicker.SelectedItem is AbilityPickerItem item)
+                    currentAbility = item.Item2;
                 modifier.SourceAbility = currentAbility;
 
                 var sab = modifier.SourceAbility != IntModifier.DefaultSourceAbility;
@@ -481,7 +477,7 @@ namespace PathfinderCharacterSheet
             if (AbilityPicker != null)
             {
                 if (AbilityPicker.SelectedItem is AbilityPickerItem selectedItem)
-                    modifier.SourceAbility = selectedItem.Value;
+                    modifier.SourceAbility = selectedItem.Item2;
             }
             /*
             if (Multiplier != null)
@@ -497,9 +493,9 @@ namespace PathfinderCharacterSheet
             */
             modifier.AutoNaming = AutoNaming.IsChecked;
 
-            if (modifier.AbilityMultiplier.Equals(IntMultiplier.Empty))
+            if (modifier.AbilityMultiplier.Equals(new IntMultiplier()))
                 modifier.AbilityMultiplier = null;
-            if (modifier.LevelMultiplier.Equals(IntMultiplier.Empty))
+            if (modifier.LevelMultiplier.Equals(new IntMultiplier()))
                 modifier.LevelMultiplier = null;
 
             if ((source != null) && !source.Equals(modifier))

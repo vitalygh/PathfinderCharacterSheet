@@ -66,7 +66,7 @@ namespace PathfinderCharacterSheet
                                     if (pushedPage != null)
                                         return;
                                     var eivwm = new EditIntValueWithModifiers();
-                                    var modname = (adj ? "Temp Adjustment" : "Score");
+                                    var modname = adj ? "Temp Adjustment" : "Score";
                                     var abmodname = abilities[index] + " " + modname;
                                     var labs = abilityScores[index];
                                     var vwm = adj ? labs.tempAdjustment : labs.score;

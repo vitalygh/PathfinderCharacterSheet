@@ -40,7 +40,7 @@
                     <Label FontSize="Medium" TextColor="Black" VerticalOptions="Center" x:Name="BaseAttackBonusTitle" Text="Base Attack Bonus:" Margin="5, 0, 5, 0" Grid.Column="0" Grid.Row="3"></Label>
                     <Frame x:Name="BaseAttackBonusFrame" BorderColor="Black" BackgroundColor="LightGray" Padding="5" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
                         <Label FontSize="Medium" TextColor="Black" HorizontalOptions="Center" VerticalOptions="Center" x:Name="BaseAttackBonus"></Label>
-                        <!--<Picker x:Name="CurrentBaseAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}" SelectedIndexChanged="CurrentBaseAttackBonus_SelectedIndexChanged"></Picker>-->
+                        <!--<Picker x:Name="CurrentBaseAttackBonus" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Item1}" SelectedIndexChanged="CurrentBaseAttackBonus_SelectedIndexChanged"></Picker>-->
                     </Frame>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="1" Grid.Row="4"></Label>
                     <Label FontSize="Medium" TextColor="Black" HorizontalTextAlignment="Center" VerticalOptions="Center" Text="+" Margin="5, 0, 5, 0" Grid.Column="2" Grid.Row="4"></Label>

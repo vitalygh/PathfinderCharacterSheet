@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PathfinderCharacterSheet.CharacterSheets.V1;
 using ItemsType = PathfinderCharacterSheet.CharacterSheets.V1.SkillRank;
+using AbilityPickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.Ability>;
 
 namespace PathfinderCharacterSheet
 {
@@ -44,11 +45,7 @@ namespace PathfinderCharacterSheet
                 var value = (Ability)v;
                 if (value == Ability.Total)
                     continue;
-                abilities.Add(new AbilityPickerItem()
-                {
-                    Name = v.ToString(),
-                    Value = value,
-                });
+                abilities.Add(new AbilityPickerItem(v.ToString(), value));
             }
             AbilityModifierSource.ItemsSource = abilities;
         }
@@ -57,7 +54,7 @@ namespace PathfinderCharacterSheet
         {
             var count = abilities.Count;
             for (var i = 0; i < count; i++)
-                if (ability == abilities[i].Value)
+                if (ability == abilities[i].Item2)
                     AbilityModifierSource.SelectedIndex = i;
         }
 
@@ -70,7 +67,7 @@ namespace PathfinderCharacterSheet
                 return;
             if (AbilityModifierSource.SelectedItem is AbilityPickerItem selectedItem)
             {
-                item.AbilityModifierSource = selectedItem.Value;
+                item.AbilityModifierSource = selectedItem.Item2;
                 AbilityModifier.Text = item.GetAbilityModifier(sheet).ToString();
                 switch (item.AbilityModifierSource)
                 {

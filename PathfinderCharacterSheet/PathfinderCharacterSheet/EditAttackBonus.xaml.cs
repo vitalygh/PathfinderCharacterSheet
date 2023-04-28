@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PathfinderCharacterSheet.CharacterSheets.V1;
+using IntPickerItem = System.Tuple<string, int>;
 
 namespace PathfinderCharacterSheet
 {
@@ -66,12 +67,7 @@ namespace PathfinderCharacterSheet
             {
                 if (i == currentAttack)
                     selectedIndex = i;
-                var item = new IntPickerItem()
-                {
-                    Name = sheet.GetBaseAttackBonusForPicker(i),
-                    Value = i,
-                };
-                items.Add(item);
+                items.Add(new IntPickerItem(sheet.GetBaseAttackBonusForPicker(i), i));
             }
             CurrentBaseAttackBonus.ItemsSource = items;
             CurrentBaseAttackBonus.SelectedIndex = selectedIndex;
@@ -82,11 +78,11 @@ namespace PathfinderCharacterSheet
 
         private void CurrentBaseAttackBonus_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedItem = (CurrentBaseAttackBonus.SelectedItem as IntPickerItem);
-            if (selectedItem == null)
-                return;
-            currentAttack = selectedItem.Value;
-            UpdateTotal();
+            if (CurrentBaseAttackBonus.SelectedItem is IntPickerItem item)
+            {
+                currentAttack = item.Item2;
+                UpdateTotal();
+            }
         }
 
         private void UpdateTotal()

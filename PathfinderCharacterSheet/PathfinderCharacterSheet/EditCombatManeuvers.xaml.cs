@@ -1,4 +1,4 @@
-﻿//#define SELECT_CURRENT_ATTACK_FOR_COMBAT_MANEUVERS
+﻿//#define SELECT_CURRENT_ATTACK
 using System;
 using System.Collections.Generic;
 using System.Linq;

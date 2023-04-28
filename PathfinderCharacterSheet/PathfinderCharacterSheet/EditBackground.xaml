@@ -36,7 +36,7 @@
                     </Frame>
                     <Label VerticalOptions="Center" x:Name="AlignmentTitle" Text="Alignment:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="1"></Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="1">
-                        <Picker x:Name="Alignment" FontSize="Medium" TextColor="Black" ItemDisplayBinding="{Binding Name}"></Picker>
+                        <Picker x:Name="Alignment" FontSize="Medium" TextColor="Black" ItemDisplayBinding="{Binding Item1}"></Picker>
                     </Frame>
 
                     <Label VerticalOptions="Center" x:Name="ExperienceTitle" Text="Experience:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="2"></Label>

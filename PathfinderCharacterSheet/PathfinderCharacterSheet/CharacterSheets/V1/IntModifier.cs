@@ -1,4 +1,4 @@
-﻿//#define OPTIMIZE
+﻿#define SAVE_DELTA
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,40 +7,61 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntModifier : Modifier<int>, IEquatable<IntModifier>
     {
-        public static readonly Ability DefaultSourceAbility = Ability.None;
-        public string sourceAbility = null;
-        internal Ability SourceAbility
+        public const Ability DefaultSourceAbility = Ability.None;
+        public string sourceAbility
         {
-            get { return Helpers.GetEnumValue(sourceAbility, DefaultSourceAbility); }
-            set { sourceAbility = (DefaultSourceAbility == value) ? null : value.ToString(); }
+            get =>
+#if SAVE_DELTA
+                DefaultSourceAbility == SourceAbility ? null :
+#endif
+                SourceAbility.ToString();
+            set => SourceAbility = Helpers.GetEnumValue(value, DefaultSourceAbility);
         }
+        internal Ability SourceAbility { get; set; } = DefaultSourceAbility;
+
         public IntMultiplier abilityMultiplier
         {
-            get => AbilityMultiplier == IntMultiplier.Empty ? null : AbilityMultiplier;
+            get =>
+#if SAVE_DELTA
+                AbilityMultiplier == new IntMultiplier() ? null :
+#endif
+                AbilityMultiplier;
             set => AbilityMultiplier = value;
         }
         internal IntMultiplier AbilityMultiplier { get; set; } = null;
 
-        public static readonly int DefaultSourceItemUID = CharacterSheet.InvalidUID;
+        public const int DefaultSourceItemUID = CharacterSheet.InvalidUID;
         public string sourceItemUID
         {
-            get => DefaultSourceItemUID == SourceItemUID ? null : SourceItemUID.ToString();
+            get =>
+#if SAVE_DELTA
+                DefaultSourceItemUID == SourceItemUID ? null :
+#endif
+                SourceItemUID.ToString();
             set => SourceItemUID = int.TryParse(value, out int outValue) ? outValue : DefaultSourceItemUID;
         }
         internal int SourceItemUID { get; set; } = DefaultSourceItemUID;
 
-        public static readonly bool DefaultMustBeActive = true;
+        public const bool DefaultMustBeActive = true;
         public string mustBeActive
         {
-            get => DefaultMustBeActive == MustBeActive ? null : MustBeActive.ToString();
+            get =>
+#if SAVE_DELTA
+                DefaultMustBeActive == MustBeActive ? null :
+#endif
+                MustBeActive.ToString();
             set => MustBeActive = bool.TryParse(value, out bool outValue) ? outValue : DefaultMustBeActive;
         }
         internal bool MustBeActive { get; set; } = DefaultMustBeActive;
 
-        public static readonly bool DefaultMultiplyToLevel = false;
+        public const bool DefaultMultiplyToLevel = false;
         public string multiplyToLevel
         {
-            get => DefaultMultiplyToLevel == MultiplyToLevel ? null : MultiplyToLevel.ToString();
+            get =>
+#if SAVE_DELTA
+                DefaultMultiplyToLevel == MultiplyToLevel ? null :
+#endif
+                MultiplyToLevel.ToString();
             set => MultiplyToLevel = bool.TryParse(value, out bool outValue) ? outValue : DefaultMultiplyToLevel;
         }
         internal bool MultiplyToLevel { get; set; } = DefaultMultiplyToLevel;
@@ -48,47 +69,26 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public string className = null;
         public IntMultiplier levelMultiplier
         {
-            get => LevelMultiplier == IntMultiplier.Empty ? null : LevelMultiplier;
+            get =>
+#if SAVE_DELTA
+                LevelMultiplier == new IntMultiplier() ? null :
+#endif
+                LevelMultiplier;
             set => LevelMultiplier = value;
         }
         internal IntMultiplier LevelMultiplier { get; set; } = null;
 
-        public static readonly bool DefaultAutoNaming = true;
+        public const bool DefaultAutoNaming = true;
         public string autoNaming
         {
-            get => DefaultAutoNaming == AutoNaming ? null : AutoNaming.ToString();
+            get =>
+#if SAVE_DELTA
+                DefaultAutoNaming == AutoNaming ? null :
+#endif
+                AutoNaming.ToString();
             set => AutoNaming = bool.TryParse(value, out bool boolValue) ? boolValue : DefaultAutoNaming;
         }
         internal bool AutoNaming { get; set; } = DefaultAutoNaming;
-
-#if OPTIMIZE
-        private static readonly IntMultiplier emptyIntMultiplier = new IntMultiplier();
-        private static readonly IntLimit emptyIntLimit = new IntLimit();
-        private static readonly List<IntModifier> allModifiers = new List<IntModifier>();
-        public IntModifier(): base()
-        {
-            allModifiers.Add(this);
-        }
-
-        public static void Optimize()
-        {
-            foreach (var modifier in allModifiers)
-            {
-                if (modifier is null)
-                    continue;
-                if ((modifier.abilityMultiplier != null) && (modifier.abilityMultiplier.limit == emptyIntLimit))
-                    modifier.abilityMultiplier.limit = null;
-                if (modifier.abilityMultiplier == emptyIntMultiplier)
-                    modifier.abilityMultiplier = null;
-                if ((modifier.levelMultiplier != null) && (modifier.levelMultiplier.limit == emptyIntLimit))
-                    modifier.levelMultiplier.limit = null;
-                if (modifier.levelMultiplier == emptyIntMultiplier)
-                    modifier.levelMultiplier = null;
-                modifier.Fill(modifier);
-            }
-            allModifiers.Clear();
-        }
-#endif
 
         public override int GetValue(CharacterSheet context)
         {

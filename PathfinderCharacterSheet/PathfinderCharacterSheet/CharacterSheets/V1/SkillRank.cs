@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define SAVE_DELTA
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,13 +11,18 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         public bool hasSubject = false;
         public string subject = null;
         public bool classSkill = false;
-        public static readonly Ability DefaultAbilityModifierSource = Ability.None;
-        public string abilityModifierSource = DefaultAbilityModifierSource.ToString();
-        internal Ability AbilityModifierSource
+        public const Ability DefaultAbilityModifierSource = Ability.None;
+        public string abilityModifierSource
         {
-            get { return Helpers.GetEnumValue(abilityModifierSource, DefaultAbilityModifierSource); }
-            set { abilityModifierSource = value.ToString(); }
+            get =>
+#if SAVE_DELTA
+                DefaultAbilityModifierSource == AbilityModifierSource ? null :
+#endif
+                AbilityModifierSource.ToString();
+            set => AbilityModifierSource = Helpers.GetEnumValue(value, DefaultAbilityModifierSource);
         }
+        internal Ability AbilityModifierSource { get; set; } = DefaultAbilityModifierSource;
+
         public ValueWithIntModifiers rank = new ValueWithIntModifiers();
         public ValueWithIntModifiers miscModifiers = new ValueWithIntModifiers();
         public bool armorPenalty = false;
@@ -87,7 +93,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return false;
             if (classSkill != other.classSkill)
                 return false;
-            if (abilityModifierSource != other.abilityModifierSource)
+            if (AbilityModifierSource != other.AbilityModifierSource)
                 return false;
             if (rank != other.rank)
                 return false;
@@ -135,7 +141,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             hash = (hash * 7) + hasSubject.GetHashCode();
             hash = (hash * 7) + (subject is null ? 0 : subject.GetHashCode());
             hash = (hash * 7) + classSkill.GetHashCode();
-            hash = (hash * 7) + (abilityModifierSource is null ? 0 : abilityModifierSource.GetHashCode());
+            hash = (hash * 7) + AbilityModifierSource.GetHashCode();
             hash = (hash * 7) + (rank is null ? 0 : rank.GetHashCode());
             hash = (hash * 7) + (miscModifiers is null ? 0 : miscModifiers.GetHashCode());
             hash = (hash * 7) + armorPenalty.GetHashCode();
@@ -152,7 +158,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             hasSubject = source.hasSubject;
             subject = source.subject;
             classSkill = source.classSkill;
-            abilityModifierSource = source.abilityModifierSource;
+            AbilityModifierSource = source.AbilityModifierSource;
             rank = source.rank?.Clone;
             miscModifiers = source.miscModifiers?.Clone;
             armorPenalty = source.armorPenalty;

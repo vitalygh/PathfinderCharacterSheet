@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PathfinderCharacterSheet.CharacterSheets.V1;
+using RoundingTypesPickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.RoundingType>;
 
 namespace PathfinderCharacterSheet
 {
@@ -27,10 +28,10 @@ namespace PathfinderCharacterSheet
             source = multiplier;
             this.multiplier = source.Clone;
 
-            AdditionalBefore.Text = multiplier.additionalBefore.ToString();
-            Multiplier.Text =  multiplier.multiplier.ToString();
-            Divider.Text = multiplier.divider.ToString();
-            AdditionalAfter.Text = multiplier.additionalAfter.ToString();
+            AdditionalBefore.Text = multiplier.AdditionalBefore.ToString();
+            Multiplier.Text =  multiplier.Multiplier.ToString();
+            Divider.Text = multiplier.Divider.ToString();
+            AdditionalAfter.Text = multiplier.AdditionalAfter.ToString();
 
             var roundingTypes = new List<RoundingTypesPickerItem>();
             var roundingValues = Enum.GetValues(typeof(RoundingType));
@@ -43,11 +44,7 @@ namespace PathfinderCharacterSheet
                 roundingIndex += 1;
                 if (roundingSelectedValue == value)
                     roundingSelectedIndex = roundingIndex;
-                roundingTypes.Add(new RoundingTypesPickerItem()
-                {
-                    Name = v.ToString(),
-                    Value = value,
-                });
+                roundingTypes.Add(new RoundingTypesPickerItem(v.ToString(), value));
             }
             Rounding.ItemsSource = roundingTypes;
             Rounding.SelectedIndex = roundingSelectedIndex;
@@ -67,7 +64,7 @@ namespace PathfinderCharacterSheet
                 return;
             var el = new EditIntLimit();
             if (multiplier.Limit == null)
-                multiplier.Limit = IntLimit.Empty.Clone;
+                multiplier.Limit = new IntLimit();
             el.Init(multiplier.Limit);
             pushedPage = el;
             Navigation.PushAsync(pushedPage);
@@ -75,20 +72,27 @@ namespace PathfinderCharacterSheet
 
         private void EditToView()
         {
-            UIHelpers.StrToInt(AdditionalBefore.Text, ref multiplier.additionalBefore);
-            UIHelpers.StrToInt(Multiplier.Text, ref multiplier.multiplier);
-            UIHelpers.StrToInt(Divider.Text, ref multiplier.divider);
-            UIHelpers.StrToInt(AdditionalAfter.Text, ref multiplier.additionalAfter);
+            var additionalBefore = multiplier.AdditionalBefore;
+            UIHelpers.StrToInt(AdditionalBefore.Text, ref additionalBefore);
+            multiplier.AdditionalBefore = additionalBefore;
+            var multi = multiplier.Multiplier;
+            UIHelpers.StrToInt(Multiplier.Text, ref multi);
+            multiplier.Multiplier = multi;
+            var divider = multiplier.Divider;
+            UIHelpers.StrToInt(Divider.Text, ref divider);
+            multiplier.Divider = divider;
+            var additionalAfter = multiplier.AdditionalAfter;
+            UIHelpers.StrToInt(AdditionalAfter.Text, ref additionalAfter);
+            multiplier.AdditionalAfter = additionalAfter;
             var currentRoundingType = IntMultiplier.DefaultRounding;
             if (Rounding != null)
             {
-                var item = Rounding.SelectedItem as RoundingTypesPickerItem;
-                if (item != null)
-                    currentRoundingType = item.Value;
+                if (Rounding.SelectedItem is RoundingTypesPickerItem item)
+                    currentRoundingType = item.Item2;
             }
             multiplier.RoundingType = currentRoundingType;
 
-            if (multiplier.Limit.Equals(IntLimit.Empty))
+            if (multiplier.Limit.Equals(new IntLimit()))
                 multiplier.Limit = null;
 
             if (!source.Equals(multiplier))

@@ -63,7 +63,6 @@ namespace PathfinderCharacterSheet
                 var data = LoadFromPath(file);
                 if (data != null)
                 {
-                    //CharacterSheets.V1.IntModifier.Optimize();
                     //CharacterSheets.V1.ValueWithIntModifiers.Optimize();
 #if VALIDATE_XML
                     using (var memoryStream = new MemoryStream())

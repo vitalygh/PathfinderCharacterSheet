@@ -40,7 +40,7 @@
                     </Frame>
                     <Label VerticalOptions="Center" x:Name="RoundingTitle" Text="Rounding:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" Grid.Column="0" Grid.Row="3"></Label>
                     <Frame x:Name="RoundingFrame" BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3">
-                        <Picker x:Name="Rounding" FontSize="Medium" TextColor="Black" ItemDisplayBinding="{Binding Name}"></Picker>
+                        <Picker x:Name="Rounding" FontSize="Medium" TextColor="Black" ItemDisplayBinding="{Binding Item1}"></Picker>
                     </Frame>
                     <Label x:Name="AdditionalAfterTitle" Text="Add After:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">
                     </Label>

@@ -48,7 +48,7 @@
                     <Label x:Name="ArmorTypeTitle" Text="Type:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="3">
                     </Label>
                     <Frame BorderColor="Black" Padding="5" Grid.Column="1" Grid.Row="3" HorizontalOptions="FillAndExpand" >
-                        <Picker x:Name="ArmorType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Name}">
+                        <Picker x:Name="ArmorType" FontSize="Medium" TextColor="Black" VerticalOptions="Center" ItemDisplayBinding="{Binding Item1}">
                         </Picker>
                     </Frame>
                     <Label x:Name="LimitMaxDexBonusTitle" Text="Limit Dex Bonus:" Margin="5, 0, 5, 0" FontSize="Medium" TextColor="Black" VerticalOptions="Center" Grid.Column="0" Grid.Row="4">

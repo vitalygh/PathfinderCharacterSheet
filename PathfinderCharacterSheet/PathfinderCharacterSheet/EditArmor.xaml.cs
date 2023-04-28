@@ -8,6 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using PathfinderCharacterSheet.CharacterSheets.V1;
 using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.ArmorClassItem;
+using ArmorTypePickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.ArmorType>;
 
 namespace PathfinderCharacterSheet
 {
@@ -53,11 +54,7 @@ namespace PathfinderCharacterSheet
                 var value = (ArmorType)atv;
                 if (value == this.item.ArmorType)
                     armorTypeIndex = armorTypeCounter;
-                pickerItems.Add(new ArmorTypePickerItem()
-                {
-                    Name = value.ToString(),
-                    Value = value,
-                });
+                pickerItems.Add(new ArmorTypePickerItem(value.ToString(), value));
             }
             ArmorType.ItemsSource = pickerItems;
             ArmorType.SelectedIndex = armorTypeIndex;
@@ -96,7 +93,7 @@ namespace PathfinderCharacterSheet
             item.active = ArmorActive.IsChecked;
             item.name = ArmorName.Text;
             if (ArmorType.SelectedItem is ArmorTypePickerItem selectedArmorType)
-                item.ArmorType = selectedArmorType.Value;
+                item.ArmorType = selectedArmorType.Item2;
             item.limitMaxDexBonus = LimitMaxDexBonus.IsChecked;
             item.properties = Properties.Text;
             item.description = Description.Text;

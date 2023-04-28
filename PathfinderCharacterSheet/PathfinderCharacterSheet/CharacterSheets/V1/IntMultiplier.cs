@@ -1,39 +1,89 @@
-﻿using System;
+﻿#define SAVE_DELTA
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
-    public class IntMultiplier: IApplicable<int>, IEquatable<IntMultiplier>, IPrototype<IntMultiplier>
+    public class IntMultiplier: IApplicable<int>, IEquatable<IntMultiplier>
     {
-        public static readonly IntMultiplier Empty = new IntMultiplier();
-
-        public int additionalBefore = 0;
-        public int multiplier = 1;
-        public int divider = 1;
-        public static readonly RoundingType DefaultRounding = RoundingType.Up;
-        public string roundingType = DefaultRounding.ToString();
-        internal RoundingType RoundingType
+        public const int DefaultAdditionalBefore = 0;
+        public string additionalBefore
         {
-            get { return Helpers.GetEnumValue(roundingType, DefaultRounding); }
-            set { roundingType = value.ToString(); }
+            get =>
+#if SAVE_DELTA
+                DefaultAdditionalBefore == AdditionalBefore ? null :
+#endif
+                AdditionalBefore.ToString();
+            set => AdditionalBefore = int.TryParse(value, out int outValue) ? outValue : DefaultAdditionalBefore;
         }
+        internal int AdditionalBefore { get; set; } = DefaultAdditionalBefore;
 
-        public int additionalAfter = 0;
+        public const int DefaultMultiplier = 1;
+        public string multiplier
+        {
+            get =>
+#if SAVE_DELTA
+                DefaultMultiplier == Multiplier ? null :
+#endif
+                Multiplier.ToString();
+            set => Multiplier = int.TryParse(value, out int outValue) ? outValue : DefaultMultiplier;
+        }
+        internal int Multiplier { get; set; } = DefaultMultiplier;
+
+        public const int DefaultDivider = 1;
+        public string divider
+        {
+            get =>
+#if SAVE_DELTA
+                DefaultDivider == Divider ? null :
+#endif
+                Divider.ToString();
+            set => Divider = int.TryParse(value, out int outValue) ? outValue : DefaultDivider;
+        }
+        internal int Divider { get; set; } = DefaultDivider;
+
+        public const int DefaultAdditionalAfter = 0;
+        public string additionalAfter
+        {
+            get =>
+#if SAVE_DELTA
+                DefaultAdditionalAfter == AdditionalAfter ? null :
+#endif
+                AdditionalAfter.ToString();
+            set => AdditionalAfter = int.TryParse(value, out int outValue) ? outValue : DefaultAdditionalAfter;
+        }
+        internal int AdditionalAfter { get; set; } = DefaultAdditionalAfter;
+
+        public const RoundingType DefaultRounding = RoundingType.Up;
+        public string roundingType
+        {
+            get =>
+#if SAVE_DELTA
+                DefaultRounding == RoundingType ? null :
+#endif
+                RoundingType.ToString();
+            set => RoundingType = Helpers.GetEnumValue(value, DefaultRounding);
+        }
+        internal RoundingType RoundingType { get; set; } = DefaultRounding;
 
         public IntLimit limit
         {
-            get => Limit == IntLimit.Empty ? null : Limit;
+            get =>
+#if SAVE_DELTA
+                Limit == new IntLimit() ? null :
+#endif
+                Limit;
             set => Limit = value;
         }
         internal IntLimit Limit { get; set; } = null;
 
         public int Apply(int value)
         {
-            float fval = multiplier * (value + additionalBefore);
-            if (divider != 0)
-                fval /= divider;
-            fval += additionalAfter;
+            float fval = Multiplier * (value + AdditionalBefore);
+            if (Divider != 0)
+                fval /= Divider;
+            fval += AdditionalAfter;
             switch (RoundingType)
             {
                 case RoundingType.ToNearest:
@@ -66,10 +116,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (source == null)
                 return this;
 
-            additionalBefore = source.additionalBefore;
-            multiplier = source.multiplier;
-            divider = source.divider;
-            additionalAfter = source.additionalAfter;
+            AdditionalBefore = source.AdditionalBefore;
+            Multiplier = source.Multiplier;
+            Divider = source.Divider;
+            AdditionalAfter = source.AdditionalAfter;
             RoundingType = source.RoundingType;
             Limit = source.Limit?.Clone;
 
@@ -80,13 +130,13 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (other == null)
                 return false;
-            if (additionalBefore != other.additionalBefore)
+            if (AdditionalBefore != other.AdditionalBefore)
                 return false;
-            if (multiplier != other.multiplier)
+            if (Multiplier != other.Multiplier)
                 return false;
-            if (divider != other.divider)
+            if (Divider != other.Divider)
                 return false;
-            if (additionalAfter != other.additionalAfter)
+            if (AdditionalAfter != other.AdditionalAfter)
                 return false;
             if (RoundingType != other.RoundingType)
                 return false;
@@ -124,10 +174,10 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             int hash = 13;
             hash = (hash * 7) + base.GetHashCode();
-            hash = (hash * 7) + additionalBefore.GetHashCode();
-            hash = (hash * 7) + multiplier.GetHashCode();
-            hash = (hash * 7) + divider.GetHashCode();
-            hash = (hash * 7) + additionalAfter.GetHashCode();
+            hash = (hash * 7) + AdditionalBefore.GetHashCode();
+            hash = (hash * 7) + Multiplier.GetHashCode();
+            hash = (hash * 7) + Divider.GetHashCode();
+            hash = (hash * 7) + AdditionalAfter.GetHashCode();
             hash = (hash * 7) + RoundingType.GetHashCode();
             hash = (hash * 7) + (Limit is null ? 0 : Limit.GetHashCode());
             return hash;
@@ -138,33 +188,31 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (string.IsNullOrWhiteSpace(applyTo))
                 applyTo = "x";
             var text = new StringBuilder(applyTo);
-            if (additionalBefore != 0)
+            if (AdditionalBefore != 0)
             {
-                if (additionalBefore > 0)
-                    text.Append(" + ").Append(additionalBefore);
+                if (AdditionalBefore > 0)
+                    text.Append(" + ").Append(AdditionalBefore);
                 else
-                    text.Append(" - ").Append(Math.Abs(additionalBefore));
+                    text.Append(" - ").Append(Math.Abs(AdditionalBefore));
                 text.Insert(0, "(").Append(")");
             }
             var addBrackets = false;
-            if (multiplier != 1)
+            if (Multiplier != 1)
             {
-                text.Insert(0, " * ").Insert(0, multiplier.ToString());
+                text.Insert(0, " * ").Insert(0, Multiplier.ToString());
                 addBrackets = true;
             }
-            if (divider != 1)
+            if ((Divider != 1) && (Divider != 0))
             {
-                text.Append(" / ").Append(divider);
+                text.Append(" / ").Append(Divider);
                 addBrackets = true;
             }
-            if (divider == 0)
-                text = new StringBuilder("Infinity");
-            if (additionalAfter != 0)
+            if (AdditionalAfter != 0)
             {
-                if (additionalAfter > 0)
-                    text.Append(" + ").Append(additionalAfter);
+                if (AdditionalAfter > 0)
+                    text.Append(" + ").Append(AdditionalAfter);
                 else
-                    text.Append(" - ").Append(Math.Abs(additionalAfter));
+                    text.Append(" - ").Append(Math.Abs(AdditionalAfter));
                 addBrackets = true;
             }
             if (addBrackets)
