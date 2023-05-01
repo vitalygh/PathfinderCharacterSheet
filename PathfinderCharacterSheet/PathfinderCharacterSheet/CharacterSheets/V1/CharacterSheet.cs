@@ -32,6 +32,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         #region Technical info
         public DateTime CreationTime = DateTime.Now;
         public DateTime ModificationTime = DateTime.Now;
+        public int SavesCount = 0;
         public int currentUID = 0;
         public const int InvalidUID = -1;
         public int GetUID() { return currentUID++; }

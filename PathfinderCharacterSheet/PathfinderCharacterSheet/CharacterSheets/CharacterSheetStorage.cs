@@ -99,6 +99,7 @@ namespace PathfinderCharacterSheet
             characters.TryGetValue(sheet, out Tuple<string, ISerializer<CharacterSheet>> loadedAs);
             var reserialized = loadedAs?.Item2 != serializer;
             sheet.ModificationTime = DateTime.Now;
+            sheet.SavesCount += 1;
             var path = serializer.Save(sheet.Name, sheet, loadedAs?.Item1);
             if (path != null)
             {
