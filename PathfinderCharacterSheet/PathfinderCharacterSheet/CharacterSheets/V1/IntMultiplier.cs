@@ -193,7 +193,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (string.IsNullOrWhiteSpace(applyTo))
                 applyTo = "x";
-            var text = new StringBuilder(applyTo);
+            var text = new StringBuilder();
+            text.Append(applyTo);
             if (AdditionalBefore != 0)
             {
                 if (AdditionalBefore > 0)

@@ -16,184 +16,184 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="EditLevelOfClass.xaml.cs">
+    <Compile Update="UI\Editors\EditLevelOfClass.xaml.cs">
       <DependentUpon>EditLevelOfClass.xaml</DependentUpon>
     </Compile>
-    <Compile Update="NewCharacter.xaml.cs">
+    <Compile Update="UI\NewCharacter.xaml.cs">
       <DependentUpon>NewCharacter.xaml</DependentUpon>
     </Compile>
-    <Compile Update="CharacterSheetTabs.xaml.cs">
+    <Compile Update="UI\CharacterSheetTabs.xaml.cs">
       <DependentUpon>CharacterSheetTabs.xaml</DependentUpon>
     </Compile>
-    <Compile Update="EditAbilityScores.xaml.cs">
+    <Compile Update="UI\Editors\EditAbilityScores.xaml.cs">
       <DependentUpon>EditAbilityScores.xaml</DependentUpon>
     </Compile>
-    <Compile Update="EditBackground.xaml.cs">
+    <Compile Update="UI\Editors\EditBackground.xaml.cs">
       <DependentUpon>EditBackground.xaml</DependentUpon>
     </Compile>
-    <Compile Update="EditSkillRanks.xaml.cs">
+    <Compile Update="UI\Editors\EditSkillRanks.xaml.cs">
       <DependentUpon>EditSkillRanks.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SelectClass.xaml.cs">
+    <Compile Update="UI\Selectors\SelectClass.xaml.cs">
       <DependentUpon>SelectClass.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="EditArmor.xaml">
+    <EmbeddedResource Update="UI\Editors\EditArmor.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditArmorClass.xaml">
+    <EmbeddedResource Update="UI\Editors\EditArmorClass.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditAttackBonus.xaml">
+    <EmbeddedResource Update="UI\Editors\EditAttackBonus.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditBaseAttackBonus.xaml">
+    <EmbeddedResource Update="UI\Editors\EditBaseAttackBonus.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditChannelEnergy.xaml">
+    <EmbeddedResource Update="UI\Editors\EditChannelEnergy.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditCombatManeuvers.xaml">
+    <EmbeddedResource Update="UI\Editors\EditCombatManeuvers.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditCritical.xaml">
+    <EmbeddedResource Update="UI\Editors\EditCritical.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditDamage.xaml">
+    <EmbeddedResource Update="UI\Editors\EditDamage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditDiceRoll.xaml">
+    <EmbeddedResource Update="UI\Editors\EditDiceRoll.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditEncumbrance.xaml">
+    <EmbeddedResource Update="UI\Editors\EditEncumbrance.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditFeat.xaml">
+    <EmbeddedResource Update="UI\Editors\EditFeat.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditGearItem.xaml">
+    <EmbeddedResource Update="UI\Editors\EditGearItem.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditInitiative.xaml">
+    <EmbeddedResource Update="UI\Editors\EditInitiative.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditIntLimit.xaml">
+    <EmbeddedResource Update="UI\Editors\EditIntLimit.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditIntModifier.xaml">
+    <EmbeddedResource Update="UI\Editors\EditIntModifier.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditIntMultiplier.xaml">
+    <EmbeddedResource Update="UI\Editors\EditIntMultiplier.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditIntValueWithModifiers.xaml">
+    <EmbeddedResource Update="UI\Editors\EditIntValueWithModifiers.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditLanguage.xaml">
+    <EmbeddedResource Update="UI\Editors\EditLanguage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditLanguages.xaml">
+    <EmbeddedResource Update="UI\Editors\EditLanguages.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditLevel.xaml">
+    <EmbeddedResource Update="UI\Editors\EditLevel.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditLevelOfClass.xaml">
+    <EmbeddedResource Update="UI\Editors\EditLevelOfClass.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditNote.xaml">
+    <EmbeddedResource Update="UI\Editors\EditNote.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditSavingThrows.xaml">
+    <EmbeddedResource Update="UI\Editors\EditSavingThrows.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditSettings.xaml">
+    <EmbeddedResource Update="UI\Editors\EditSettings.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditSkill.xaml">
+    <EmbeddedResource Update="UI\Editors\EditSkill.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditSpecialAbility.xaml">
+    <EmbeddedResource Update="UI\Editors\EditSpecialAbility.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditSpeed.xaml">
+    <EmbeddedResource Update="UI\Editors\EditSpeed.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditWeapon.xaml">
+    <EmbeddedResource Update="UI\Editors\EditWeapon.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="NewCharacter.xaml">
+    <EmbeddedResource Update="UI\NewCharacter.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="CharacterSheetTabs.xaml">
+    <EmbeddedResource Update="UI\CharacterSheetTabs.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditAbilityScores.xaml">
+    <EmbeddedResource Update="UI\Editors\EditAbilityScores.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditBackground.xaml">
+    <EmbeddedResource Update="UI\Editors\EditBackground.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="EditSkillRanks.xaml">
+    <EmbeddedResource Update="UI\Editors\EditSkillRanks.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ReorderDiceRolls.xaml">
+    <EmbeddedResource Update="UI\Reorder\ReorderDiceRolls.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ReorderIntModifiers.xaml">
+    <EmbeddedResource Update="UI\Reorder\ReorderIntModifiers.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ReorderItemsWithDescription.xaml">
+    <EmbeddedResource Update="UI\Reorder\ReorderItemsWithDescription.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="SelectClass.xaml">
+    <EmbeddedResource Update="UI\Selectors\SelectClass.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="SelectGearItem.xaml">
+    <EmbeddedResource Update="UI\Selectors\SelectGearItem.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewAbilities.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewAbilities.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewArmor.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewArmor.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewBackground.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewBackground.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewFeat.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewFeat.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewFeats.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewFeats.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewGearItem.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewGearItem.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewInventory.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewInventory.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewNote.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewNote.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewNotes.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewNotes.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewSkills.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewSkills.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewSpecialAbilities.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewSpecialAbilities.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewSpecialAbility.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewSpecialAbility.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewSpells.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewSpells.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ViewWeapon.xaml">
+    <EmbeddedResource Update="UI\Viewers\ViewWeapon.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>

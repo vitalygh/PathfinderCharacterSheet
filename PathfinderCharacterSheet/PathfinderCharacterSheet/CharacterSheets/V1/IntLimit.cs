@@ -147,7 +147,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (!MinLimit && !MaxLimit)
                 return string.Empty;
-            var limit = new StringBuilder('[');
+            var limit = new StringBuilder();
+            limit.Append('[');
             if (MinLimit)
                 limit.Append(MinValue);
             limit.Append(';');
