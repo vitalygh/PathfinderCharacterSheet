@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditLevelOfClass : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
@@ -43,7 +38,7 @@ namespace PathfinderCharacterSheet
                 VerticalOptions = LayoutOptions.CenterAndExpand,
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
-            var gridTitle = CreateLabel("Level Of Class", TextAlignment.Center);
+            var gridTitle = UIHelpers.CreateLabel("Level Of Class", TextAlignment.Center);
             stack.Children.Add(gridTitle);
             if (gridTitle != null)
             {
@@ -62,33 +57,23 @@ namespace PathfinderCharacterSheet
             var count = currentLevelOfClass.Count;
             if (count <= 0)
                 return;
-            grid.Children.Add(CreateLabel("Level", TextAlignment.Center), 0, 1);
-            grid.Children.Add(CreateLabel("Class", TextAlignment.Center), 1, 1);
+            grid.Children.Add(UIHelpers.CreateLabel("Level", TextAlignment.Center), 0, 1);
+            grid.Children.Add(UIHelpers.CreateLabel("Class", TextAlignment.Center), 1, 1);
             for (var i = 0; i < count; i++)
             {
                 var index = i + 2;
                 var loc = currentLevelOfClass[i];
-                var value = CreateFrame(loc.GetValue(sheet).ToString());
+                var value = UIHelpers.CreateFrame(loc.GetValue(sheet).ToString());
                 var valueTapped = new TapGestureRecognizer();
                 valueTapped.Tapped += (s, e) => EditLevel(loc);
                 value.GestureRecognizers.Add(valueTapped);
                 grid.Children.Add(value, 0, index);
-                var name = CreateFrame(loc.ClassName);
+                var name = UIHelpers.CreateFrame(loc.ClassName);
                 var nameTapped = new TapGestureRecognizer();
                 nameTapped.Tapped += (s, e) => EditLevel(loc);
                 name.GestureRecognizers.Add(nameTapped);
                 grid.Children.Add(name, 1, index);
             }
-        }
-
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
         }
 
         private void EditToView()

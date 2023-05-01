@@ -4,7 +4,6 @@
 //#define SHOW_VIEW_BUTTON
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 using Xamarin.Forms;
 using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.DiceRoll;
@@ -107,33 +106,7 @@ namespace PathfinderCharacterSheet
                 RemoveItemGrid(itemGrids[itemGrids.Count - 1]);
         }
 
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
-        }
-
-        private void UpdateValue(Label label, string text)
-        {
-            if (label == null)
-                return;
-            if (label.Text != text)
-                label.Text = text;
-        }
-
 #if EXPAND_SELECTED
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private void UpdateValue(CheckBox checkbox, bool value)
-        {
-            if (checkbox == null)
-                return;
-            if (checkbox.IsChecked != value)
-                checkbox.IsChecked = value;
-        }
-
         private void RemoveItemGrid(SelectedItemGrid itemGrid)
         {
             if (itemGrid == null)
@@ -158,11 +131,11 @@ namespace PathfinderCharacterSheet
             if (itemGrid.selectedHandler != null)
                 itemGrid.selected.CheckedChanged -= itemGrid.selectedHandler;
             itemGrid.selectedHandler = (s, e) => Item_CheckedChanged(item, e.Value);
-            UpdateValue(itemGrid.selected, item.selected);
+            UIHelpers.UpdateValue(itemGrid.selected, item.selected);
             itemGrid.selected.CheckedChanged += itemGrid.selectedHandler;
 
-            UpdateValue(itemGrid.name, item.name);
-            UpdateValue(itemGrid.description, item.description);
+            UIHelpers.UpdateValue(itemGrid.name, item.name);
+            UIHelpers.UpdateValue(itemGrid.description, item.description);
 
             if (itemGrid.viewButtonHandler != null)
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
@@ -203,7 +176,7 @@ namespace PathfinderCharacterSheet
 
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => Item_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
-            var nameTitle = CreateLabel("Name: ");
+            var nameTitle = UIHelpers.CreateLabel("Name: ");
             var nameTitleStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -219,7 +192,7 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
             };
-            var nameValue = CreateFrame(item.name);
+            var nameValue = UIHelpers.CreateFrame(item.name);
             var viewButton = new Button()
             {
                 Text = "View",
@@ -233,8 +206,8 @@ namespace PathfinderCharacterSheet
             nameValueStack.Children.Add(nameValue);
             nameValueStack.Children.Add(viewButton);
 
-            var descriptionTitle = CreateLabel("Description: ");
-            var descriptionValue = CreateFrame(item.description);
+            var descriptionTitle = UIHelpers.CreateLabel("Description: ");
+            var descriptionValue = UIHelpers.CreateFrame(item.description);
 
 #if USE_GRID
             var container = new Grid()
@@ -329,14 +302,14 @@ namespace PathfinderCharacterSheet
             if (itemGrid.selectedHandler != null)
                 itemGrid.selected.CheckedChanged -= itemGrid.selectedHandler;
             itemGrid.selectedHandler = (s, e) => Item_CheckedChanged(item, e.Value);
-            UpdateValue(itemGrid.selected, item.selected);
+            UIHelpers.UpdateValue(itemGrid.selected, item.selected);
             itemGrid.selected.CheckedChanged += itemGrid.selectedHandler;
 #if EXPAND_WITH_TAP
             UIHelpers.AddTapHandler(itemGrid.container, (s, e) => Item_Tap(itemGrid.selected), 1);
 #endif
 #endif
             var name = item.AsString(sheet);
-            UpdateValue(itemGrid.name, name);
+            UIHelpers.UpdateValue(itemGrid.name, name);
 #if SHOW_VIEW_BUTTON
             if (itemGrid.viewButtonHandler != null)
                 itemGrid.viewButton.Clicked -= itemGrid.viewButtonHandler;
@@ -369,7 +342,7 @@ namespace PathfinderCharacterSheet
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => Item_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
 #endif
-            var itemNameFrame = CreateFrame(item.AsString(sheet));
+            var itemNameFrame = UIHelpers.CreateFrame(item.AsString(sheet));
             var itemNameLabel = itemNameFrame.Content as Label;
             itemNameLabel.TextDecorations = TextDecorations.Underline;
 #if SHOW_VIEW_BUTTON
@@ -457,7 +430,7 @@ namespace PathfinderCharacterSheet
         }
 #endif
 
-        public void Item_Tap(CheckBox selectedcb)
+        public static void Item_Tap(CheckBox selectedcb)
         {
             selectedcb.IsChecked = !selectedcb.IsChecked;
         }

@@ -2,15 +2,11 @@
 //#define EXPAND_CHECKBOX
 #define EXPAND_WITH_TAP
 #define USE_GRID
+using PathfinderCharacterSheet.CharacterSheets.V1;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -170,7 +166,7 @@ namespace PathfinderCharacterSheet
                 TextColor = Color.Black,
             };
             armorReorderButton.Clicked += Reorder_Clicked;
-            var armorTitle = CreateLabel("Armor", TextAlignment.Center);
+            var armorTitle = UIHelpers.CreateLabel("Armor", TextAlignment.Center);
             var armorAddButton = new Button()
             {
                 Text = "Add",
@@ -188,34 +184,6 @@ namespace PathfinderCharacterSheet
             armor.Children.Add(armorAddButton);
 #endif
             Header.Children.Add(armor);
-        }
-
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            var label = UIHelpers.CreateLabel(text, horz);
-            label.HorizontalOptions = LayoutOptions.FillAndExpand;
-            return label;
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
-        }
-
-        private void UpdateValue(CheckBox checkbox, bool value)
-        {
-            if (checkbox == null)
-                return;
-            if (checkbox.IsChecked != value)
-                checkbox.IsChecked = value;
-        }
-
-        private void UpdateValue(Label label, string text)
-        {
-            if (label == null)
-                return;
-            if (label.Text != text)
-                label.Text = text;
         }
 
 #if EXPAND_SELECTED
@@ -243,7 +211,7 @@ namespace PathfinderCharacterSheet
             if (armorGrid.selectedHandler != null)
                 armorGrid.selected.CheckedChanged -= armorGrid.selectedHandler;
             armorGrid.selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
-            UpdateValue(armorGrid.selected, item.selected);
+            UIHelpers.UpdateValue(armorGrid.selected, item.selected);
             armorGrid.selected.IsChecked = item.selected;
             armorGrid.selected.CheckedChanged += armorGrid.selectedHandler;
 #endif
@@ -251,19 +219,19 @@ namespace PathfinderCharacterSheet
             if (armorGrid.activeHandler != null)
                 armorGrid.active.CheckedChanged -= armorGrid.activeHandler;
             armorGrid.activeHandler = (s, e) => ArmorActive_CheckedChanged(item, e.Value);
-            UpdateValue(armorGrid.active, item.active);
+            UIHelpers.UpdateValue(armorGrid.active, item.active);
             armorGrid.active.IsChecked = item.active;
             armorGrid.active.CheckedChanged += armorGrid.activeHandler;
 
-            UpdateValue(armorGrid.name, item.name);
-            UpdateValue(armorGrid.armorBonus, item.ArmorBonus(sheet));
-            UpdateValue(armorGrid.armorType, item.armorType);
-            UpdateValue(armorGrid.maxDexBonus, item.MaxDexBonus(sheet));
-            UpdateValue(armorGrid.checkPenalty, item.CheckPenalty(sheet));
-            UpdateValue(armorGrid.spellFailure, item.SpellFailure(sheet));
-            UpdateValue(armorGrid.properties, item.properties);
-            UpdateValue(armorGrid.weight, item.weight.GetValue(sheet).ToString());
-            UpdateValue(armorGrid.description, item.description);
+            UIHelpers.UpdateValue(armorGrid.name, item.name);
+            UIHelpers.UpdateValue(armorGrid.armorBonus, item.ArmorBonus(sheet));
+            UIHelpers.UpdateValue(armorGrid.armorType, item.armorType);
+            UIHelpers.UpdateValue(armorGrid.maxDexBonus, item.MaxDexBonus(sheet));
+            UIHelpers.UpdateValue(armorGrid.checkPenalty, item.CheckPenalty(sheet));
+            UIHelpers.UpdateValue(armorGrid.spellFailure, item.SpellFailure(sheet));
+            UIHelpers.UpdateValue(armorGrid.properties, item.properties);
+            UIHelpers.UpdateValue(armorGrid.weight, item.weight.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(armorGrid.description, item.description);
 
             UIHelpers.SetTapHandler(armorGrid.container, (s, e) => Armor_DoubleTap(item), 2);
 #if EXPAND_WITH_TAP
@@ -323,7 +291,7 @@ namespace PathfinderCharacterSheet
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
 #endif
-            var nameTitle = CreateLabel("Name:");
+            var nameTitle = UIHelpers.CreateLabel("Name:");
             var nameStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -336,12 +304,12 @@ namespace PathfinderCharacterSheet
             nameStack.Children.Add(nameTitle);
 
             var row = 0;
-            var nameValue = CreateFrame(item.name);
+            var nameValue = UIHelpers.CreateFrame(item.name);
             grid.Children.Add(nameStack, 0, row);
             grid.Children.Add(nameValue, 1, row);
             row += 1;
 
-            var activeTitle = CreateLabel("Active:");
+            var activeTitle = UIHelpers.CreateLabel("Active:");
             var activecb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -355,53 +323,53 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(activecb, 1, row);
             row += 1;
 
-            var armorBonusTitle = CreateLabel("Armor Bonus:");
-            var armorBonusValue = CreateFrame(item.ArmorBonus(sheet));
+            var armorBonusTitle = UIHelpers.CreateLabel("Armor Bonus:");
+            var armorBonusValue = UIHelpers.CreateFrame(item.ArmorBonus(sheet));
             grid.Children.Add(armorBonusTitle, 0, row);
             grid.Children.Add(armorBonusValue, 1, row);
             row += 1;
 
-            var armorTypeTitle = CreateLabel("Armor Type:");
-            var armorTypeValue = CreateFrame(item.ArmorType.ToString());
+            var armorTypeTitle = UIHelpers.CreateLabel("Armor Type:");
+            var armorTypeValue = UIHelpers.CreateFrame(item.ArmorType.ToString());
             grid.Children.Add(armorTypeTitle, 0, row);
             grid.Children.Add(armorTypeValue, 1, row);
             row += 1;
 
-            var maxDexBonusTitle = CreateLabel("Max Dex Bonus:");
-            var maxDexBonusValue = CreateFrame(item.MaxDexBonus(sheet));
+            var maxDexBonusTitle = UIHelpers.CreateLabel("Max Dex Bonus:");
+            var maxDexBonusValue = UIHelpers.CreateFrame(item.MaxDexBonus(sheet));
             grid.Children.Add(maxDexBonusTitle, 0, row);
             grid.Children.Add(maxDexBonusValue, 1, row);
             row += 1;
 
-            var checkPenaltyTitle = CreateLabel("Check Penalty:");
-            var checkPenaltyValue = CreateFrame(item.CheckPenalty(sheet));
+            var checkPenaltyTitle = UIHelpers.CreateLabel("Check Penalty:");
+            var checkPenaltyValue = UIHelpers.CreateFrame(item.CheckPenalty(sheet));
             grid.Children.Add(checkPenaltyTitle, 0, row);
             grid.Children.Add(checkPenaltyValue, 1, row);
             row += 1;
 
-            var spellFailureTitle = CreateLabel("Spell Failure:");
-            var spellFailureValue = CreateFrame(item.SpellFailure(sheet));
+            var spellFailureTitle = UIHelpers.CreateLabel("Spell Failure:");
+            var spellFailureValue = UIHelpers.CreateFrame(item.SpellFailure(sheet));
             grid.Children.Add(spellFailureTitle, 0, row);
             grid.Children.Add(spellFailureValue, 1, row);
             row += 1;
 
-            var propertiesTitle = CreateLabel("Properties:");
-            var propertiesValue = CreateFrame(item.properties);
+            var propertiesTitle = UIHelpers.CreateLabel("Properties:");
+            var propertiesValue = UIHelpers.CreateFrame(item.properties);
             grid.Children.Add(propertiesTitle, 0, row);
             grid.Children.Add(propertiesValue, 1, row);
             row += 1;
 
-            var weightTitle = CreateLabel("Weight:");
-            var weightValue = CreateFrame(item.weight.GetValue(sheet).ToString());
+            var weightTitle = UIHelpers.CreateLabel("Weight:");
+            var weightValue = UIHelpers.CreateFrame(item.weight.GetValue(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;
 
-            var descriptionTitle = CreateLabel("Description:");
+            var descriptionTitle = UIHelpers.CreateLabel("Description:");
             grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
             row += 1;
 
-            var descriptionValue = CreateFrame(item.description);
+            var descriptionValue = UIHelpers.CreateFrame(item.description);
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
@@ -449,7 +417,7 @@ namespace PathfinderCharacterSheet
         }
 #endif
 
-            private void RemoveArmorGrid(ArmorGrid armorGrid)
+        private void RemoveArmorGrid(ArmorGrid armorGrid)
         {
             if (armorGrid == null)
                 return;
@@ -474,7 +442,7 @@ namespace PathfinderCharacterSheet
             if (armorGrid.selectedHandler != null)
                 armorGrid.selected.CheckedChanged -= armorGrid.selectedHandler;
             armorGrid.selectedHandler = (s, e) => ArmorSelected_CheckedChanged(item, e.Value);
-            UpdateValue(armorGrid.selected, item.selected);
+            UIHelpers.UpdateValue(armorGrid.selected, item.selected);
             armorGrid.selected.CheckedChanged += armorGrid.selectedHandler;
 #if EXPAND_WITH_TAP
 UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selected), 1);
@@ -485,7 +453,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
 #endif
 #endif
 #endif
-            UpdateValue(armorGrid.name, item.AsString(sheet));
+            UIHelpers.UpdateValue(armorGrid.name, item.AsString(sheet));
             armorGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
         }
 
@@ -538,7 +506,7 @@ UIHelpers.AddTapHandler(armorGrid.container, (s, e) => Armor_Tap(armorGrid.selec
                 BackgroundColor = Color.LightGray,
             };
 #endif
-            var armorNameFrame = CreateFrame(item.AsString(sheet));
+            var armorNameFrame = UIHelpers.CreateFrame(item.AsString(sheet));
             armorNameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
             var armorName = armorNameFrame.Content as Label;
             armorName.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;

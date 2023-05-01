@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Foundation;
+﻿using PathfinderCharacterSheet.iOS;
 using UIKit;
-using PathfinderCharacterSheet.iOS;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
 

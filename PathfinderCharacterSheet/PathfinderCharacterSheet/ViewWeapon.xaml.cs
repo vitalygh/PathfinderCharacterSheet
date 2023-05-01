@@ -3,15 +3,11 @@
 #define EXPAND_CHECKBOX
 //#define USE_GRID
 #define USE_GRID_IN_HEADER
+using PathfinderCharacterSheet.CharacterSheets.V1;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -167,17 +163,17 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
             };
 #endif
-            var attackBonusTitle = CreateLabel("Attack Bonus:");
+            var attackBonusTitle = UIHelpers.CreateLabel("Attack Bonus:");
             UIHelpers.AddTapHandler(attackBonusTitle, AttackBonus_DoubleTap, 2);
             var ab = (sheet != null) ? sheet.GetAttackBonus() : "+0";
-            var attackBonusFrame = CreateFrame(ab);
+            var attackBonusFrame = UIHelpers.CreateFrame(ab);
             UIHelpers.AddTapHandler(attackBonusFrame, AttackBonus_DoubleTap, 2);
             attackBonus = attackBonusFrame.Content as Label;
 
-            var damageBonusTitle = CreateLabel("Damage Bonus:");
+            var damageBonusTitle = UIHelpers.CreateLabel("Damage Bonus:");
             UIHelpers.AddTapHandler(damageBonusTitle, DamageBonus_DoubleTap, 2);
             var db = (sheet != null) ? sheet.DamageBonus : 0;
-            var damageBonusFrame = CreateFrame(db >= 0 ? "+" + db : db.ToString());
+            var damageBonusFrame = UIHelpers.CreateFrame(db >= 0 ? "+" + db : db.ToString());
             UIHelpers.AddTapHandler(damageBonusFrame, DamageBonus_DoubleTap, 2);
             damageBonus = damageBonusFrame.Content as Label;
 
@@ -239,7 +235,7 @@ namespace PathfinderCharacterSheet
                 TextColor = Color.Black,
             };
             weaponReorderButton.Clicked += Reorder_Clicked;
-            var weaponTitle = CreateLabel("Weapon", TextAlignment.Center);
+            var weaponTitle = UIHelpers.CreateLabel("Weapon", TextAlignment.Center);
             var weaponAddButton = new Button()
             {
                 Text = "Add",
@@ -257,32 +253,6 @@ namespace PathfinderCharacterSheet
             weapon.Children.Add(weaponAddButton);
 #endif
             Header.Children.Add(weapon);
-        }
-
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
-        }
-
-        private void UpdateValue(CheckBox checkbox, bool value)
-        {
-            if (checkbox == null)
-                return;
-            if (checkbox.IsChecked != value)
-                checkbox.IsChecked = value;
-        }
-
-        private void UpdateValue(Label label, string text)
-        {
-            if (label == null)
-                return;
-            if (label.Text != text)
-                label.Text = text;
         }
 
 #if EXPAND_SELECTED
@@ -309,28 +279,28 @@ namespace PathfinderCharacterSheet
             if (weaponGrid.selectedHandler != null)
                 weaponGrid.selected.CheckedChanged -= weaponGrid.selectedHandler;
             weaponGrid.selectedHandler = (s, e) => Weapon_CheckedChanged(item, e.Value);
-            UpdateValue(weaponGrid.selected, item.selected);
+            UIHelpers.UpdateValue(weaponGrid.selected, item.selected);
             weaponGrid.selected.IsChecked = item.selected;
             weaponGrid.selected.CheckedChanged += weaponGrid.selectedHandler;
 #endif
             if (weaponGrid.activeHandler != null)
                 weaponGrid.active.CheckedChanged -= weaponGrid.activeHandler;
             weaponGrid.activeHandler = (s, e) => WeaponActive_CheckedChanged(item, e.Value);
-            UpdateValue(weaponGrid.active, item.active);
+            UIHelpers.UpdateValue(weaponGrid.active, item.active);
             weaponGrid.active.IsChecked = item.active;
             weaponGrid.active.CheckedChanged += weaponGrid.activeHandler;
 
-            UpdateValue(weaponGrid.name, item.name);
-            UpdateValue(weaponGrid.attackBonus, item.AttackBonus(sheet));
-            UpdateValue(weaponGrid.critical, item.critical.AsString(sheet));
-            UpdateValue(weaponGrid.damage, item.Damage(sheet));
-            UpdateValue(weaponGrid.damageBonus, item.DamageBonus(sheet));
-            UpdateValue(weaponGrid.type, item.type);
-            UpdateValue(weaponGrid.range, item.Range(sheet));
-            UpdateValue(weaponGrid.ammunition, item.ammunition.GetValue(sheet).ToString());
-            UpdateValue(weaponGrid.special, item.special);
-            UpdateValue(weaponGrid.weight, item.weight.GetValue(sheet).ToString());
-            UpdateValue(weaponGrid.description, item.description);
+            UIHelpers.UpdateValue(weaponGrid.name, item.name);
+            UIHelpers.UpdateValue(weaponGrid.attackBonus, item.AttackBonus(sheet));
+            UIHelpers.UpdateValue(weaponGrid.critical, item.critical.AsString(sheet));
+            UIHelpers.UpdateValue(weaponGrid.damage, item.Damage(sheet));
+            UIHelpers.UpdateValue(weaponGrid.damageBonus, item.DamageBonus(sheet));
+            UIHelpers.UpdateValue(weaponGrid.type, item.type);
+            UIHelpers.UpdateValue(weaponGrid.range, item.Range(sheet));
+            UIHelpers.UpdateValue(weaponGrid.ammunition, item.ammunition.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(weaponGrid.special, item.special);
+            UIHelpers.UpdateValue(weaponGrid.weight, item.weight.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(weaponGrid.description, item.description);
 
             UIHelpers.SetTapHandler(weaponGrid.container, (s, e) => Weapon_DoubleTap(item), 2);
 #if EXPAND_WITH_TAP
@@ -390,7 +360,7 @@ namespace PathfinderCharacterSheet
             void handler(object s, CheckedChangedEventArgs e) => Weapon_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += handler;
 #endif
-            var nameTitle = CreateLabel("Name:");
+            var nameTitle = UIHelpers.CreateLabel("Name:");
             var nameStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -403,12 +373,12 @@ namespace PathfinderCharacterSheet
             nameStack.Children.Add(nameTitle);
 
             var row = 0;
-            var nameValue = CreateFrame(item.name);
+            var nameValue = UIHelpers.CreateFrame(item.name);
             grid.Children.Add(nameStack, 0, row);
             grid.Children.Add(nameValue, 1, row);
             row += 1;
 
-            var activeTitle = CreateLabel("Active:");
+            var activeTitle = UIHelpers.CreateLabel("Active:");
             var activecb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -422,65 +392,65 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(activecb, 1, row);
             row += 1;
 
-            var attackBonusTitle = CreateLabel("Attack Bonus:");
-            var attackBonusValue = CreateFrame(item.AttackBonus(sheet));
+            var attackBonusTitle = UIHelpers.CreateLabel("Attack Bonus:");
+            var attackBonusValue = UIHelpers.CreateFrame(item.AttackBonus(sheet));
             grid.Children.Add(attackBonusTitle, 0, row);
             grid.Children.Add(attackBonusValue, 1, row);
             row += 1;
 
-            var criticalTitle = CreateLabel("Critical:");
-            var criticalValue = CreateFrame(item.critical.AsString(sheet));
+            var criticalTitle = UIHelpers.CreateLabel("Critical:");
+            var criticalValue = UIHelpers.CreateFrame(item.critical.AsString(sheet));
             grid.Children.Add(criticalTitle, 0, row);
             grid.Children.Add(criticalValue, 1, row);
             row += 1;
 
-            var damageTitle = CreateLabel("Damage:");
-            var damageValue = CreateFrame(item.Damage(sheet));
+            var damageTitle = UIHelpers.CreateLabel("Damage:");
+            var damageValue = UIHelpers.CreateFrame(item.Damage(sheet));
             grid.Children.Add(damageTitle, 0, row);
             grid.Children.Add(damageValue, 1, row);
             row += 1;
 
-            var damageBonusTitle = CreateLabel("Damage Bonus:");
-            var damageBonusValue = CreateFrame(item.DamageBonus(sheet));
+            var damageBonusTitle = UIHelpers.CreateLabel("Damage Bonus:");
+            var damageBonusValue = UIHelpers.CreateFrame(item.DamageBonus(sheet));
             grid.Children.Add(damageBonusTitle, 0, row);
             grid.Children.Add(damageBonusValue, 1, row);
             row += 1;
 
-            var typeTitle = CreateLabel("Type:");
-            var typeValue = CreateFrame(item.type);
+            var typeTitle = UIHelpers.CreateLabel("Type:");
+            var typeValue = UIHelpers.CreateFrame(item.type);
             grid.Children.Add(typeTitle, 0, row);
             grid.Children.Add(typeValue, 1, row);
             row += 1;
 
-            var rangeTitle = CreateLabel("Range:");
-            var rangeValue = CreateFrame(item.Range(sheet));
+            var rangeTitle = UIHelpers.CreateLabel("Range:");
+            var rangeValue = UIHelpers.CreateFrame(item.Range(sheet));
             grid.Children.Add(rangeTitle, 0, row);
             grid.Children.Add(rangeValue, 1, row);
             row += 1;
 
-            var ammunitionTitle = CreateLabel("Ammunition:");
-            var ammunitionValue = CreateFrame(item.ammunition.GetValue(sheet).ToString());
+            var ammunitionTitle = UIHelpers.CreateLabel("Ammunition:");
+            var ammunitionValue = UIHelpers.CreateFrame(item.ammunition.GetValue(sheet).ToString());
             grid.Children.Add(ammunitionTitle, 0, row);
             grid.Children.Add(ammunitionValue, 1, row);
             row += 1;
 
-            var specialTitle = CreateLabel("Special:");
-            var specialValue = CreateFrame(item.special);
+            var specialTitle = UIHelpers.CreateLabel("Special:");
+            var specialValue = UIHelpers.CreateFrame(item.special);
             grid.Children.Add(specialTitle, 0, row);
             grid.Children.Add(specialValue, 1, row);
             row += 1;
 
-            var weightTitle = CreateLabel("Weight:");
-            var weightValue = CreateFrame(item.weight.GetValue(sheet).ToString());
+            var weightTitle = UIHelpers.CreateLabel("Weight:");
+            var weightValue = UIHelpers.CreateFrame(item.weight.GetValue(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;
 
-            var descriptionTitle = CreateLabel("Description:");
+            var descriptionTitle = UIHelpers.CreateLabel("Description:");
             grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
             row += 1;
 
-            var descriptionValue = CreateFrame(item.description);
+            var descriptionValue = UIHelpers.CreateFrame(item.description);
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
@@ -556,7 +526,7 @@ namespace PathfinderCharacterSheet
             if (weaponGrid.selectedHandler != null)
                 weaponGrid.selected.CheckedChanged -= weaponGrid.selectedHandler;
             weaponGrid.selectedHandler = (s, e) => Weapon_CheckedChanged(item, e.Value);
-            UpdateValue(weaponGrid.selected, item.selected);
+            UIHelpers.UpdateValue(weaponGrid.selected, item.selected);
             weaponGrid.selected.CheckedChanged += weaponGrid.selectedHandler;
 #if EXPAND_WITH_TAP
             UIHelpers.AddTapHandler(weaponGrid.container, (s, e) => Weapon_Tap(weaponGrid.selected), 1);
@@ -568,7 +538,7 @@ namespace PathfinderCharacterSheet
 #endif
 #endif
             weaponGrid.name.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
-            UpdateValue(weaponGrid.name, item.AsString(sheet));
+            UIHelpers.UpdateValue(weaponGrid.name, item.AsString(sheet));
         }
 
         private void CreateWeaponGrid(KeyValuePair<WeaponItem, int> kvp)
@@ -620,7 +590,7 @@ namespace PathfinderCharacterSheet
                 BackgroundColor = Color.LightGray,
             };
 #endif
-            var weaponNameFrame = CreateFrame(item.AsString(sheet));
+            var weaponNameFrame = UIHelpers.CreateFrame(item.AsString(sheet));
             weaponNameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
             var weaponName = weaponNameFrame.Content as Label;
             weaponName.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
@@ -709,7 +679,7 @@ namespace PathfinderCharacterSheet
             UpdateView();
         }
 #if EXPAND_CHECKBOX
-        public void Weapon_Tap(CheckBox cb)
+        public static void Weapon_Tap(CheckBox cb)
         {
             cb.IsChecked = !cb.IsChecked;
         }

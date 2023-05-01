@@ -1,6 +1,5 @@
 ﻿#define SAVE_DELTA
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
@@ -48,8 +47,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             var armor = new StringBuilder();
             if (!string.IsNullOrWhiteSpace(name))
-                armor.Append(name).Append(" ");
-            armor.Append("(").Append(ArmorType);
+                armor.Append(name).Append(' ');
+            armor.Append('(').Append(ArmorType);
             //if (active)
             //    armor += ", active";
             armor.Append("): ");

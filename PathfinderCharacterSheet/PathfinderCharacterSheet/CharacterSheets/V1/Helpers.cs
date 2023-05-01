@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
@@ -31,7 +30,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             for (int i = 0; i < array.Length; i++)
             {
-                array[i] = provider == null ? default(T) : provider();
+                array[i] = provider == null ? default : provider();
             }
             return array;
         }

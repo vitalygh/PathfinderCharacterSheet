@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditLanguages : ContentPage, ISheetView
     {
         public class LanguageRow
@@ -65,9 +61,9 @@ namespace PathfinderCharacterSheet
                     var language = languages[languageIndex];
                     var row = new LanguageRow()
                     {
-                        frame = CreateFrame(language),
+                        frame = UIHelpers.CreateFrame(language),
                     };
-                    row.frame  = CreateFrame(language);
+                    row.frame  = UIHelpers.CreateFrame(language);
                     row.name = row.frame.Content as Label;
                     row.name.TextDecorations = TextDecorations.Underline;
                     UIHelpers.SetTapHandler(row.frame, (s, e) => Language_Tap(language, languageIndex), 1);
@@ -98,11 +94,6 @@ namespace PathfinderCharacterSheet
                     });
                 }
             }
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
         }
 
         private void EditToView()

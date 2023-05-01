@@ -1,17 +1,13 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 using AlignmentPickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.Alignment>;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditBackground : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
@@ -114,7 +110,7 @@ namespace PathfinderCharacterSheet
             return hasChanges;
         }
 
-        private bool CopyCheckEqual(string from, ref string to)
+        private static bool CopyCheckEqual(string from, ref string to)
         {
             var hasChanged = from != to;
             to = from;

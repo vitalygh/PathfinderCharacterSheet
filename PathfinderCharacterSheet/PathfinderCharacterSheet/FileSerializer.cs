@@ -3,7 +3,6 @@
 //#define VALIDATE_XML
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 
 namespace PathfinderCharacterSheet

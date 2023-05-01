@@ -1,12 +1,8 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 using RoundingTypesPickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.RoundingType>;
 
 namespace PathfinderCharacterSheet
@@ -92,7 +88,7 @@ namespace PathfinderCharacterSheet
             }
             multiplier.RoundingType = currentRoundingType;
 
-            if (multiplier.Limit.Equals(new IntLimit()))
+            if (IntLimit.HasDefaultValue(multiplier.Limit))
                 multiplier.Limit = null;
 
             if (!source.Equals(multiplier))

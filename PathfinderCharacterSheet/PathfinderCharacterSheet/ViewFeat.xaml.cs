@@ -1,21 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.Feat;
 using EditItemType = PathfinderCharacterSheet.EditFeat;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.Feat;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ViewFeat : ContentPage, ISheetView
     {
         private ItemType item = null;
-        private List<ItemType> Items
+        private static List<ItemType> Items
         {
             get
             {

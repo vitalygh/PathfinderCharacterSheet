@@ -1,12 +1,8 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 using IntPickerItem = System.Tuple<string, int>;
 
 namespace PathfinderCharacterSheet
@@ -111,7 +107,7 @@ namespace PathfinderCharacterSheet
             if (sheet == null)
                 return;
             var value = bab.GetValue(sheet);
-            UpdateValue(row.value, value >= 0 ? "+" + value : value.ToString());
+            UIHelpers.UpdateValue(row.value, value >= 0 ? "+" + value : value.ToString());
             UIHelpers.SetTapHandler(row.frame, (s, e) => EditBonus(bab), 1);
         }
 
@@ -131,9 +127,9 @@ namespace PathfinderCharacterSheet
                 Attacks.Children.Add(row.frame, 1, rowIndex);
                 return;
             }
-            var title = CreateLabel("Attack " + (rows.Count + 1) + " Bonus:");
+            var title = UIHelpers.CreateLabel("Attack " + (rows.Count + 1) + " Bonus:");
             var bonus = bab.GetValue(sheet);
-            var frame = CreateFrame(bonus >= 0 ? "+" + bonus : bonus.ToString());
+            var frame = UIHelpers.CreateFrame(bonus >= 0 ? "+" + bonus : bonus.ToString());
             var value = frame.Content as Label;
             value.TextDecorations = TextDecorations.Underline;
             var newRow = new AttackRow()
@@ -170,24 +166,6 @@ namespace PathfinderCharacterSheet
             eivwm.Init(sheet, bab, "Edit Base Attack Bonus", "Base Attack Bonus", false);
             pushedPage = eivwm;
             Navigation.PushAsync(eivwm);
-        }
-
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
-        }
-
-        private void UpdateValue(Label label, string text)
-        {
-            if (label == null)
-                return;
-            if (label.Text != text)
-                label.Text = text;
         }
 
         private void EditToView()

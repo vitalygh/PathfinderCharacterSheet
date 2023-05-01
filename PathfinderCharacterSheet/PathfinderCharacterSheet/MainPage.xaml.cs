@@ -1,11 +1,8 @@
 ﻿//#define DEBUG_DISABLE_UPDATE_WHEN_PAGE_CHANGED
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.Threading.Tasks;
-using Xamarin.Forms;
 using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
+using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace PathfinderCharacterSheet
 {
@@ -36,8 +33,7 @@ namespace PathfinderCharacterSheet
                             title += ": " + tabs.CurrentPage.Title;
                         tabs.Title = title;
                     }
-                    var view = tabs.CurrentPage as ISheetView;
-                    if (view != null)
+                    if (tabs.CurrentPage is ISheetView view)
                         view.UpdateView();
                 });
             };
@@ -130,7 +126,7 @@ namespace PathfinderCharacterSheet
         {
             Characters.IsVisible = false;
             UIMediator.SetSelectedCharacter?.Invoke(sheet);
-            tabs.InitTabs();
+            CharacterSheetTabs.InitTabs();
             var title = sheet.Name;
             if (tabs.CurrentPage != null) 
                 title += ": " + tabs.CurrentPage.Title;

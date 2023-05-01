@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
@@ -20,7 +19,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return string.Empty;
             if ((sides > 0) && (count > 0))
             {
-                roll.Append(count).Append("d").Append(sides);
+                roll.Append(count).Append('d').Append(sides);
                 if (add < 0)
                     roll.Append(" - ").Append(Math.Abs(add));
                 else if (add > 0)
@@ -29,8 +28,8 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             else
                 roll.Append(add);
             if (!string.IsNullOrWhiteSpace(description))
-                roll.Append(" ").Append(description);
-            roll.Insert(0, "(").Append(")");
+                roll.Append(' ').Append(description);
+            roll.Insert(0, '(').Append(')');
             return roll.ToString();
         }
 

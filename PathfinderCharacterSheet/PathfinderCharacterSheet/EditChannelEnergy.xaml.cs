@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditChannelEnergy : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
@@ -38,15 +33,9 @@ namespace PathfinderCharacterSheet
                 return;
             if (channelEnergy == null)
                 return;
-            UpdateText(ChannelsLeft, channelEnergy.left.GetValue(sheet).ToString());
-            UpdateText(ChannelsTotal, channelEnergy.total.GetValue(sheet).ToString());
-            UpdateText(ChannelPoints, channelEnergy.points.AsString(sheet));
-        }
-
-        private void UpdateText(Label label, string text)
-        {
-            if (label.Text != text)
-                label.Text = text;
+            UIHelpers.UpdateValue(ChannelsLeft, channelEnergy.left.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(ChannelsTotal, channelEnergy.total.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(ChannelPoints, channelEnergy.points.AsString(sheet));
         }
 
         private void ChannelsLeft_Tapped(object sender, EventArgs e)

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
@@ -18,7 +17,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 return string.Empty;
             var crit = new StringBuilder();
             if (mint < maxt)
-                crit.Append(mint).Append("-");
+                crit.Append(mint).Append('-');
             crit.Append(maxt);
             crit.Append("/x").Append(mul);
             return crit.ToString();

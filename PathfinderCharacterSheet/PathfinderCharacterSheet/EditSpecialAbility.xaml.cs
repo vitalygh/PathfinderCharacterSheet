@@ -1,12 +1,8 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.SpecialAbility;
 
 namespace PathfinderCharacterSheet
@@ -14,7 +10,7 @@ namespace PathfinderCharacterSheet
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class EditSpecialAbility : ContentPage, ISheetView
     {
-        private List<ItemType> Items
+        private static List<ItemType> Items
         {
             get
             {

@@ -1,14 +1,10 @@
 ﻿//#define EXPAND_SELECTED
 #define EXPAND_WITH_TAP
+using PathfinderCharacterSheet.CharacterSheets.V1;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -70,16 +66,16 @@ namespace PathfinderCharacterSheet
             var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            UpdateValue(PP, sheet.money.platinumPoints.GetValue(sheet).ToString());
-            UpdateValue(GP, sheet.money.goldenPoints.GetValue(sheet).ToString());
-            UpdateValue(SP, sheet.money.silverPoints.GetValue(sheet).ToString());
-            UpdateValue(CP, sheet.money.cuprumPoints.GetValue(sheet).ToString());
-            UpdateValue(LightLoad, sheet.encumbrance.LightLoad(sheet));
-            UpdateValue(MediumLoad, sheet.encumbrance.MediumLoad(sheet));
-            UpdateValue(HeavyLoad, sheet.encumbrance.HeavyLoad(sheet));
-            UpdateValue(LiftOverHead, sheet.encumbrance.LiftOverHead(sheet) + " lbs");
-            UpdateValue(LiftOffGround, sheet.encumbrance.LiftOffGround(sheet) + " lbs");
-            UpdateValue(DragOrPush, sheet.encumbrance.DragOrPush(sheet) + " lbs");
+            UIHelpers.UpdateValue(PP, sheet.money.platinumPoints.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(GP, sheet.money.goldenPoints.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(SP, sheet.money.silverPoints.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(CP, sheet.money.cuprumPoints.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(LightLoad, sheet.encumbrance.LightLoad(sheet));
+            UIHelpers.UpdateValue(MediumLoad, sheet.encumbrance.MediumLoad(sheet));
+            UIHelpers.UpdateValue(HeavyLoad, sheet.encumbrance.HeavyLoad(sheet));
+            UIHelpers.UpdateValue(LiftOverHead, sheet.encumbrance.LiftOverHead(sheet) + " lbs");
+            UIHelpers.UpdateValue(LiftOffGround, sheet.encumbrance.LiftOffGround(sheet) + " lbs");
+            UIHelpers.UpdateValue(DragOrPush, sheet.encumbrance.DragOrPush(sheet) + " lbs");
             var items = sheet.GetAllGearItems();
             var totalWeight = 0;
             foreach (var item in items)
@@ -90,7 +86,7 @@ namespace PathfinderCharacterSheet
             var light = sheet.encumbrance.lightLoad.GetValue(sheet);
             TotalWeight.TextColor = totalWeight >= heavy ? Color.Red : (totalWeight > medium ? Color.Orange : (totalWeight > light ? Color.Yellow : Color.Green));
             Reorder.IsVisible = sheet.gear.Count > 1;
-            UpdateValue(TotalWeight, totalWeight + " lbs");
+            UIHelpers.UpdateValue(TotalWeight, totalWeight + " lbs");
             UpdateGearView();
         }
 
@@ -148,25 +144,7 @@ namespace PathfinderCharacterSheet
                 RemoveGearItemGrid(gearItemGrids[gearItemGrids.Count - 1]);
         }
 
-        private void UpdateValue(Label label, string text)
-        {
-            if (label == null)
-                return;
-            if (label.Text != text)
-                label.Text = text;
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
-        }
-
 #if EXPAND_SELECTED
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
         private void RemoveGearItemGrid(SelectedGearItemGrid gearItemGrid)
         {
             if (gearItemGrid == null)
@@ -252,7 +230,7 @@ namespace PathfinderCharacterSheet
             };
             EventHandler<CheckedChangedEventArgs> selectedHandler = (s, e) => GearItem_CheckedChanged(item, e.Value);
             selectedcb.CheckedChanged += selectedHandler;
-            var nameTitle = CreateLabel("Name: ");
+            var nameTitle = UIHelpers.CreateLabel("Name: ");
             var nameTitleStack = new StackLayout()
             {
                 Orientation = StackOrientation.Horizontal,
@@ -268,7 +246,7 @@ namespace PathfinderCharacterSheet
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
             };
-            var nameValue = CreateFrame(item.name);
+            var nameValue = UIHelpers.CreateFrame(item.name);
             var viewButton = new Button()
             {
                 Text = "View",
@@ -287,23 +265,23 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(nameValueStack, 1, row);
             row += 1;
 
-            var amountTitle = CreateLabel("Amount: ");
-            var amountValue = CreateFrame(item.amount.GetTotal(sheet).ToString());
+            var amountTitle = UIHelpers.CreateLabel("Amount: ");
+            var amountValue = UIHelpers.CreateFrame(item.amount.GetTotal(sheet).ToString());
             grid.Children.Add(amountTitle, 0, row);
             grid.Children.Add(amountValue, 1, row);
             row += 1;
 
-            var weightTitle = CreateLabel("Weight: ");
-            var weightValue = CreateFrame(item.weight.GetTotal(sheet).ToString());
+            var weightTitle = UIHelpers.CreateLabel("Weight: ");
+            var weightValue = UIHelpers.CreateFrame(item.weight.GetTotal(sheet).ToString());
             grid.Children.Add(weightTitle, 0, row);
             grid.Children.Add(weightValue, 1, row);
             row += 1;
 
-            var descriptionTitle = CreateLabel("Description: ");
+            var descriptionTitle = UIHelpers.CreateLabel("Description: ");
             grid.Children.Add(descriptionTitle, 0, 2, row, row + 1);
             row += 1;
 
-            var descriptionValue = CreateFrame(item.description);
+            var descriptionValue = UIHelpers.CreateFrame(item.description);
             grid.Children.Add(descriptionValue, 0, 2, row, row + 1);
             row += 1;
 
@@ -428,7 +406,7 @@ namespace PathfinderCharacterSheet
             UIHelpers.AddTapHandler(grid, (s, e) => GearItem_Tap(selectedcb), 1);
 #endif
 #endif
-            var gearItemNameFrame = CreateFrame(item.AsString(sheet));
+            var gearItemNameFrame = UIHelpers.CreateFrame(item.AsString(sheet));
             var gearItemName = gearItemNameFrame.Content as Label;
             gearItemName.FontAttributes = item.active ? FontAttributes.Bold : FontAttributes.None;
             var viewButton = new Button()
@@ -473,7 +451,7 @@ namespace PathfinderCharacterSheet
             UpdateView();
         }
 
-        public void GearItem_Tap(CheckBox selectedcb)
+        public static void GearItem_Tap(CheckBox selectedcb)
         {
             selectedcb.IsChecked = !selectedcb.IsChecked;
         }

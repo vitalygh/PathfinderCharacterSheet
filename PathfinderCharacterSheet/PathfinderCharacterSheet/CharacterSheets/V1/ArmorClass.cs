@@ -1,8 +1,5 @@
 ﻿#define SAVE_DELTA
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Diagnostics.Contracts;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
@@ -130,7 +127,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return 10 + sizeModifier.GetValue(sheet) + deflectionModifier.GetValue(sheet) + miscModifiers.GetValue(sheet);
         }
 
-        public int GetArmorBonus(CharacterSheet sheet, ArmorType type)
+        public static int GetArmorBonus(CharacterSheet sheet, ArmorType type)
         {
             var ac = 0;
             foreach (var item in sheet.armorClassItems)
@@ -160,7 +157,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             return GetArmorBonus(sheet, ArmorType.Shield);
         }
 
-        private ValueWithIntModifiers GetDexBonusLimit(CharacterSheet sheet)
+        private static ValueWithIntModifiers GetDexBonusLimit(CharacterSheet sheet)
         {
             ValueWithIntModifiers minValue = null;
             var value = 0;

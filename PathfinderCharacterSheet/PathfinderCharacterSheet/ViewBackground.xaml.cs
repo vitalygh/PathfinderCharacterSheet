@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ViewBackground : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
@@ -26,30 +22,22 @@ namespace PathfinderCharacterSheet
             var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet == null)
                 return;
-            UpdateValue(CharacterName, sheet.Name);
-            UpdateValue(Alignment, sheet.Alignment.ToString());
-            UpdateValue(Experience, sheet.experience.GetValue(sheet).ToString());
-            UpdateValue(NextLevel, sheet.nextLevelExperience.GetValue(sheet).ToString());
-            UpdateValue(Level, sheet.LevelAsString);
-            UpdateValue(Deity, sheet.deity);
-            UpdateValue(Homeland, sheet.homeland);
-            UpdateValue(Race, sheet.Race);
-            UpdateValue(Size, sheet.size);
-            UpdateValue(Gender, sheet.gender);
-            UpdateValue(Age, sheet.age);
-            UpdateValue(CharacterHeight, sheet.height);
-            UpdateValue(Weight, sheet.weight);
-            UpdateValue(Hair, sheet.hair);
-            UpdateValue(Eyes, sheet.eyes);
-            UpdateValue(Biography, sheet.biography);
-        }
-
-        private void UpdateValue(Label label, string text)
-        {
-            if (label == null)
-                return;
-            if (label.Text != text)
-                label.Text = text;
+            UIHelpers.UpdateValue(CharacterName, sheet.Name);
+            UIHelpers.UpdateValue(Alignment, sheet.Alignment.ToString());
+            UIHelpers.UpdateValue(Experience, sheet.experience.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(NextLevel, sheet.nextLevelExperience.GetValue(sheet).ToString());
+            UIHelpers.UpdateValue(Level, sheet.LevelAsString);
+            UIHelpers.UpdateValue(Deity, sheet.deity);
+            UIHelpers.UpdateValue(Homeland, sheet.homeland);
+            UIHelpers.UpdateValue(Race, sheet.Race);
+            UIHelpers.UpdateValue(Size, sheet.size);
+            UIHelpers.UpdateValue(Gender, sheet.gender);
+            UIHelpers.UpdateValue(Age, sheet.age);
+            UIHelpers.UpdateValue(CharacterHeight, sheet.height);
+            UIHelpers.UpdateValue(Weight, sheet.weight);
+            UIHelpers.UpdateValue(Hair, sheet.hair);
+            UIHelpers.UpdateValue(Eyes, sheet.eyes);
+            UIHelpers.UpdateValue(Biography, sheet.biography);
         }
 
         private void Background_DoubleTapped(object sender, EventArgs e)

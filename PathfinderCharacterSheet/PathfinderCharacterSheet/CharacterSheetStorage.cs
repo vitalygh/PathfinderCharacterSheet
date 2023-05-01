@@ -1,7 +1,6 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {

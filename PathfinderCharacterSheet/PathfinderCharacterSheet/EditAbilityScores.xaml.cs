@@ -1,16 +1,12 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditAbilityScores : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
@@ -47,14 +43,14 @@ namespace PathfinderCharacterSheet
                     View child = null;
                     if ((i <= 0) || (j <= 0))
                     {
-                        child = CreateLabel(string.Empty, i > 0 ? TextAlignment.Start : TextAlignment.Center);
+                        child = UIHelpers.CreateLabel(string.Empty, i > 0 ? TextAlignment.Start : TextAlignment.Center);
                     }
                     else
                     {
                         //if (j != 1)
                         {
                             var readOnly = j % 2 == 0;
-                            child = CreateFrame(string.Empty);
+                            child = UIHelpers.CreateFrame(string.Empty);
                             ((child as Frame).Content as Label).TextDecorations = readOnly ? TextDecorations.None : TextDecorations.Underline;
                             child.BackgroundColor = readOnly ? Color.LightGray : Color.White;
                             if (!readOnly)
@@ -109,16 +105,6 @@ namespace PathfinderCharacterSheet
             (AbilityScores.Children[2] as Label).Text = "Ability Modifier";
             (AbilityScores.Children[3] as Label).Text = "Temp Adjustment";
             (AbilityScores.Children[4] as Label).Text = "Temp Modifier";
-        }
-
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
         }
 
         /*private void UpdateModifier(int i)

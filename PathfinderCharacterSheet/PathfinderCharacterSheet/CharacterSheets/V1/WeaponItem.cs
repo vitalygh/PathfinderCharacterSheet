@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
@@ -53,14 +52,14 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var c = critical.AsString(sheet);
             if (!string.IsNullOrWhiteSpace(c))
                 weapon.Append(", ").Append(c);
-            var damage = new StringBuilder(Damage(sheet)).Append(" ").Append(DamageBonus(sheet));
+            var damage = new StringBuilder(Damage(sheet)).Append(' ').Append(DamageBonus(sheet));
             if (!string.IsNullOrWhiteSpace(damage.ToString()))
                 weapon.Append(", ").Append(damage);
             var r = range.GetValue(sheet);
             if (r > 0)
             {
                 weapon.Append(", ").Append(Range(sheet));
-                weapon.Append(", ").Append(ammunition.GetValue(sheet).ToString());
+                weapon.Append(", ").Append(ammunition.GetValue(sheet));
             }
             return weapon.ToString();
         }

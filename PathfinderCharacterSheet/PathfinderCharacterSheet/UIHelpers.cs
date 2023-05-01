@@ -1,10 +1,8 @@
 ﻿//#define LONG_TAP_INSTEAD_OF_DOUBLE_TAP
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Xamarin.Forms;
-using System.Reflection;
 using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
+using System.Reflection;
+using Xamarin.Forms;
 
 namespace PathfinderCharacterSheet
 {
@@ -202,8 +200,7 @@ namespace PathfinderCharacterSheet
         {
             if (view == null)
                 return;
-            var grid = view.Parent as Grid;
-            if (grid != null)
+            if (view.Parent is Grid grid)
             {
                 var r = Grid.GetRow(view);
                 var c = Grid.GetColumn(view);
@@ -222,6 +219,31 @@ namespace PathfinderCharacterSheet
                 }
             }
             UpdateParentGrid(view.Parent as View);
+        }
+
+        public static void UpdateValue(Label label, string text)
+        {
+            if (label == null)
+                return;
+            if (label.Text != text)
+                label.Text = text;
+        }
+
+        public static void UpdateValue(CheckBox checkbox, bool value)
+        {
+            if (checkbox == null)
+                return;
+            if (checkbox.IsChecked != value)
+                checkbox.IsChecked = value;
+        }
+
+        public static View AddButton(string text)
+        {
+            var label = CreateLabel(text);
+            var sl = new StackLayout();
+            sl.Children.Add(label);
+            sl.BackgroundColor = Color.LightGray;
+            return sl;
         }
     }
 }

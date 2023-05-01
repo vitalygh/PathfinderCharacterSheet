@@ -1,22 +1,18 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
-using ItemsType = PathfinderCharacterSheet.CharacterSheets.V1.SkillRank;
 using AbilityPickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.Ability>;
+using ItemsType = PathfinderCharacterSheet.CharacterSheets.V1.SkillRank;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditSkill : ContentPage, ISheetView
 	{
         private int itemIndex = -1;
-        private List<ItemsType> Items
+        private static List<ItemsType> Items
         {
             get
             {

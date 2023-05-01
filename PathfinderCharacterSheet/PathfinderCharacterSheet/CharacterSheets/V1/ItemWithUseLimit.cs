@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
@@ -19,13 +18,13 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             if (hasUseLimit)
             {
                 if (!string.IsNullOrWhiteSpace(text.ToString()))
-                    text.Append(" ");
+                    text.Append(' ');
                 var ul = useLimit.GetValue(sheet);
-                text.Append("[").Append(ul);
+                text.Append('[').Append(ul);
                 var dul = dailyUseLimit.GetValue(sheet);
                 if (dul > 0)
                     text.Append(" / ").Append(dul);
-                text.Append("]");
+                text.Append(']');
             }
 
             return text.ToString();

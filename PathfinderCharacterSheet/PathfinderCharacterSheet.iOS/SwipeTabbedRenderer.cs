@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Foundation;
+﻿using PathfinderCharacterSheet.iOS;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using PathfinderCharacterSheet.iOS;
 
 [assembly: ExportRenderer(typeof(TabbedPage), typeof(SwipeTabbedRenderer))]
 namespace PathfinderCharacterSheet.iOS

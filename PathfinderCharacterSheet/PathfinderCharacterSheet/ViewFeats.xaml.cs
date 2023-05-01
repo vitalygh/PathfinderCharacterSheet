@@ -1,19 +1,15 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
-using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.Feat;
 using EditItemType = PathfinderCharacterSheet.EditFeat;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.Feat;
 using ViewItemType = PathfinderCharacterSheet.ViewFeat;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ViewFeats : ContentPage, ISheetView
     {
         private Page pushedPage = null;

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using System.Windows.Input;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ViewAbilities : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
@@ -33,11 +27,11 @@ namespace PathfinderCharacterSheet
                         View child = null;
                         if ((i <= 0) || (j <= 0))
                         {
-                            child = CreateLabel(string.Empty, (j == 0) ? TextAlignment.Start : TextAlignment.Center);
+                            child = UIHelpers.CreateLabel(string.Empty, (j == 0) ? TextAlignment.Start : TextAlignment.Center);
                         }
                         else
                         {
-                            child = CreateFrame(string.Empty);
+                            child = UIHelpers.CreateFrame(string.Empty);
                         }
                         AbilityScores.Children.Add(child, j, i);
                     }
@@ -145,7 +139,7 @@ namespace PathfinderCharacterSheet
             {
                 var bonus = sheet.GetBaseAttackBonus(i);
                 //var b = bonus > 0 ? "+" + bonus : bonus.ToString();
-                UpdateValue((BaseAttackBonus.Children[i] as Frame).Content as Label, bonus.ToString());
+                UIHelpers.UpdateValue((BaseAttackBonus.Children[i] as Frame).Content as Label, bonus.ToString());
             }
             var create = colsCount < attacksCount;
             var left = create ? attacksCount - colsCount : colsCount - attacksCount;
@@ -155,7 +149,7 @@ namespace PathfinderCharacterSheet
                 {
                     var bonus = sheet.GetBaseAttackBonus(i + update);
                     //var b = bonus > 0 ? "+" + bonus : bonus.ToString();
-                    BaseAttackBonus.Children.Add(CreateFrame(bonus.ToString()));
+                    BaseAttackBonus.Children.Add(UIHelpers.CreateFrame(bonus.ToString()));
                 }
                 else
                     BaseAttackBonus.Children.RemoveAt(update);
@@ -175,24 +169,6 @@ namespace PathfinderCharacterSheet
             SwimSpeed.Text = sheet.speed.GetSwimSpeed(sheet).ToString() + " ft";
             ClimbSpeed.Text = sheet.speed.GetClimbSpeed(sheet).ToString() + " ft";
             BurrowSpeed.Text = sheet.speed.burrowSpeed.GetValue(sheet).ToString() + " ft";
-        }
-
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
-        }
-
-        private void UpdateValue(Label label, string text)
-        {
-            if (label == null)
-                return;
-            if (label.Text != text)
-                label.Text = text;
         }
 
         private void AbilityScores_DoubleTapped(object sender, EventArgs e)

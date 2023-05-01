@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 
-namespace PathfinderCharacterSheet.CharacterSheets.V1 
+namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class GearItem: ItemWithUseLimit, IEquatable<GearItem>
     {
@@ -16,22 +15,22 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             var text = new StringBuilder();
             var count = amount.GetValue(sheet);
             if (count > 1)
-                text.Append("(").Append(count).Append(")");
+                text.Append('(').Append(count).Append(')');
 
             if (!string.IsNullOrWhiteSpace(name))
-                text.Append(" ");
+                text.Append(' ');
             text.Append(name);
 
             if (hasUseLimit)
             {
                 if (!string.IsNullOrWhiteSpace(text.ToString()))
-                    text.Append(" ");
+                    text.Append(' ');
                 var ul = useLimit.GetValue(sheet);
-                text.Append("[").Append(ul);
+                text.Append('[').Append(ul);
                 var dul = dailyUseLimit.GetValue(sheet);
                 if (dul > 0)
                     text.Append(" / ").Append(dul);
-                text.Append("]");
+                text.Append(']');
             }
 
             return text.ToString();

@@ -1,24 +1,20 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
-using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.ArmorClassItem;
 using ArmorTypePickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.ArmorType>;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.ArmorClassItem;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditArmor : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
         private ItemType source = null;
         private ItemType item = null;
-        private List<ItemType> Items
+        private static List<ItemType> Items
         {
             get
             {

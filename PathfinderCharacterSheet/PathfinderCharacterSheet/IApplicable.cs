@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PathfinderCharacterSheet
+﻿namespace PathfinderCharacterSheet
 {
     public interface IApplicable<T>
     {

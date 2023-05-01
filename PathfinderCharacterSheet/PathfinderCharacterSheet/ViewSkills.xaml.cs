@@ -1,13 +1,9 @@
 ﻿//#define USE_GRID
+using PathfinderCharacterSheet.CharacterSheets.V1;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -76,10 +72,10 @@ namespace PathfinderCharacterSheet
                 var skillIndex = i;
                 var row = skillRows[i];
                 var skill = sheet.skills[i];
-                UpdateValue(row.classSkill, skill.classSkill);
-                UpdateValue(row.name, skill.Name);
+                UIHelpers.UpdateValue(row.classSkill, skill.classSkill);
+                UIHelpers.UpdateValue(row.name, skill.Name);
                 row.name.TextColor = (skill.trainedOnly && (skill.rank.GetValue(sheet) <= 0)) ? Color.Red : Color.Black;
-                UpdateValue(row.total, skill.GetValue(sheet).ToString());
+                UIHelpers.UpdateValue(row.total, skill.GetValue(sheet).ToString());
                 void handler(object s, EventArgs e) => Skill_DoubleTap(skill, skillIndex);
                 UIHelpers.SetTapHandler(row.nameFrame, handler, 2);
                 UIHelpers.SetTapHandler(row.totalFrame, handler, 2);
@@ -106,12 +102,12 @@ namespace PathfinderCharacterSheet
                             Orientation = StackOrientation.Horizontal,
                         },
 #endif
-                        nameFrame = CreateFrame(skill.Name)
+                        nameFrame = UIHelpers.CreateFrame(skill.Name)
                     };
                     skillRow.nameFrame.HorizontalOptions = LayoutOptions.FillAndExpand;
                     skillRow.name = skillRow.nameFrame.Content as Label;
                     skillRow.name.TextColor = (skill.trainedOnly && (skill.rank.GetValue(sheet) <= 0)) ? Color.Red : Color.Black;
-                    skillRow.totalFrame = CreateFrame(skill.GetValue(sheet).ToString());
+                    skillRow.totalFrame = UIHelpers.CreateFrame(skill.GetValue(sheet).ToString());
                     skillRow.totalFrame.HorizontalOptions = LayoutOptions.End;
                     skillRow.totalFrame.WidthRequest = 40;
                     skillRow.total = skillRow.totalFrame.Content as Label;
@@ -170,27 +166,6 @@ namespace PathfinderCharacterSheet
             else
                 SkillRanksLeft.TextColor = Color.Black;
             Languages.Text = sheet.Languages;
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
-        }
-
-        private void UpdateValue(CheckBox checkbox, bool value)
-        {
-            if (checkbox == null)
-                return;
-            if (checkbox.IsChecked != value)
-                checkbox.IsChecked = value;
-        }
-
-        private void UpdateValue(Label label, string text)
-        {
-            if (label == null)
-                return;
-            if (label.Text != text)
-                label.Text = text;
         }
 
         public void Skill_DoubleTap(SkillRank skill = null, int index = -1)

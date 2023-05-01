@@ -1,8 +1,8 @@
 ﻿#define SHOW_ERROR_MESSAGES
 #define SHOW_ERROR_DETAILS
+using PathfinderCharacterSheet.CharacterSheets.V1;
 using System;
 using System.Collections.Generic;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {

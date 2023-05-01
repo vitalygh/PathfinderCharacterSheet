@@ -1,13 +1,9 @@
 ﻿#define USE_GRID
+using PathfinderCharacterSheet.CharacterSheets.V1;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -76,7 +72,7 @@ namespace PathfinderCharacterSheet
             };
 #endif
             var controls = new SpellLevelControls();
-            var label = CreateLabel("Spells Known", TextAlignment.Center);
+            var label = UIHelpers.CreateLabel("Spells Known", TextAlignment.Center);
             controls.spellsKnown = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -85,7 +81,7 @@ namespace PathfinderCharacterSheet
             horzLayout.Children.Add(label);
 #endif
 
-            label = CreateLabel("Spell Save DC", TextAlignment.Center);
+            label = UIHelpers.CreateLabel("Spell Save DC", TextAlignment.Center);
             controls.spellSaveDC = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -94,7 +90,7 @@ namespace PathfinderCharacterSheet
             horzLayout.Children.Add(label);
 #endif
 
-            label = CreateLabel("Level", TextAlignment.Center);
+            label = UIHelpers.CreateLabel("Level", TextAlignment.Center);
             controls.level = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -103,7 +99,7 @@ namespace PathfinderCharacterSheet
             horzLayout.Children.Add(label);
 #endif
 
-            label = CreateLabel("Spells Per Day", TextAlignment.Center);
+            label = UIHelpers.CreateLabel("Spells Per Day", TextAlignment.Center);
             controls.spellsPerDay = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -112,7 +108,7 @@ namespace PathfinderCharacterSheet
             horzLayout.Children.Add(label);
 #endif
 
-            label = CreateLabel("Bonus Spells", TextAlignment.Center);
+            label = UIHelpers.CreateLabel("Bonus Spells", TextAlignment.Center);
             controls.bonusSpells = label;
 #if USE_GRID
             grid.Children.Add(label, column, row);
@@ -139,7 +135,7 @@ namespace PathfinderCharacterSheet
                 };
 #endif
                 controls = new SpellLevelControls();
-                var frame = CreateFrame(string.Empty);
+                var frame = UIHelpers.CreateFrame(string.Empty);
                 controls.spellsKnown = frame.Content as Label;
 #if USE_GRID
                 grid.Children.Add(frame, column, row);
@@ -149,7 +145,7 @@ namespace PathfinderCharacterSheet
 #endif
                 UIHelpers.AddTapHandler(frame, (s, e) => SpellsKnown_DoubleTap(level), 2);
 
-                frame = CreateFrame(string.Empty);
+                frame = UIHelpers.CreateFrame(string.Empty);
                 controls.spellSaveDC = frame.Content as Label;
 #if USE_GRID
                 grid.Children.Add(frame, column, row);
@@ -159,7 +155,7 @@ namespace PathfinderCharacterSheet
 #endif
                 UIHelpers.AddTapHandler(frame, (s, e) => SpellSaveDC_DoubleTap(level), 2);
 
-                frame = CreateFrame(level.ToString());
+                frame = UIHelpers.CreateFrame(level.ToString());
                 frame.BackgroundColor = Color.LightGray;
                 controls.level = frame.Content as Label;
 #if USE_GRID
@@ -169,7 +165,7 @@ namespace PathfinderCharacterSheet
                 horzLayout.Children.Add(frame);
 #endif
 
-                frame = CreateFrame(string.Empty);
+                frame = UIHelpers.CreateFrame(string.Empty);
                 controls.spellsPerDay = frame.Content as Label;
 #if USE_GRID
                 grid.Children.Add(frame, column, row);
@@ -179,7 +175,7 @@ namespace PathfinderCharacterSheet
 #endif
                 UIHelpers.AddTapHandler(frame, (s, e) => SpellsPerDay_DoubleTap(level), 2);
 
-                frame = CreateFrame(string.Empty);
+                frame = UIHelpers.CreateFrame(string.Empty);
                 controls.bonusSpells = frame.Content as Label;
                 if (i == 0)
                 {
@@ -275,22 +271,6 @@ namespace PathfinderCharacterSheet
             Navigation.PushAsync(eivwm);
         }
 
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
-        }
-
-        private void UpdateText(Label label, string text)
-        {
-            if (label.Text != text)
-                label.Text = text;
-        }
-
         public void UpdateView()
         {
             pushedPage = null;
@@ -309,15 +289,15 @@ namespace PathfinderCharacterSheet
                     hasChanges = true;
                 }
                 var spellsKnown = spells.spellsKnown.GetValue(sheet).ToString();
-                UpdateText(level.spellsKnown, spellsKnown);
+                UIHelpers.UpdateValue(level.spellsKnown, spellsKnown);
                 var spellSaveDC = spells.spellSaveDC.GetValue(sheet).ToString();
-                UpdateText(level.spellSaveDC, spellSaveDC);
+                UIHelpers.UpdateValue(level.spellSaveDC, spellSaveDC);
                 var spellsPerDay = spells.spellsPerDay.GetValue(sheet).ToString();
-                UpdateText(level.spellsPerDay, spellsPerDay);
+                UIHelpers.UpdateValue(level.spellsPerDay, spellsPerDay);
                 if (i > 0)
                 {
                     var bonusSpells = spells.bonusSpells.GetValue(sheet).ToString();
-                    UpdateText(level.bonusSpells, bonusSpells);
+                    UIHelpers.UpdateValue(level.bonusSpells, bonusSpells);
                 }
             }
             if (hasChanges)
@@ -327,10 +307,10 @@ namespace PathfinderCharacterSheet
             if (!string.IsNullOrWhiteSpace(points))
                 channels += " " + points;
             channels += ":";
-            UpdateText(ChannelsTitle, channels);
+            UIHelpers.UpdateValue(ChannelsTitle, channels);
             var left = sheet.channelEnergy.left.GetValue(sheet);
             var total = sheet.channelEnergy.total.GetValue(sheet);
-            UpdateText(Channels, left + " / " + total);
+            UIHelpers.UpdateValue(Channels, left + " / " + total);
         }
 
         private void Channels_DoubleTapped(object sender, EventArgs e)

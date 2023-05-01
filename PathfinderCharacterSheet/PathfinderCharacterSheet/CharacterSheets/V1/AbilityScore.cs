@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
@@ -16,7 +14,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             return CalcModifier(score.GetValue(sheet), tempAdjustment.GetValue(sheet));
         }
-        private int CalcModifier(int score, int tempAdjustment)
+        private static int CalcModifier(int score, int tempAdjustment)
         {
             return (score + tempAdjustment) / 2 - 5;
         }

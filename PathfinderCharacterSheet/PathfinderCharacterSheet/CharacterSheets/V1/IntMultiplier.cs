@@ -1,12 +1,13 @@
 ﻿#define SAVE_DELTA
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntMultiplier: IApplicable<int>, IEquatable<IntMultiplier>
     {
+        private static readonly IntMultiplier Default = new IntMultiplier();
+
         public const int DefaultAdditionalBefore = 0;
         public string additionalBefore
         {
@@ -71,12 +72,17 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             get =>
 #if SAVE_DELTA
-                Limit == new IntLimit() ? null :
+                IntLimit.HasDefaultValue(Limit) ? null :
 #endif
                 Limit;
             set => Limit = value;
         }
         internal IntLimit Limit { get; set; } = null;
+
+        public static bool HasDefaultValue(IntMultiplier other)
+        {
+            return Default.Equals(other);
+        }
 
         public int Apply(int value)
         {
@@ -194,12 +200,12 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     text.Append(" + ").Append(AdditionalBefore);
                 else
                     text.Append(" - ").Append(Math.Abs(AdditionalBefore));
-                text.Insert(0, "(").Append(")");
+                text.Insert(0, '(').Append(')');
             }
             var addBrackets = false;
             if (Multiplier != 1)
             {
-                text.Insert(0, " * ").Insert(0, Multiplier.ToString());
+                text.Insert(0, " * ").Insert(0, Multiplier);
                 addBrackets = true;
             }
             if ((Divider != 1) && (Divider != 0))
@@ -216,7 +222,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 addBrackets = true;
             }
             if (addBrackets)
-                text.Insert(0, "(").Append(")");
+                text.Insert(0, '(').Append(')');
             if (Limit != null)
                 text.Append(Limit.AsString());
             return text.ToString();

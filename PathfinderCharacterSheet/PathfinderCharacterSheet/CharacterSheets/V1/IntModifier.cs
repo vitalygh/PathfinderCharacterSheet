@@ -1,6 +1,5 @@
 ﻿#define SAVE_DELTA
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
@@ -23,7 +22,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             get =>
 #if SAVE_DELTA
-                AbilityMultiplier == new IntMultiplier() ? null :
+                IntMultiplier.HasDefaultValue(AbilityMultiplier)? null :
 #endif
                 AbilityMultiplier;
             set => AbilityMultiplier = value;
@@ -71,7 +70,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             get =>
 #if SAVE_DELTA
-                LevelMultiplier == new IntMultiplier() ? null :
+                IntMultiplier.HasDefaultValue(LevelMultiplier) ? null :
 #endif
                 LevelMultiplier;
             set => LevelMultiplier = value;
@@ -149,7 +148,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     ab = AbilityMultiplier.AsString(ab);
                 text.Append(ab);
                 if (value != 0)
-                    text.Insert(0, " + ").Insert(0, value).Insert(0, "(").Append(")");
+                    text.Insert(0, " + ").Insert(0, value).Insert(0, '(').Append(')');
             }
             if (MultiplyToLevel)
             {
@@ -167,7 +166,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                 if (string.IsNullOrWhiteSpace(text.ToString()))
                     text.Append(name);
                 else
-                    text.Insert(0, " (").Insert(0, name).Append(")");
+                    text.Insert(0, " (").Insert(0, name).Append(')');
             if (SourceItemUID != CharacterSheet.InvalidUID)
             {
                 var item = sheet.GetItemByUID(SourceItemUID);

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
-using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.DiceRoll;
 using EditItemType = PathfinderCharacterSheet.EditDiceRoll;
+using ItemType = PathfinderCharacterSheet.CharacterSheets.V1.DiceRoll;
 
 namespace PathfinderCharacterSheet
 {

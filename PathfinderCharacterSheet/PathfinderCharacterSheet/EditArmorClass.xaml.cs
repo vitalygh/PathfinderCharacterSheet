@@ -1,17 +1,13 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 using DexterityModifierSourcePickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.DexterityModifierSource>;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditArmorClass : ContentPage, ISheetView
 	{
         private Page pushedPage = null;

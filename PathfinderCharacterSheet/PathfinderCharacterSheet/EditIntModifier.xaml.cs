@@ -1,17 +1,13 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 using AbilityPickerItem = System.Tuple<string, PathfinderCharacterSheet.CharacterSheets.V1.Ability>;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class EditIntModifier : ContentPage, ISheetView
 	{
         private Page pushedPage = null;
@@ -99,8 +95,8 @@ namespace PathfinderCharacterSheet
                 new ColumnDefinition() { Width = GridLength.Star, },
             };
 
-            TotalTitle = CreateLabel("Total:");
-            var totalFrame = CreateFrame(string.Empty);
+            TotalTitle = UIHelpers.CreateLabel("Total:");
+            var totalFrame = UIHelpers.CreateFrame(string.Empty);
             totalFrame.BackgroundColor = Color.LightGray;
             TotalValue = totalFrame.Content as Label;
 
@@ -109,7 +105,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(totalFrame, 1, row);
             row += 1;
 
-            IsActiveTitle = CreateLabel("Active:");
+            IsActiveTitle = UIHelpers.CreateLabel("Active:");
             IsActive = new CheckBox()
             {
                 IsChecked = true,
@@ -120,7 +116,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(IsActive, 1, row);
             row += 1;
 
-            ValueTitle = CreateLabel("Value:");
+            ValueTitle = UIHelpers.CreateLabel("Value:");
             ModifierValue = new Entry()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -141,7 +137,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(ModifierValueFrame, 1, row);
             row += 1;
 
-            NameTitle = CreateLabel("Name:");
+            NameTitle = UIHelpers.CreateLabel("Name:");
             ModifierName = new Entry()
             {
                 HorizontalTextAlignment = TextAlignment.Center,
@@ -165,7 +161,7 @@ namespace PathfinderCharacterSheet
 
             if (allowUseAbilities)
             {
-                AbilityTitle = CreateLabel("Ability:");
+                AbilityTitle = UIHelpers.CreateLabel("Ability:");
                 AbilityPicker = new Picker()
                 {
                     TextColor = Color.Black,
@@ -204,8 +200,8 @@ namespace PathfinderCharacterSheet
                 grid.Children.Add(abilityFrame, 1, row);
                 row += 1;
 
-                AbilityMultiplierTitle = CreateLabel("Ability Multiplier:");
-                AbilityMultiplierFrame = CreateFrame(string.Empty);
+                AbilityMultiplierTitle = UIHelpers.CreateLabel("Ability Multiplier:");
+                AbilityMultiplierFrame = UIHelpers.CreateFrame(string.Empty);
                 AbilityMultiplier = AbilityMultiplierFrame.Content as Label;
                 UIHelpers.SetTapHandler(AbilityMultiplierFrame, (s, e) =>
                 {
@@ -219,15 +215,15 @@ namespace PathfinderCharacterSheet
                 row += 1;
             }
 
-            LinkedItemTitle = CreateLabel("Linked To Item:");
-            LinkedItemFrame = CreateFrame(string.Empty);
+            LinkedItemTitle = UIHelpers.CreateLabel("Linked To Item:");
+            LinkedItemFrame = UIHelpers.CreateFrame(string.Empty);
             LinkedItem = LinkedItemFrame.Content as Label;
 
             grid.Children.Add(LinkedItemTitle, 0, row);
             grid.Children.Add(LinkedItemFrame, 1, row);
             row += 1;
 
-            ItemMustBeActiveTitle = CreateLabel("Item Must Be Active:");
+            ItemMustBeActiveTitle = UIHelpers.CreateLabel("Item Must Be Active:");
             ItemMustBeActive = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -242,16 +238,16 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(ItemMustBeActive, 1, row);
             row += 1;
 
-            ClassNameTitle = CreateLabel("Level Of Class:");
-            ClassNameFrame = CreateFrame(string.Empty);
+            ClassNameTitle = UIHelpers.CreateLabel("Level Of Class:");
+            ClassNameFrame = UIHelpers.CreateFrame(string.Empty);
             ClassName = ClassNameFrame.Content as Label;
 
             grid.Children.Add(ClassNameTitle, 0, row);
             grid.Children.Add(ClassNameFrame, 1, row);
             row += 1;
 
-            LevelMultiplierTitle = CreateLabel("Level Multiplier:");
-            LevelMultiplierFrame = CreateFrame(string.Empty);
+            LevelMultiplierTitle = UIHelpers.CreateLabel("Level Multiplier:");
+            LevelMultiplierFrame = UIHelpers.CreateFrame(string.Empty);
             LevelMultiplier = LevelMultiplierFrame.Content as Label;
             UIHelpers.SetTapHandler(LevelMultiplierFrame, (s, e) =>
             {
@@ -264,7 +260,7 @@ namespace PathfinderCharacterSheet
             grid.Children.Add(LevelMultiplierFrame, 1, row);
             row += 1;
 
-            AutoNamingTitle = CreateLabel("Auto Naming:");
+            AutoNamingTitle = UIHelpers.CreateLabel("Auto Naming:");
             AutoNaming = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -312,16 +308,6 @@ namespace PathfinderCharacterSheet
             buttons.Children.Add(Delete);
             Delete.Clicked += Delete_Clicked;
             Root.Children.Add(buttons);
-        }
-
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
         }
 
         public void Init(CharacterSheet sheet, IntModifiersList modifiersList, IntModifier modifier, bool allowUseAbilities = true)
@@ -493,9 +479,9 @@ namespace PathfinderCharacterSheet
             */
             modifier.AutoNaming = AutoNaming.IsChecked;
 
-            if (modifier.AbilityMultiplier.Equals(new IntMultiplier()))
+            if (IntMultiplier.HasDefaultValue(modifier.AbilityMultiplier))
                 modifier.AbilityMultiplier = null;
-            if (modifier.LevelMultiplier.Equals(new IntMultiplier()))
+            if (IntMultiplier.HasDefaultValue(modifier.LevelMultiplier))
                 modifier.LevelMultiplier = null;
 
             if ((source != null) && !source.Equals(modifier))

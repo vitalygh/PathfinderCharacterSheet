@@ -1,12 +1,12 @@
 ﻿#define SAVE_DELTA
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace PathfinderCharacterSheet.CharacterSheets.V1
 {
     public class IntLimit: IApplicable<int>, IEquatable<IntLimit>, IPrototype<IntLimit>
     {
+        private static readonly IntLimit Default = new IntLimit();
         public const bool DefaultMinLimit = false;
         public string minLimit
         {
@@ -54,6 +54,11 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
             set => MaxValue = int.TryParse(value, out int outValue) ? outValue : DefaultMaxValue;
         }
         internal int MaxValue { get; set; } = DefaultMaxValue;
+
+        public static bool HasDefaultValue(IntLimit other)
+        {
+            return Default.Equals(other);
+        }
 
         public int Apply(int value)
         {
@@ -142,13 +147,13 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
         {
             if (!MinLimit && !MaxLimit)
                 return string.Empty;
-            var limit = new StringBuilder("[");
+            var limit = new StringBuilder('[');
             if (MinLimit)
                 limit.Append(MinValue);
-            limit.Append(";");
+            limit.Append(';');
             if (MaxLimit)
                 limit.Append(MaxValue);
-            limit.Append("]");
+            limit.Append(']');
             return limit.ToString();
         }
     }

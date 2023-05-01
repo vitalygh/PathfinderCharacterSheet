@@ -85,7 +85,7 @@ namespace PathfinderCharacterSheet.CharacterSheets.V1
                     level.Append(", ");
                 var lvl = loc.GetValue(sheet);
                 level.Append(loc?.ClassName);
-                level.Append(" (").Append(lvl).Append(")");
+                level.Append(" (").Append(lvl).Append(')');
                 totalLevel += lvl;
             }
             if (level.Length > 0)

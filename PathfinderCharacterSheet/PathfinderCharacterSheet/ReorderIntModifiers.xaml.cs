@@ -1,12 +1,8 @@
-﻿using System;
+﻿using PathfinderCharacterSheet.CharacterSheets.V1;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using PathfinderCharacterSheet.CharacterSheets.V1;
 
 namespace PathfinderCharacterSheet
 {
@@ -60,22 +56,13 @@ namespace PathfinderCharacterSheet
             UIHelpers.AddTapHandler(controls.down, () => MoveItem(item, 1, false), 2);
         }
 
-        private View AddButton(string text)
-        {
-            var label = UIHelpers.CreateLabel(text);
-            var sl = new StackLayout();
-            sl.Children.Add(label);
-            sl.BackgroundColor = Color.LightGray;
-            return sl;
-        }
-
         private void AddItem(IntModifier item)
         {
             if (item == null)
                 return;
             var sl = new StackLayout() { Orientation = StackOrientation.Horizontal, };
-            var up = AddButton("Up");
-            var down = AddButton("Down");
+            var up = UIHelpers.AddButton("Up");
+            var down = UIHelpers.AddButton("Down");
             var frame = UIHelpers.CreateFrame(string.Empty);
             sl.Children.Add(up);
             sl.Children.Add(frame);

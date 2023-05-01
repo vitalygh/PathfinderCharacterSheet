@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -10,10 +7,10 @@ using ItemsType = PathfinderCharacterSheet.CharacterSheets.V1.GearItem;
 
 namespace PathfinderCharacterSheet
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ViewGearItem : ContentPage, ISheetView
     {
-        private List<ItemsType> Items
+        private static List<ItemsType> Items
         {
             get
             {
@@ -45,15 +42,15 @@ namespace PathfinderCharacterSheet
 
             GearItemGrid.Children.Clear();
 
-            NameTitle = CreateLabel("Name:");
-            var nameFrame = CreateFrame(item.name);
+            NameTitle = UIHelpers.CreateLabel("Name:");
+            var nameFrame = UIHelpers.CreateFrame(item.name);
 
             var row = 0;
             GearItemGrid.Children.Add(NameTitle, 0, row);
             GearItemGrid.Children.Add(nameFrame, 1, row);
             row += 1;
 
-            ActiveTitle = CreateLabel("Active:");
+            ActiveTitle = UIHelpers.CreateLabel("Active:");
             var activecb = new CheckBox()
             {
                 HorizontalOptions = LayoutOptions.Center,
@@ -69,16 +66,16 @@ namespace PathfinderCharacterSheet
             var sheet = UIMediator.GetSelectedCharacter?.Invoke();
             if (sheet != null)
             {
-                AmountTitle = CreateLabel("Amount:");
-                var amountFrame = CreateFrame(item.amount.GetValue(sheet).ToString());
+                AmountTitle = UIHelpers.CreateLabel("Amount:");
+                var amountFrame = UIHelpers.CreateFrame(item.amount.GetValue(sheet).ToString());
                 UIHelpers.AddTapHandler(amountFrame, Amount_DoubleTapped, 2);
 
                 GearItemGrid.Children.Add(AmountTitle, 0, row);
                 GearItemGrid.Children.Add(amountFrame, 1, row);
                 row += 1;
 
-                WeightTitle = CreateLabel("Weight:");
-                var weightFrame = CreateFrame(item.weight.GetValue(sheet).ToString());
+                WeightTitle = UIHelpers.CreateLabel("Weight:");
+                var weightFrame = UIHelpers.CreateFrame(item.weight.GetValue(sheet).ToString());
                 UIHelpers.AddTapHandler(weightFrame, Weight_DoubleTapped, 2);
 
                 GearItemGrid.Children.Add(WeightTitle, 0, row);
@@ -88,8 +85,8 @@ namespace PathfinderCharacterSheet
                 if (item.hasUseLimit)
                 {
                     var ul = item.useLimit.GetValue(sheet);
-                    LeftTitle = CreateLabel("Use Limit:");
-                    var leftFrame = CreateFrame(ul.ToString());
+                    LeftTitle = UIHelpers.CreateLabel("Use Limit:");
+                    var leftFrame = UIHelpers.CreateFrame(ul.ToString());
 
                     GearItemGrid.Children.Add(LeftTitle, 0, row);
                     GearItemGrid.Children.Add(leftFrame, 1, row);
@@ -100,8 +97,8 @@ namespace PathfinderCharacterSheet
                     var dul = item.dailyUseLimit.GetValue(sheet);
                     if (dul > 0)
                     {
-                        TotalTitle = CreateLabel("Daily Use Limit:");
-                        var totalFrame = CreateFrame(dul.ToString());
+                        TotalTitle = UIHelpers.CreateLabel("Daily Use Limit:");
+                        var totalFrame = UIHelpers.CreateFrame(dul.ToString());
 
                         GearItemGrid.Children.Add(TotalTitle, 0, row);
                         GearItemGrid.Children.Add(totalFrame, 1, row);
@@ -112,8 +109,8 @@ namespace PathfinderCharacterSheet
                 }
             }
 
-            DescriptionTitle = CreateLabel("Description:");
-            var descriptionFrame = CreateFrame(item.description);
+            DescriptionTitle = UIHelpers.CreateLabel("Description:");
+            var descriptionFrame = UIHelpers.CreateFrame(item.description);
 
             GearItemGrid.Children.Add(DescriptionTitle, 0, 2, row, row + 1);
             row += 1;
@@ -150,16 +147,6 @@ namespace PathfinderCharacterSheet
                 return;
             }
             InitControls();
-        }
-
-        private Label CreateLabel(string text, TextAlignment horz = TextAlignment.Start)
-        {
-            return UIHelpers.CreateLabel(text, horz);
-        }
-
-        private Frame CreateFrame(string text)
-        {
-            return UIHelpers.CreateFrame(text);
         }
 
         private void Amount_DoubleTapped(object sender, EventArgs e)
