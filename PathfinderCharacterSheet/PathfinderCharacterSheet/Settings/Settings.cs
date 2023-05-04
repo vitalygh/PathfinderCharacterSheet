@@ -19,7 +19,7 @@ namespace PathfinderCharacterSheet
         internal bool IsChanged { get; private set; }
 
         private static readonly string serializationName = "settings";
-        public static readonly ISerializer<Settings> Serializer = new XmlFileSerializer<Settings>("settings");
+        public static readonly ISerializer<Settings> Serializer = new FileSerializer<Settings>("settings", new XmlSerialization<Settings>());
         private static string serializationPath = null;
 
         public static Settings Load()

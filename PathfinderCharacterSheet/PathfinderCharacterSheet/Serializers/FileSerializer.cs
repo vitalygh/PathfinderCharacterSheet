@@ -7,7 +7,7 @@ using System.IO;
 
 namespace PathfinderCharacterSheet
 {
-    public abstract class FileSerializer<T>: ISerializer<T> where T: class
+    public class FileSerializer<T>: ISerializer<T> where T: class
     {
         private readonly string rootPath = null;
 
@@ -27,14 +27,13 @@ namespace PathfinderCharacterSheet
             }
         }
 
-        public FileSerializer(string path)
+        public FileSerializer(string path, ISerialization<T> serialization)
         {
             rootPath = path;
+            this.serialization = serialization;
         }
 
-        protected abstract string Extension { get; }
-        protected abstract T Deserialize(StreamReader stream);
-        protected abstract void Serialize(T data, MemoryStream stream);
+        private readonly ISerialization<T> serialization = null;
 
         public bool SaveBackups { get; set; } = false;
         public bool LoadFromBackups { get; set; } = false;
@@ -54,10 +53,10 @@ namespace PathfinderCharacterSheet
             var path = RootPath;
             if (!Directory.Exists(path))
                 return null;
-            var files = Directory.GetFiles(path, "*." + Extension, SearchOption.TopDirectoryOnly);
+            var files = Directory.GetFiles(path, "*." + serialization?.Format, SearchOption.TopDirectoryOnly);
             foreach (var file in files)
             {
-                if (file.EndsWith("_backup." + Extension))
+                if (file.EndsWith("_backup." + serialization?.Format))
                     continue;
                 var data = LoadFromPath(file);
                 if (data != null)
@@ -66,14 +65,11 @@ namespace PathfinderCharacterSheet
 #if VALIDATE_XML
                     using (var memoryStream = new MemoryStream())
                     {
-                        Serialize(data, memoryStream);
-                        using (var streamReader = new StreamReader(memoryStream))
-                        {
-                            var fileText = File.ReadAllText(file);
-                            var streamText = streamReader.ReadToEnd();
-                            if (fileText != streamText)
-                                File.WriteAllText(file + ".validate", streamText);
-                        }
+                        serialization?.Serialize(data, memoryStream);
+                        var fileData = File.ReadAllBytes(file);
+                        var streamData = memoryStream.ToArray();
+                        if (!System.Linq.Enumerable.SequenceEqual(fileData, streamData))
+                            File.WriteAllBytes(file + ".validate", streamData);
                     }
 #endif
                     loaded.Add(data, file);
@@ -114,9 +110,9 @@ namespace PathfinderCharacterSheet
                     OnLoadingFailed?.Invoke(path, new FileNotFoundException("File \"" + path + "\" doesn't exist!"));
                     return null;
                 }
-                using (var stream = new StreamReader(path))
+                using (var fileStream = new FileStream(path, FileMode.Open, FileAccess.Read))
                 {
-                    var data = Deserialize(stream);
+                    var data = serialization?.Deserialize(fileStream);
                     OnLoadingSuccess?.Invoke(data, path);
                     return data;
                 }
@@ -152,7 +148,7 @@ namespace PathfinderCharacterSheet
                 if (SaveBackups)
                     path += "_pcs";
 #endif
-                path = Path.Combine(RootPath, path + "." + Extension);
+                path = Path.Combine(RootPath, path + "." + serialization?.Format);
                 if (!CheckPathNotExist || !File.Exists(path))
                     return path;
                 index += 1;
@@ -161,13 +157,23 @@ namespace PathfinderCharacterSheet
         }
 
 #if SAVE_BACKUPS || LOAD_FROM_BACKUPS
+        private static string GetExtension(string filename)
+        {
+            if (string.IsNullOrWhiteSpace(filename))
+                return string.Empty;
+            var index = filename.IndexOf('.');
+            if (index < 0)
+                return string.Empty;
+            return filename.Substring(index);
+        }
+
         private static string[] GetBackupsList(string path)
         {
             if (string.IsNullOrWhiteSpace(path))
                 return null;
             var dir = Path.GetDirectoryName(path);
             var filename = Path.GetFileName(path);
-            var ext = Path.GetExtension(filename);
+            var ext = GetExtension(filename);
             if (!string.IsNullOrWhiteSpace(ext))
                 filename = filename.Substring(0, filename.Length - ext.Length);
             var pattern = filename + "*_backup" + ext;
@@ -180,7 +186,7 @@ namespace PathfinderCharacterSheet
         {
             if (string.IsNullOrWhiteSpace(path))
                 return null;
-            var ext = Path.GetExtension(path);
+            var ext = GetExtension(Path.GetFileName(path));
             if (!string.IsNullOrWhiteSpace(ext))
                 path = path.Substring(0, path.Length - ext.Length);
             var dt = DateTime.Now.ToString("yyyyMMddHHmmss");
@@ -245,7 +251,7 @@ namespace PathfinderCharacterSheet
         }
 #endif
 
-        public string Save(string name, T data, string path = null)
+        public string Save(string name, T data, string path = null, string loadedFrom = null)
         {
             if (data == null)
                 return null;
@@ -258,9 +264,9 @@ namespace PathfinderCharacterSheet
                 //sheet.ModificationTime = DateTime.Now;
                 using (var memoryStream = new MemoryStream())
                 {
-                    Serialize(data, memoryStream);
+                    serialization?.Serialize(data, memoryStream);
 #if SAVE_BACKUPS
-                    SaveBackup(path);
+                    SaveBackup(loadedFrom ?? path);
 #endif
                     int index = 0;
                     if (path == null)
@@ -271,6 +277,7 @@ namespace PathfinderCharacterSheet
                         {
                             using (var fileStream = new FileStream(path, FileMode.Create, FileAccess.Write))
                             {
+                                memoryStream.Position = 0;
                                 memoryStream.WriteTo(fileStream);
                                 fileStream.Flush();
                                 break;

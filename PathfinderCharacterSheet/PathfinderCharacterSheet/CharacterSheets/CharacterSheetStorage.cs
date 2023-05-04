@@ -33,7 +33,7 @@ namespace PathfinderCharacterSheet
 
         private CharacterSheetStorage()
         {
-            serializer = new XmlFileSerializer<CharacterSheet>("characters")
+            var xmlSerializer = new FileSerializer<CharacterSheet>("characters", new XmlSerialization<CharacterSheet>())
             {
                 SaveBackups = true,
                 LoadFromBackups = true,
@@ -48,9 +48,27 @@ namespace PathfinderCharacterSheet
                 OnBackupRemovingFailed = (path, exception) => onBackupRemovingFailed?.Invoke(path, exception),
             };
 
+            var zipXmlSerializer = new FileSerializer<CharacterSheet>("characters", new ZipSerialization<CharacterSheet>(new XmlSerialization<CharacterSheet>()))
+            {
+                SaveBackups = true,
+                LoadFromBackups = true,
+                CheckPathNotExist = true,
+
+                OnLoadingSuccess = (data, file) => onCharacterLoadingSuccess?.Invoke(data?.Name, file),
+                OnLoadingFailed = (path, exception) => onCharacterLoadingFailed?.Invoke(path, exception),
+                OnLoadingFromBackup = (data, path, backup) => onCharacterLoadedFromBackup?.Invoke(data?.Name, path, backup),
+                OnSavingSuccess = (data, path) => onCharacterSavingSuccess?.Invoke(data?.Name, path),
+                OnSavingFailed = (name, path, exception) => onCharacterSavingFailed?.Invoke(name, path, exception),
+                OnBackupSavingFailed = (path, backup, exception) => onBackupSavingFailed?.Invoke(path, backup, exception),
+                OnBackupRemovingFailed = (path, exception) => onBackupRemovingFailed?.Invoke(path, exception),
+            };
+
+            serializer = zipXmlSerializer;
+
             deserializers = new ISerializer<CharacterSheet>[]
             {
                 serializer,
+                xmlSerializer
             };
         }
 
@@ -98,9 +116,10 @@ namespace PathfinderCharacterSheet
                 return;
             characters.TryGetValue(sheet, out Tuple<string, ISerializer<CharacterSheet>> loadedAs);
             var reserialized = loadedAs?.Item2 != serializer;
+            var loadedFrom = loadedAs?.Item1;
             sheet.ModificationTime = DateTime.Now;
             sheet.SavesCount += 1;
-            var path = serializer.Save(sheet.Name, sheet, loadedAs?.Item1);
+            var path = serializer.Save(sheet.Name, sheet, reserialized ? null : loadedFrom, loadedFrom);
             if (path != null)
             {
                 markedAsChanged.Remove(sheet);

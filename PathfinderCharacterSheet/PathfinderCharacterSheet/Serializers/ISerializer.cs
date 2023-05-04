@@ -7,7 +7,7 @@ namespace PathfinderCharacterSheet
     {
         Dictionary<T, string> Load();
         T Load(string name);
-        string Save(string name, T data, string path = null);
+        string Save(string name, T data, string path = null, string loadedFrom = null);
         bool Delete(string path);
 
         Action<T, string> OnLoadingSuccess { get; set; }
